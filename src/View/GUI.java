@@ -39,6 +39,7 @@ public class GUI extends JFrame implements ActionListener {
 	JMenuItem mntmSpeichern;
 	JMenuItem mntmBeenden;
 	JMenuItem mntmDrucken;
+	JMenuItem mntmVorschau;
 	JMenuItem mntmDebug;
 	JPanel contentPane;
 	JTextPane konsole;
@@ -75,9 +76,15 @@ public class GUI extends JFrame implements ActionListener {
 		
 		mnDatei.addSeparator();
 		
-		mntmDrucken = new JMenuItem("Drucken");
+		mntmDrucken = new JMenuItem("Drucken...");
 		mntmDrucken.addActionListener(this);
 		mnDatei.add(mntmDrucken);
+
+		mntmVorschau = new JMenuItem("Druckvorschau...");
+		mntmVorschau.addActionListener(this);
+		mnDatei.add(mntmVorschau);
+
+		mnDatei.addSeparator();
 		
 		mntmDebug = new JMenuItem("Debug");
 		mntmDebug.addActionListener(this);
@@ -134,7 +141,7 @@ public class GUI extends JFrame implements ActionListener {
 		}
 
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(0, 278, 738, 172);
+		scrollPane.setBounds(0, 278, 738, 503);
 		contentPane.add(scrollPane);
 
 		konsole = new JTextPane();
@@ -220,9 +227,11 @@ public class GUI extends JFrame implements ActionListener {
 			} catch (PrinterException e1) {
 				e1.printStackTrace();
 			}
+		} else if (e.getSource() == mntmVorschau) {
+			Druckvorschau dv = new Druckvorschau(this, controller.getModel(), controller.getConfig().getPageFormat());
+			controller.getConfig().setPageFormat(dv.showDialog());
 		} else if (e.getSource() == mntmDebug) {
 			controller.printModel();
-			new Druckvorschau(this, controller.getModel(), controller.getConfig().getPageFormat());
 		} else if (e.getSource() == mntmBeenden) {
 			close();
 		}

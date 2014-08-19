@@ -28,7 +28,7 @@ public class Config implements Serializable {
 	
 
 	private Config() {
-		mainWindow = new Rectangle(42, 42, 1196, 500);
+		mainWindow = new Rectangle(42, 42, 1196, 829);
 		
 		pageWidht =           21.0 * mmToDots;
 		pageHeight =          29.7 * mmToDots;

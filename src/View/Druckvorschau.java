@@ -5,8 +5,6 @@ import javax.print.attribute.standard.MediaSize;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import java.awt.Cursor;
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
@@ -15,21 +13,20 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.print.PageFormat;
 import java.awt.print.Printable;
-import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import java.util.Vector;
 
+import javax.swing.JDialog;
 import javax.swing.JScrollPane;
 import javax.swing.JLabel;
 import javax.swing.JButton;
 import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.event.MouseInputAdapter;
 
 
 @SuppressWarnings("serial")
-public class Druckvorschau extends JFrame {
+public class Druckvorschau extends JDialog {
 	
 	private static final double ZOLL = 72 / 2.54;
 	
@@ -40,17 +37,15 @@ public class Druckvorschau extends JFrame {
 	JSlider slider;
 
 	JScrollPane scrollPane;
-	JPanel pages;
+	Seitenannzeige pages;
 
 	Printable p;
 	PageFormat pf;
 	Vector<Seite> seiten;
 
 	public Druckvorschau(JFrame parent, Printable p, PageFormat pageFormat) {
-		super("Druckvorschau");
-		setBounds(parent.getBounds());
-		this.setIconImage(parent.getIconImage());
-		parent.setEnabled(false);
+		super(parent, "Druckvorschau", true);
+		setBounds(parent.getX()+ 50, parent.getY() + 50, 887, 729);
 
 		this.p = p;
 		if (pageFormat == null) {
@@ -59,12 +54,12 @@ public class Druckvorschau extends JFrame {
 			pf = pageFormat;
 		}
 
-		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		//setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent arg0) {
-				parent.setEnabled(true);
-				dispose();
+				//setVisible(false);
+				//dispose();
 			}
 		});
 
@@ -73,7 +68,7 @@ public class Druckvorschau extends JFrame {
 		setContentPane(contentPane);
 		
 		panel = new JPanel();
-		panel.setBounds(0, 0, 792, 80);
+		panel.setBounds(0, 0, 879, 80);
 		contentPane.add(panel);
 		panel.setLayout(null);
 		
@@ -92,7 +87,12 @@ public class Druckvorschau extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				pf = PrinterJob.getPrinterJob().pageDialog(pf);
-				showPages();
+				lblTest.setText(String.format(	"%s: %4.1f - %4.1f\n",
+						MediaSize.findMedia((float) (pf.getWidth() / ZOLL * 10), (float) (pf.getHeight() / ZOLL * 10), Size2DSyntax.MM),
+						pf.getWidth() / ZOLL,
+						pf.getHeight() / ZOLL)
+				);
+				pages.setPageFormat(pf);
 			}
 		});
 		panel.add(btnndern);
@@ -109,32 +109,17 @@ public class Druckvorschau extends JFrame {
 		slider.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e) {
-				Seite s = seiten.get(0);
-				for (int i = 0; i < seiten.size(); i++) {
-					s = seiten.get(i);
-					s.setPageScale(slider.getValue());
-					s.setLocation(10 + i * (s.getWidth() + 10), 10);
-				}
-				Dimension d = new Dimension(10 + seiten.size() * (s.getWidth() + 10), s.getHeight() + 20);
-				pages.setPreferredSize(d);
-				pages.repaint();
-				scrollPane.revalidate();
+				pages.setScale(slider.getValue());
 			}
 			
 		});
 		panel.add(slider);
 		
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(0, 80, 792, 493);
+		scrollPane.setBounds(0, 80, 879, 622);
 		contentPane.add(scrollPane);
 		
-		pages = new JPanel();
-		pages.setLayout(null);
-		pages.setLocation(0, 0);
-		pages.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		MouseInputAdapter dragScroll = new DragScroll(pages);
-		pages.addMouseMotionListener(dragScroll);
-		pages.addMouseListener(dragScroll);
+		pages = new Seitenannzeige(p, pageFormat);
 		scrollPane.setViewportView(pages);
 
 		addComponentListener(new ComponentListener() {
@@ -153,47 +138,10 @@ public class Druckvorschau extends JFrame {
 			@Override
 			public void componentShown(ComponentEvent e) {}
 		});
-
-		setVisible(true);
-		showPages();
 	}
 
-	private void showPages() {
-		lblTest.setText(String.format(	"%s: %4.1f - %4.1f\n",
-				MediaSize.findMedia((float) (pf.getWidth() / ZOLL * 10), (float) (pf.getHeight() / ZOLL * 10), Size2DSyntax.MM),
-				pf.getWidth() / ZOLL,
-				pf.getHeight() / ZOLL)
-		);
-
-		pages.removeAll();
-		if (seiten == null) {
-			seiten = new Vector<Seite>();
-		} else {
-			seiten.clear();
-		}
-
-		int anzahl;
-		for (anzahl = 0; true; anzahl++) {
-			int c = Printable.NO_SUCH_PAGE;
-			try {
-				c = p.print(pages.getGraphics().create(0, 0, 0, 0), pf, anzahl);
-			} catch (PrinterException e) {
-				e.printStackTrace();
-			}
-			if (c == Printable.NO_SUCH_PAGE) break;
-		}
-
-		Seite s = new Seite(p, pf, 0);
-		for (int i = 0; i < anzahl; i++) {
-			s = new Seite(p, pf, i);
-			s.setPageScale(slider.getValue());
-			s.setLocation(10 + i * (s.getWidth() + 10), 10);
-			pages.add(s);
-			seiten.add(s);
-		}
-		
-		Dimension d = new Dimension(10 + anzahl * (s.getWidth() + 10), s.getHeight() + 20);
-		pages.setPreferredSize(d);
-		pages.repaint();
+	public PageFormat showDialog() {
+		setVisible(true);
+		return pf;
 	}
 }
