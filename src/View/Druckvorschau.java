@@ -2,9 +2,9 @@ package View;
 
 import javax.print.attribute.Size2DSyntax;
 import javax.print.attribute.standard.MediaSize;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
@@ -37,13 +37,13 @@ public class Druckvorschau extends JDialog {
 	JSlider slider;
 
 	JScrollPane scrollPane;
-	Seitenannzeige pages;
+	Seitenanzeige pages;
 
 	Printable p;
 	PageFormat pf;
 	Vector<Seite> seiten;
 
-	public Druckvorschau(JFrame parent, Printable p, PageFormat pageFormat) {
+	public Druckvorschau(Frame parent, Printable p, PageFormat pageFormat) {
 		super(parent, "Druckvorschau", true);
 		setBounds(parent.getX()+ 50, parent.getY() + 50, 887, 729);
 
@@ -119,7 +119,7 @@ public class Druckvorschau extends JDialog {
 		scrollPane.setBounds(0, 80, 879, 622);
 		contentPane.add(scrollPane);
 		
-		pages = new Seitenannzeige(p, pageFormat);
+		pages = new Seitenanzeige(p, pageFormat);
 		scrollPane.setViewportView(pages);
 
 		addComponentListener(new ComponentListener() {

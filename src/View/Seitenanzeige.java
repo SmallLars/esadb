@@ -14,14 +14,14 @@ import javax.swing.event.MouseInputAdapter;
 
 
 @SuppressWarnings("serial")
-public class Seitenannzeige extends JPanel {
+public class Seitenanzeige extends JPanel {
 	Printable printable;
 	private PageFormat pageFormat;
 	private int scale;
 
 	private Vector<Seite> seiten;
 	
-	public Seitenannzeige(Printable printable, PageFormat pageFormat) {
+	public Seitenanzeige(Printable printable, PageFormat pageFormat) {
 		super();
 
 		this.printable = printable;
