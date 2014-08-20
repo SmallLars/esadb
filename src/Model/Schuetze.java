@@ -13,7 +13,7 @@ public class Schuetze implements Serializable, Comparable<Schuetze> {
 	public String passnummer;		// Passnumer des Schützen
 	public String nachname;			// Nachname des Schützen
 	public String vorname;			// Vorname des Schützen
-	public String Titelname;		// Bezeichnung in der Titelleiste
+	public String titelname;		// Bezeichnung in der Titelleiste
 	public Date geburtsdatum;		// Geburtsdatum des Schützen
 	public String geschlecht;		// -1 für männlich, 0 für weiblich
 	public short startnummer;		// Startnummer des Schützen
@@ -23,7 +23,7 @@ public class Schuetze implements Serializable, Comparable<Schuetze> {
 		passnummer = "0000000-0000";
 		nachname = "Demoschütz";
 		vorname = "Hugo";
-		Titelname = "Demoschütz, Hugo";
+		titelname = "Demoschütz, Hugo";
 		Calendar cal = Calendar.getInstance();
 		cal.set(2000, Calendar.JANUARY, 1); 
 		geburtsdatum = cal.getTime();
@@ -36,7 +36,7 @@ public class Schuetze implements Serializable, Comparable<Schuetze> {
 		passnummer = (String) row.get("Passnummer");
 		nachname = (String) row.get("Nachname");
 		vorname = (String) row.get("Vorname");
-		Titelname = (String) row.get("Titelname");
+		titelname = (String) row.get("Titelname");
 		geburtsdatum = (Date) row.get("Geburtsdatum");
 		geschlecht = (String) row.get("Geschlecht");
 		startnummer = (short) row.get("Startnummer");

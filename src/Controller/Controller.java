@@ -72,19 +72,11 @@ public class Controller {
 		return linien[nummer];
 	}
 
-	public void printModel() {
-		model.printResult(gui);
-	}
-
 	public void load(File file) {
 		this.file = file;
 		model = Model.load(file);
 		for (int i = 0; i < 6; i++) {
 			linien[i].refresh();
-		}
-		
-		for (int i = 0; i < 60; i++) {
-			model.getErgebnisse().add(model.getErgebnisse().get(i));
 		}
 	}
 

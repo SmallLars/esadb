@@ -1,12 +1,22 @@
 package Model;
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.print.PageFormat;
+import java.awt.print.Printable;
+import java.awt.print.PrinterException;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Vector;
 
+import javax.swing.BorderFactory;
 
-public class Start implements Serializable, Comparable<Start> {
+import View.Scheibe;
+
+
+public class Start implements Serializable, Comparable<Start>, Printable {
 	private static final long serialVersionUID = 1L;
 
 	private int linie;
@@ -35,6 +45,10 @@ public class Start implements Serializable, Comparable<Start> {
 
 	public Disziplin getDisziplin() {
 		return disziplin;
+	}
+
+	public Schuetze getSchuetze() {
+		return schuetze;
 	}
 
 	public String addTreffer(Treffer treffer) {
@@ -129,6 +143,8 @@ public class Start implements Serializable, Comparable<Start> {
 		String s = "";
 
 		SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
+		s = s.concat(String.format("%s %-30s", sdf.format(datum), schuetze));
+/*
 		s = s.concat(String.format("%s (Linie %d) %-30s %-30s %5.1f", sdf.format(datum), linie, disziplin, schuetze, getResult()));
 
 		s = s.concat("\nAnzahl:");
@@ -143,6 +159,7 @@ public class Start implements Serializable, Comparable<Start> {
 				s = s.concat(String.format(" %4.1f", getMatch(i * disziplin.getSerienlaenge() + n)));
 			}
 		}
+*/
 		return s;
 	}
 
@@ -171,5 +188,73 @@ public class Start implements Serializable, Comparable<Start> {
 
 		// 4. Höchste Zahl der InnenZehner (5 mm durchmesser)
 		return s.getNumberCount(11) - getNumberCount(11);
+	}
+
+	@Override
+	public int print(Graphics g, PageFormat pageFormat, int pageIndex) throws PrinterException {
+		if (pageIndex > 0) return Printable.NO_SUCH_PAGE;
+
+		final double SCALE = 2000 / pageFormat.getImageableWidth();
+
+		Graphics2D g2 = (Graphics2D) g;
+		g2.translate(pageFormat.getImageableX(), pageFormat.getImageableY());
+		g2.scale(1.0 / SCALE, 1.0 / SCALE);
+		g2.setFont(new Font("Consolas", Font.PLAIN, 48));
+		final int lineHeight = g2.getFontMetrics().getHeight();
+
+		g2.drawString("Linie " + linie, 0, lineHeight);
+		SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+		drawStringRight(g2, sdf.format(datum), 2000, lineHeight);
+
+		g2.translate(0, lineHeight);
+		g2.drawString(schuetze.toString(), 0, lineHeight);
+		drawStringRight(g2, disziplin.toString(), 2000, lineHeight);
+
+		g2.translate(0, 1.5 * lineHeight);
+		Graphics gs = g2.create();
+		Scheibe s = new Scheibe();
+		s.setBackground(Color.WHITE);
+		s.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5, true));
+		s.setSize(2000, 2000);
+		s.addTreffer(match);
+		s.print(gs);
+
+		g2.translate(0, 2000 + 0.5 * lineHeight);
+		for (int i = 0; i < disziplin.getSerienAnzahl(); i++) {
+			drawStringRight(g2, (i + 1) + ". Serie", 300, lineHeight);
+			for (int t = 0; t < disziplin.getSerienlaenge(); t++) {
+				Treffer tr = match[i * disziplin.getSerienlaenge() + t];
+				double wert = tr == null ? 0.0 : tr.getWert();
+				drawStringRight(g2, "" + String.format("%4.1f", wert), 450 + t * 150, lineHeight);
+			}
+			drawStringRight(g2, String.format("%4.1f", getSerie(i)), 2000, lineHeight);
+			g2.drawLine(300, g2.getFontMetrics().getLeading(), 300, lineHeight + g2.getFontMetrics().getLeading());
+			g2.drawLine(1800, g2.getFontMetrics().getLeading(), 1800, lineHeight + g2.getFontMetrics().getLeading());
+			g2.translate(0, lineHeight);
+			g2.drawLine(0, g2.getFontMetrics().getLeading(), 2000, g2.getFontMetrics().getLeading());
+		}
+		drawStringRight(g2, "Gesamt", 300, lineHeight);
+		drawStringRight(g2, "" + String.format("%4.1f", getResult()), 2000, lineHeight);
+		g2.drawLine(300, g2.getFontMetrics().getLeading(), 300, lineHeight + g2.getFontMetrics().getLeading());
+		g2.drawLine(1800, g2.getFontMetrics().getLeading(), 1800, lineHeight + g2.getFontMetrics().getLeading());
+
+		g2.translate(0, 3 * lineHeight);
+		g2.drawString("Ring", 0, 0);
+		g2.drawString("Anzahl", 0, lineHeight);
+		for (int i = 0; i < 12; i++) {
+			final int width = 150;
+			final int rectDiff = - g2.getFontMetrics().getHeight() + g2.getFontMetrics().getLeading();
+			drawStringRight(g2, i == 11 ? "10i" : "" + i, 2000 - i * width, 0);
+			g2.drawRect(2000 - width*(i+1), rectDiff, width, lineHeight);
+			drawStringRight(g2, "" + getNumberCount(i), 2000 - i * width, lineHeight);
+			g2.drawRect(2000 - width*(i+1), lineHeight + rectDiff, width, lineHeight);
+		}
+
+		return Printable.PAGE_EXISTS;
+	}
+	
+	private void drawStringRight(Graphics2D g, String s, int x, int y) {
+		int len = (int) g.getFontMetrics().getStringBounds(s, g).getWidth();
+		g.drawString(s, x - len - 10, y);
 	}
 }

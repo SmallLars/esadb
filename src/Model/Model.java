@@ -17,8 +17,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Vector;
 
-import View.GUI;
-
 
 public class Model implements Serializable, Printable {
 	private static final long serialVersionUID = 1L;
@@ -51,11 +49,6 @@ public class Model implements Serializable, Printable {
 
 	public Vector<Disziplin> getDisziplinen() {
 		return disziplinen;
-	}
-	
-	public void printResult(GUI gui) {
-		ergebnisse.sort(null);
-		for (Start s : ergebnisse) gui.println(s.toString());
 	}
 	
 	public boolean save(File file) {
@@ -109,7 +102,7 @@ public class Model implements Serializable, Printable {
 		int status = Printable.NO_SUCH_PAGE;
 		final double SCALE = 2000 / pageFormat.getImageableWidth();
 
-		Graphics2D g2 = (Graphics2D) g; 
+		Graphics2D g2 = (Graphics2D) g;
 		g2.scale(1.0 / SCALE, 1.0 / SCALE);
 		g2.setFont(new Font("Consolas", Font.PLAIN, 48));
 		
@@ -120,8 +113,8 @@ public class Model implements Serializable, Printable {
 
 		SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
 		String headline = String.format("%s - Seite %2d", sdf.format(new Date()), pageIndex + 1);
-		double headLen = g2.getFontMetrics().getStringBounds(headline, null).getWidth();
-		g2.drawString(headline, startX + 1000 - (int) (headLen / 2), startY - 2 * lineHeight);
+		double headLen = g2.getFontMetrics().getStringBounds(headline, null).getCenterX();
+		g2.drawString(headline, startX + 1000 - (int) headLen, startY - 2 * lineHeight);
 
         int lineIndex = pageIndex * -pageLines;
 		int platz = 1;

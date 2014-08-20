@@ -19,6 +19,7 @@ import javax.swing.JTextPane;
 import javax.swing.JScrollPane;
 
 import Controller.Controller;
+import Model.Start;
 import Model.Treffer;
 
 import javax.swing.JMenuBar;
@@ -41,7 +42,7 @@ public class GUI extends JFrame implements ActionListener {
 	JMenuItem mntmBeenden;
 	JMenuItem mntmDrucken;
 	JMenuItem mntmVorschau;
-	JMenuItem mntmDebug;
+	JMenuItem mntmEinzel;
 	JPanel contentPane;
 	JTextPane konsole;
 	Scheibe scheibe;
@@ -84,12 +85,10 @@ public class GUI extends JFrame implements ActionListener {
 		mntmVorschau = new JMenuItem("Druckvorschau...");
 		mntmVorschau.addActionListener(this);
 		mnDatei.add(mntmVorschau);
-
-		mnDatei.addSeparator();
 		
-		mntmDebug = new JMenuItem("Debug");
-		mntmDebug.addActionListener(this);
-		mnDatei.add(mntmDebug);
+		mntmEinzel = new JMenuItem("Einzelergebnisse...");
+		mntmEinzel.addActionListener(this);
+		mnDatei.add(mntmEinzel);
 		
 		mnDatei.addSeparator();
 		
@@ -231,8 +230,12 @@ public class GUI extends JFrame implements ActionListener {
 		} else if (e.getSource() == mntmVorschau) {
 			Druckvorschau dv = new Druckvorschau(this, controller.getModel(), controller.getConfig().getPageFormat());
 			controller.getConfig().setPageFormat(dv.showDialog());
-		} else if (e.getSource() == mntmDebug) {
-			controller.printModel();
+		} else if (e.getSource() == mntmEinzel) {
+			Einzel einzel = new Einzel(this, controller.getModel());
+			Start s = einzel.showDialog();
+			if (s == null) return;
+			Druckvorschau dv = new Druckvorschau(this, s, controller.getConfig().getPageFormat());
+			controller.getConfig().setPageFormat(dv.showDialog());
 		} else if (e.getSource() == mntmBeenden) {
 			close();
 		}

@@ -30,8 +30,6 @@ public class Druckvorschau extends JDialog {
 	
 	private static final double ZOLL = 72 / 2.54;
 	
-	private JPanel contentPane;
-
 	JPanel panel;
 	JLabel lblTest;
 	JSlider slider;
@@ -63,13 +61,11 @@ public class Druckvorschau extends JDialog {
 			}
 		});
 
-		contentPane = new JPanel();
-		contentPane.setLayout(null);
-		setContentPane(contentPane);
+		 getContentPane().setLayout(null);
 		
 		panel = new JPanel();
 		panel.setBounds(0, 0, 879, 80);
-		contentPane.add(panel);
+		getContentPane().add(panel);
 		panel.setLayout(null);
 		
 		lblTest = new JLabel("Test");
@@ -117,7 +113,7 @@ public class Druckvorschau extends JDialog {
 		
 		scrollPane = new JScrollPane();
 		scrollPane.setBounds(0, 80, 879, 622);
-		contentPane.add(scrollPane);
+		getContentPane().add(scrollPane);
 		
 		pages = new Seitenanzeige(p, pageFormat);
 		scrollPane.setViewportView(pages);
@@ -131,8 +127,8 @@ public class Druckvorschau extends JDialog {
 
 			@Override
 			public void componentResized(ComponentEvent e) {
-				panel.setSize(contentPane.getWidth(), 80);
-				scrollPane.setSize(contentPane.getWidth(), contentPane.getHeight() - 80);
+				panel.setSize(getContentPane().getWidth(), 80);
+				scrollPane.setSize(getContentPane().getWidth(), getContentPane().getHeight() - 80);
 			}
 
 			@Override

@@ -76,11 +76,19 @@ public class Scheibe extends JPanel {
 		this.repaint();
 	}
 
+	public void addTreffer(Treffer tr[]) {
+		treffer.clear();
+		for (Treffer t : tr) if (t != null) treffer.add(t);
+		this.repaint();
+	}
+
 	private void drawTreffer(Graphics g, double x, double y) {
-		g.setColor(Color.GREEN);
 		Dimension d = toPixel(56);
 		Point p = toPixel((int) x/10, (int) y/10);
+		g.setColor(Color.GREEN);
 		g.fillOval(mitteX + p.x - d.width/2, mitteY - p.y - d.height/2, d.width, d.height);
+		g.setColor(Color.BLUE);
+		g.drawOval(mitteX + p.x - d.width/2, mitteY - p.y - d.height/2, d.width, d.height);
 	}
 
 	private Dimension toPixel(int zmm) {		
