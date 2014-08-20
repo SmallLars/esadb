@@ -45,7 +45,7 @@ public class GUI extends JFrame implements ActionListener {
 	JMenuItem mntmEinzel;
 	JPanel contentPane;
 	JTextPane konsole;
-	Scheibe scheibe;
+	Scheibe scheiben[];
     JFileChooser fc;
 
 	public GUI(Controller controller) {
@@ -55,9 +55,10 @@ public class GUI extends JFrame implements ActionListener {
 			@Override
 			public void windowClosing(WindowEvent arg0) {close();}
 		});
-		setMinimumSize(new Dimension(1196, 500));
+		setMinimumSize(new Dimension(1196, 726));
 
 		this.controller = controller;
+		scheiben = new Scheibe[6];
 
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setBounds(controller.getConfig().getMainWindowBouds());
@@ -141,7 +142,7 @@ public class GUI extends JFrame implements ActionListener {
 		}
 
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(0, 278, 738, 503);
+		scrollPane.setBounds(0, 278, 738, 398);
 		contentPane.add(scrollPane);
 
 		konsole = new JTextPane();
@@ -149,9 +150,11 @@ public class GUI extends JFrame implements ActionListener {
 		konsole.setFont(new Font("Consolas", Font.PLAIN, 12));
 		scrollPane.setViewportView(konsole);
 		
-		scheibe = new Scheibe();
-		scheibe.setBounds(738, 0, 450, 450);
-		contentPane.add(scheibe);
+		for (int i = 0; i < 6; i++) {
+			scheiben[i] = new Scheibe();
+			scheiben[i].setBounds(738 + (i % 2 * 225), i / 2 * 225, 225, 225);
+			contentPane.add(scheiben[i]);
+		}
 
 		addComponentListener(new ComponentListener() {
 			@Override
@@ -166,9 +169,12 @@ public class GUI extends JFrame implements ActionListener {
 			public void componentResized(ComponentEvent arg0) {
 				controller.getConfig().setMainWindowBouds(getBounds());
 				scrollPane.setSize(738, contentPane.getHeight() - 278);
-				scheibe.setSize(arg0.getComponent().getWidth() - 738,
-								arg0.getComponent().getHeight()
-				);
+				for (int i = 0; i < 6; i++) {
+					scheiben[i].setSize(	(contentPane.getWidth() - 738) / 2,
+											contentPane.getHeight() / 3
+					);
+					scheiben[i].setLocation(738 + (i % 2 * scheiben[i].getWidth()), i / 2 * scheiben[i].getHeight());
+				}
 			}
 
 			@Override
@@ -231,7 +237,7 @@ public class GUI extends JFrame implements ActionListener {
 			Druckvorschau dv = new Druckvorschau(this, controller.getModel(), controller.getConfig().getPageFormat());
 			controller.getConfig().setPageFormat(dv.showDialog());
 		} else if (e.getSource() == mntmEinzel) {
-			Einzel einzel = new Einzel(this, controller.getModel());
+			Einzel einzel = new Einzel(this, controller);
 			Start s = einzel.showDialog();
 			if (s == null) return;
 			Druckvorschau dv = new Druckvorschau(this, s, controller.getConfig().getPageFormat());
@@ -250,8 +256,8 @@ public class GUI extends JFrame implements ActionListener {
 		print(string + "\n");
 	}
 
-	public void showTreffer(Treffer t) {
-		scheibe.showTreffer(t);
+	public void showTreffer(int linie, Treffer t) {
+		scheiben[linie - 1].showTreffer(t);
 	}
 
 	public void close() {

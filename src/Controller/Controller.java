@@ -25,7 +25,7 @@ public class Controller {
 	public Controller() {
 		config = Config.load();
 
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy_MM_dd");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		file = new File(sdf.format(new Date()) + ".esa");
 		if (file.exists()) {
 			model = Model.load(file);

@@ -195,6 +195,7 @@ public class Start implements Serializable, Comparable<Start>, Printable {
 		if (pageIndex > 0) return Printable.NO_SUCH_PAGE;
 
 		final double SCALE = 2000 / pageFormat.getImageableWidth();
+		final String format = disziplin.getWertung() == 0 ? "%2.0f" : "%4.1f";
 
 		Graphics2D g2 = (Graphics2D) g;
 		g2.translate(pageFormat.getImageableX(), pageFormat.getImageableY());
@@ -223,18 +224,17 @@ public class Start implements Serializable, Comparable<Start>, Printable {
 		for (int i = 0; i < disziplin.getSerienAnzahl(); i++) {
 			drawStringRight(g2, (i + 1) + ". Serie", 300, lineHeight);
 			for (int t = 0; t < disziplin.getSerienlaenge(); t++) {
-				Treffer tr = match[i * disziplin.getSerienlaenge() + t];
-				double wert = tr == null ? 0.0 : tr.getWert();
-				drawStringRight(g2, "" + String.format("%4.1f", wert), 450 + t * 150, lineHeight);
+				float wert = getMatch(i * disziplin.getSerienlaenge() + t);
+				drawStringRight(g2, "" + String.format(format, wert), 450 + t * 150, lineHeight);
 			}
-			drawStringRight(g2, String.format("%4.1f", getSerie(i)), 2000, lineHeight);
+			drawStringRight(g2, String.format(format, getSerie(i)), 2000, lineHeight);
 			g2.drawLine(300, g2.getFontMetrics().getLeading(), 300, lineHeight + g2.getFontMetrics().getLeading());
 			g2.drawLine(1800, g2.getFontMetrics().getLeading(), 1800, lineHeight + g2.getFontMetrics().getLeading());
 			g2.translate(0, lineHeight);
 			g2.drawLine(0, g2.getFontMetrics().getLeading(), 2000, g2.getFontMetrics().getLeading());
 		}
 		drawStringRight(g2, "Gesamt", 300, lineHeight);
-		drawStringRight(g2, "" + String.format("%4.1f", getResult()), 2000, lineHeight);
+		drawStringRight(g2, "" + String.format(format, getResult()), 2000, lineHeight);
 		g2.drawLine(300, g2.getFontMetrics().getLeading(), 300, lineHeight + g2.getFontMetrics().getLeading());
 		g2.drawLine(1800, g2.getFontMetrics().getLeading(), 1800, lineHeight + g2.getFontMetrics().getLeading());
 

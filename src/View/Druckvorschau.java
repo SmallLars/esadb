@@ -9,12 +9,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.awt.print.PageFormat;
 import java.awt.print.Printable;
+import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
-import java.util.Vector;
 
 import javax.swing.JDialog;
 import javax.swing.JScrollPane;
@@ -39,11 +37,11 @@ public class Druckvorschau extends JDialog {
 
 	Printable p;
 	PageFormat pf;
-	Vector<Seite> seiten;
 
 	public Druckvorschau(Frame parent, Printable p, PageFormat pageFormat) {
 		super(parent, "Druckvorschau", true);
 		setBounds(parent.getX()+ 50, parent.getY() + 50, 887, 729);
+		getContentPane().setLayout(null);
 
 		this.p = p;
 		if (pageFormat == null) {
@@ -51,17 +49,6 @@ public class Druckvorschau extends JDialog {
 		} else {
 			pf = pageFormat;
 		}
-
-		//setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowClosing(WindowEvent arg0) {
-				//setVisible(false);
-				//dispose();
-			}
-		});
-
-		 getContentPane().setLayout(null);
 		
 		panel = new JPanel();
 		panel.setBounds(0, 0, 879, 80);
@@ -78,7 +65,7 @@ public class Druckvorschau extends JDialog {
 		panel.add(lblTest);
 		
 		JButton btnndern = new JButton("Ändern");
-		btnndern.setBounds(691, 11, 91, 23);
+		btnndern.setBounds(10, 38, 91, 23);
 		btnndern.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -101,7 +88,7 @@ public class Druckvorschau extends JDialog {
 		slider.setValue(100);
 		slider.setMinorTickSpacing(10);
 		slider.setMinimum(50);
-		slider.setBounds(244, 11, 200, 50);
+		slider.setBounds(236, 11, 200, 50);
 		slider.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e) {
@@ -110,6 +97,33 @@ public class Druckvorschau extends JDialog {
 			
 		});
 		panel.add(slider);
+		
+		JButton btnDrucken = new JButton("Drucken");
+		btnDrucken.setBounds(496, 25, 91, 23);
+		btnDrucken.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				PrinterJob pjob = PrinterJob.getPrinterJob();
+			    if (pjob.printDialog() == false) return;
+			    pjob.setPrintable(p, pf);
+			    try {
+					pjob.print();
+				} catch (PrinterException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
+		panel.add(btnDrucken);
+		
+		JButton btnAbbrechen = new JButton("Abbrechen");
+		btnAbbrechen.setBounds(615, 25, 100, 23);
+		btnAbbrechen.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				setVisible(false);
+			}
+		});
+		panel.add(btnAbbrechen);
 		
 		scrollPane = new JScrollPane();
 		scrollPane.setBounds(0, 80, 879, 622);

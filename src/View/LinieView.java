@@ -166,6 +166,6 @@ public class LinieView extends JPanel {
 	}
 
 	public void showTreffer(Treffer t) {
-		gui.showTreffer(t);		
+		gui.showTreffer(linie.getNummer(), t);		
 	}
 }

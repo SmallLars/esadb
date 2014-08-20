@@ -13,8 +13,8 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JComboBox;
 
+import Controller.Controller;
 import Model.Disziplin;
-import Model.Model;
 import Model.Start;
 
 
@@ -22,18 +22,18 @@ import Model.Start;
 public class Einzel extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
-	private Model model;
-	private Start s;
+	private Controller controller;
+	private boolean okKlick;
 	
 	DefaultComboBoxModel<Disziplin> modelD;
 	JComboBox<Disziplin> disziplin;
 	DefaultComboBoxModel<Start> modelS;
 	JComboBox<Start> start;
 
-	public Einzel(Frame parent, Model model) {
+	public Einzel(Frame parent, Controller controller) {
 		super(parent, "Ergebnisauswahl");
 
-		this.model = model;
+		this.controller = controller;
 
 		setModal(true);
 		setModalityType(ModalityType.APPLICATION_MODAL);
@@ -70,7 +70,7 @@ public class Einzel extends JDialog {
 		okButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				s = (Start) start.getSelectedItem();
+				okKlick = true;
 				setVisible(false);				
 			}
 		});
@@ -89,21 +89,24 @@ public class Einzel extends JDialog {
 	}
 
 	public Start showDialog() {
-		s = null;
+		okKlick = false;
 		disziplin.removeAllItems();
-		for (Start s : model.getErgebnisse()) {
+		for (Start s : controller.getModel().getErgebnisse()) {
 			if (modelD.getIndexOf(s.getDisziplin()) == -1) {
 				disziplin.addItem(s.getDisziplin());
 			}
 		}
 		setSchutzeItems();
 		setVisible(true);
-		return s;
+		if (okKlick) {
+			return (Start) start.getSelectedItem();
+		}
+		return null;
 	}
 
 	private void setSchutzeItems() {
 		start.removeAllItems();
-		for (Start s : model.getErgebnisse()) {
+		for (Start s : controller.getModel().getErgebnisse()) {
 			if (s.getDisziplin() == disziplin.getSelectedItem()) {
 				if (modelS.getIndexOf(s) == -1) {
 					start.addItem(s);

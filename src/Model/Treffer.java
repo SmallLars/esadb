@@ -65,6 +65,7 @@ public class Treffer implements Serializable, Comparable<Treffer> {
     }
 
     public boolean isInnenZehner() {
+    	//return lage.equals("R"); <- Gibt leider keine Auskunft :(
     	return r <= 530;
     }
 
