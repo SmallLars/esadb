@@ -52,7 +52,7 @@ public class Treffer implements Serializable, Comparable<Treffer> {
    		zeit = Integer.parseInt(sa[14].trim());
     }
 
-    boolean isProbe() {
+    public boolean isProbe() {
     	return probe;
     }
 

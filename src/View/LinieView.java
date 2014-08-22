@@ -13,10 +13,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EtchedBorder;
 
+import Controller.Linie;
+import Controller.Status;
 import Model.Disziplin;
-import Model.Linie;
 import Model.Schuetze;
-import Model.Status;
 import Model.Treffer;
 
 @SuppressWarnings("serial")

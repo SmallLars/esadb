@@ -46,6 +46,7 @@ public class GUI extends JFrame implements ActionListener {
 	JPanel contentPane;
 	JTextPane konsole;
 	Scheibe scheiben[];
+	LinieView linien[];
     JFileChooser fc;
 
 	public GUI(Controller controller) {
@@ -59,6 +60,7 @@ public class GUI extends JFrame implements ActionListener {
 
 		this.controller = controller;
 		scheiben = new Scheibe[6];
+		linien = new LinieView[6];
 
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setBounds(controller.getConfig().getMainWindowBouds());
@@ -136,9 +138,9 @@ public class GUI extends JFrame implements ActionListener {
 		contentPane.add(lblDisziplin);
 
 		for (int i = 0; i < controller.getLinienAnzahl(); i++) {
-			LinieView panel = new LinieView(controller.getLinie(i), this);
-			panel.setLocation(10, 32 + (i * (panel.getHeight() + 10)));
-			contentPane.add(panel);
+			linien[i] = new LinieView(controller.getLinie(i), this);
+			linien[i].setLocation(10, 32 + (i * (linien[i].getHeight() + 10)));
+			contentPane.add(linien[i]);
 		}
 
 		JScrollPane scrollPane = new JScrollPane();

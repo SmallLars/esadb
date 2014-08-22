@@ -9,7 +9,6 @@ import java.util.Date;
 
 import Model.Config;
 import Model.Model;
-import Model.Linie;
 import View.GUI;
 
 

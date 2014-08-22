@@ -1,9 +1,12 @@
-package Model;
+package Controller;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.Vector;
 
-import Controller.Controller;
+import Model.Disziplin;
+import Model.Schuetze;
+import Model.Start;
+import Model.Treffer;
 import View.LinieView;
 
 
@@ -14,8 +17,6 @@ public class Linie {
 	private Start start;
 
 	private boolean busy = false;
-	private Schuetze schuetze = null;
-	private Disziplin disziplin = null;
 	private LinieView view = null;
 
 	public Linie(int nummer, Controller controller) {
@@ -29,8 +30,6 @@ public class Linie {
 	}
 	
 	public void configure(Schuetze schuetze, Disziplin disziplin) {
-		if (schuetze != null) this.schuetze = schuetze;
-		if (disziplin != null) this.disziplin = disziplin;
 		start = new Start(nummer, disziplin, schuetze);
 		controller.getModel().add(start);
 	}
@@ -46,8 +45,8 @@ public class Linie {
 			if (view != null) view.setEnabled(false);
 			String cmd = null;
 			if (status == Status.SPERREN) {
-				if (schuetze != null && disziplin != null) {
-					cmd = "\"" + status.getCode() + " $" + schuetze.wettkampfID + "$" + schuetze.passnummer + "$" + disziplin.getId() + "$0$0\"";
+				if (start != null) {
+					cmd = "\"" + status.getCode() + " $" + start.getSchuetze().wettkampfID + "$" + start.getSchuetze().passnummer + "$" + start.getDisziplin().getId() + "$0$0\"";
 				}
 			} else {
 				cmd = status.getCode();
