@@ -106,7 +106,6 @@ public class Model implements Serializable, Printable {
 			if (ois != null) try { ois.close(); } catch (IOException e) {}
 			if (fis != null) try { fis.close(); } catch (IOException e) {}
 		}
-
 		return model;
 	}
 

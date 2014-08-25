@@ -52,6 +52,10 @@ public class FileChecker extends Thread {
 				}
 			}
 		}
+		File file = new File("Kampf.mdb");
+		if (!file.delete()) {
+			System.err.println("Can't remove " + file.getAbsolutePath());
+		}
 	}
 
 	@Override

@@ -4,8 +4,11 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.OutputStream;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import org.apache.commons.io.FileUtils;
 
 import Model.Config;
 import Model.Model;
@@ -23,6 +26,19 @@ public class Controller {
 
 	public Controller() {
 		config = Config.load();
+		
+		final String[] files = {"esadb.ico", "esadb.png", "Stammdaten.mdb"};
+		for (String s : files) {
+			File file = new File(s);
+			if (!file.exists()) {
+				URL inputUrl = getClass().getResource("/" + s);
+				try {
+					FileUtils.copyURLToFile(inputUrl, file);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
 
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		file = new File(sdf.format(new Date()) + ".esa");
