@@ -13,7 +13,6 @@ import com.healthmarketscience.jackcess.Table;
 
 
 public class KampfDB {
-
 	public static Vector<Schuetze> getSchuetzen() {
 		Table table = getTable("WettkampfSchuetzen");
 		Vector<Schuetze> vector = new Vector<Schuetze>();
@@ -37,7 +36,7 @@ public class KampfDB {
 	private static Table getTable(String tablename) {
 		DatabaseBuilder dbb = new DatabaseBuilder();
 		dbb.setReadOnly(true);
-		dbb.setFile(new File("Kampf.mdb"));
+		dbb.setFile(new File("Stammdaten.mdb"));
 		try {
 			Database db = dbb.open();
 			return db.getTable(tablename);

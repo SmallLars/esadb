@@ -29,7 +29,7 @@ public class Controller {
 		if (file.exists()) {
 			model = Model.load(file);
 		} else {
-			model = new Model(KampfDB.getSchuetzen(), KampfDB.getDisziplinen());
+			model = new Model();
 		}
 
 		linien = new Linie[6];

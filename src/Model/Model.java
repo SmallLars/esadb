@@ -13,9 +13,13 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Vector;
+
+import Controller.KampfDB;
 
 
 public class Model implements Serializable, Printable {
@@ -24,11 +28,22 @@ public class Model implements Serializable, Printable {
 	private Vector<Start> ergebnisse;
 	private Vector<Schuetze> schuetzen;
 	private Vector<Disziplin> disziplinen;
+	private byte[] file;
 	
-	public Model(Vector<Schuetze> schuetzen, Vector<Disziplin> disziplinen) {
+	public Model() {
 		ergebnisse = new Vector<Start>();
-		this.schuetzen = schuetzen;
-		this.disziplinen = disziplinen;
+		schuetzen = KampfDB.getSchuetzen();
+		disziplinen = KampfDB.getDisziplinen();
+		try {
+			file = Files.readAllBytes(Paths.get("Stammdaten.mdb"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		try {
+			Files.write(Paths.get("Kampf.mdb"), file);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public boolean add(Start start) {
@@ -50,7 +65,7 @@ public class Model implements Serializable, Printable {
 	public Vector<Disziplin> getDisziplinen() {
 		return disziplinen;
 	}
-	
+
 	public boolean save(File file) {
 		boolean succeed = false;
 		ObjectOutputStream oos = null;
@@ -82,6 +97,7 @@ public class Model implements Serializable, Printable {
 			if (obj instanceof Model) {
 				model = (Model) obj;
 			}
+			if (model != null) Files.write(Paths.get("Kampf.mdb"), model.file);
 		}
 		catch (IOException | ClassNotFoundException e) {
 			e.printStackTrace();
