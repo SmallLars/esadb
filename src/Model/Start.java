@@ -212,7 +212,7 @@ public class Start implements Serializable, Comparable<Start>, Printable {
 		drawStringRight(g2, disziplin.toString(), 2000, lineHeight);
 
 		g2.translate(0, 1.5 * lineHeight);
-		Graphics gs = g2.create();
+		Graphics gs = g2.create(0, 0, 2000, 2000);
 		Scheibe s = new Scheibe();
 		s.setBackground(Color.WHITE);
 		s.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5, true));
@@ -222,15 +222,19 @@ public class Start implements Serializable, Comparable<Start>, Printable {
 
 		g2.translate(0, 2000 + 0.5 * lineHeight);
 		for (int i = 0; i < disziplin.getSerienAnzahl(); i++) {
+			int serienHoehe = 0;
 			drawStringRight(g2, (i + 1) + ". Serie", 300, lineHeight);
 			for (int t = 0; t < disziplin.getSerienlaenge(); t++) {
+				if (t % 10 == 0) {
+					serienHoehe -= lineHeight;
+					g2.translate(0, lineHeight);
+				}
 				float wert = getMatch(i * disziplin.getSerienlaenge() + t);
-				drawStringRight(g2, "" + String.format(format, wert), 450 + t * 150, lineHeight);
+				drawStringRight(g2, "" + String.format(format, wert), 450 + (t % 10) * 150, 0);
 			}
-			drawStringRight(g2, String.format(format, getSerie(i)), 2000, lineHeight);
-			g2.drawLine(300, g2.getFontMetrics().getLeading(), 300, lineHeight + g2.getFontMetrics().getLeading());
-			g2.drawLine(1800, g2.getFontMetrics().getLeading(), 1800, lineHeight + g2.getFontMetrics().getLeading());
-			g2.translate(0, lineHeight);
+			drawStringRight(g2, String.format(format, getSerie(i)), 2000, 0);
+			g2.drawLine(300, serienHoehe + g2.getFontMetrics().getLeading(), 300, g2.getFontMetrics().getLeading());
+			g2.drawLine(1800, serienHoehe + g2.getFontMetrics().getLeading(), 1800, g2.getFontMetrics().getLeading());
 			g2.drawLine(0, g2.getFontMetrics().getLeading(), 2000, g2.getFontMetrics().getLeading());
 		}
 		drawStringRight(g2, "Gesamt", 300, lineHeight);
