@@ -27,7 +27,7 @@ public class Controller {
 	public Controller() {
 		config = Config.load();
 		
-		final String[] files = {"esadb.ico", "esadb.png", "Stammdaten.mdb"};
+		final String[] files = {"esadb.ico", "Stammdaten.mdb"};
 		for (String s : files) {
 			File file = new File(s);
 			if (!file.exists()) {

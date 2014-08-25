@@ -51,7 +51,7 @@ public class GUI extends JFrame implements ActionListener {
 
 	public GUI(Controller controller) {
 		super("ESADB - Datenbank für ESA 2002 - " + controller.getFile().getName());
-		setIconImage(Toolkit.getDefaultToolkit().getImage("esadb.png"));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/esadb.png")));
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent arg0) {close();}
