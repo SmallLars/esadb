@@ -52,6 +52,18 @@ public class Treffer implements Serializable, Comparable<Treffer> {
    		zeit = Integer.parseInt(sa[14].trim());
     }
 
+    public Treffer(boolean probe, int nummer) {
+   		this.nummer = nummer;
+   		this.probe = probe;
+   		wert = 0;
+   		lage = "R";
+   		x = 0;
+   		y = 0;
+   		r = 0;
+   		phi = 0;
+   		zeit = 0;
+    }
+
     public boolean isProbe() {
     	return probe;
     }
@@ -95,11 +107,29 @@ public class Treffer implements Serializable, Comparable<Treffer> {
 
     @Override
     public String toString() {
-    	return "" + wert;
+    	return String.format("%4.1f", wert);
     }
 
 	@Override
 	public int compareTo(Treffer t) {
-		return nummer - t.nummer;
+		if (probe != t.probe) {
+			return (probe ? -1 : 1);
+		}
+		return nummer - t.nummer;		
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if (o instanceof Treffer) {
+			if (compareTo((Treffer) o) == 0) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public int hashCode() {
+		return nummer * (probe ? -1 : 1);
 	}
 }

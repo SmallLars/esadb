@@ -9,7 +9,8 @@ import java.awt.print.PrinterException;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Vector;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.BorderFactory;
 
@@ -23,24 +24,18 @@ public class Start implements Serializable, Comparable<Start>, Printable {
 	private Date datum;
 	private Disziplin disziplin;
 	private Schuetze schuetze;
-	private Vector<Treffer> probe;
-	private Treffer match[];
-	private Vector<Treffer> addMatch;
-
+	private Map<Treffer, Treffer> treffer;
+	
 	public Start(int linie, Disziplin disziplin, Schuetze schuetze) {
 		this.linie = linie;
 		this.datum = new Date();
 		this.disziplin = disziplin;
 		this.schuetze = schuetze;
-		probe = new Vector<Treffer>(0, disziplin.getSerienlaenge());
-		match = new Treffer[disziplin.getSchusszahl()];
-		addMatch = new Vector<Treffer>(0, disziplin.getSerienlaenge());
+		this.treffer = new HashMap<Treffer, Treffer>();
 	}
 
 	public boolean isEmpty() {
-		if (probe.size() > 0 || addMatch.size() > 0) return false;
-		for (Treffer t : match) if (t != null) return false;
-		return true;
+		return treffer.isEmpty();
 	}
 
 	public Disziplin getDisziplin() {
@@ -51,25 +46,17 @@ public class Start implements Serializable, Comparable<Start>, Printable {
 		return schuetze;
 	}
 
-	public String addTreffer(Treffer treffer) {
-		String s = String.format("M(%d) ", treffer.getNummer());
-		if (treffer.isProbe()) {
-			probe.add(treffer);
-			s = String.format("P(%d) ", treffer.getNummer());
-		}
-		else if (treffer.getNummer() <= disziplin.getSchusszahl()) {
-			match[treffer.getNummer() - 1] = treffer;
-		} else {
-			addMatch.add(treffer);
-		}
-		
-		return schuetze + ": " + disziplin + ": " + s + treffer;
+	public String addTreffer(Treffer t) {
+		// TODO schon vorhanden checken
+		treffer.put(t,  t);
+		String s = String.format("%s(%d) ", t.isProbe() ? "P" : "M", t.getNummer());
+		return schuetze + ": " + disziplin + ": " + s + t;
 	}
 
 	public float getMatch(int nummer) {
 		if (nummer >= disziplin.getSchusszahl()) return 0;
 
-		Treffer t =  match[nummer];
+		Treffer t = treffer.get(new Treffer(false, nummer + 1));
 		if (t == null) return 0;
 
 		float wert = t.getWert();
@@ -99,15 +86,13 @@ public class Start implements Serializable, Comparable<Start>, Printable {
 		if (number < 0 || number > 11) return 0;
 
 		int counter = 0;
-		if (number == 11) {
-			// Innenzehner
-			for (Treffer t : match) {
-				if (t != null && t.isInnenZehner()) counter++;
-			}
-		} else {
-			// 0 bis 10
-			for (Treffer t : match) {
-				if (t != null && number == (int) t.getWert()) counter++;
+		for (int i = 0; i < disziplin.getSchusszahl(); i++) {
+			Treffer t = treffer.get(new Treffer(false, i + 1));
+			if (t == null) continue;
+			if (number == 11) {
+				if (t.isInnenZehner()) counter++;
+			} else {
+				if (number == (int) t.getWert()) counter++;
 			}
 		}
 		return counter;
@@ -174,19 +159,19 @@ public class Start implements Serializable, Comparable<Start>, Printable {
 		c = (int) (s.getResult() * 10) - (int) (getResult() * 10);
 		if (c != 0) return c;
 		
-		// 2. Serien rückwärts vergleichen
+		// 2. Serien rÃ¼ckwÃ¤rts vergleichen
 		for (int i = disziplin.getSerienAnzahl() - 1; i >=0; i--) {
 			c = (int) (s.getSerie(i) * 10) - (int) (getSerie(i) * 10);
 			if (c != 0) return c;
 		}
 		
-		// 3. Höchste Zahl der 10er, dann 9er, .... dann 1er
+		// 3. HÃ¶chste Zahl der 10er, dann 9er, .... dann 1er
 		for (int i = 10; i >=0; i--) {
 			c = s.getNumberCount(i) - getNumberCount(i);
 			if (c != 0) return c;
 		}
 
-		// 4. Höchste Zahl der InnenZehner (5 mm durchmesser)
+		// 4. HÃ¶chste Zahl der InnenZehner (5 mm durchmesser)
 		return s.getNumberCount(11) - getNumberCount(11);
 	}
 
@@ -217,7 +202,10 @@ public class Start implements Serializable, Comparable<Start>, Printable {
 		s.setBackground(Color.WHITE);
 		s.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5, true));
 		s.setSize(2000, 2000);
-		s.addTreffer(match);
+		for (int i = 0; i < disziplin.getSchusszahl(); i++) {
+			Treffer t = treffer.get(new Treffer(false, i + 1));
+			s.addTreffer(t);
+		}
 		s.print(gs);
 
 		g2.translate(0, 2000 + 0.5 * lineHeight);

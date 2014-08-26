@@ -76,9 +76,8 @@ public class Scheibe extends JPanel {
 		this.repaint();
 	}
 
-	public void addTreffer(Treffer tr[]) {
-		treffer.clear();
-		for (Treffer t : tr) if (t != null) treffer.add(t);
+	public void addTreffer(Treffer t) {
+		treffer.add(t);
 		this.repaint();
 	}
 
