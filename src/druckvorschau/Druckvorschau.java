@@ -104,8 +104,7 @@ public class Druckvorschau extends JDialog {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				PrinterJob pjob = PrinterJob.getPrinterJob();
-				MyPageable pageable = new MyPageable(pages.getNumberOfPages(), pf, p);
-				pjob.setPageable(pageable);
+				pjob.setPageable(new MyPageable(pages.getNumberOfPages(), pf, p));
 			    if (pjob.printDialog() == false) return;
 			    try {
 					pjob.print();
