@@ -23,6 +23,7 @@ public class Scheibe extends JPanel {
 
 	public Scheibe() {
 		treffer = new Vector<Treffer>();
+		setSize(400, 400);
 	}
 
 	@Override
