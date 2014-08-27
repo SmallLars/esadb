@@ -1,4 +1,4 @@
-package Controller;
+package controller;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.Vector;
@@ -7,7 +7,7 @@ import Model.Disziplin;
 import Model.Schuetze;
 import Model.Start;
 import Model.Treffer;
-import View.LinieView;
+import view.LinieView;
 
 
 public class Linie {

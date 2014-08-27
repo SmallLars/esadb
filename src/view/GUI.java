@@ -1,4 +1,4 @@
-package View;
+package view;
 
 import java.awt.Dimension;
 import java.awt.Font;
@@ -17,14 +17,14 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextPane;
 import javax.swing.JScrollPane;
-
-import Controller.Controller;
-import Model.Start;
-import Model.Treffer;
-
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JMenu;
+
+import Model.Start;
+import Model.Treffer;
+import controller.Controller;
+import druckvorschau.Druckvorschau;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;

@@ -1,4 +1,4 @@
-package View;
+package view;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -13,11 +13,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EtchedBorder;
 
-import Controller.Linie;
-import Controller.Status;
 import Model.Disziplin;
 import Model.Schuetze;
 import Model.Treffer;
+import controller.Linie;
+import controller.Status;
 
 @SuppressWarnings("serial")
 public class LinieView extends JPanel {

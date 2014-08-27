@@ -1,4 +1,4 @@
-package View;
+package druckvorschau;
 
 import java.awt.Component;
 import java.awt.Container;

@@ -1,4 +1,4 @@
-package View;
+package druckvorschau;
 
 import java.awt.Color;
 import java.awt.Cursor;
@@ -36,6 +36,10 @@ public class Seitenanzeige extends JPanel {
 		MouseInputAdapter dragScroll = new DragScroll(this);
 		addMouseMotionListener(dragScroll);
 		addMouseListener(dragScroll);
+	}
+
+	public int getNumberOfPages() {
+		return seiten.size();
 	}
 
 	public void setPageFormat(PageFormat pageFormat) {

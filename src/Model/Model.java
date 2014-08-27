@@ -19,7 +19,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Vector;
 
-import Controller.KampfDB;
+import controller.KampfDB;
 
 
 public class Model implements Serializable, Printable {

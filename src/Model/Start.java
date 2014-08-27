@@ -14,7 +14,7 @@ import java.util.Map;
 
 import javax.swing.BorderFactory;
 
-import View.Scheibe;
+import view.Scheibe;
 
 
 public class Start implements Serializable, Comparable<Start>, Printable {
@@ -83,16 +83,21 @@ public class Start implements Serializable, Comparable<Start>, Printable {
 	}
 
 	public int getNumberCount(int number) {
-		if (number < 0 || number > 11) return 0;
+		if (number < 0 || number > 12) return 0;
 
 		int counter = 0;
 		for (int i = 0; i < disziplin.getSchusszahl(); i++) {
 			Treffer t = treffer.get(new Treffer(false, i + 1));
 			if (t == null) continue;
-			if (number == 11) {
-				if (t.isInnenZehner()) counter++;
-			} else {
-				if (number == (int) t.getWert()) counter++;
+			switch (number) {
+				case 12:
+					counter++;
+					break;
+				case 11:
+					if (t.isInnenZehner()) counter++;
+					break;
+				default:
+					if (number == (int) t.getWert()) counter++;
 			}
 		}
 		return counter;
@@ -204,7 +209,7 @@ public class Start implements Serializable, Comparable<Start>, Printable {
 		s.setSize(2000, 2000);
 		for (int i = 0; i < disziplin.getSchusszahl(); i++) {
 			Treffer t = treffer.get(new Treffer(false, i + 1));
-			s.addTreffer(t);
+			if (t != null) s.addTreffer(t);
 		}
 		s.print(gs);
 
@@ -233,10 +238,10 @@ public class Start implements Serializable, Comparable<Start>, Printable {
 		g2.translate(0, 3 * lineHeight);
 		g2.drawString("Ring", 0, 0);
 		g2.drawString("Anzahl", 0, lineHeight);
-		for (int i = 0; i < 12; i++) {
-			final int width = 150;
+		for (int i = 0; i < 13; i++) {
+			final int width = 135;
 			final int rectDiff = - g2.getFontMetrics().getHeight() + g2.getFontMetrics().getLeading();
-			drawStringRight(g2, i == 11 ? "10i" : "" + i, 2000 - i * width, 0);
+			drawStringRight(g2, i == 12 ? "∑" : i == 11 ? "10i" : "" + i, 2000 - i * width, 0);
 			g2.drawRect(2000 - width*(i+1), rectDiff, width, lineHeight);
 			drawStringRight(g2, "" + getNumberCount(i), 2000 - i * width, lineHeight);
 			g2.drawRect(2000 - width*(i+1), lineHeight + rectDiff, width, lineHeight);

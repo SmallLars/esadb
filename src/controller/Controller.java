@@ -1,4 +1,4 @@
-package Controller;
+package controller;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,7 +12,7 @@ import org.apache.commons.io.FileUtils;
 
 import Model.Config;
 import Model.Model;
-import View.GUI;
+import view.GUI;
 
 
 public class Controller {

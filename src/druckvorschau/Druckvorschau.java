@@ -1,4 +1,4 @@
-package View;
+package druckvorschau;
 
 import javax.print.attribute.Size2DSyntax;
 import javax.print.attribute.standard.MediaSize;
@@ -84,11 +84,11 @@ public class Druckvorschau extends JDialog {
 		slider.setPaintTicks(true);
 		slider.setPaintLabels(true);
 		slider.setMajorTickSpacing(50);
-		slider.setMaximum(200);
+		slider.setMaximum(400);
 		slider.setValue(100);
 		slider.setMinorTickSpacing(10);
 		slider.setMinimum(50);
-		slider.setBounds(236, 11, 200, 50);
+		slider.setBounds(195, 11, 350, 50);
 		slider.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e) {
@@ -99,13 +99,14 @@ public class Druckvorschau extends JDialog {
 		panel.add(slider);
 		
 		JButton btnDrucken = new JButton("Drucken");
-		btnDrucken.setBounds(496, 25, 91, 23);
+		btnDrucken.setBounds(625, 25, 91, 23);
 		btnDrucken.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				PrinterJob pjob = PrinterJob.getPrinterJob();
+				MyPageable pageable = new MyPageable(pages.getNumberOfPages(), pf, p);
+				pjob.setPageable(pageable);
 			    if (pjob.printDialog() == false) return;
-			    pjob.setPrintable(p, pf);
 			    try {
 					pjob.print();
 				} catch (PrinterException e1) {
@@ -116,7 +117,7 @@ public class Druckvorschau extends JDialog {
 		panel.add(btnDrucken);
 		
 		JButton btnAbbrechen = new JButton("Abbrechen");
-		btnAbbrechen.setBounds(615, 25, 100, 23);
+		btnAbbrechen.setBounds(737, 25, 100, 23);
 		btnAbbrechen.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
