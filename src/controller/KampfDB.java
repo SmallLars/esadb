@@ -3,8 +3,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Vector;
 
-import Model.Disziplin;
-import Model.Schuetze;
+import model.Disziplin;
+import model.Schuetze;
 
 import com.healthmarketscience.jackcess.Database;
 import com.healthmarketscience.jackcess.DatabaseBuilder;

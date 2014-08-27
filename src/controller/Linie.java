@@ -3,10 +3,10 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.Vector;
 
-import Model.Disziplin;
-import Model.Schuetze;
-import Model.Start;
-import Model.Treffer;
+import model.Disziplin;
+import model.Schuetze;
+import model.Start;
+import model.Treffer;
 import view.LinieView;
 
 

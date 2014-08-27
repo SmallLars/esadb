@@ -1,4 +1,4 @@
-package Model;
+package model;
 
 import java.awt.Rectangle;
 import java.awt.print.PageFormat;

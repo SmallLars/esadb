@@ -13,8 +13,8 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JComboBox;
 
-import Model.Disziplin;
-import Model.Start;
+import model.Disziplin;
+import model.Start;
 import controller.Controller;
 
 

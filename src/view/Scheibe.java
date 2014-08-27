@@ -9,7 +9,7 @@ import java.util.Vector;
 
 import javax.swing.JPanel;
 
-import Model.Treffer;
+import model.Treffer;
 
 
 @SuppressWarnings("serial")

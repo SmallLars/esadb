@@ -8,10 +8,11 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import model.Config;
+import model.Model;
+
 import org.apache.commons.io.FileUtils;
 
-import Model.Config;
-import Model.Model;
 import view.GUI;
 
 

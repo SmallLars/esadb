@@ -13,9 +13,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EtchedBorder;
 
-import Model.Disziplin;
-import Model.Schuetze;
-import Model.Treffer;
+import model.Disziplin;
+import model.Schuetze;
+import model.Treffer;
 import controller.Linie;
 import controller.Status;
 

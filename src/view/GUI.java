@@ -21,8 +21,8 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JMenu;
 
-import Model.Start;
-import Model.Treffer;
+import model.Start;
+import model.Treffer;
 import controller.Controller;
 import druckvorschau.Druckvorschau;
 
