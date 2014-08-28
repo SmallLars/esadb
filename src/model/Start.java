@@ -164,19 +164,19 @@ public class Start implements Serializable, Comparable<Start>, Printable {
 		c = (int) (s.getResult() * 10) - (int) (getResult() * 10);
 		if (c != 0) return c;
 		
-		// 2. Serien rÃ¼ckwÃ¤rts vergleichen
+		// 2. Serien rückwärts vergleichen
 		for (int i = disziplin.getSerienAnzahl() - 1; i >=0; i--) {
 			c = (int) (s.getSerie(i) * 10) - (int) (getSerie(i) * 10);
 			if (c != 0) return c;
 		}
 		
-		// 3. HÃ¶chste Zahl der 10er, dann 9er, .... dann 1er
+		// 3. Höchste Zahl der 10er, dann 9er, .... dann 1er
 		for (int i = 10; i >=0; i--) {
 			c = s.getNumberCount(i) - getNumberCount(i);
 			if (c != 0) return c;
 		}
 
-		// 4. HÃ¶chste Zahl der InnenZehner (5 mm durchmesser)
+		// 4. Höchste Zahl der InnenZehner (5 mm durchmesser)
 		return s.getNumberCount(11) - getNumberCount(11);
 	}
 

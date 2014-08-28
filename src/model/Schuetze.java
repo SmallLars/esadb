@@ -10,20 +10,20 @@ public class Schuetze implements Serializable, Comparable<Schuetze> {
 	private static final long serialVersionUID = 1L;
 
 	public int wettkampfID;			// Identifikationsnummer des Wettkampf
-	public String passnummer;		// Passnumer des Schï¿½tzen
-	public String nachname;			// Nachname des Schï¿½tzen
-	public String vorname;			// Vorname des Schï¿½tzen
+	public String passnummer;		// Passnumer des Schützen
+	public String nachname;			// Nachname des Schützen
+	public String vorname;			// Vorname des Schützen
 	public String titelname;		// Bezeichnung in der Titelleiste
-	public Date geburtsdatum;		// Geburtsdatum des Schï¿½tzen
-	public String geschlecht;		// -1 fï¿½r mï¿½nnlich, 0 fï¿½r weiblich
-	public short startnummer;		// Startnummer des Schï¿½tzen
+	public Date geburtsdatum;		// Geburtsdatum des Schützen
+	public String geschlecht;		// -1 für männlich, 0 für weiblich
+	public short startnummer;		// Startnummer des Schützen
 
 	public Schuetze() {
 		wettkampfID = 0;
 		passnummer = "0000000-0000";
-		nachname = "Demoschï¿½tz";
+		nachname = "Demoschütz";
 		vorname = "Hugo";
-		titelname = "Demoschï¿½tz, Hugo";
+		titelname = "Demoschütz, Hugo";
 		Calendar cal = Calendar.getInstance();
 		cal.set(2000, Calendar.JANUARY, 1); 
 		geburtsdatum = cal.getTime();

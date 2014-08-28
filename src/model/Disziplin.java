@@ -8,14 +8,14 @@ public class Disziplin implements Serializable, Comparable<Disziplin> {
 	private static final long serialVersionUID = 1L;
 
 	private int id;
-	private String name;				// Bezeichnung der Disziplin
+	private String name;			// Bezeichnung der Disziplin
 	private int wertung;			// 0=Ringwertung, 1=Zehntelwertung
-	private int schusszahl;		// Anzahl der Schï¿½sse im Match
-	private int schiesszeit;		// Zeit in Minuten fï¿½r die Schï¿½sse im Match
+	private int schusszahl;			// Anzahl der Schüsse im Match
+	private int schiesszeit;		// Zeit in Minuten für die Schüsse im Match
 	private int stellungsanzahl;	// Anzahl der Stellungen
-	private int probeschuesse;		// Anzahl der Probeschï¿½sse (-1 = beliebig viele)
-	private int probezeit;			// Zeit fï¿½r Probeschï¿½sse (-1 = ist in der Matchzeit enthalten)
-	private int serienlaenge;		// Gibt die Lï¿½nge der Serien an
+	private int probeschuesse;		// Anzahl der Probeschüsse (-1 = beliebig viele)
+	private int probezeit;			// Zeit für Probeschüsse (-1 = ist in der Matchzeit enthalten)
+	private int serienlaenge;		// Gibt die Länge der Serien an
 
 	public Disziplin(Row row) {
 		id = (int) row.get("DisziplinID");
