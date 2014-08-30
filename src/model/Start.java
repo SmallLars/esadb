@@ -241,7 +241,7 @@ public class Start implements Serializable, Comparable<Start>, Printable {
 		for (int i = 0; i < 13; i++) {
 			final int width = 135;
 			final int rectDiff = - g2.getFontMetrics().getHeight() + g2.getFontMetrics().getLeading();
-			drawStringRight(g2, i == 12 ? "∑" : i == 11 ? "10i" : "" + i, 2000 - i * width, 0);
+			drawStringRight(g2, i == 12 ? "Sum" : i == 11 ? "10i" : "" + i, 2000 - i * width, 0);
 			g2.drawRect(2000 - width*(i+1), rectDiff, width, lineHeight);
 			drawStringRight(g2, "" + getNumberCount(i), 2000 - i * width, lineHeight);
 			g2.drawRect(2000 - width*(i+1), lineHeight + rectDiff, width, lineHeight);
