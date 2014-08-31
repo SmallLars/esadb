@@ -61,6 +61,7 @@ public class Controller {
 		linien = new LinieModel[6];
 		for (int i = 0; i < 6; i++) {
 			linien[i] = new LinieModel(i + 1, this);
+			linien[i].setStatus(Status.INIT);
 		}
 
 		fileChecker = new FileChecker(this);
@@ -103,17 +104,13 @@ public class Controller {
 		schuetzen = model.getSchuetzen();
 		disziplinen = model.getDisziplinen();
 		for (int i = 0; i < 6; i++) {
-			linien[i].refresh();
+			linien[i].modelChanged();
 		}
-	}
-
-	public void save() {
-		model.save(file);
 	}
 
 	public void save(File file) {
 		this.file = file;
-		save();
+		model.save(file);
 	}
 
 	public boolean canExit() {
@@ -152,10 +149,10 @@ public class Controller {
 	}
 
 	public void add(Treffer t) {
-		LinieModel l = getLinie(t.getLinie());
+		LinieModel l = getLinie(t.getLinie() - 1);
 		if (l == null) return;
 		String info = l.addTreffer(t);
-		save();
+		save(file);
 		gui.println(l + ": " + info);
 		gui.showTreffer(l.getNummer(), t);
 	}

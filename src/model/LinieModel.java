@@ -30,7 +30,8 @@ public class LinieModel {
 	}
 
 	public void modelChanged() {
-		//TODO updates
+		sModel.modelChanged();
+		dModel.modelChanged();
 	}
 
 	public int getNummer() {
@@ -52,25 +53,30 @@ public class LinieModel {
 			busy = true;
 			if (view != null) view.setEnabled(false);
 			String cmd = null;
-			if (status == Status.SPERREN) {
-				if (start != null) {
-					cmd = "\"" + status.getCode() + " $" + start.getSchuetze().wettkampfID + "$" + start.getSchuetze().passnummer + "$" + start.getDisziplin().getId() + "$0$0\"";
-				}
-			} else {
-				cmd = status.getCode();
+			switch (status) {
+				case INIT:
+					cmd = "";
+					break;
+				case SPERREN:
+					if (start != null) {
+						cmd = "\"" + status.getCode() + " $" + start.getSchuetze().wettkampfID + "$" + start.getSchuetze().passnummer + "$" + start.getDisziplin().getId() + "$0$0\"";
+					}
+					break;
+				default:
+					cmd = status.getCode();
 			}
 			if (status == Status.ENTSPERREN) {
 				if (start.isEmpty()) controller.remove(start);
 			}
 			if (cmd != null) {
-				writeFile(".ctl", cmd);
-				writeFile(".nrt", cmd);
+				writeFile(".ctl", cmd + "\n");
+				writeFile(".nrt", cmd + "\n");
 			}
 		}
 	}
 	
 	public boolean isFrei() {
-		return !busy && letzterStatus == Status.FREI;
+		return !busy && (letzterStatus == Status.FREI || letzterStatus == Status.INIT);
 	}
 
 	public void reenable() {
@@ -99,10 +105,6 @@ public class LinieModel {
 	@Override
 	public String toString() {
 		return "Linie " + nummer;
-	}
-
-	public void refresh() {
-		if (view != null) view.refresh();
 	}
 
 	public ComboBoxModel<Disziplin> getDisziplinenModel() {

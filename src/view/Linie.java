@@ -102,8 +102,6 @@ public class Linie extends JPanel {
 		disziplin.setBounds(400, 5, 200, 22);
 		this.add(disziplin);
 
-		refresh();
-
 		frei = new JButton("Frei");
 		frei.addActionListener(new ActionListener() {
 			@Override
@@ -116,7 +114,7 @@ public class Linie extends JPanel {
 		frei.setBounds(623, 5, 91, 22);
 		this.add(frei);
 		
-		setEnabled(true);
+		setEnabled(false);
 	}
 
 	@Override
@@ -133,10 +131,6 @@ public class Linie extends JPanel {
 		start.setEnabled(enabled && sperre.isSelected());
 		wertung.setEnabled(enabled && sperre.isSelected() && !match);
 		frei.setEnabled(enabled && !sperre.isSelected());
-	}
-
-	public void refresh() {
-		// TODO
 	}
 
 	public void setMatch() {

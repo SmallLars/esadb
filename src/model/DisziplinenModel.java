@@ -1,6 +1,9 @@
 package model;
 
+import java.util.Vector;
+
 import javax.swing.ComboBoxModel;
+import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
 import controller.Controller;
@@ -8,10 +11,14 @@ import controller.Controller;
 public class DisziplinenModel implements ComboBoxModel<Disziplin> {
 	private Object selected;
 	private Controller controller;
+	private int length;
+	private Vector<ListDataListener> listDataListener;
 
 	public DisziplinenModel(Controller controller) {
 		this.selected = null;
 		this.controller = controller;
+		this.length = controller.getDisziplinen().length + 1;
+		listDataListener = new Vector<ListDataListener>();
 	}
 
 	@Override
@@ -22,7 +29,7 @@ public class DisziplinenModel implements ComboBoxModel<Disziplin> {
 
 	@Override
 	public int getSize() {
-		return controller.getDisziplinen().length + 1;
+		return length;
 	}
 
 	@Override
@@ -32,18 +39,26 @@ public class DisziplinenModel implements ComboBoxModel<Disziplin> {
 
 	@Override
 	public void setSelectedItem(Object item) {
-		if (controller.contains(item)) {
+		if (item == null || controller.contains(item)) {
 			selected = item;
 		}
 	}
 
 	@Override
 	public void addListDataListener(ListDataListener l) {
-		// TODO Auto-generated method stub
+		listDataListener.add(l);
 	}
 
 	@Override
 	public void removeListDataListener(ListDataListener l) {
-		// TODO Auto-generated method stub
+		listDataListener.remove(l);
+	}
+
+	public void modelChanged() {
+		for (ListDataListener l : listDataListener) {
+			l.intervalRemoved(new ListDataEvent(controller, ListDataEvent.INTERVAL_REMOVED, 0, length - 1));
+			length = controller.getDisziplinen().length + 1;
+			l.intervalAdded(new ListDataEvent(controller, ListDataEvent.INTERVAL_ADDED, 0, length - 1));
+		}
 	}
 }
