@@ -54,6 +54,7 @@ public class Controller {
 			model = Model.load(file);
 		} else {
 			model = new Model();
+			model.save(file);
 		}
 		schuetzen = model.getSchuetzen();
 		disziplinen = model.getDisziplinen();
@@ -96,6 +97,17 @@ public class Controller {
 
 	public LinieModel getLinie(int nummer) {
 		return linien[nummer];
+	}
+
+	public void neu(File file) {
+		this.file = file;
+		model = new Model();
+		save(file);
+		schuetzen = model.getSchuetzen();
+		disziplinen = model.getDisziplinen();
+		for (int i = 0; i < 6; i++) {
+			linien[i].modelChanged();
+		}
 	}
 
 	public void load(File file) {

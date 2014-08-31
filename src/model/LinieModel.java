@@ -53,17 +53,12 @@ public class LinieModel {
 			busy = true;
 			if (view != null) view.setEnabled(false);
 			String cmd = null;
-			switch (status) {
-				case INIT:
-					cmd = "";
-					break;
-				case SPERREN:
-					if (start != null) {
-						cmd = "\"" + status.getCode() + " $" + start.getSchuetze().wettkampfID + "$" + start.getSchuetze().passnummer + "$" + start.getDisziplin().getId() + "$0$0\"";
-					}
-					break;
-				default:
-					cmd = status.getCode();
+			if (status == Status.SPERREN) {
+				if (start != null) {
+					cmd = "\"" + status.getCode() + " $" + start.getSchuetze().wettkampfID + "$" + start.getSchuetze().passnummer + "$" + start.getDisziplin().getId() + "$0$0\"";
+				}
+			} else {
+				cmd = status.getCode();
 			}
 			if (status == Status.ENTSPERREN) {
 				if (start.isEmpty()) controller.remove(start);
