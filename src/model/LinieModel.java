@@ -1,28 +1,36 @@
-package controller;
+package model;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
-import java.util.Vector;
 
-import model.Disziplin;
-import model.Schuetze;
-import model.Start;
-import model.Treffer;
-import view.LinieView;
+import javax.swing.ComboBoxModel;
+
+import controller.Controller;
+import controller.Status;
+import view.Linie;
 
 
-public class Linie {
+public class LinieModel {
 	private int nummer;
 	private Controller controller;
 	private Status letzterStatus;
 	private Start start;
 
-	private boolean busy = false;
-	private LinieView view = null;
+	private SchuetzenModel sModel;
+	private DisziplinenModel dModel;
 
-	public Linie(int nummer, Controller controller) {
+	private boolean busy = false;
+	private Linie view = null;
+
+	public LinieModel(int nummer, Controller controller) {
 		this.nummer = nummer;
 		this.controller = controller;
+		this.dModel = new DisziplinenModel(controller);
+		this.sModel = new SchuetzenModel(controller);
 		this.letzterStatus = Status.FREI;
+	}
+
+	public void modelChanged() {
+		//TODO updates
 	}
 
 	public int getNummer() {
@@ -31,10 +39,10 @@ public class Linie {
 	
 	public void configure(Schuetze schuetze, Disziplin disziplin) {
 		start = new Start(nummer, disziplin, schuetze);
-		controller.getModel().add(start);
+		controller.add(start);
 	}
 
-	public void setView(LinieView view) {
+	public void setView(Linie view) {
 		this.view = view;
 	}
 	
@@ -52,7 +60,7 @@ public class Linie {
 				cmd = status.getCode();
 			}
 			if (status == Status.ENTSPERREN) {
-				if (start.isEmpty()) controller.getModel().remove(start);
+				if (start.isEmpty()) controller.remove(start);
 			}
 			if (cmd != null) {
 				writeFile(".ctl", cmd);
@@ -80,15 +88,12 @@ public class Linie {
 		}
 	}
 
-	public void addTreffer(String resultString) {
-		Treffer t = new Treffer(resultString);
+	public String addTreffer(Treffer t) {
 		String info = start.addTreffer(t);
-		controller.save();
 		if (view != null) {
 			if (!t.isProbe() && t.getNummer() == 1) view.setMatch();
-			view.showTreffer(t);
-			view.showResult(info);
 		}
+		return info;
 	}
 	
 	@Override
@@ -100,12 +105,12 @@ public class Linie {
 		if (view != null) view.refresh();
 	}
 
-	public Vector<Schuetze> getSchuetzen() {
-		return controller.getModel().getSchuetzen();
+	public ComboBoxModel<Disziplin> getDisziplinenModel() {
+		return dModel;
 	}
 
-	public Vector<Disziplin> getDisziplinen() {
-		return controller.getModel().getDisziplinen();
+	public ComboBoxModel<Schuetze> getSchuetzenModel() {
+		return sModel;
 	}
 
 }

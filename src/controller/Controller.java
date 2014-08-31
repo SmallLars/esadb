@@ -9,7 +9,12 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import model.Config;
+import model.Disziplin;
+import model.LinieModel;
 import model.Model;
+import model.Schuetze;
+import model.Start;
+import model.Treffer;
 
 import org.apache.commons.io.FileUtils;
 
@@ -21,7 +26,9 @@ public class Controller {
 	
 	private File file;
 	private Model model;
-	private Linie linien[];
+	private LinieModel linien[];
+	private Schuetze[] schuetzen;
+	private Disziplin[] disziplinen;
 	private FileChecker fileChecker;
 	private GUI gui;
 
@@ -48,10 +55,12 @@ public class Controller {
 		} else {
 			model = new Model();
 		}
+		schuetzen = model.getSchuetzen();
+		disziplinen = model.getDisziplinen();
 
-		linien = new Linie[6];
+		linien = new LinieModel[6];
 		for (int i = 0; i < 6; i++) {
-			linien[i] = new Linie(i + 1, this);
+			linien[i] = new LinieModel(i + 1, this);
 		}
 
 		fileChecker = new FileChecker(this);
@@ -84,13 +93,15 @@ public class Controller {
 		return 6;
 	}
 
-	public Linie getLinie(int nummer) {
+	public LinieModel getLinie(int nummer) {
 		return linien[nummer];
 	}
 
 	public void load(File file) {
 		this.file = file;
 		model = Model.load(file);
+		schuetzen = model.getSchuetzen();
+		disziplinen = model.getDisziplinen();
 		for (int i = 0; i < 6; i++) {
 			linien[i].refresh();
 		}
@@ -116,7 +127,36 @@ public class Controller {
 		fileChecker.exit();
 	}
 
+	public boolean contains(Object item) {
+		return model.contains(item);
+	}
+
+	public Schuetze[] getSchuetzen() {
+		return schuetzen;
+	}
+
+	public Disziplin[] getDisziplinen() {
+		return disziplinen;
+	}
+
 	public static void main(String[] args) {
 		new Controller();
+	}
+
+	public void add(Start s) {
+		model.add(s);
+	}
+
+	public boolean remove(Start s) {
+		return model.remove(s);
+	}
+
+	public void add(Treffer t) {
+		LinieModel l = getLinie(t.getLinie());
+		if (l == null) return;
+		String info = l.addTreffer(t);
+		save();
+		gui.println(l + ": " + info);
+		gui.showTreffer(l.getNummer(), t);
 	}
 }

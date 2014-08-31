@@ -6,6 +6,7 @@ import java.util.regex.Pattern;
 public class Treffer implements Serializable, Comparable<Treffer> {
 	private static final long serialVersionUID = 1L;
 
+	private int linie;
 	private boolean probe;
 	private int nummer;
 	private float wert;
@@ -41,6 +42,7 @@ public class Treffer implements Serializable, Comparable<Treffer> {
 	 */
     public Treffer(String raw) {
     	String sa[] = raw.replace('"', '$').substring(1).split(Pattern.quote("$"));
+    	linie = Integer.parseInt(sa[5].trim());
    		nummer = Integer.parseInt(sa[6].trim());
    		probe = (sa[7].equals("0") ? true : false);
    		wert = Float.parseFloat(sa[8].trim());
@@ -64,12 +66,16 @@ public class Treffer implements Serializable, Comparable<Treffer> {
    		zeit = 0;
     }
 
-    public boolean isProbe() {
-    	return probe;
+    public int getLinie() {
+    	return linie;
     }
 
     public int getNummer() {
     	return nummer;
+    }
+
+    public boolean isProbe() {
+    	return probe;
     }
 
     public float getWert() {

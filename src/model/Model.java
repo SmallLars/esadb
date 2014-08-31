@@ -17,6 +17,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Set;
 import java.util.Vector;
 
 import controller.KampfDB;
@@ -25,9 +26,10 @@ import controller.KampfDB;
 public class Model implements Serializable, Printable {
 	private static final long serialVersionUID = 1L;
 
-	private Vector<Start> ergebnisse;
-	private Vector<Schuetze> schuetzen;
+	private Set<Schuetze> schuetzen;
 	private Vector<Disziplin> disziplinen;
+	private Vector<Start> ergebnisse;
+
 	private byte[] file;
 	
 	public Model() {
@@ -58,12 +60,18 @@ public class Model implements Serializable, Printable {
 		return ergebnisse;
 	}
 
-	public Vector<Schuetze> getSchuetzen() {
-		return schuetzen;
+	public Schuetze[] getSchuetzen() {
+		return schuetzen.toArray(new Schuetze[0]);
 	}
 
-	public Vector<Disziplin> getDisziplinen() {
-		return disziplinen;
+	public Disziplin[] getDisziplinen() {
+		return disziplinen.toArray(new Disziplin[0]);
+	}
+	
+	public boolean contains(Object o) {
+		if (o instanceof Schuetze) return schuetzen.contains(o);
+		if (o instanceof Disziplin) return disziplinen.contains(o);
+		return false;
 	}
 
 	public boolean save(File file) {

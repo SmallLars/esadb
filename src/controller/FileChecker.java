@@ -12,6 +12,8 @@ import java.nio.file.WatchEvent.Kind;
 import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
 
+import model.LinieModel;
+import model.Treffer;
 import static java.nio.file.StandardWatchEventKinds.*;
 
 
@@ -78,11 +80,12 @@ public class FileChecker extends Thread {
 
 							File datei = new File(dateiname);
 							if (dateiname.endsWith(".ctl")) {
-								int linie = Integer.parseUnsignedInt(dateiname.substring(6, 7)) - 1;
+								//TODO liniennummer abgleichen
+								//int linie = Integer.parseUnsignedInt(dateiname.substring(6, 7)) - 1;
 								BufferedReader reader = new BufferedReader(new FileReader(dateiname));
-								Linie l = controller.getLinie(linie);
-								if (l != null) l.addTreffer(reader.readLine());
+								controller.add(new Treffer(reader.readLine()));
 								reader.close();
+
 							}
 							datei.delete();
 							break;
@@ -90,7 +93,7 @@ public class FileChecker extends Thread {
 							// HServ<X>.ctl
 							if (dateiname.startsWith("HServ") && dateiname.endsWith(".ctl")) {
 								int linie = Integer.parseUnsignedInt(dateiname.substring(5, 6)) - 1;
-								Linie l = controller.getLinie(linie);
+								LinieModel l = controller.getLinie(linie);
 								if (l != null) l.reenable();
 							}
 							break;

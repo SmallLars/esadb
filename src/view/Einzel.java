@@ -5,6 +5,7 @@ import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Vector;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -22,7 +23,7 @@ import controller.Controller;
 public class Einzel extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
-	private Controller controller;
+	private Vector<Start> ergebnisse;
 	private boolean okKlick;
 	
 	DefaultComboBoxModel<Disziplin> modelD;
@@ -32,8 +33,7 @@ public class Einzel extends JDialog {
 
 	public Einzel(Frame parent, Controller controller) {
 		super(parent, "Ergebnisauswahl");
-
-		this.controller = controller;
+		ergebnisse = controller.getModel().getErgebnisse();
 
 		setModal(true);
 		setModalityType(ModalityType.APPLICATION_MODAL);
@@ -91,7 +91,7 @@ public class Einzel extends JDialog {
 	public Start showDialog() {
 		okKlick = false;
 		disziplin.removeAllItems();
-		for (Start s : controller.getModel().getErgebnisse()) {
+		for (Start s : ergebnisse) {
 			if (modelD.getIndexOf(s.getDisziplin()) == -1) {
 				disziplin.addItem(s.getDisziplin());
 			}
@@ -106,7 +106,7 @@ public class Einzel extends JDialog {
 
 	private void setSchutzeItems() {
 		start.removeAllItems();
-		for (Start s : controller.getModel().getErgebnisse()) {
+		for (Start s : ergebnisse) {
 			if (s.getDisziplin() == disziplin.getSelectedItem()) {
 				if (modelS.getIndexOf(s) == -1) {
 					start.addItem(s);

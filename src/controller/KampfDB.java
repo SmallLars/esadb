@@ -1,6 +1,8 @@
 package controller;
 import java.io.File;
 import java.io.IOException;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.Vector;
 
 import model.Disziplin;
@@ -13,14 +15,17 @@ import com.healthmarketscience.jackcess.Table;
 
 
 public class KampfDB {
-	public static Vector<Schuetze> getSchuetzen() {
+	public static Set<Schuetze> getSchuetzen() {
 		Table table = getTable("WettkampfSchuetzen");
-		Vector<Schuetze> vector = new Vector<Schuetze>();
+		Set<Schuetze> set = new TreeSet<Schuetze>();
 
-		if (table != null)
-			for(Row row : table) vector.add(new Schuetze(row));
+		if (table != null) {
+			for(Row row : table) {
+				if ((byte) row.get("Sichtbar") == 1) set.add(new Schuetze(row));
+			}
+		}
 
-		return vector;
+		return set;
 	}
 
 	public static Vector<Disziplin> getDisziplinen() {

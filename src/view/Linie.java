@@ -3,7 +3,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -14,15 +13,13 @@ import javax.swing.JPanel;
 import javax.swing.border.EtchedBorder;
 
 import model.Disziplin;
+import model.LinieModel;
 import model.Schuetze;
-import model.Treffer;
-import controller.Linie;
 import controller.Status;
 
 @SuppressWarnings("serial")
-public class LinieView extends JPanel {
-	private Linie linie;
-	private GUI gui;
+public class Linie extends JPanel {
+	private LinieModel linie;
 
 	private JComboBox<Schuetze> schuetze;
 	private JComboBox<Disziplin> disziplin;
@@ -33,9 +30,8 @@ public class LinieView extends JPanel {
 
 	private boolean match = false;
 
-	public LinieView(Linie linie, GUI gui) {
+	public Linie(LinieModel linie) {
 		this.linie = linie;
-		this.gui = gui;
 		linie.setView(this);
 
 		this.setLayout(null);
@@ -98,11 +94,11 @@ public class LinieView extends JPanel {
 		});
 		this.add(wertung);
 
-		schuetze = new JComboBox<Schuetze>();
+		schuetze = new JComboBox<Schuetze>(linie.getSchuetzenModel());
 		schuetze.setBounds(177, 5, 200, 22);
 		this.add(schuetze);
 		
-		disziplin = new JComboBox<Disziplin>();
+		disziplin = new JComboBox<Disziplin>(linie.getDisziplinenModel());
 		disziplin.setBounds(400, 5, 200, 22);
 		this.add(disziplin);
 
@@ -140,17 +136,7 @@ public class LinieView extends JPanel {
 	}
 
 	public void refresh() {
-		schuetze.removeAllItems();
-		Vector<Schuetze> vs = linie.getSchuetzen();
-		vs.sort(null);
-		schuetze.addItem(null);
-		for (Schuetze s : vs) schuetze.addItem(s);
-
-		disziplin.removeAllItems();
-		Vector<Disziplin> vd = linie.getDisziplinen();
-		vd.sort(null);
-		disziplin.addItem(null);
-		for (Disziplin s : vd) disziplin.addItem(s);
+		// TODO
 	}
 
 	public void setMatch() {
@@ -159,13 +145,5 @@ public class LinieView extends JPanel {
 		if (this.isEnabled()) {
 			wertung.setEnabled(false);
 		}
-	}
-
-	public void showResult(String resultString) {
-		gui.println(linie + ": " + resultString);
-	}
-
-	public void showTreffer(Treffer t) {
-		gui.showTreffer(linie.getNummer(), t);		
 	}
 }
