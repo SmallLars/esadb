@@ -262,7 +262,7 @@ public class GUI extends JFrame implements ActionListener {
 		} else if (e.getSource() == mntmBeenden) {
 			close();
 		} else if (e.getSource() == mntmDisziplinen) {
-			Disziplin disziplin = new Disziplin(this);
+			Disziplinen disziplin = new Disziplinen(this, controller.getDisziplinen());
 			disziplin.setVisible(true);
 		}
 	}
