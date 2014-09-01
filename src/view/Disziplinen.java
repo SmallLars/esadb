@@ -34,7 +34,8 @@ public class Disziplinen extends JDialog {
 		super(parent, "Disziplinen");
 		setModal(true);
 		setModalityType(ModalityType.APPLICATION_MODAL);
-		setBounds(100, 100, 450, 300);
+		setSize(450, 300);
+		setLocationRelativeTo(parent);
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setLayout(null);
@@ -95,5 +96,23 @@ public class Disziplinen extends JDialog {
 	private void update() {
 		Disziplin d = (Disziplin) comboBox.getSelectedItem();
 		lblName.setText(d.toString());
+		lblWertung.setText(d.getWertung() == 0 ? "Ringwertung" : "Zehntelwertung");
+		if (d.getProbezeit() > 0) {
+			lblZeit.setText(String.format("Zeit f¸r Probe: %d Minuten, Zeit f¸r Wertung: %d Minuten.", d.getProbezeit(), d.getSchiesszeit()));
+		} else {
+			lblZeit.setText(String.format("Zeit f¸r den Wettkampf: %d Minuten.", d.getSchiesszeit()));
+		}
+		String anzahl = "";
+		if (d.getProbezeit() >= 0) {
+			if (d.getProbeschuesse() == 0) anzahl = "Probe: beliebig, ";
+			else anzahl = String.format("Probe: %d Schuﬂ, ", d.getProbeschuesse());
+		}
+		if (d.getStellungsanzahl() == 1) {
+			anzahl = anzahl.concat(String.format("Wertung: %d Schuﬂ.", d.getSchusszahl()));
+		} else {
+			anzahl = anzahl.concat(String.format("Wertung: %d Mal %d Schuﬂ.", d.getStellungsanzahl(), d.getSchusszahl() / d.getStellungsanzahl()));
+		}
+		lblSchusszahl.setText(anzahl);
+		lblSerienlaenge.setText(String.format("Serienl‰nge: %d.", d.getSerienlaenge()));
 	}
 }

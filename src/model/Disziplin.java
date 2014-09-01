@@ -44,6 +44,10 @@ public class Disziplin implements Serializable, Comparable<Disziplin> {
 	public int getSchiesszeit() {
 		return schiesszeit;
 	}
+
+	public int getStellungsanzahl() {
+		return stellungsanzahl;
+	}
 	
 	public int getProbeschuesse() {
 		return probeschuesse;
