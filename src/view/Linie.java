@@ -9,6 +9,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EtchedBorder;
 
@@ -51,8 +52,11 @@ public class Linie extends JPanel {
 					Schuetze s = (Schuetze) schuetze.getSelectedItem();
 					Disziplin d = (Disziplin) disziplin.getSelectedItem();
 					if (s == null || d == null) {
-						// TODO Warnung
 						sperre.setSelected(false);
+						JOptionPane.showMessageDialog(	null,
+														"Ein Sperren der Linie ist erst nach Auswahl eines Schützen und einer Disziplin möglich.",
+														"Fehler",
+														JOptionPane.WARNING_MESSAGE);
 					} else {
 						linie.configure(s, d);
 						linie.setStatus(Status.SPERREN);
@@ -130,7 +134,7 @@ public class Linie extends JPanel {
 		sperre.setEnabled(enabled && !start.isSelected());
 		start.setEnabled(enabled && sperre.isSelected());
 		wertung.setEnabled(enabled && sperre.isSelected() && !match);
-		frei.setEnabled(enabled && !sperre.isSelected());
+		frei.setEnabled(enabled && !sperre.isSelected() && !linie.isFrei());
 	}
 
 	public void setMatch() {

@@ -12,7 +12,6 @@ import view.Linie;
 public class LinieModel {
 	private int nummer;
 	private Controller controller;
-	private Status letzterStatus;
 	private Start start;
 
 	private SchuetzenModel sModel;
@@ -26,7 +25,7 @@ public class LinieModel {
 		this.controller = controller;
 		this.dModel = new DisziplinenModel(controller);
 		this.sModel = new SchuetzenModel(controller);
-		this.letzterStatus = Status.FREI;
+		this.start = null;
 	}
 
 	public void modelChanged() {
@@ -49,7 +48,6 @@ public class LinieModel {
 	
 	public void setStatus(Status status) {
 		if (busy == false) {
-			letzterStatus = status;
 			busy = true;
 			if (view != null) view.setEnabled(false);
 			String cmd = null;
@@ -60,8 +58,13 @@ public class LinieModel {
 			} else {
 				cmd = status.getCode();
 			}
-			if (status == Status.ENTSPERREN) {
-				if (start.isEmpty()) controller.remove(start);
+			switch (status) {
+				case ENTSPERREN:
+					if (start.isEmpty()) controller.remove(start);
+					break;
+				case FREI:
+					start = null;
+				default:
 			}
 			if (cmd != null) {
 				writeFile(".ctl", cmd + "\n");
@@ -71,7 +74,7 @@ public class LinieModel {
 	}
 	
 	public boolean isFrei() {
-		return !busy && (letzterStatus == Status.FREI || letzterStatus == Status.INIT);
+		return !busy && start == null;
 	}
 
 	public void reenable() {

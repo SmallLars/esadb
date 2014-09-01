@@ -44,6 +44,10 @@ public class GUI extends JFrame implements ActionListener {
 	JMenuItem mntmDrucken;
 	JMenuItem mntmVorschau;
 	JMenuItem mntmEinzel;
+
+	JMenuItem mntmSchtzen;
+	JMenuItem mntmDisziplinen;
+
 	JPanel contentPane;
 	JTextPane konsole;
 	Scheibe scheiben[];
@@ -107,10 +111,11 @@ public class GUI extends JFrame implements ActionListener {
 		JMenu mnStammdaten = new JMenu("Stammdaten");
 		menuBar.add(mnStammdaten);
 		
-		JMenuItem mntmSchtzen = new JMenuItem("Schützen");
+		mntmSchtzen = new JMenuItem("Schützen");
 		mnStammdaten.add(mntmSchtzen);
 		
-		JMenuItem mntmDisziplinen = new JMenuItem("Disziplinen");
+		mntmDisziplinen = new JMenuItem("Disziplinen");
+		mntmDisziplinen.addActionListener(this);
 		mnStammdaten.add(mntmDisziplinen);
 		
 		fc = new JFileChooser();
@@ -256,6 +261,9 @@ public class GUI extends JFrame implements ActionListener {
 			controller.getConfig().setPageFormat(dv.showDialog());
 		} else if (e.getSource() == mntmBeenden) {
 			close();
+		} else if (e.getSource() == mntmDisziplinen) {
+			Disziplin disziplin = new Disziplin(this);
+			disziplin.setVisible(true);
 		}
 	}
 
