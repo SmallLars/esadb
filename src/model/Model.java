@@ -27,7 +27,7 @@ public class Model implements Serializable, Printable {
 	private static final long serialVersionUID = 1L;
 
 	private Set<Schuetze> schuetzen;
-	private Vector<Disziplin> disziplinen;
+	private Set<Disziplin> disziplinen;
 	private Vector<Start> ergebnisse;
 
 	private byte[] file;

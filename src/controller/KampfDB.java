@@ -3,7 +3,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.Vector;
 
 import model.Disziplin;
 import model.Schuetze;
@@ -28,14 +27,14 @@ public class KampfDB {
 		return set;
 	}
 
-	public static Vector<Disziplin> getDisziplinen() {
+	public static Set<Disziplin> getDisziplinen() {
 		Table table = getTable("Disziplin");
-		Vector<Disziplin> vector = new Vector<Disziplin>();
+		Set<Disziplin> set = new TreeSet<Disziplin>();
 
 		if (table != null)
-			for(Row row : table) vector.add(new Disziplin(row));
+			for(Row row : table) set.add(new Disziplin(row));
 
-		return vector;
+		return set;
 	}
 
 	private static Table getTable(String tablename) {
