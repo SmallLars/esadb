@@ -163,7 +163,9 @@ public class Model implements Serializable, Printable {
 			if (size > available) lineIndex += available;
 
 			if (lineIndex >= 0 && lineIndex < pageLines) {
-				s.draw(g2, platz, startX, startY + lineHeight * lineIndex);
+				Graphics ge = g2.create();
+				ge.translate(startX, startY + lineHeight * lineIndex);
+				s.draw(ge, platz);
 				status = Printable.PAGE_EXISTS;
 			}
 			platz++;

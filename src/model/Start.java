@@ -111,21 +111,21 @@ public class Start implements Serializable, Comparable<Start>, Printable {
 		return ((i - 1) / 4) + 1;
 	}
 
-	public void draw(Graphics g, int platz, int x, int y) {
+	public void draw(Graphics g, int platz) {
 		final int lineheight = g.getFontMetrics().getHeight();
 
-		g.drawString(String.format("%2d. %s", platz, schuetze), x, y);
+		g.drawString(String.format("%2d. %s", platz, schuetze), 0, 0);
 		int anzahl = 0;
 		for (int i = 0; i < disziplin.getSerienAnzahl(); i++) {
 			if (getSerie(i) == 0) break;
 
-			int dx = x + 800 + ((i % 4) * 225);
-			int dy = y + ((i / 4) * lineheight);
+			int dx = 800 + ((i % 4) * 225);
+			int dy = (i / 4) * lineheight;
 			g.drawString(String.format("%5.1f", getSerie(i)), dx, dy);
 			anzahl++;
 		}
 		int height = ((anzahl - 1) / 4) * lineheight;
-		g.drawString(String.format("%5.1f", getResult()), x + 1800, y + height);
+		g.drawString(String.format("%5.1f", getResult()), 1800, height);
 	}
 
 	@Override
