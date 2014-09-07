@@ -73,6 +73,18 @@ public class Schuetzen extends JDialog {
 		
 		JButton button = new JButton("<-");
 		button.setBounds(360, 250, 50, 23);
+		button.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				for (int i : table_1.getSelectedRows()) {
+					Object o = table_1.getValueAt(i, -1);
+					if (!controller.contains(o)) {
+						controller.add(o);
+						System.out.println(o);
+					}
+				}
+			}
+		});
 		getContentPane().add(button);
 		
 		JLabel lblVerein = new JLabel("Verein");

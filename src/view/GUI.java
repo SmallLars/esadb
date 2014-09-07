@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -12,6 +13,10 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileFilter;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -209,6 +214,8 @@ public class GUI extends JFrame implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		SimpleAttributeSet style = new SimpleAttributeSet();
+		StyleConstants.setBold(style, true);
 		if (e.getSource() == mntmNeu) {
 			int returnVal = fc.showDialog(this, "Neu");
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -216,7 +223,8 @@ public class GUI extends JFrame implements ActionListener {
 				if (file == null) return;
 				controller.neu(file);
 				setTitle("ESADB - Datenbank für ESA 2002 - " + controller.getFile().getName());
-				println("Neu: " + file.getPath() + ".");
+				StyleConstants.setForeground(style, Color.BLUE);
+				println("Neu: " + file.getPath() + ".", style);
 			}
 		} else if (e.getSource() == mntmLaden) {
 			int returnVal = fc.showOpenDialog(this);
@@ -225,7 +233,8 @@ public class GUI extends JFrame implements ActionListener {
 				if (file.exists()) {
 					controller.load(file);
 					setTitle("ESADB - Datenbank für ESA 2002 - " + controller.getFile().getName());
-					println("Öffnen: " + file.getPath() + ".");
+					StyleConstants.setForeground(style, Color.GREEN);
+					println("Öffnen: " + file.getPath() + ".", style);
 				} else {
 					JOptionPane.showMessageDialog(	this,
 													"Die gewählte Datei existiert nicht.",
@@ -240,7 +249,8 @@ public class GUI extends JFrame implements ActionListener {
 				if (file == null) return;
 				controller.save(file);
 				setTitle("ESADB - Datenbank für ESA 2002 - " + controller.getFile().getName());
-				println("Speichern: " + file.getPath() + ".");
+				StyleConstants.setForeground(style, Color.RED);
+				println("Speichern: " + file.getPath() + ".", style);
 			}
 		} else if (e.getSource() == mntmDrucken) {
 			PrinterJob pjob = PrinterJob.getPrinterJob();
@@ -271,13 +281,24 @@ public class GUI extends JFrame implements ActionListener {
 		}
 	}
 
-	public void print(String string) {
-		konsole.setText(konsole.getText() + string);
-		konsole.setCaretPosition(konsole.getDocument().getLength());
+	/*
+	SimpleAttributeSet style = new SimpleAttributeSet();
+	StyleConstants.setForeground(style, Color.RED);
+	StyleConstants.setBackground(style, Color.YELLOW);
+	StyleConstants.setBold(style, true);
+	*/
+	public void print(String string, SimpleAttributeSet style) {
+		StyledDocument doc = konsole.getStyledDocument();
+		try {
+			doc.insertString(doc.getLength(), string, style);
+		} catch (BadLocationException e) {
+			e.printStackTrace();
+		}
+		konsole.setCaretPosition(konsole.getStyledDocument().getLength());
 	}
 	
-	public void println(String string) {
-		print(string + "\n");
+	public void println(String string, SimpleAttributeSet style) {
+		print(string + "\n", style);
 	}
 
 	public void showTreffer(int linie, Treffer t) {

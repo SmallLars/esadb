@@ -71,7 +71,7 @@ public class Controller {
 		PrintStream ps = new PrintStream(new OutputStream() {
 			@Override
 			public void write(int b) throws IOException {
-				gui.print(String.valueOf((char) b));
+				gui.print(String.valueOf((char) b), null);
 			}
 			
 		}, false);
@@ -103,21 +103,13 @@ public class Controller {
 		this.file = file;
 		model = new Model();
 		save(file);
-		schuetzen = model.getSchuetzen();
-		disziplinen = model.getDisziplinen();
-		for (int i = 0; i < 6; i++) {
-			linien[i].modelChanged();
-		}
+		modelChanged();
 	}
 
 	public void load(File file) {
 		this.file = file;
 		model = Model.load(file);
-		schuetzen = model.getSchuetzen();
-		disziplinen = model.getDisziplinen();
-		for (int i = 0; i < 6; i++) {
-			linien[i].modelChanged();
-		}
+		modelChanged();
 	}
 
 	public void save(File file) {
@@ -152,20 +144,34 @@ public class Controller {
 		new Controller();
 	}
 
-	public void add(Object o) {
-		model.add(o);
+	public boolean add(Object o) {
+		boolean val = false;
+		if (o instanceof Treffer) {
+			Treffer t = (Treffer) o;
+			LinieModel l = getLinie(t.getLinie() - 1);
+			if (l != null) {
+				val = true;
+				String info = l.addTreffer(t);
+				gui.println(l + ": " + info, null);
+				gui.showTreffer(l.getNummer(), t);
+			}
+		} else {
+			val = model.add(o);
+			if (val) modelChanged();
+		}
+		if (val) save(file);
+		return val;
 	}
 
 	public boolean remove(Start s) {
 		return model.remove(s);
 	}
 
-	public void add(Treffer t) {
-		LinieModel l = getLinie(t.getLinie() - 1);
-		if (l == null) return;
-		String info = l.addTreffer(t);
-		save(file);
-		gui.println(l + ": " + info);
-		gui.showTreffer(l.getNummer(), t);
+	private void modelChanged() {
+		schuetzen = model.getSchuetzen();
+		disziplinen = model.getDisziplinen();
+		for (int i = 0; i < 6; i++) {
+			linien[i].modelChanged();
+		}
 	}
 }
