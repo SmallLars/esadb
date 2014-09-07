@@ -89,6 +89,7 @@ public class Disziplinen extends JDialog {
 			}
 		});
 		buttonPane.add(cancelButton);
+		getRootPane().setDefaultButton(cancelButton);
 
 		update();
 	}

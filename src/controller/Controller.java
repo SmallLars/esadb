@@ -54,7 +54,6 @@ public class Controller {
 			model = Model.load(file);
 		} else {
 			model = new Model();
-			model.save(file);
 		}
 		schuetzen = model.getSchuetzen();
 		disziplinen = model.getDisziplinen();
@@ -152,8 +151,8 @@ public class Controller {
 		new Controller();
 	}
 
-	public void add(Start s) {
-		model.add(s);
+	public void add(Object o) {
+		model.add(o);
 	}
 
 	public boolean remove(Start s) {

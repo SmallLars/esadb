@@ -112,6 +112,7 @@ public class GUI extends JFrame implements ActionListener {
 		menuBar.add(mnStammdaten);
 		
 		mntmSchtzen = new JMenuItem("Schützen");
+		mntmSchtzen.addActionListener(this);
 		mnStammdaten.add(mntmSchtzen);
 		
 		mntmDisziplinen = new JMenuItem("Disziplinen");
@@ -264,6 +265,9 @@ public class GUI extends JFrame implements ActionListener {
 		} else if (e.getSource() == mntmDisziplinen) {
 			Disziplinen disziplin = new Disziplinen(this, controller.getDisziplinen());
 			disziplin.setVisible(true);
+		} else if (e.getSource() == mntmSchtzen) {
+			Schuetzen schuetze = new Schuetzen(this, controller);
+			schuetze.setVisible(true);
 		}
 	}
 

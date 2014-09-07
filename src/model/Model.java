@@ -48,8 +48,17 @@ public class Model implements Serializable, Printable {
 		}
 	}
 
-	public boolean add(Start start) {
-		return ergebnisse.add(start);
+	public boolean add(Object o) {
+		if (o instanceof Start) return ergebnisse.add((Start) o);
+		if (o instanceof Schuetze) return schuetzen.add((Schuetze) o);
+		if (o instanceof Disziplin) return disziplinen.add((Disziplin) o);
+		return false;
+	}
+
+	public boolean contains(Object o) {
+		if (o instanceof Schuetze) return schuetzen.contains(o);
+		if (o instanceof Disziplin) return disziplinen.contains(o);
+		return false;
 	}
 
 	public boolean remove(Start start) {
@@ -66,12 +75,6 @@ public class Model implements Serializable, Printable {
 
 	public Disziplin[] getDisziplinen() {
 		return disziplinen.toArray(new Disziplin[0]);
-	}
-	
-	public boolean contains(Object o) {
-		if (o instanceof Schuetze) return schuetzen.contains(o);
-		if (o instanceof Disziplin) return disziplinen.contains(o);
-		return false;
 	}
 
 	public boolean save(File file) {

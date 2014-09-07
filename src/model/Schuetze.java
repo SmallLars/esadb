@@ -17,6 +17,7 @@ public class Schuetze implements Serializable, Comparable<Schuetze> {
 	public Date geburtsdatum;		// Geburtsdatum des Schützen
 	public String geschlecht;		// -1 für männlich, 0 für weiblich
 	public short startnummer;		// Startnummer des Schützen
+	public int vereinsnummer;		// Identifikationsnummer des Vereins
 
 	public Schuetze() {
 		wettkampfID = 0;
@@ -29,6 +30,7 @@ public class Schuetze implements Serializable, Comparable<Schuetze> {
 		geburtsdatum = cal.getTime();
 		geschlecht = "m";
 		startnummer = 0;
+		vereinsnummer = 0;
 	}
 
 	public Schuetze(Row row) {
@@ -40,6 +42,7 @@ public class Schuetze implements Serializable, Comparable<Schuetze> {
 		geburtsdatum = (Date) row.get("Geburtsdatum");
 		geschlecht = (String) row.get("Geschlecht");
 		startnummer = (short) row.get("Startnummer");
+		vereinsnummer = (int) row.get("VereinsNr");
 	}
 
 	@Override
