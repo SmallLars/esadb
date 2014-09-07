@@ -1,6 +1,7 @@
 package view;
 
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
@@ -9,9 +10,9 @@ import model.Schuetze;
 
 
 public class SchuetzenTableModel implements TableModel {
-	Schuetze[] schuetzen;
+	List<Schuetze> schuetzen;
 
-	public SchuetzenTableModel(Schuetze[] schuetzen) {
+	public SchuetzenTableModel(List<Schuetze> schuetzen) {
 		this.schuetzen = schuetzen;
 	}
 
@@ -38,19 +39,19 @@ public class SchuetzenTableModel implements TableModel {
 
 	@Override
 	public int getRowCount() {
-		return schuetzen.length;
+		return schuetzen.size();
 	}
 
 	@Override
 	public Object getValueAt(int row, int col) {
 		switch (col) {
 			case 0:
-				return schuetzen[row];
+				return schuetzen.get(row);
 			case 1:
-				return schuetzen[row].vorname;
+				return schuetzen.get(row).vorname;
 			case 2:
 				SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
-				return sdf.format(schuetzen[row].geburtsdatum);
+				return sdf.format(schuetzen.get(row).geburtsdatum);
 			default:
 				return null;
 		}

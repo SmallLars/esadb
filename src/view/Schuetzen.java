@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.util.Vector;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -42,7 +43,7 @@ public class Schuetzen extends JDialog {
 		scrollPane.setBounds(10, 11, 340, 500);
 		getContentPane().add(scrollPane);
 
-		SchuetzenTableModel tmodel = new SchuetzenTableModel(controller.getSchuetzen());
+		SchuetzenTableModel tmodel = new SchuetzenTableModel(new Vector<Schuetze>(controller.getSchuetzen()));
 		TableRowSorter<SchuetzenTableModel> sorter = new TableRowSorter<SchuetzenTableModel>(tmodel);
 		JTable table = new JTable(tmodel);
 		table.setRowSorter(sorter);
@@ -53,7 +54,7 @@ public class Schuetzen extends JDialog {
 		scrollPane_1.setBounds(420, 11, 340, 500);
 		getContentPane().add(scrollPane_1);
 		
-		SchuetzenTableModel tmodel_1 = new SchuetzenTableModel(KampfDB.getNewSchuetzen().toArray(new Schuetze[0]));
+		SchuetzenTableModel tmodel_1 = new SchuetzenTableModel(KampfDB.getNewSchuetzen());
 		TableRowSorter<SchuetzenTableModel> sorter_1 = new TableRowSorter<SchuetzenTableModel>(tmodel_1);
 		JTable table_1 = new JTable(tmodel_1);
 		table_1.setRowSorter(sorter_1);
@@ -78,25 +79,32 @@ public class Schuetzen extends JDialog {
 		JLabel lblVerein = new JLabel("Verein");
 		lblVerein.setBounds(20, 525, 46, 14);
 		getContentPane().add(lblVerein);
-		
-		JComboBox<Verein> comboBox = new JComboBox<Verein>(KampfDB.getVereine());
+
+		Vector<Verein> vereine = KampfDB.getVereine();
+		vereine.add(0, null);
+		JComboBox<Verein> comboBox = new JComboBox<Verein>(vereine);
 		comboBox.setBounds(69, 521, 251, 22);
 		comboBox.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				RowFilter<SchuetzenTableModel, Integer> filter = new RowFilter<SchuetzenTableModel, Integer>() {
-					@Override
-					public boolean include(javax.swing.RowFilter.Entry<? extends SchuetzenTableModel, ? extends Integer> entry) {
-						 SchuetzenTableModel model = entry.getModel();
-					     Schuetze schuetze = (Schuetze) model.getValueAt(entry.getIdentifier(), 0);
-					     if (schuetze.vereinsnummer == ((Verein) comboBox.getSelectedItem()).getId()) {
-					       return true;
-					     }
-					     return false;
-					}
-			    };
-				sorter.setRowFilter(filter);
-				sorter_1.setRowFilter(filter);
+				if (comboBox.getSelectedItem() == null) {
+					sorter.setRowFilter(null);
+					sorter_1.setRowFilter(null);
+				} else {
+					RowFilter<SchuetzenTableModel, Integer> filter = new RowFilter<SchuetzenTableModel, Integer>() {
+						@Override
+						public boolean include(javax.swing.RowFilter.Entry<? extends SchuetzenTableModel, ? extends Integer> entry) {
+							 SchuetzenTableModel model = entry.getModel();
+						     Schuetze schuetze = (Schuetze) model.getValueAt(entry.getIdentifier(), 0);
+						     if (schuetze.vereinsnummer == ((Verein) comboBox.getSelectedItem()).getId()) {
+						       return true;
+						     }
+						     return false;
+						}
+				    };
+					sorter.setRowFilter(filter);
+					sorter_1.setRowFilter(filter);
+				}
 			}
 		});
 		getContentPane().add(comboBox);

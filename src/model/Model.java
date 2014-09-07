@@ -69,12 +69,12 @@ public class Model implements Serializable, Printable {
 		return ergebnisse;
 	}
 
-	public Schuetze[] getSchuetzen() {
-		return schuetzen.toArray(new Schuetze[0]);
+	public Vector<Schuetze> getSchuetzen() {
+		return new Vector<Schuetze>(schuetzen);
 	}
 
-	public Disziplin[] getDisziplinen() {
-		return disziplinen.toArray(new Disziplin[0]);
+	public Vector<Disziplin> getDisziplinen() {
+		return new Vector<Disziplin>(disziplinen);
 	}
 
 	public boolean save(File file) {

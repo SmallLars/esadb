@@ -17,14 +17,14 @@ public class SchuetzenModel implements ComboBoxModel<Schuetze> {
 	public SchuetzenModel(Controller controller) {
 		this.selected = null;
 		this.controller = controller;
-		this.length = controller.getSchuetzen().length + 1;
+		this.length = controller.getSchuetzen().size() + 1;
 		listDataListener = new Vector<ListDataListener>();
 	}
 
 	@Override
 	public Schuetze getElementAt(int index) {
 		if (index == 0) return null;
-		return controller.getSchuetzen()[index - 1];
+		return controller.getSchuetzen().get(index - 1);
 	}
 
 	@Override
@@ -57,7 +57,7 @@ public class SchuetzenModel implements ComboBoxModel<Schuetze> {
 	public void modelChanged() {
 		for (ListDataListener l : listDataListener) {
 			l.intervalRemoved(new ListDataEvent(controller, ListDataEvent.INTERVAL_REMOVED, 0, length - 1));
-			length = controller.getSchuetzen().length + 1;
+			length = controller.getSchuetzen().size() + 1;
 			l.intervalAdded(new ListDataEvent(controller, ListDataEvent.INTERVAL_ADDED, 0, length - 1));
 		}
 	}

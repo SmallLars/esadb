@@ -1,8 +1,10 @@
 package controller;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.Vector;
 
 import model.Disziplin;
 import model.Schuetze;
@@ -38,30 +40,30 @@ public class KampfDB {
 		return set;
 	}
 
-	public static Set<Schuetze> getNewSchuetzen() {
+	public static Vector<Schuetze> getNewSchuetzen() {
 		Table table = getTable("Kampf.mdb", "WettkampfSchuetzen");
-		Set<Schuetze> set = new TreeSet<Schuetze>();
+		Vector<Schuetze> list = new Vector<Schuetze>();
 
 		if (table != null) {
 			for(Row row : table) {
-				if ((byte) row.get("Sichtbar") == 0) set.add(new Schuetze(row));
+				if ((byte) row.get("Sichtbar") == 0) list.add(new Schuetze(row));
 			}
 		}
 
-		return set;
+		return list;
 	}
 
-	public static Verein[] getVereine() {
+	public static Vector<Verein> getVereine() {
 		Table table = getTable("Kampf.mdb", "Vereine");
-		Set<Verein> set = new TreeSet<Verein>();
+		Vector<Verein> list = new Vector<Verein>();
 
 		if (table != null) {
 			for(Row row : table) {
-				set.add(new Verein(row));
+				list.add(new Verein(row));
 			}
 		}
 
-		return set.toArray(new Verein[0]);
+		return list;
 	}
 
 	private static Table getTable(String filename, String tablename) {

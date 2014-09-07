@@ -17,14 +17,14 @@ public class DisziplinenModel implements ComboBoxModel<Disziplin> {
 	public DisziplinenModel(Controller controller) {
 		this.selected = null;
 		this.controller = controller;
-		this.length = controller.getDisziplinen().length + 1;
+		this.length = controller.getDisziplinen().size() + 1;
 		listDataListener = new Vector<ListDataListener>();
 	}
 
 	@Override
 	public Disziplin getElementAt(int index) {
 		if (index == 0) return null;
-		return controller.getDisziplinen()[index - 1];
+		return controller.getDisziplinen().get(index - 1);
 	}
 
 	@Override
@@ -57,7 +57,7 @@ public class DisziplinenModel implements ComboBoxModel<Disziplin> {
 	public void modelChanged() {
 		for (ListDataListener l : listDataListener) {
 			l.intervalRemoved(new ListDataEvent(controller, ListDataEvent.INTERVAL_REMOVED, 0, length - 1));
-			length = controller.getDisziplinen().length + 1;
+			length = controller.getDisziplinen().size() + 1;
 			l.intervalAdded(new ListDataEvent(controller, ListDataEvent.INTERVAL_ADDED, 0, length - 1));
 		}
 	}

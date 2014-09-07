@@ -6,6 +6,7 @@ import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Vector;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -30,7 +31,7 @@ public class Disziplinen extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
 
-	public Disziplinen(Frame parent, Disziplin[] disziplinen) {
+	public Disziplinen(Frame parent, Vector<Disziplin> disziplinen) {
 		super(parent, "Disziplinen");
 		setModal(true);
 		setModalityType(ModalityType.APPLICATION_MODAL);

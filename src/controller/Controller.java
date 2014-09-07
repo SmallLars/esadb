@@ -7,6 +7,7 @@ import java.io.OutputStream;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Vector;
 
 import model.Config;
 import model.Disziplin;
@@ -27,8 +28,8 @@ public class Controller {
 	private File file;
 	private Model model;
 	private LinieModel linien[];
-	private Schuetze[] schuetzen;
-	private Disziplin[] disziplinen;
+	private Vector<Schuetze> schuetzen;
+	private Vector<Disziplin> disziplinen;
 	private FileChecker fileChecker;
 	private GUI gui;
 
@@ -139,11 +140,11 @@ public class Controller {
 		return model.contains(item);
 	}
 
-	public Schuetze[] getSchuetzen() {
+	public Vector<Schuetze> getSchuetzen() {
 		return schuetzen;
 	}
 
-	public Disziplin[] getDisziplinen() {
+	public Vector<Disziplin> getDisziplinen() {
 		return disziplinen;
 	}
 
