@@ -47,7 +47,6 @@ public class Schuetzen extends JDialog {
 		TableRowSorter<SchuetzenTableModel> sorter = new TableRowSorter<SchuetzenTableModel>(tmodel);
 		JTable table = new JTable(tmodel);
 		table.setRowSorter(sorter);
-		//table.setAutoCreateRowSorter(true);
 		scrollPane.setViewportView(table);
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
@@ -95,7 +94,7 @@ public class Schuetzen extends JDialog {
 						@Override
 						public boolean include(javax.swing.RowFilter.Entry<? extends SchuetzenTableModel, ? extends Integer> entry) {
 							 SchuetzenTableModel model = entry.getModel();
-						     Schuetze schuetze = (Schuetze) model.getValueAt(entry.getIdentifier(), 0);
+						     Schuetze schuetze = (Schuetze) model.getValueAt(entry.getIdentifier(), -1);
 						     if (schuetze.vereinsnummer == ((Verein) comboBox.getSelectedItem()).getId()) {
 						       return true;
 						     }

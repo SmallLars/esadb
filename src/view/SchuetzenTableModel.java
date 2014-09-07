@@ -1,6 +1,6 @@
 package view;
 
-import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.swing.event.TableModelListener;
@@ -23,6 +23,7 @@ public class SchuetzenTableModel implements TableModel {
 
 	@Override
 	public Class<?> getColumnClass(int arg0) {
+		if (arg0 == 2) return Date.class;
 		return Object.class;
 	}
 
@@ -46,14 +47,13 @@ public class SchuetzenTableModel implements TableModel {
 	public Object getValueAt(int row, int col) {
 		switch (col) {
 			case 0:
-				return schuetzen.get(row);
+				return schuetzen.get(row).nachname;
 			case 1:
 				return schuetzen.get(row).vorname;
 			case 2:
-				SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
-				return sdf.format(schuetzen.get(row).geburtsdatum);
+				return schuetzen.get(row).geburtsdatum;
 			default:
-				return null;
+				return schuetzen.get(row);
 		}
 	}
 
