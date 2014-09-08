@@ -17,6 +17,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 import java.util.Vector;
 
@@ -28,7 +29,7 @@ public class Model implements Serializable, Printable {
 
 	private Set<Schuetze> schuetzen;
 	private Set<Disziplin> disziplinen;
-	private Vector<Start> ergebnisse;
+	private List<Start> ergebnisse;
 
 	private byte[] file;
 	
@@ -65,7 +66,7 @@ public class Model implements Serializable, Printable {
 		return ergebnisse.remove(start);
 	}
 
-	public Vector<Start> getErgebnisse() {
+	public List<Start> getErgebnisse() {
 		return ergebnisse;
 	}
 

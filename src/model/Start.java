@@ -1,4 +1,5 @@
 package model;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -9,8 +10,8 @@ import java.awt.print.PrinterException;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 import javax.swing.BorderFactory;
 
@@ -31,7 +32,7 @@ public class Start implements Serializable, Comparable<Start>, Printable {
 		this.datum = new Date();
 		this.disziplin = disziplin;
 		this.schuetze = schuetze;
-		this.treffer = new HashMap<Treffer, Treffer>();
+		this.treffer = new TreeMap<Treffer, Treffer>();
 	}
 
 	public boolean isEmpty() {

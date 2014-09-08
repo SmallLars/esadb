@@ -5,7 +5,7 @@ import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Vector;
+import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -23,7 +23,7 @@ import controller.Controller;
 public class Einzel extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
-	private Vector<Start> ergebnisse;
+	private List<Start> ergebnisse;
 	private boolean okKlick;
 	
 	DefaultComboBoxModel<Disziplin> modelD;
