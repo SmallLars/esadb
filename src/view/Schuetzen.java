@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.util.Iterator;
 import java.util.Vector;
 
 import javax.swing.JButton;
@@ -53,7 +54,10 @@ public class Schuetzen extends JDialog {
 		scrollPane_1.setBounds(420, 11, 340, 500);
 		getContentPane().add(scrollPane_1);
 		
-		SchuetzenTableModel tmodel_1 = new SchuetzenTableModel(KampfDB.getNewSchuetzen());
+		Vector<Schuetze> schuetzen = KampfDB.getNewSchuetzen();
+		Iterator<Schuetze> i = schuetzen.iterator();
+		while (i.hasNext()) if (controller.contains(i.next())) i.remove();
+		SchuetzenTableModel tmodel_1 = new SchuetzenTableModel(schuetzen);
 		TableRowSorter<SchuetzenTableModel> sorter_1 = new TableRowSorter<SchuetzenTableModel>(tmodel_1);
 		JTable table_1 = new JTable(tmodel_1);
 		table_1.setRowSorter(sorter_1);

@@ -38,6 +38,11 @@ public class Start implements Serializable, Comparable<Start>, Printable {
 		return treffer.isEmpty();
 	}
 
+	public boolean inMatch() {
+		Treffer t = treffer.get(new Treffer(false, 1));
+		return t != null;
+	}
+
 	public Disziplin getDisziplin() {
 		return disziplin;
 	}
@@ -51,6 +56,10 @@ public class Start implements Serializable, Comparable<Start>, Printable {
 		treffer.put(t,  t);
 		String s = String.format("%s(%d) ", t.isProbe() ? "P" : "M", t.getNummer());
 		return schuetze + ": " + disziplin + ": " + s + t;
+	}
+
+	public Treffer getTreffer(boolean probe, int nummer) {
+		return treffer.get(new Treffer(probe, nummer));
 	}
 
 	public float getMatch(int nummer) {
@@ -203,14 +212,10 @@ public class Start implements Serializable, Comparable<Start>, Printable {
 
 		g2.translate(0, 1.5 * lineHeight);
 		Graphics gs = g2.create(0, 0, 2000, 2000);
-		Scheibe s = new Scheibe();
+		Scheibe s = new Scheibe(this);
 		s.setBackground(Color.WHITE);
 		s.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5, true));
 		s.setSize(2000, 2000);
-		for (int i = 0; i < disziplin.getSchusszahl(); i++) {
-			Treffer t = treffer.get(new Treffer(false, i + 1));
-			if (t != null) s.addTreffer(t);
-		}
 		s.print(gs);
 
 		g2.translate(0, 2000 + 0.5 * lineHeight);

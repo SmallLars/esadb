@@ -1,5 +1,6 @@
 package controller;
 
+import java.awt.Color;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -8,6 +9,9 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Vector;
+
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
 
 import model.Config;
 import model.Disziplin;
@@ -33,7 +37,13 @@ public class Controller {
 	private FileChecker fileChecker;
 	private GUI gui;
 
+	private SimpleAttributeSet redStyle;
+
 	public Controller() {
+		redStyle = new SimpleAttributeSet();
+		StyleConstants.setBold(redStyle, true);
+		StyleConstants.setForeground(redStyle, Color.decode("0xC80000"));
+
 		config = Config.load();
 		
 		final String[] files = {"esadb.ico", "Stammdaten.mdb"};
@@ -71,7 +81,7 @@ public class Controller {
 		PrintStream ps = new PrintStream(new OutputStream() {
 			@Override
 			public void write(int b) throws IOException {
-				gui.print(String.valueOf((char) b), null);
+				gui.print(String.valueOf((char) b), redStyle);
 			}
 			
 		}, false);
@@ -152,8 +162,10 @@ public class Controller {
 			if (l != null) {
 				val = true;
 				String info = l.addTreffer(t);
-				gui.println(l + ": " + info, null);
-				gui.showTreffer(l.getNummer(), t);
+				SimpleAttributeSet style = new SimpleAttributeSet();
+				StyleConstants.setBold(style, true);
+				StyleConstants.setForeground(style, Color.decode("0x0050A0"));
+				gui.println(l + ": " + info, style);
 			}
 		} else {
 			val = model.add(o);

@@ -7,6 +7,7 @@ import javax.swing.ComboBoxModel;
 import controller.Controller;
 import controller.Status;
 import view.Linie;
+import view.Scheibe;
 
 
 public class LinieModel {
@@ -19,6 +20,7 @@ public class LinieModel {
 
 	private boolean busy = false;
 	private Linie view = null;
+	private Scheibe scheibe = null;
 
 	public LinieModel(int nummer, Controller controller) {
 		this.nummer = nummer;
@@ -39,11 +41,20 @@ public class LinieModel {
 	
 	public void configure(Schuetze schuetze, Disziplin disziplin) {
 		start = new Start(nummer, disziplin, schuetze);
+		if (scheibe != null) scheibe.setStart(start);
 		controller.add(start);
+	}
+
+	public Start getStart() {
+		return start;
 	}
 
 	public void setView(Linie view) {
 		this.view = view;
+	}
+
+	public void setScheibe(Scheibe scheibe) {
+		this.scheibe = scheibe;
 	}
 	
 	public void setStatus(Status status) {
@@ -93,10 +104,14 @@ public class LinieModel {
 	}
 
 	public String addTreffer(Treffer t) {
+		if (start == null) {
+			return "Schuß von freier Linie erhalten. Zuordnung nicht möglich.";
+		}
 		String info = start.addTreffer(t);
 		if (view != null) {
 			if (!t.isProbe() && t.getNummer() == 1) view.setMatch();
 		}
+		if (scheibe != null) scheibe.newTreffer();
 		return info;
 	}
 	
@@ -112,5 +127,4 @@ public class LinieModel {
 	public ComboBoxModel<Schuetze> getSchuetzenModel() {
 		return sModel;
 	}
-
 }

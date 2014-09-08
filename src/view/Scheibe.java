@@ -5,10 +5,10 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Point;
-import java.util.Vector;
 
 import javax.swing.JPanel;
 
+import model.Start;
 import model.Treffer;
 
 
@@ -19,10 +19,10 @@ public class Scheibe extends JPanel {
 
 	private int mitteX;
 	private int mitteY;
-	private Vector<Treffer> treffer;
+	private Start start;
 
-	public Scheibe() {
-		treffer = new Vector<Treffer>();
+	public Scheibe(Start start) {
+		this.start = start;
 		setSize(400, 400);
 	}
 
@@ -39,6 +39,12 @@ public class Scheibe extends JPanel {
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
+		
+		if (start == null || !start.inMatch()) {
+			Dimension de = toPixel(80);
+			g.setColor(Color.BLACK);
+			g.fillPolygon(new int[]{getWidth() - de.width, getWidth() - de.width, getWidth() - de.height * 6}, new int[]{de.height, de.height * 6, de.height}, 3);
+		}
 
 		mitteX = getWidth() / 2;
 		mitteY = getHeight() / 2;
@@ -66,20 +72,20 @@ public class Scheibe extends JPanel {
 			g.drawString(s, mitteX + dx, getHeight() - position.height + dy);	// Unten
 		}
 
-		for (Treffer t : treffer) {
+		for (int i = 1; start != null; i++) {
+			Treffer t = start.getTreffer(!start.inMatch(), i);
+			if (t == null) break;
 			drawTreffer(g, t.getX(), t.getY());
 		}
 	}
 
-	public void showTreffer(Treffer t) {
-		treffer.clear();
-		treffer.add(t);
+	public void setStart(Start start) {
+		this.start = start;
 		this.repaint();
 	}
 
-	public void addTreffer(Treffer t) {
-		treffer.add(t);
-		this.repaint();
+	public void newTreffer() {
+		repaint();
 	}
 
 	private void drawTreffer(Graphics g, double x, double y) {

@@ -26,8 +26,8 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JMenu;
 
+import model.LinieModel;
 import model.Start;
-import model.Treffer;
 import controller.Controller;
 import druckvorschau.Druckvorschau;
 
@@ -163,9 +163,16 @@ public class GUI extends JFrame implements ActionListener {
 		contentPane.add(lblDisziplin);
 
 		for (int i = 0; i < controller.getLinienAnzahl(); i++) {
-			linien[i] = new Linie(controller.getLinie(i));
+			LinieModel linie = controller.getLinie(i);
+
+			linien[i] = new Linie(linie);
 			linien[i].setLocation(10, 32 + (i * (linien[i].getHeight() + 10)));
 			contentPane.add(linien[i]);
+
+			scheiben[i] = new Scheibe(null);
+			scheiben[i].setBounds(738 + (i % 2 * 225), i / 2 * 225, 225, 225);
+			contentPane.add(scheiben[i]);
+			linie.setScheibe(scheiben[i]);
 		}
 
 		JScrollPane scrollPane = new JScrollPane();
@@ -176,12 +183,6 @@ public class GUI extends JFrame implements ActionListener {
 		konsole.setEditable(false);
 		konsole.setFont(new Font("Consolas", Font.PLAIN, 12));
 		scrollPane.setViewportView(konsole);
-		
-		for (int i = 0; i < 6; i++) {
-			scheiben[i] = new Scheibe();
-			scheiben[i].setBounds(738 + (i % 2 * 225), i / 2 * 225, 225, 225);
-			contentPane.add(scheiben[i]);
-		}
 
 		addComponentListener(new ComponentListener() {
 			@Override
@@ -215,6 +216,7 @@ public class GUI extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		SimpleAttributeSet style = new SimpleAttributeSet();
+		StyleConstants.setForeground(style, Color.decode("0x00A050"));
 		StyleConstants.setBold(style, true);
 		if (e.getSource() == mntmNeu) {
 			int returnVal = fc.showDialog(this, "Neu");
@@ -223,7 +225,6 @@ public class GUI extends JFrame implements ActionListener {
 				if (file == null) return;
 				controller.neu(file);
 				setTitle("ESADB - Datenbank für ESA 2002 - " + controller.getFile().getName());
-				StyleConstants.setForeground(style, Color.BLUE);
 				println("Neu: " + file.getPath() + ".", style);
 			}
 		} else if (e.getSource() == mntmLaden) {
@@ -233,7 +234,6 @@ public class GUI extends JFrame implements ActionListener {
 				if (file.exists()) {
 					controller.load(file);
 					setTitle("ESADB - Datenbank für ESA 2002 - " + controller.getFile().getName());
-					StyleConstants.setForeground(style, Color.GREEN);
 					println("Öffnen: " + file.getPath() + ".", style);
 				} else {
 					JOptionPane.showMessageDialog(	this,
@@ -249,7 +249,6 @@ public class GUI extends JFrame implements ActionListener {
 				if (file == null) return;
 				controller.save(file);
 				setTitle("ESADB - Datenbank für ESA 2002 - " + controller.getFile().getName());
-				StyleConstants.setForeground(style, Color.RED);
 				println("Speichern: " + file.getPath() + ".", style);
 			}
 		} else if (e.getSource() == mntmDrucken) {
@@ -299,10 +298,6 @@ public class GUI extends JFrame implements ActionListener {
 	
 	public void println(String string, SimpleAttributeSet style) {
 		print(string + "\n", style);
-	}
-
-	public void showTreffer(int linie, Treffer t) {
-		scheiben[linie - 1].showTreffer(t);
 	}
 
 	public void close() {
