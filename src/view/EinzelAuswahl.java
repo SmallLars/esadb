@@ -6,6 +6,7 @@ import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
+import java.util.Vector;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -15,25 +16,29 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JComboBox;
 
 import model.Disziplin;
+import model.Einzel;
 import model.Start;
 import controller.Controller;
 
 
 @SuppressWarnings("serial")
-public class Einzel extends JDialog {
+public class EinzelAuswahl extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
-	private List<Start> ergebnisse;
+	private List<Einzel> ergebnisse;
 	private boolean okKlick;
 	
 	DefaultComboBoxModel<Disziplin> modelD;
 	JComboBox<Disziplin> disziplin;
-	DefaultComboBoxModel<Start> modelS;
-	JComboBox<Start> start;
+	DefaultComboBoxModel<Einzel> modelS;
+	JComboBox<Einzel> start;
 
-	public Einzel(Frame parent, Controller controller) {
+	public EinzelAuswahl(Frame parent, Controller controller) {
 		super(parent, "Ergebnisauswahl");
-		ergebnisse = controller.getModel().getErgebnisse();
+		ergebnisse = new Vector<Einzel>();
+		for (Start s : controller.getModel().getErgebnisse()) {
+			if (s instanceof Einzel) ergebnisse.add((Einzel) s);
+		}
 
 		setModal(true);
 		setModalityType(ModalityType.APPLICATION_MODAL);
@@ -56,8 +61,8 @@ public class Einzel extends JDialog {
 		});
 		contentPanel.add(disziplin);
 
-		modelS = new DefaultComboBoxModel<Start>();
-		start = new JComboBox<Start>(modelS);
+		modelS = new DefaultComboBoxModel<Einzel>();
+		start = new JComboBox<Einzel>(modelS);
 		start.setBounds(10, 59, 422, 22);
 		contentPanel.add(start);
 
@@ -88,28 +93,28 @@ public class Einzel extends JDialog {
 		buttonPane.add(cancelButton);
 	}
 
-	public Start showDialog() {
+	public Einzel showDialog() {
 		okKlick = false;
 		disziplin.removeAllItems();
-		for (Start s : ergebnisse) {
-			if (modelD.getIndexOf(s.getDisziplin()) == -1) {
-				disziplin.addItem(s.getDisziplin());
+		for (Einzel e : ergebnisse) {
+			if (modelD.getIndexOf(e.getDisziplin()) == -1) {
+				disziplin.addItem(e.getDisziplin());
 			}
 		}
 		setSchutzeItems();
 		setVisible(true);
 		if (okKlick) {
-			return (Start) start.getSelectedItem();
+			return (Einzel) start.getSelectedItem();
 		}
 		return null;
 	}
 
 	private void setSchutzeItems() {
 		start.removeAllItems();
-		for (Start s : ergebnisse) {
-			if (s.getDisziplin() == disziplin.getSelectedItem()) {
-				if (modelS.getIndexOf(s) == -1) {
-					start.addItem(s);
+		for (Einzel e : ergebnisse) {
+			if (e.getDisziplin() == disziplin.getSelectedItem()) {
+				if (modelS.getIndexOf(e) == -1) {
+					start.addItem((Einzel) e);
 				}
 			}
 		}

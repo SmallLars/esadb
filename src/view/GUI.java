@@ -27,7 +27,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JMenu;
 
 import model.LinieModel;
-import model.Start;
+import model.Einzel;
 import controller.Controller;
 import druckvorschau.Druckvorschau;
 
@@ -264,10 +264,10 @@ public class GUI extends JFrame implements ActionListener {
 			Druckvorschau dv = new Druckvorschau(this, controller.getModel(), controller.getConfig().getPageFormat());
 			controller.getConfig().setPageFormat(dv.showDialog());
 		} else if (e.getSource() == mntmEinzel) {
-			Einzel einzel = new Einzel(this, controller);
-			Start s = einzel.showDialog();
-			if (s == null) return;
-			Druckvorschau dv = new Druckvorschau(this, s, controller.getConfig().getPageFormat());
+			EinzelAuswahl einzel = new EinzelAuswahl(this, controller);
+			Einzel ez = einzel.showDialog();
+			if (ez == null) return;
+			Druckvorschau dv = new Druckvorschau(this, ez, controller.getConfig().getPageFormat());
 			controller.getConfig().setPageFormat(dv.showDialog());
 		} else if (e.getSource() == mntmBeenden) {
 			close();

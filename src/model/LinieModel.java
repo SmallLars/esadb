@@ -13,7 +13,7 @@ import view.Scheibe;
 public class LinieModel {
 	private int nummer;
 	private Controller controller;
-	private Start start;
+	private Einzel einzel;
 
 	private SchuetzenModel sModel;
 	private DisziplinenModel dModel;
@@ -27,7 +27,7 @@ public class LinieModel {
 		this.controller = controller;
 		this.dModel = new DisziplinenModel(controller);
 		this.sModel = new SchuetzenModel(controller);
-		this.start = null;
+		this.einzel = null;
 	}
 
 	public void modelChanged() {
@@ -40,13 +40,13 @@ public class LinieModel {
 	}
 	
 	public void configure(Schuetze schuetze, Disziplin disziplin) {
-		start = new Start(nummer, disziplin, schuetze);
-		if (scheibe != null) scheibe.setStart(start);
-		controller.add(start);
+		einzel = new Einzel(nummer, disziplin, schuetze);
+		if (scheibe != null) scheibe.setStart(einzel);
+		controller.add(einzel);
 	}
 
 	public Start getStart() {
-		return start;
+		return einzel;
 	}
 
 	public void setView(Linie view) {
@@ -63,18 +63,18 @@ public class LinieModel {
 			if (view != null) view.setEnabled(false);
 			String cmd = null;
 			if (status == Status.SPERREN) {
-				if (start != null) {
-					cmd = "\"" + status.getCode() + " $" + start.getSchuetze().wettkampfID + "$" + start.getSchuetze().passnummer + "$" + start.getDisziplin().getId() + "$0$0\"";
+				if (einzel != null) {
+					cmd = "\"" + status.getCode() + " $" + einzel.getSchuetze().wettkampfID + "$" + einzel.getSchuetze().passnummer + "$" + einzel.getDisziplin().getId() + "$0$0\"";
 				}
 			} else {
 				cmd = status.getCode();
 			}
 			switch (status) {
 				case ENTSPERREN:
-					if (start.isEmpty()) controller.remove(start);
+					if (einzel.isEmpty()) controller.remove(einzel);
 					break;
 				case FREI:
-					start = null;
+					einzel = null;
 				default:
 			}
 			if (cmd != null) {
@@ -85,7 +85,7 @@ public class LinieModel {
 	}
 	
 	public boolean isFrei() {
-		return !busy && start == null;
+		return !busy && einzel == null;
 	}
 
 	public void reenable() {
@@ -104,10 +104,10 @@ public class LinieModel {
 	}
 
 	public String addTreffer(Treffer t) {
-		if (start == null) {
+		if (einzel == null) {
 			return "Schuß von freier Linie erhalten. Zuordnung nicht möglich.";
 		}
-		String info = start.addTreffer(t);
+		String info = einzel.addTreffer(t);
 		if (view != null) {
 			if (!t.isProbe() && t.getNummer() == 1) view.setMatch();
 		}

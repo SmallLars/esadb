@@ -8,7 +8,7 @@ import java.awt.Point;
 
 import javax.swing.JPanel;
 
-import model.Start;
+import model.Einzel;
 import model.Treffer;
 
 
@@ -19,10 +19,10 @@ public class Scheibe extends JPanel {
 
 	private int mitteX;
 	private int mitteY;
-	private Start start;
+	private Einzel einzel;
 
-	public Scheibe(Start start) {
-		this.start = start;
+	public Scheibe(Einzel einzel) {
+		this.einzel = einzel;
 		setSize(400, 400);
 	}
 
@@ -40,7 +40,7 @@ public class Scheibe extends JPanel {
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		
-		if (start == null || !start.inMatch()) {
+		if (einzel == null || !einzel.inMatch()) {
 			Dimension de = toPixel(80);
 			g.setColor(Color.BLACK);
 			g.fillPolygon(new int[]{getWidth() - de.width, getWidth() - de.width, getWidth() - de.height * 6}, new int[]{de.height, de.height * 6, de.height}, 3);
@@ -72,15 +72,15 @@ public class Scheibe extends JPanel {
 			g.drawString(s, mitteX + dx, getHeight() - position.height + dy);	// Unten
 		}
 
-		for (int i = 1; start != null; i++) {
-			Treffer t = start.getTreffer(!start.inMatch(), i);
+		for (int i = 1; einzel != null; i++) {
+			Treffer t = einzel.getTreffer(!einzel.inMatch(), i);
 			if (t == null) break;
 			drawTreffer(g, t.getX(), t.getY());
 		}
 	}
 
-	public void setStart(Start start) {
-		this.start = start;
+	public void setStart(Einzel einzel) {
+		this.einzel = einzel;
 		this.repaint();
 	}
 
