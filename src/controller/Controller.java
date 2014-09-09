@@ -32,8 +32,6 @@ public class Controller {
 	private File file;
 	private Model model;
 	private LinieModel linien[];
-	private Vector<Schuetze> schuetzen;
-	private Vector<Disziplin> disziplinen;
 	private FileChecker fileChecker;
 	private GUI gui;
 
@@ -66,8 +64,6 @@ public class Controller {
 		} else {
 			model = new Model();
 		}
-		schuetzen = model.getSchuetzen();
-		disziplinen = model.getDisziplinen();
 
 		linien = new LinieModel[6];
 		for (int i = 0; i < 6; i++) {
@@ -143,11 +139,11 @@ public class Controller {
 	}
 
 	public Vector<Schuetze> getSchuetzen() {
-		return schuetzen;
+		return model.getSchuetzen();
 	}
 
 	public Vector<Disziplin> getDisziplinen() {
-		return disziplinen;
+		return  model.getDisziplinen();
 	}
 
 	public static void main(String[] args) {
@@ -180,8 +176,6 @@ public class Controller {
 	}
 
 	private void modelChanged() {
-		schuetzen = model.getSchuetzen();
-		disziplinen = model.getDisziplinen();
 		for (int i = 0; i < 6; i++) {
 			linien[i].modelChanged();
 		}

@@ -30,9 +30,11 @@ public class Model implements Serializable, Printable {
 	private Set<Schuetze> schuetzen;
 	private Set<Disziplin> disziplinen;
 	private List<Start> ergebnisse;
-
 	private byte[] file;
-	
+
+	transient private Vector<Schuetze> s;
+	transient private Vector<Disziplin> d;
+
 	public Model() {
 		ergebnisse = new Vector<Start>();
 		schuetzen = KampfDB.getSchuetzen();
@@ -51,8 +53,14 @@ public class Model implements Serializable, Printable {
 
 	public boolean add(Object o) {
 		if (o instanceof Start) return ergebnisse.add((Start) o);
-		if (o instanceof Schuetze) return schuetzen.add((Schuetze) o);
-		if (o instanceof Disziplin) return disziplinen.add((Disziplin) o);
+		if (o instanceof Schuetze) {
+			s = null;
+			return schuetzen.add((Schuetze) o);
+		}
+		if (o instanceof Disziplin) {
+			d = null;
+			return disziplinen.add((Disziplin) o);
+		}
 		return false;
 	}
 
@@ -71,11 +79,13 @@ public class Model implements Serializable, Printable {
 	}
 
 	public Vector<Schuetze> getSchuetzen() {
-		return new Vector<Schuetze>(schuetzen);
+		if (s == null) s = new Vector<Schuetze>(schuetzen);
+		return s;
 	}
 
 	public Vector<Disziplin> getDisziplinen() {
-		return new Vector<Disziplin>(disziplinen);
+		if (d == null) d = new Vector<Disziplin>(disziplinen); 
+		return d;
 	}
 
 	public boolean save(File file) {
