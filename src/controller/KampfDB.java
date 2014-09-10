@@ -49,6 +49,7 @@ public class KampfDB {
 				if ((byte) row.get("Sichtbar") == 0) list.add(new Schuetze(row));
 			}
 		}
+		list.sort(null);
 
 		return list;
 	}
@@ -57,11 +58,8 @@ public class KampfDB {
 		Table table = getTable("Kampf.mdb", "Vereine");
 		Vector<Verein> list = new Vector<Verein>();
 
-		if (table != null) {
-			for(Row row : table) {
-				list.add(new Verein(row));
-			}
-		}
+		if (table != null)
+			for(Row row : table) list.add(new Verein(row));
 
 		return list;
 	}

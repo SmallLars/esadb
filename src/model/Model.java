@@ -32,8 +32,8 @@ public class Model implements Serializable, Printable {
 	private List<Start> ergebnisse;
 	private byte[] file;
 
-	transient private Vector<Schuetze> s;
-	transient private Vector<Disziplin> d;
+	transient private List<Schuetze> s;
+	transient private List<Disziplin> d;
 
 	public Model() {
 		ergebnisse = new Vector<Start>();
@@ -78,12 +78,12 @@ public class Model implements Serializable, Printable {
 		return ergebnisse;
 	}
 
-	public Vector<Schuetze> getSchuetzen() {
+	public List<Schuetze> getSchuetzen() {
 		if (s == null) s = new Vector<Schuetze>(schuetzen);
 		return s;
 	}
 
-	public Vector<Disziplin> getDisziplinen() {
+	public List<Disziplin> getDisziplinen() {
 		if (d == null) d = new Vector<Disziplin>(disziplinen); 
 		return d;
 	}

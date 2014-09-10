@@ -4,6 +4,8 @@ import java.io.PrintWriter;
 
 import javax.swing.ComboBoxModel;
 
+import model.comboBoxModel.DisziplinenModel;
+import model.comboBoxModel.SchuetzenModel;
 import controller.Controller;
 import controller.Status;
 import view.Linie;
@@ -15,9 +17,6 @@ public class LinieModel {
 	private Controller controller;
 	private Einzel einzel;
 
-	private SchuetzenModel sModel;
-	private DisziplinenModel dModel;
-
 	private boolean busy = false;
 	private Linie view = null;
 	private Scheibe scheibe = null;
@@ -25,14 +24,7 @@ public class LinieModel {
 	public LinieModel(int nummer, Controller controller) {
 		this.nummer = nummer;
 		this.controller = controller;
-		this.dModel = new DisziplinenModel(controller);
-		this.sModel = new SchuetzenModel(controller);
 		this.einzel = null;
-	}
-
-	public void modelChanged() {
-		sModel.modelChanged();
-		dModel.modelChanged();
 	}
 
 	public int getNummer() {
@@ -121,10 +113,10 @@ public class LinieModel {
 	}
 
 	public ComboBoxModel<Disziplin> getDisziplinenModel() {
-		return dModel;
+		return new DisziplinenModel(controller);
 	}
 
 	public ComboBoxModel<Schuetze> getSchuetzenModel() {
-		return sModel;
+		return new SchuetzenModel(controller);
 	}
 }

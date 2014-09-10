@@ -8,6 +8,7 @@ import java.io.OutputStream;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Vector;
 
 import javax.swing.text.SimpleAttributeSet;
@@ -17,6 +18,7 @@ import model.Config;
 import model.Disziplin;
 import model.LinieModel;
 import model.Model;
+import model.ModelChangeListener;
 import model.Schuetze;
 import model.Start;
 import model.Treffer;
@@ -28,6 +30,7 @@ import view.GUI;
 
 public class Controller {
 	private Config config;
+	private List<ModelChangeListener> modelChangeListener;
 	
 	private File file;
 	private Model model;
@@ -43,6 +46,7 @@ public class Controller {
 		StyleConstants.setForeground(redStyle, Color.decode("0xC80000"));
 
 		config = Config.load();
+		modelChangeListener = new Vector<ModelChangeListener>();
 		
 		final String[] files = {"esadb.ico", "Stammdaten.mdb"};
 		for (String s : files) {
@@ -138,11 +142,11 @@ public class Controller {
 		return model.contains(item);
 	}
 
-	public Vector<Schuetze> getSchuetzen() {
+	public List<Schuetze> getSchuetzen() {
 		return model.getSchuetzen();
 	}
 
-	public Vector<Disziplin> getDisziplinen() {
+	public List<Disziplin> getDisziplinen() {
 		return  model.getDisziplinen();
 	}
 
@@ -175,9 +179,17 @@ public class Controller {
 		return model.remove(s);
 	}
 
+	public void addModelChangeListener(ModelChangeListener l) {
+		modelChangeListener.add(l);
+	}
+
+	public void removeModelChangeListener(ModelChangeListener l) {
+		modelChangeListener.remove(l);
+	}
+
 	private void modelChanged() {
-		for (int i = 0; i < 6; i++) {
-			linien[i].modelChanged();
+		for (ModelChangeListener l : modelChangeListener) {
+			l.modelChanged();
 		}
 	}
 }

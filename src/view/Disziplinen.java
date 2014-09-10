@@ -6,7 +6,7 @@ import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Vector;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -31,7 +31,7 @@ public class Disziplinen extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
 
-	public Disziplinen(Frame parent, Vector<Disziplin> disziplinen) {
+	public Disziplinen(Frame parent, List<Disziplin> disziplinen) {
 		super(parent, "Disziplinen");
 		setModal(true);
 		setModalityType(ModalityType.APPLICATION_MODAL);
@@ -67,7 +67,7 @@ public class Disziplinen extends JDialog {
 		comboPane.setLayout(new FlowLayout(FlowLayout.LEFT));
 		getContentPane().add(comboPane, BorderLayout.NORTH);
 
-		comboBox = new JComboBox<Disziplin>(disziplinen);
+		comboBox = new JComboBox<Disziplin>(disziplinen.toArray(new Disziplin[0]));
 		comboBox.setPreferredSize(new Dimension(257, 22));
 		comboBox.addActionListener(new ActionListener() {
 			@Override
