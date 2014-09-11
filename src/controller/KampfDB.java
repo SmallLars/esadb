@@ -22,7 +22,7 @@ public class KampfDB {
 		Set<Schuetze> set = new TreeSet<Schuetze>();
 
 		if (table != null) {
-			for(Row row : table) {
+			for (Row row : table) {
 				if ((byte) row.get("Sichtbar") == 1) set.add(new Schuetze(row));
 			}
 		}
@@ -35,19 +35,17 @@ public class KampfDB {
 		Set<Disziplin> set = new TreeSet<Disziplin>();
 
 		if (table != null)
-			for(Row row : table) set.add(new Disziplin(row));
+			for (Row row : table) set.add(new Disziplin(row));
 
 		return set;
 	}
 
-	public static Vector<Schuetze> getNewSchuetzen() {
+	public static Vector<Schuetze> getAllSchuetzen() {
 		Table table = getTable("Kampf.mdb", "WettkampfSchuetzen");
 		Vector<Schuetze> list = new Vector<Schuetze>();
 
 		if (table != null) {
-			for(Row row : table) {
-				if ((byte) row.get("Sichtbar") == 0) list.add(new Schuetze(row));
-			}
+			for (Row row : table) list.add(new Schuetze(row));
 		}
 		list.sort(null);
 

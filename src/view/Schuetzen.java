@@ -6,12 +6,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
-import java.util.Iterator;
 import java.util.Vector;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.RowFilter;
 
 import controller.Controller;
 import controller.KampfDB;
@@ -24,10 +22,15 @@ import model.Verein;
 
 import javax.swing.JLabel;
 import javax.swing.JComboBox;
+import javax.swing.event.TableModelEvent;
 import javax.swing.table.TableRowSorter;
+
 
 @SuppressWarnings("serial")
 public class Schuetzen extends JDialog {
+
+	JTable table;
+	JTable table_1;
 
 	public Schuetzen(Frame parent, Controller controller) {
 		super(parent, "Schützen");
@@ -40,26 +43,29 @@ public class Schuetzen extends JDialog {
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		getContentPane().setLayout(null);
 
+		Vector<Schuetze> schuetzen = KampfDB.getAllSchuetzen();
+
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(10, 11, 340, 500);
 		getContentPane().add(scrollPane);
 
-		SchuetzenTableModel tmodel = new SchuetzenTableModel(new Vector<Schuetze>(controller.getSchuetzen()));
+		SchuetzenTableModel tmodel = new SchuetzenTableModel(schuetzen);
 		TableRowSorter<SchuetzenTableModel> sorter = new TableRowSorter<SchuetzenTableModel>(tmodel);
-		JTable table = new JTable(tmodel);
+		sorter.setSortsOnUpdates(true);
+		sorter.setRowFilter(new SchuetzenRowFilter(controller, true, null));
+		table = new JTable(tmodel);
 		table.setRowSorter(sorter);
 		scrollPane.setViewportView(table);
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
 		scrollPane_1.setBounds(420, 11, 340, 500);
 		getContentPane().add(scrollPane_1);
-		
-		Vector<Schuetze> schuetzen = KampfDB.getNewSchuetzen();
-		Iterator<Schuetze> i = schuetzen.iterator();
-		while (i.hasNext()) if (controller.contains(i.next())) i.remove();
+
 		SchuetzenTableModel tmodel_1 = new SchuetzenTableModel(schuetzen);
 		TableRowSorter<SchuetzenTableModel> sorter_1 = new TableRowSorter<SchuetzenTableModel>(tmodel_1);
-		JTable table_1 = new JTable(tmodel_1);
+		sorter_1.setSortsOnUpdates(true);
+		sorter_1.setRowFilter(new SchuetzenRowFilter(controller, false, null));
+		table_1 = new JTable(tmodel_1);
 		table_1.setRowSorter(sorter_1);
 		scrollPane_1.setViewportView(table_1);
 		
@@ -75,22 +81,6 @@ public class Schuetzen extends JDialog {
 		getContentPane().add(cancelButton);
 		getRootPane().setDefaultButton(cancelButton);
 		
-		JButton button = new JButton("<-");
-		button.setBounds(360, 250, 50, 23);
-		button.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				for (int i : table_1.getSelectedRows()) {
-					Object o = table_1.getValueAt(i, -1);
-					if (!controller.contains(o)) {
-						controller.add(o);
-						System.out.println(o);
-					}
-				}
-			}
-		});
-		getContentPane().add(button);
-		
 		JLabel lblVerein = new JLabel("Verein");
 		lblVerein.setBounds(20, 525, 46, 14);
 		getContentPane().add(lblVerein);
@@ -102,27 +92,39 @@ public class Schuetzen extends JDialog {
 		comboBox.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				if (comboBox.getSelectedItem() == null) {
-					sorter.setRowFilter(null);
-					sorter_1.setRowFilter(null);
-				} else {
-					RowFilter<SchuetzenTableModel, Integer> filter = new RowFilter<SchuetzenTableModel, Integer>() {
-						@Override
-						public boolean include(javax.swing.RowFilter.Entry<? extends SchuetzenTableModel, ? extends Integer> entry) {
-							 SchuetzenTableModel model = entry.getModel();
-						     Schuetze schuetze = (Schuetze) model.getValueAt(entry.getIdentifier(), -1);
-						     if (schuetze.vereinsnummer == ((Verein) comboBox.getSelectedItem()).getId()) {
-						       return true;
-						     }
-						     return false;
-						}
-				    };
-					sorter.setRowFilter(filter);
-					sorter_1.setRowFilter(filter);
-				}
+				sorter.setRowFilter(new SchuetzenRowFilter(controller, true, (Verein) comboBox.getSelectedItem()));
+				sorter_1.setRowFilter(new SchuetzenRowFilter(controller, false, (Verein) comboBox.getSelectedItem()));
 			}
 		});
 		getContentPane().add(comboBox);
+
+		JButton button = new JButton("<-");
+		button.setBounds(360, 250, 50, 23);
+		button.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				Vector<Object> changed = new Vector<Object>();
+				for (int i : table_1.getSelectedRows()) {
+					Object o = table_1.getValueAt(i, -1);
+					if (!controller.contains(o)) {
+						controller.add(o);
+						changed.add(o);
+					}
+				}
+				for (Object o : changed) {
+					int listIndex = schuetzen.indexOf(o);
+					table.tableChanged(new TableModelEvent(tmodel, listIndex));
+					table_1.tableChanged(new TableModelEvent(tmodel_1, listIndex));
+				}
+				table.revalidate();
+				table_1.revalidate();
+				scrollPane.revalidate();
+				scrollPane_1.revalidate();
+				scrollPane.repaint();
+				scrollPane_1.repaint();
+			}
+		});
+		getContentPane().add(button);
 
 		addComponentListener(new ComponentListener() {
 			@Override
