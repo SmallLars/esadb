@@ -118,8 +118,6 @@ public class Schuetzen extends JDialog {
 				}
 				table.revalidate();
 				table_1.revalidate();
-				scrollPane.revalidate();
-				scrollPane_1.revalidate();
 				scrollPane.repaint();
 				scrollPane_1.repaint();
 			}
