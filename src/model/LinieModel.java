@@ -67,6 +67,7 @@ public class LinieModel {
 					break;
 				case FREI:
 					einzel = null;
+					if (scheibe != null) scheibe.setStart(einzel);
 				default:
 			}
 			if (cmd != null) {

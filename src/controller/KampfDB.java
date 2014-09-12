@@ -18,60 +18,70 @@ import com.healthmarketscience.jackcess.Table;
 
 public class KampfDB {
 	public static Set<Schuetze> getSchuetzen() {
-		Table table = getTable("Stammdaten.mdb", "WettkampfSchuetzen");
 		Set<Schuetze> set = new TreeSet<Schuetze>();
 
-		if (table != null) {
-			for (Row row : table) {
-				if ((byte) row.get("Sichtbar") == 1) set.add(new Schuetze(row));
-			}
-		}
+		try {
+			Database db = getDB("Stammdaten.mdb");
+			Table table = db.getTable("WettkampfSchuetzen");
+			for (Row row : table) if ((byte) row.get("Sichtbar") == 1) set.add(new Schuetze(row));
+			db.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}	
 
 		return set;
 	}
 
 	public static Set<Disziplin> getDisziplinen() {
-		Table table = getTable("Stammdaten.mdb", "Disziplin");
 		Set<Disziplin> set = new TreeSet<Disziplin>();
 
-		if (table != null)
+		try {
+			Database db = getDB("Stammdaten.mdb");
+			Table table = db.getTable("Disziplin");
 			for (Row row : table) set.add(new Disziplin(row));
+			db.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}	
 
 		return set;
 	}
 
 	public static Vector<Schuetze> getAllSchuetzen() {
-		Table table = getTable("Kampf.mdb", "WettkampfSchuetzen");
 		Vector<Schuetze> list = new Vector<Schuetze>();
 
-		if (table != null) {
+		try {
+			Database db = getDB("Kampf.mdb");
+			Table table = db.getTable("WettkampfSchuetzen");
 			for (Row row : table) list.add(new Schuetze(row));
+			db.close();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
-		list.sort(null);
 
+		list.sort(null);
 		return list;
 	}
 
 	public static Vector<Verein> getVereine() {
-		Table table = getTable("Kampf.mdb", "Vereine");
 		Vector<Verein> list = new Vector<Verein>();
 
-		if (table != null)
+		try {
+			Database db = getDB("Kampf.mdb");
+			Table table = db.getTable("Vereine");
 			for(Row row : table) list.add(new Verein(row));
+			db.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 		return list;
 	}
 
-	private static Table getTable(String filename, String tablename) {
+	private static Database getDB(String filename) throws IOException {
 		DatabaseBuilder dbb = new DatabaseBuilder();
 		dbb.setReadOnly(true);
 		dbb.setFile(new File(filename));
-		try {
-			Database db = dbb.open();
-			return db.getTable(tablename);
-		} catch (IOException e) {
-			e.printStackTrace();
-			return null;
-		}
+		return dbb.open();
 	}
 }
