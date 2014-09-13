@@ -1,4 +1,5 @@
 package model;
+import java.io.PrintWriter;
 import java.io.Serializable;
 import java.util.regex.Pattern;
 
@@ -113,7 +114,26 @@ public class Treffer implements Serializable, Comparable<Treffer> {
 
     @Override
     public String toString() {
-    	return String.format("%4.1f", wert);
+    	return String.format("%4.1f");
+    }
+
+    public void print(PrintWriter writer) {
+    	writer.println(String.format("%d", nummer));
+    	writer.println(formatDouble(wert));
+    	writer.println(String.format("\"%s\"", lage));
+    	writer.println(formatDouble(x));
+    	writer.println(formatDouble(y));
+    	writer.println(formatDouble(r));
+    	writer.println(formatDouble(phi));
+    	writer.println(String.format("%d", zeit));
+    }
+    
+    private String formatDouble(double d) {
+    	String s = String.format("%f", d);
+    	s = s.replace(',', '.');
+    	while (s.endsWith("0")) s = s.substring(0, s.length() - 1);
+    	if (s.endsWith(".")) s = s.concat("0");
+    	return s;
     }
 
 	@Override

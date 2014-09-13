@@ -7,6 +7,9 @@ import java.awt.Graphics2D;
 import java.awt.print.PageFormat;
 import java.awt.print.Printable;
 import java.awt.print.PrinterException;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
@@ -39,7 +42,7 @@ public class Einzel extends Start implements Printable {
 	}
 
 	public boolean inMatch() {
-		Treffer t = treffer.get(new Treffer(false, 1));
+		Treffer t = getTreffer(false, 1);
 		return t != null;
 	}
 
@@ -65,7 +68,7 @@ public class Einzel extends Start implements Printable {
 	public float getMatch(int nummer) {
 		if (nummer >= disziplin.getSchusszahl()) return 0;
 
-		Treffer t = treffer.get(new Treffer(false, nummer + 1));
+		Treffer t = getTreffer(false, nummer + 1);
 		if (t == null) return 0;
 
 		float wert = t.getWert();
@@ -91,12 +94,12 @@ public class Einzel extends Start implements Printable {
 		return summe;
 	}
 
-	public int getNumberCount(int number) {
+	public int getNumberCount(boolean probe, int number) {
 		if (number < 0 || number > 12) return 0;
 
 		int counter = 0;
 		for (int i = 0; i < disziplin.getSchusszahl(); i++) {
-			Treffer t = treffer.get(new Treffer(false, i + 1));
+			Treffer t = getTreffer(probe, i + 1);
 			if (t == null) continue;
 			switch (number) {
 				case 12:
@@ -162,6 +165,23 @@ public class Einzel extends Start implements Printable {
 		return s;
 	}
 
+	public boolean toFile(File file, boolean probe) {
+		PrintWriter writer;
+		try {
+			writer = new PrintWriter(file);
+		} catch (FileNotFoundException e) {
+			return false;
+		}
+		writer.println(probe ? "\"0\"" : "\"-1\"");
+		int anzahl = getNumberCount(probe,  12);
+		writer.println(anzahl);
+		for (int i = 1; i <= anzahl; i++) {
+			getTreffer(probe, i).print(writer);
+		}
+		writer.close();
+		return true;
+	}
+
 	@Override
 	public int compareTo(Start s) {
 		int c;
@@ -185,12 +205,12 @@ public class Einzel extends Start implements Printable {
 		
 		// 3. Höchste Zahl der 10er, dann 9er, .... dann 1er
 		for (int i = 10; i >=0; i--) {
-			c = e.getNumberCount(i) - getNumberCount(i);
+			c = e.getNumberCount(false, i) - getNumberCount(false, i);
 			if (c != 0) return c;
 		}
 
 		// 4. Höchste Zahl der InnenZehner (5 mm durchmesser)
-		return e.getNumberCount(11) - getNumberCount(11);
+		return e.getNumberCount(false, 11) - getNumberCount(false, 11);
 	}
 
 	@Override
@@ -252,7 +272,7 @@ public class Einzel extends Start implements Printable {
 			final int rectDiff = - g2.getFontMetrics().getHeight() + g2.getFontMetrics().getLeading();
 			drawStringRight(g2, i == 12 ? "Sum" : i == 11 ? "10i" : "" + i, 2000 - i * width, 0);
 			g2.drawRect(2000 - width*(i+1), rectDiff, width, lineHeight);
-			drawStringRight(g2, "" + getNumberCount(i), 2000 - i * width, lineHeight);
+			drawStringRight(g2, "" + getNumberCount(false, i), 2000 - i * width, lineHeight);
 			g2.drawRect(2000 - width*(i+1), lineHeight + rectDiff, width, lineHeight);
 		}
 
