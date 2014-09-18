@@ -84,7 +84,7 @@
   </class>  
   <class id="10" language="java" name="view.Linie" project="ESADB" file="/ESADB/src/view/Linie.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="814" y="274"/>    
+    <position height="-1" width="-1" x="808" y="274"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="false" package="false" protected="false" private="false" static="false"/>      
@@ -282,7 +282,7 @@
   </class>  
   <class id="32" language="java" name="controller.FileChecker" project="ESADB" 
     file="/ESADB/src/controller/FileChecker.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="536" y="705"/>    
+    <position height="-1" width="-1" x="576" y="705"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="false" package="false" protected="false" private="false" static="false"/>      
@@ -291,7 +291,7 @@
   </class>  
   <interface id="33" language="java" name="model.LineReader" project="ESADB" file="/ESADB/src/model/LineReader.java" 
     binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="719" y="706"/>    
+    <position height="-1" width="-1" x="808" y="704"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="false" package="false" protected="false" private="false" static="false"/>      
@@ -300,7 +300,7 @@
   </interface>  
   <interface id="34" language="java" name="model.LineModel" project="ESADB" file="/ESADB/src/model/LineModel.java" 
     binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="814" y="443"/>    
+    <position height="-1" width="-1" x="808" y="443"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="false" package="false" protected="false" private="false" static="false"/>      
@@ -309,7 +309,7 @@
   </interface>  
   <class id="35" language="java" name="model.DefaultLineModel" project="ESADB" 
     file="/ESADB/src/model/DefaultLineModel.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="879" y="562"/>    
+    <position height="-1" width="-1" x="879" y="574"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="false" package="false" protected="false" private="false" static="false"/>      
@@ -541,7 +541,7 @@
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="114">    
-    <bendpoint x="815" y="170"/>    
+    <bendpoint x="809" y="170"/>    
     <end type="SOURCE" refId="8" navigable="false">      
       <attribute id="115" name="linien"/>      
       <multiplicity id="116" minimum="0" maximum="2147483647"/>    
