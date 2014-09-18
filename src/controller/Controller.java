@@ -34,7 +34,7 @@ public class Controller {
 	
 	private File file;
 	private Model model;
-	private LinieModel linien[];
+	private List<LinieModel> linien;
 	private FileChecker fileChecker;
 	private GUI gui;
 
@@ -69,10 +69,11 @@ public class Controller {
 			model = new Model();
 		}
 
-		linien = new LinieModel[6];
-		for (int i = 0; i < 6; i++) {
-			linien[i] = new LinieModel(i + 1, this);
-			linien[i].setStatus(Status.INIT);
+		linien = new Vector<LinieModel>(config.getLinien().size());
+		for (Integer i : config.getLinien()) {
+			LinieModel lm = new LinieModel(i, this);
+			lm.setStatus(Status.INIT);
+			linien.add(lm);
 		}
 
 		fileChecker = new FileChecker(this);
@@ -102,11 +103,19 @@ public class Controller {
 	}
 
 	public int getLinienAnzahl() {
-		return 6;
+		return linien.size();
 	}
 
-	public LinieModel getLinie(int nummer) {
-		return linien[nummer];
+	public LinieModel getLinieByIndex(int index) {
+		if (index >= linien.size()) return null;
+		return linien.get(index);
+	}
+
+	public LinieModel getLinieByNumber(int nummer) {
+		for (LinieModel l : linien) {
+			if (l.getNummer() == nummer) return l;
+		}
+		return null;
 	}
 
 	public void neu(File file) {
@@ -128,8 +137,8 @@ public class Controller {
 	}
 
 	public boolean canExit() {
-		for (int i = 0; i < 6; i++) {
-			if (!linien[i].isFrei()) return false;
+		for (LinieModel l : linien) {
+			if (!l.isFrei()) return false;
 		}
 		return true;
 	}
@@ -158,7 +167,7 @@ public class Controller {
 		boolean val = false;
 		if (o instanceof Treffer) {
 			Treffer t = (Treffer) o;
-			LinieModel l = getLinie(t.getLinie() - 1);
+			LinieModel l = getLinieByNumber(t.getLinie() - 1);
 			if (l != null) {
 				val = true;
 				String info = l.addTreffer(t);

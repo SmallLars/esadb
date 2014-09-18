@@ -12,7 +12,7 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Map;
+import java.util.NavigableMap;
 import java.util.TreeMap;
 
 import javax.swing.BorderFactory;
@@ -27,7 +27,7 @@ public class Einzel extends Start implements Printable {
 	private Date datum;
 	private Disziplin disziplin;
 	private Schuetze schuetze;
-	private Map<Treffer, Treffer> treffer;
+	private NavigableMap<Treffer, Treffer> treffer;
 	
 	public Einzel(int linie, Disziplin disziplin, Schuetze schuetze) {
 		this.linie = linie;

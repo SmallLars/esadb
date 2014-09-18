@@ -83,7 +83,6 @@ public class EinzelAuswahl extends JDialog {
 		getRootPane().setDefaultButton(okButton);
 
 		JButton cancelButton = new JButton("Abbrechen");
-		cancelButton.setActionCommand("Cancel");
 		cancelButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {

@@ -71,7 +71,6 @@ public class Schuetzen extends JDialog {
 		
 		JButton cancelButton = new JButton("Schlieﬂen");
 		cancelButton.setBounds(660, 521, 100, 23);
-		//cancelButton.setActionCommand("Cancel");
 		cancelButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

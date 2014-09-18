@@ -10,6 +10,9 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.Vector;
 
 
 public class Config implements Serializable {
@@ -18,6 +21,9 @@ public class Config implements Serializable {
 	private static final double mmToDots = 72 / 2.54;
 
 	private Rectangle mainWindow;
+
+	private Set<Integer> linien;
+
 	private double pageWidht;
 	private double pageHeight;
 	private double pageImageableX;
@@ -29,6 +35,9 @@ public class Config implements Serializable {
 
 	private Config() {
 		mainWindow = new Rectangle(42, 42, 1196, 726);
+
+		linien = new TreeSet<Integer>();
+		linien.add(1);
 		
 		pageWidht =           21.0 * mmToDots;
 		pageHeight =          29.7 * mmToDots;
@@ -41,13 +50,29 @@ public class Config implements Serializable {
 		save();
 	}
 
-	public Rectangle getMainWindowBouds() {
+	public Rectangle getMainWindowBounds() {
 		return mainWindow;
 	}
 
-	public void setMainWindowBouds(Rectangle mainWindow) {
+	public void setMainWindowBounds(Rectangle mainWindow) {
 		this.mainWindow = mainWindow;
 		save();
+	}
+
+	public Vector<Integer> getLinien() {
+		return new Vector<Integer>(linien);
+	}
+
+	public boolean addLinie(Integer l) {
+		boolean b = linien.add(l);
+		save();
+		return b;
+	}
+
+	public boolean removeLinie(Integer l) {
+		boolean b = linien.remove(l);
+		save();
+		return b;
 	}
 
 	public PageFormat getPageFormat() {

@@ -92,8 +92,8 @@ public class FileChecker extends Thread {
 						case "ENTRY_DELETE":
 							// HServ<X>.ctl
 							if (dateiname.startsWith("HServ") && dateiname.endsWith(".ctl")) {
-								int linie = Integer.parseUnsignedInt(dateiname.substring(5, 6)) - 1;
-								LinieModel l = controller.getLinie(linie);
+								int linie = Integer.parseUnsignedInt(dateiname.substring(5, dateiname.length() - 4));
+								LinieModel l = controller.getLinieByNumber(linie);
 								if (l != null) l.reenable();
 							}
 							break;

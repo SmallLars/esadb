@@ -49,6 +49,7 @@ public class GUI extends JFrame implements ActionListener {
 	JMenuItem mntmDrucken;
 	JMenuItem mntmVorschau;
 	JMenuItem mntmEinzel;
+	JMenuItem mntmEinstellungen;
 
 	JMenuItem mntmSchtzen;
 	JMenuItem mntmDisziplinen;
@@ -69,11 +70,11 @@ public class GUI extends JFrame implements ActionListener {
 		setMinimumSize(new Dimension(1196, 726));
 
 		this.controller = controller;
-		scheiben = new Scheibe[6];
-		linien = new Linie[6];
+		scheiben = new Scheibe[controller.getLinienAnzahl()];
+		linien = new Linie[controller.getLinienAnzahl()];
 
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		setBounds(controller.getConfig().getMainWindowBouds());
+		setBounds(controller.getConfig().getMainWindowBounds());
 		
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
@@ -82,34 +83,48 @@ public class GUI extends JFrame implements ActionListener {
 		menuBar.add(mnDatei);
 
 		mntmNeu = new JMenuItem("Neu...");
+		mntmNeu.setActionCommand("NEW");
 		mntmNeu.addActionListener(this);
 		mnDatei.add(mntmNeu);
 
 		mntmLaden = new JMenuItem("Öffnen...");
+		mntmLaden.setActionCommand("OPEN");
 		mntmLaden.addActionListener(this);
 		mnDatei.add(mntmLaden);
 		
 		mntmSpeichern = new JMenuItem("Speichern unter...");
+		mntmSpeichern.setActionCommand("SAVEAS");
 		mntmSpeichern.addActionListener(this);
 		mnDatei.add(mntmSpeichern);
 		
 		mnDatei.addSeparator();
 		
 		mntmDrucken = new JMenuItem("Drucken...");
+		mntmDrucken.setActionCommand("PRINT");
 		mntmDrucken.addActionListener(this);
 		mnDatei.add(mntmDrucken);
 
 		mntmVorschau = new JMenuItem("Druckvorschau...");
+		mntmVorschau.setActionCommand("PRINTPREVIEW");
 		mntmVorschau.addActionListener(this);
 		mnDatei.add(mntmVorschau);
 		
 		mntmEinzel = new JMenuItem("Einzelergebnisse...");
+		mntmEinzel.setActionCommand("SINGLEPREVIEW");
 		mntmEinzel.addActionListener(this);
 		mnDatei.add(mntmEinzel);
+
+		mnDatei.addSeparator();
+		
+		mntmEinstellungen = new JMenuItem("Einstellungen");
+		mntmEinstellungen.setActionCommand("PREFERENCES");
+		mntmEinstellungen.addActionListener(this);
+		mnDatei.add(mntmEinstellungen);
 		
 		mnDatei.addSeparator();
 		
 		mntmBeenden = new JMenuItem("Beenden");
+		mntmBeenden.setActionCommand("CLOSE");
 		mntmBeenden.addActionListener(this);
 		mnDatei.add(mntmBeenden);
 		
@@ -117,10 +132,12 @@ public class GUI extends JFrame implements ActionListener {
 		menuBar.add(mnStammdaten);
 		
 		mntmSchtzen = new JMenuItem("Schützen");
+		mntmSchtzen.setActionCommand("SCHUETZEN");
 		mntmSchtzen.addActionListener(this);
 		mnStammdaten.add(mntmSchtzen);
 		
 		mntmDisziplinen = new JMenuItem("Disziplinen");
+		mntmDisziplinen.setActionCommand("DISZIPLINEN");
 		mntmDisziplinen.addActionListener(this);
 		mnStammdaten.add(mntmDisziplinen);
 		
@@ -163,7 +180,7 @@ public class GUI extends JFrame implements ActionListener {
 		contentPane.add(lblDisziplin);
 
 		for (int i = 0; i < controller.getLinienAnzahl(); i++) {
-			LinieModel linie = controller.getLinie(i);
+			LinieModel linie = controller.getLinieByIndex(i);
 
 			linien[i] = new Linie(linie);
 			linien[i].setLocation(10, 32 + (i * (linien[i].getHeight() + 10)));
@@ -190,14 +207,14 @@ public class GUI extends JFrame implements ActionListener {
 
 			@Override
 			public void componentMoved(ComponentEvent arg0) {
-				controller.getConfig().setMainWindowBouds(getBounds());
+				controller.getConfig().setMainWindowBounds(getBounds());
 			}
 
 			@Override
 			public void componentResized(ComponentEvent arg0) {
-				controller.getConfig().setMainWindowBouds(getBounds());
+				controller.getConfig().setMainWindowBounds(getBounds());
 				scrollPane.setSize(738, contentPane.getHeight() - 278);
-				for (int i = 0; i < 6; i++) {
+				for (int i = 0; i < controller.getLinienAnzahl(); i++) {
 					scheiben[i].setSize(	(contentPane.getWidth() - 738) / 2,
 											contentPane.getHeight() / 3
 					);
@@ -218,65 +235,82 @@ public class GUI extends JFrame implements ActionListener {
 		SimpleAttributeSet style = new SimpleAttributeSet();
 		StyleConstants.setForeground(style, Color.decode("0x00A050"));
 		StyleConstants.setBold(style, true);
-		if (e.getSource() == mntmNeu) {
-			int returnVal = fc.showDialog(this, "Neu");
-			if (returnVal == JFileChooser.APPROVE_OPTION) {
-				File file = checkPath(fc.getSelectedFile());
-				if (file == null) return;
-				controller.neu(file);
-				setTitle("ESADB - Datenbank für ESA 2002 - " + controller.getFile().getName());
-				println("Neu: " + file.getPath() + ".", style);
-			}
-		} else if (e.getSource() == mntmLaden) {
-			int returnVal = fc.showOpenDialog(this);
-			if (returnVal == JFileChooser.APPROVE_OPTION) {
-				File file = fc.getSelectedFile();
-				if (file.exists()) {
-					controller.load(file);
+
+		int returnVal;
+		Druckvorschau dv;
+		switch (e.getActionCommand()) {
+			case "NEW":
+				returnVal = fc.showDialog(this, "Neu");
+				if (returnVal == JFileChooser.APPROVE_OPTION) {
+					File file = checkPath(fc.getSelectedFile());
+					if (file == null) return;
+					controller.neu(file);
 					setTitle("ESADB - Datenbank für ESA 2002 - " + controller.getFile().getName());
-					println("Öffnen: " + file.getPath() + ".", style);
-				} else {
-					JOptionPane.showMessageDialog(	this,
-													"Die gewählte Datei existiert nicht.",
-													"Fehler",
-													JOptionPane.WARNING_MESSAGE);
+					println("Neu: " + file.getPath() + ".", style);
 				}
-			}
-		} else if (e.getSource() == mntmSpeichern) {
-			int returnVal = fc.showSaveDialog(this);
-			if (returnVal == JFileChooser.APPROVE_OPTION) {
-				File file = checkPath(fc.getSelectedFile());
-				if (file == null) return;
-				controller.save(file);
-				setTitle("ESADB - Datenbank für ESA 2002 - " + controller.getFile().getName());
-				println("Speichern: " + file.getPath() + ".", style);
-			}
-		} else if (e.getSource() == mntmDrucken) {
-			PrinterJob pjob = PrinterJob.getPrinterJob();
-		    if (pjob.printDialog() == false) return;
-		    pjob.setPrintable(controller.getModel(), controller.getConfig().getPageFormat());
-		    try {
-				pjob.print();
-			} catch (PrinterException e1) {
-				e1.printStackTrace();
-			}
-		} else if (e.getSource() == mntmVorschau) {
-			Druckvorschau dv = new Druckvorschau(this, controller.getModel(), controller.getConfig().getPageFormat());
-			controller.getConfig().setPageFormat(dv.showDialog());
-		} else if (e.getSource() == mntmEinzel) {
-			EinzelAuswahl einzel = new EinzelAuswahl(this, controller);
-			Einzel ez = einzel.showDialog();
-			if (ez == null) return;
-			Druckvorschau dv = new Druckvorschau(this, ez, controller.getConfig().getPageFormat());
-			controller.getConfig().setPageFormat(dv.showDialog());
-		} else if (e.getSource() == mntmBeenden) {
-			close();
-		} else if (e.getSource() == mntmDisziplinen) {
-			Disziplinen disziplin = new Disziplinen(this, controller.getDisziplinen());
-			disziplin.setVisible(true);
-		} else if (e.getSource() == mntmSchtzen) {
-			Schuetzen schuetze = new Schuetzen(this, controller);
-			schuetze.setVisible(true);
+				break;
+			case "OPEN":
+				returnVal = fc.showOpenDialog(this);
+				if (returnVal == JFileChooser.APPROVE_OPTION) {
+					File file = fc.getSelectedFile();
+					if (file.exists()) {
+						controller.load(file);
+						setTitle("ESADB - Datenbank für ESA 2002 - " + controller.getFile().getName());
+						println("Öffnen: " + file.getPath() + ".", style);
+					} else {
+						JOptionPane.showMessageDialog(	this,
+														"Die gewählte Datei existiert nicht.",
+														"Fehler",
+														JOptionPane.WARNING_MESSAGE);
+					}
+				}
+				break;
+			case "SAVEAS":
+				returnVal = fc.showSaveDialog(this);
+				if (returnVal == JFileChooser.APPROVE_OPTION) {
+					File file = checkPath(fc.getSelectedFile());
+					if (file == null) return;
+					controller.save(file);
+					setTitle("ESADB - Datenbank für ESA 2002 - " + controller.getFile().getName());
+					println("Speichern: " + file.getPath() + ".", style);
+				}
+				break;
+			case "PRINT":
+				PrinterJob pjob = PrinterJob.getPrinterJob();
+			    if (pjob.printDialog() == false) return;
+			    pjob.setPrintable(controller.getModel(), controller.getConfig().getPageFormat());
+			    try {
+					pjob.print();
+				} catch (PrinterException e1) {
+					e1.printStackTrace();
+				}
+				break;
+			case "PRINTPREVIEW":
+				dv = new Druckvorschau(this, controller.getModel(), controller.getConfig().getPageFormat());
+				controller.getConfig().setPageFormat(dv.showDialog());
+				break;
+			case "SINGLEPREVIEW":
+				EinzelAuswahl einzel = new EinzelAuswahl(this, controller);
+				Einzel ez = einzel.showDialog();
+				if (ez == null) return;
+				dv = new Druckvorschau(this, ez, controller.getConfig().getPageFormat());
+				controller.getConfig().setPageFormat(dv.showDialog());
+				break;
+			case "PREFERENCES":
+				Einstellungen einstellungen = new Einstellungen(this, controller.getConfig());
+				einstellungen.setVisible(true);
+				break;
+			case "CLOSE":
+				close();
+				break;
+			case "DISZIPLINEN":
+				Disziplinen disziplin = new Disziplinen(this, controller.getDisziplinen());
+				disziplin.setVisible(true);
+				break;
+			case "SCHUETZEN":
+				Schuetzen schuetze = new Schuetzen(this, controller);
+				schuetze.setVisible(true);
+				break;
 		}
 	}
 
