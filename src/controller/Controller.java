@@ -16,7 +16,7 @@ import javax.swing.text.StyleConstants;
 
 import model.Config;
 import model.Disziplin;
-import model.LinieModel;
+import model.LineReader;
 import model.Model;
 import model.ModelChangeListener;
 import model.Schuetze;
@@ -111,10 +111,6 @@ public class Controller {
 		model.save(file);
 	}
 
-	public boolean canExit() {
-		return fileChecker.canExit();
-	}
-
 	public void exit() {
 		fileChecker.exit();
 	}
@@ -132,8 +128,8 @@ public class Controller {
 	}
 
 	public boolean add(Object o) {
-		if (o instanceof LinieModel) {
-			return fileChecker.addLinie((LinieModel) o);
+		if (o instanceof LineReader) {
+			return fileChecker.addLineReader((LineReader) o);
 		}
 
 		if (model.add(o)) {

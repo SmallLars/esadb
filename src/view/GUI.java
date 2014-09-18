@@ -26,7 +26,8 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JMenu;
 
-import model.LinieModel;
+import model.DefaultLineModel;
+import model.LineModel;
 import model.Einzel;
 import controller.Controller;
 import controller.Status;
@@ -182,7 +183,7 @@ public class GUI extends JFrame implements ActionListener {
 
 		int i = 0;
 		for (int l : controller.getConfig().getLinien()) {
-			LinieModel linie = new LinieModel(l, controller);
+			LineModel linie = new DefaultLineModel(l, controller);
 			linie.setStatus(Status.INIT);
 			controller.add(linie);
 
@@ -341,7 +342,7 @@ public class GUI extends JFrame implements ActionListener {
 	}
 
 	public void close() {
-		if (!controller.canExit()) {
+		for (Linie l : linien) if (!l.isFrei()) {
 			JOptionPane.showMessageDialog(	this,
 											"Das Programm kann erst beendet werden, wenn alle Linien frei sind.",
 											"Fehler",

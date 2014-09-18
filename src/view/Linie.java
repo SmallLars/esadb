@@ -14,13 +14,13 @@ import javax.swing.JPanel;
 import javax.swing.border.EtchedBorder;
 
 import model.Disziplin;
-import model.LinieModel;
+import model.LineModel;
 import model.Schuetze;
 import controller.Status;
 
 @SuppressWarnings("serial")
 public class Linie extends JPanel {
-	private LinieModel linie;
+	private LineModel linie;
 
 	private JComboBox<Schuetze> schuetze;
 	private JComboBox<Disziplin> disziplin;
@@ -31,7 +31,7 @@ public class Linie extends JPanel {
 
 	private boolean match = false;
 
-	public Linie(LinieModel linie) {
+	public Linie(LineModel linie) {
 		this.linie = linie;
 		linie.setView(this);
 
@@ -143,5 +143,9 @@ public class Linie extends JPanel {
 		if (this.isEnabled()) {
 			wertung.setEnabled(false);
 		}
+	}
+
+	public boolean isFrei() {
+		return linie.isFrei();
 	}
 }

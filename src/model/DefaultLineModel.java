@@ -15,7 +15,7 @@ import view.Linie;
 import view.Scheibe;
 
 
-public class LinieModel {
+public class DefaultLineModel implements LineModel, LineReader {
 	private int nummer;
 	private Controller controller;
 	private Einzel einzel;
@@ -24,7 +24,7 @@ public class LinieModel {
 	private Linie view = null;
 	private Scheibe scheibe = null;
 
-	public LinieModel(int nummer, Controller controller) {
+	public DefaultLineModel(int nummer, Controller controller) {
 		this.nummer = nummer;
 		this.controller = controller;
 		this.einzel = null;
@@ -38,10 +38,6 @@ public class LinieModel {
 		einzel = new Einzel(nummer, disziplin, schuetze);
 		if (scheibe != null) scheibe.setStart(einzel);
 		controller.add(einzel);
-	}
-
-	public Start getStart() {
-		return einzel;
 	}
 
 	public void setView(Linie view) {

@@ -1,4 +1,5 @@
 package controller;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -13,18 +14,18 @@ import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
 import java.util.Vector;
 
-import model.LinieModel;
+import model.LineReader;
 import model.Treffer;
 import static java.nio.file.StandardWatchEventKinds.*;
 
 
 public class FileChecker extends Thread {
 	private WatchService watcher;
-	private Vector<LinieModel> linien;
+	private Vector<LineReader> lineReader;
 	private boolean running;
 
 	public FileChecker(int linienCount) {
-		linien = new Vector<LinieModel>(linienCount);
+		lineReader = new Vector<LineReader>(linienCount);
 		running = true;
 		
 		Path dir = Paths.get(".");
@@ -37,13 +38,6 @@ public class FileChecker extends Thread {
 		}
 
 		if (watcher != null) start();
-	}
-
-	public boolean canExit() {
-		for (LinieModel l : linien) {
-			if (!l.isFrei()) return false;
-		}
-		return true;
 	}
 
 	public void exit() {
@@ -77,7 +71,8 @@ public class FileChecker extends Thread {
 				for (WatchEvent<?> event: key.pollEvents()) {
 					Kind<?> kind = event.kind();
 					String dateiname = event.context().toString();
-
+					int linie;
+					LineReader lr;
 					switch (kind.name()) {
 						case "ENTRY_CREATE":
 							// HTreff<X>PN<Y>.ctl
@@ -86,22 +81,25 @@ public class FileChecker extends Thread {
 							// HTreff<X>MN<Y>.nrt
 							if (!dateiname.startsWith("HTreff")) break;
 
-							File datei = new File(dateiname);
-							if (dateiname.endsWith(".ctl")) {
-								int endIndex = dateiname.indexOf('N') - 1;
-								int linie = Integer.parseUnsignedInt(dateiname.substring(6, endIndex));
-								BufferedReader reader = new BufferedReader(new FileReader(dateiname));
-								getLinieByNumber(linie).addTreffer(new Treffer(reader.readLine()));
-								reader.close();
+							int endIndex = dateiname.indexOf('N') - 1;
+							linie = Integer.parseUnsignedInt(dateiname.substring(6, endIndex));
+							lr = getLineReaderByNumber(linie);
+							if (lr != null) {
+								File datei = new File(dateiname);
+								if (dateiname.endsWith(".ctl")) {
+									BufferedReader reader = new BufferedReader(new FileReader(dateiname));
+									lr.addTreffer(new Treffer(reader.readLine()));
+									reader.close();
+								}
+								datei.delete();
 							}
-							datei.delete();
 							break;
 						case "ENTRY_DELETE":
 							// HServ<X>.ctl
 							if (dateiname.startsWith("HServ") && dateiname.endsWith(".ctl")) {
-								int linie = Integer.parseUnsignedInt(dateiname.substring(5, dateiname.length() - 4));
-								LinieModel l = getLinieByNumber(linie);
-								if (l != null) l.reenable();
+								linie = Integer.parseUnsignedInt(dateiname.substring(5, dateiname.length() - 4));
+								lr = getLineReaderByNumber(linie);
+								if (lr != null) lr.reenable();
 							}
 							break;
 						default: // OVERFLOW
@@ -115,17 +113,17 @@ public class FileChecker extends Thread {
 		}
 	}
 
-	public boolean addLinie(LinieModel l) {
-		return linien.add(l);
+	public boolean addLineReader(LineReader lr) {
+		return lineReader.add(lr);
 	}
 
-	public int getLinienCount() {
-		return linien.capacity();
+	public int getLineReaderCount() {
+		return lineReader.capacity();
 	}
 	
-	private LinieModel getLinieByNumber(int nummer) {
-		for (LinieModel l : linien) {
-			if (l.getNummer() == nummer) return l;
+	private LineReader getLineReaderByNumber(int nummer) {
+		for (LineReader lr : lineReader) {
+			if (lr.getNummer() == nummer) return lr;
 		}
 		return null;
 	}
