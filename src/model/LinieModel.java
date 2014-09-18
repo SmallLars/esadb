@@ -1,8 +1,11 @@
 package model;
+import java.awt.Color;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 
 import javax.swing.ComboBoxModel;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
 
 import model.comboBoxModel.DisziplinenModel;
 import model.comboBoxModel.SchuetzenModel;
@@ -96,16 +99,22 @@ public class LinieModel {
 		}
 	}
 
-	public String addTreffer(Treffer t) {
+	public boolean addTreffer(Treffer t) {
+		SimpleAttributeSet style = new SimpleAttributeSet();
+		StyleConstants.setBold(style, true);
+		StyleConstants.setForeground(style, Color.decode("0x0050A0"));
+
 		if (einzel == null) {
-			return "Schuß von freier Linie erhalten. Zuordnung nicht möglich.";
+			controller.println(this + ": Schuß von freier Linie erhalten. Zuordnung nicht möglich.", style);
+			return false;
 		}
-		String info = einzel.addTreffer(t);
+
+		controller.println(this + ": " + einzel.addTreffer(t), style);
 		if (view != null) {
 			if (!t.isProbe() && t.getNummer() == 1) view.setMatch();
 		}
 		if (scheibe != null) scheibe.newTreffer();
-		return info;
+		return true;
 	}
 	
 	@Override

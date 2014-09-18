@@ -21,7 +21,6 @@ import model.Model;
 import model.ModelChangeListener;
 import model.Schuetze;
 import model.Start;
-import model.Treffer;
 
 import org.apache.commons.io.FileUtils;
 
@@ -34,7 +33,6 @@ public class Controller {
 	
 	private File file;
 	private Model model;
-	private List<LinieModel> linien;
 	private FileChecker fileChecker;
 	private GUI gui;
 
@@ -69,15 +67,8 @@ public class Controller {
 			model = new Model();
 		}
 
-		linien = new Vector<LinieModel>(config.getLinien().size());
-		for (Integer i : config.getLinien()) {
-			LinieModel lm = new LinieModel(i, this);
-			lm.setStatus(Status.INIT);
-			linien.add(lm);
-		}
-
-		fileChecker = new FileChecker(this);
-		gui = new GUI(this);
+		fileChecker = new FileChecker(config.getLinienCount());
+		gui = new GUI(this, config.getLinienCount());
 
 		PrintStream ps = new PrintStream(new OutputStream() {
 			@Override
@@ -102,22 +93,6 @@ public class Controller {
 		return model;
 	}
 
-	public int getLinienAnzahl() {
-		return linien.size();
-	}
-
-	public LinieModel getLinieByIndex(int index) {
-		if (index >= linien.size()) return null;
-		return linien.get(index);
-	}
-
-	public LinieModel getLinieByNumber(int nummer) {
-		for (LinieModel l : linien) {
-			if (l.getNummer() == nummer) return l;
-		}
-		return null;
-	}
-
 	public void neu(File file) {
 		this.file = file;
 		model = new Model();
@@ -137,10 +112,7 @@ public class Controller {
 	}
 
 	public boolean canExit() {
-		for (LinieModel l : linien) {
-			if (!l.isFrei()) return false;
-		}
-		return true;
+		return fileChecker.canExit();
 	}
 
 	public void exit() {
@@ -159,29 +131,22 @@ public class Controller {
 		return  model.getDisziplinen();
 	}
 
-	public static void main(String[] args) {
-		new Controller();
+	public boolean add(Object o) {
+		if (o instanceof LinieModel) {
+			return fileChecker.addLinie((LinieModel) o);
+		}
+
+		if (model.add(o)) {
+			modelChanged();
+			save(file);
+			return true;
+		}
+
+		return false;
 	}
 
-	public boolean add(Object o) {
-		boolean val = false;
-		if (o instanceof Treffer) {
-			Treffer t = (Treffer) o;
-			LinieModel l = getLinieByNumber(t.getLinie() - 1);
-			if (l != null) {
-				val = true;
-				String info = l.addTreffer(t);
-				SimpleAttributeSet style = new SimpleAttributeSet();
-				StyleConstants.setBold(style, true);
-				StyleConstants.setForeground(style, Color.decode("0x0050A0"));
-				gui.println(l + ": " + info, style);
-			}
-		} else {
-			val = model.add(o);
-			if (val) modelChanged();
-		}
-		if (val) save(file);
-		return val;
+	public void println(String string, SimpleAttributeSet style) {
+		gui.println(string, style);
 	}
 
 	public boolean remove(Start s) {
@@ -200,5 +165,9 @@ public class Controller {
 		for (ModelChangeListener l : modelChangeListener) {
 			l.modelChanged();
 		}
+	}
+
+	public static void main(String[] args) {
+		new Controller();
 	}
 }

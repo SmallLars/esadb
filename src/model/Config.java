@@ -63,6 +63,10 @@ public class Config implements Serializable {
 		return new Vector<Integer>(linien);
 	}
 
+	public int getLinienCount() {
+		return linien.size();
+	}
+
 	public boolean addLinie(Integer l) {
 		boolean b = linien.add(l);
 		save();

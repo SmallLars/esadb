@@ -11,6 +11,7 @@ import java.nio.file.WatchEvent;
 import java.nio.file.WatchEvent.Kind;
 import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
+import java.util.Vector;
 
 import model.LinieModel;
 import model.Treffer;
@@ -19,11 +20,11 @@ import static java.nio.file.StandardWatchEventKinds.*;
 
 public class FileChecker extends Thread {
 	private WatchService watcher;
-	private Controller controller;
+	private Vector<LinieModel> linien;
 	private boolean running;
 
-	public FileChecker(Controller controller) {
-		this.controller = controller;
+	public FileChecker(int linienCount) {
+		linien = new Vector<LinieModel>(linienCount);
 		running = true;
 		
 		Path dir = Paths.get(".");
@@ -36,6 +37,13 @@ public class FileChecker extends Thread {
 		}
 
 		if (watcher != null) start();
+	}
+
+	public boolean canExit() {
+		for (LinieModel l : linien) {
+			if (!l.isFrei()) return false;
+		}
+		return true;
 	}
 
 	public void exit() {
@@ -80,12 +88,11 @@ public class FileChecker extends Thread {
 
 							File datei = new File(dateiname);
 							if (dateiname.endsWith(".ctl")) {
-								//TODO liniennummer abgleichen
-								//int linie = Integer.parseUnsignedInt(dateiname.substring(6, 7)) - 1;
+								int endIndex = dateiname.indexOf('N') - 1;
+								int linie = Integer.parseUnsignedInt(dateiname.substring(6, endIndex));
 								BufferedReader reader = new BufferedReader(new FileReader(dateiname));
-								controller.add(new Treffer(reader.readLine()));
+								getLinieByNumber(linie).addTreffer(new Treffer(reader.readLine()));
 								reader.close();
-
 							}
 							datei.delete();
 							break;
@@ -93,7 +100,7 @@ public class FileChecker extends Thread {
 							// HServ<X>.ctl
 							if (dateiname.startsWith("HServ") && dateiname.endsWith(".ctl")) {
 								int linie = Integer.parseUnsignedInt(dateiname.substring(5, dateiname.length() - 4));
-								LinieModel l = controller.getLinieByNumber(linie);
+								LinieModel l = getLinieByNumber(linie);
 								if (l != null) l.reenable();
 							}
 							break;
@@ -106,5 +113,20 @@ public class FileChecker extends Thread {
 				System.out.println("Err");
 			}
 		}
+	}
+
+	public boolean addLinie(LinieModel l) {
+		return linien.add(l);
+	}
+
+	public int getLinienCount() {
+		return linien.capacity();
+	}
+	
+	private LinieModel getLinieByNumber(int nummer) {
+		for (LinieModel l : linien) {
+			if (l.getNummer() == nummer) return l;
+		}
+		return null;
 	}
 }

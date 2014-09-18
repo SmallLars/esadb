@@ -114,7 +114,7 @@ public class Treffer implements Serializable, Comparable<Treffer> {
 
     @Override
     public String toString() {
-    	return String.format("%4.1f");
+    	return String.format("%4.1f", wert);
     }
 
     public void print(PrintWriter writer) {

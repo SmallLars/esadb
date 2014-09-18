@@ -29,6 +29,7 @@ import javax.swing.JMenu;
 import model.LinieModel;
 import model.Einzel;
 import controller.Controller;
+import controller.Status;
 import druckvorschau.Druckvorschau;
 
 import java.awt.event.WindowAdapter;
@@ -60,7 +61,7 @@ public class GUI extends JFrame implements ActionListener {
 	Linie linien[];
     JFileChooser fc;
 
-	public GUI(Controller controller) {
+	public GUI(Controller controller, int linienCount) {
 		super("ESADB - Datenbank für ESA 2002 - " + controller.getFile().getName());
 		setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/esadb.png")));
 		addWindowListener(new WindowAdapter() {
@@ -70,8 +71,8 @@ public class GUI extends JFrame implements ActionListener {
 		setMinimumSize(new Dimension(1196, 726));
 
 		this.controller = controller;
-		scheiben = new Scheibe[controller.getLinienAnzahl()];
-		linien = new Linie[controller.getLinienAnzahl()];
+		scheiben = new Scheibe[linienCount];
+		linien = new Linie[linienCount];
 
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setBounds(controller.getConfig().getMainWindowBounds());
@@ -179,8 +180,11 @@ public class GUI extends JFrame implements ActionListener {
 		lblDisziplin.setBounds(413, 8, 56, 14);
 		contentPane.add(lblDisziplin);
 
-		for (int i = 0; i < controller.getLinienAnzahl(); i++) {
-			LinieModel linie = controller.getLinieByIndex(i);
+		int i = 0;
+		for (int l : controller.getConfig().getLinien()) {
+			LinieModel linie = new LinieModel(l, controller);
+			linie.setStatus(Status.INIT);
+			controller.add(linie);
 
 			linien[i] = new Linie(linie);
 			linien[i].setLocation(10, 32 + (i * (linien[i].getHeight() + 10)));
@@ -190,6 +194,8 @@ public class GUI extends JFrame implements ActionListener {
 			scheiben[i].setBounds(738 + (i % 2 * 225), i / 2 * 225, 225, 225);
 			contentPane.add(scheiben[i]);
 			linie.setScheibe(scheiben[i]);
+
+			i++;
 		}
 
 		JScrollPane scrollPane = new JScrollPane();
@@ -214,7 +220,7 @@ public class GUI extends JFrame implements ActionListener {
 			public void componentResized(ComponentEvent arg0) {
 				controller.getConfig().setMainWindowBounds(getBounds());
 				scrollPane.setSize(738, contentPane.getHeight() - 278);
-				for (int i = 0; i < controller.getLinienAnzahl(); i++) {
+				for (int i = 0; i < linienCount; i++) {
 					scheiben[i].setSize(	(contentPane.getWidth() - 738) / 2,
 											contentPane.getHeight() / 3
 					);
