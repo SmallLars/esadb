@@ -8,9 +8,9 @@ import model.Verein;
 
 public class SchuetzenRowFilter extends RowFilter<SchuetzenTableModel, Integer> {
 
-	Controller controller;
-	Verein verein;
-	boolean active;
+	private Controller controller;
+	private Verein verein;
+	private boolean active;
 
 	public SchuetzenRowFilter(Controller controller, boolean active, Verein verein) {
 		this.controller = controller;

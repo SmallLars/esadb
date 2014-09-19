@@ -8,12 +8,15 @@ import java.awt.Point;
 
 import javax.swing.JPanel;
 
+import model.DefaultLineModel;
 import model.Einzel;
+import model.LineListener;
+import model.LineModel;
 import model.Treffer;
 
 
 @SuppressWarnings("serial")
-public class Scheibe extends JPanel {
+public class Scheibe extends JPanel implements LineListener {
 	private final int original = 1704;
 	private final int ringe[] = {1544, 1384, 1224, 1124, 1064, 904, 744, 584, 424, 264, 104, 50};
 
@@ -79,15 +82,6 @@ public class Scheibe extends JPanel {
 		}
 	}
 
-	public void setStart(Einzel einzel) {
-		this.einzel = einzel;
-		this.repaint();
-	}
-
-	public void newTreffer() {
-		repaint();
-	}
-
 	private void drawTreffer(Graphics g, double x, double y) {
 		Dimension d = toPixel(56);
 		Point p = toPixel((int) x/10, (int) y/10);
@@ -109,5 +103,13 @@ public class Scheibe extends JPanel {
 		p.y = y * getHeight() / original;
 		p.x = x * getWidth() / original;
 		return p;
+	}
+
+	@Override
+	public void lineChanged(LineModel lm, int type) {
+		if (type == DefaultLineModel.RESULT_CHANGED) {
+			einzel = lm.getResult();
+			repaint();
+		}
 	}
 }

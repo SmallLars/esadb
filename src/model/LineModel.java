@@ -3,8 +3,6 @@ package model;
 import javax.swing.ComboBoxModel;
 
 import controller.Status;
-import view.Linie;
-import view.Scheibe;
 
 
 public interface LineModel {
@@ -13,13 +11,21 @@ public interface LineModel {
 	
 	public void configure(Schuetze schuetze, Disziplin disziplin);
 
-	public void setView(Linie view);
+	public Einzel getResult();
 
-	public void setScheibe(Scheibe scheibe);
-	
 	public void setStatus(Status status);
+
+	public boolean isBusy();
 	
 	public boolean isFrei();
+
+	public boolean isGesperrt();
+
+	public boolean isGestartet();
+
+	public boolean inMatch();
+
+	public boolean canSwitchPM();
 
 	@Override
 	public String toString();
@@ -27,4 +33,8 @@ public interface LineModel {
 	public ComboBoxModel<Disziplin> getDisziplinenModel();
 
 	public ComboBoxModel<Schuetze> getSchuetzenModel();
+	
+	public void addLineListener(LineListener l);
+	
+	public void removeLineListener(LineListener l);
 }

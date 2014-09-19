@@ -42,25 +42,25 @@ import java.awt.Toolkit;
 
 @SuppressWarnings("serial")
 public class GUI extends JFrame implements ActionListener {
-	Controller controller;
+	private Controller controller;
 
-	JMenuItem mntmNeu;
-	JMenuItem mntmLaden;
-	JMenuItem mntmSpeichern;
-	JMenuItem mntmBeenden;
-	JMenuItem mntmDrucken;
-	JMenuItem mntmVorschau;
-	JMenuItem mntmEinzel;
-	JMenuItem mntmEinstellungen;
+	private JMenuItem mntmNeu;
+	private JMenuItem mntmLaden;
+	private JMenuItem mntmSpeichern;
+	private JMenuItem mntmBeenden;
+	private JMenuItem mntmDrucken;
+	private JMenuItem mntmVorschau;
+	private JMenuItem mntmEinzel;
+	private JMenuItem mntmEinstellungen;
 
-	JMenuItem mntmSchtzen;
-	JMenuItem mntmDisziplinen;
+	private JMenuItem mntmSchtzen;
+	private JMenuItem mntmDisziplinen;
 
-	JPanel contentPane;
-	JTextPane konsole;
-	Scheibe scheiben[];
-	Linie linien[];
-    JFileChooser fc;
+	private JPanel contentPane;
+	private JTextPane konsole;
+	private Scheibe scheiben[];
+	private Linie linien[];
+	private JFileChooser fc;
 
 	public GUI(Controller controller, int linienCount) {
 		super("ESADB - Datenbank für ESA 2002 - " + controller.getFile().getName());
@@ -194,7 +194,7 @@ public class GUI extends JFrame implements ActionListener {
 			scheiben[i] = new Scheibe(null);
 			scheiben[i].setBounds(738 + (i % 2 * 225), i / 2 * 225, 225, 225);
 			contentPane.add(scheiben[i]);
-			linie.setScheibe(scheiben[i]);
+			linie.addLineListener(scheiben[i]);
 
 			i++;
 		}

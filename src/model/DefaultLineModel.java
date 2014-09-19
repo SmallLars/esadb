@@ -2,6 +2,7 @@ package model;
 import java.awt.Color;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.util.Vector;
 
 import javax.swing.ComboBoxModel;
 import javax.swing.text.SimpleAttributeSet;
@@ -11,23 +12,28 @@ import model.comboBoxModel.DisziplinenModel;
 import model.comboBoxModel.SchuetzenModel;
 import controller.Controller;
 import controller.Status;
-import view.Linie;
-import view.Scheibe;
 
 
 public class DefaultLineModel implements LineModel, LineReader {
+	public static final int STATE_CHANGED = 1;
+	public static final int RESULT_CHANGED = 2;
+
 	private int nummer;
 	private Controller controller;
 	private Einzel einzel;
 
 	private boolean busy = false;
-	private Linie view = null;
-	private Scheibe scheibe = null;
+	private Vector<LineListener> listener;
+
+	private int state;
 
 	public DefaultLineModel(int nummer, Controller controller) {
 		this.nummer = nummer;
 		this.controller = controller;
 		this.einzel = null;
+		this.listener = new Vector<LineListener>();
+
+		state = 0;
 	}
 
 	public int getNummer() {
@@ -36,22 +42,17 @@ public class DefaultLineModel implements LineModel, LineReader {
 	
 	public void configure(Schuetze schuetze, Disziplin disziplin) {
 		einzel = new Einzel(nummer, disziplin, schuetze);
-		if (scheibe != null) scheibe.setStart(einzel);
+		modelChanged(RESULT_CHANGED);
 		controller.add(einzel);
 	}
 
-	public void setView(Linie view) {
-		this.view = view;
+	public Einzel getResult() {
+		return einzel;
 	}
 
-	public void setScheibe(Scheibe scheibe) {
-		this.scheibe = scheibe;
-	}
-	
 	public void setStatus(Status status) {
 		if (busy == false) {
 			busy = true;
-			if (view != null) view.setEnabled(false);
 			String cmd = null;
 			if (status == Status.SPERREN) {
 				if (einzel != null) {
@@ -61,28 +62,66 @@ public class DefaultLineModel implements LineModel, LineReader {
 				cmd = status.getCode();
 			}
 			switch (status) {
+				case SPERREN:
+					state = 1;
+					break;
 				case ENTSPERREN:
 					if (einzel.isEmpty()) controller.remove(einzel);
+					state = 0;
+					break;
+				case START:
+					state = 2;
+					break;
+				case STOP:
+					state = 1;
+					break;
+				case WERTUNG:
+					state = 3;
+					break;
+				case PROBE:
+					state = 2;
 					break;
 				case FREI:
 					einzel = null;
-					if (scheibe != null) scheibe.setStart(einzel);
+					modelChanged(RESULT_CHANGED);
 				default:
 			}
 			if (cmd != null) {
 				writeFile(".ctl", cmd + "\n");
 				writeFile(".nrt", cmd + "\n");
 			}
+
+			modelChanged(STATE_CHANGED);
 		}
+	}
+
+	public boolean isBusy() {
+		return busy;
 	}
 	
 	public boolean isFrei() {
 		return !busy && einzel == null;
 	}
 
+	public boolean isGesperrt() {
+		return state > 0;
+	}
+
+	public boolean isGestartet() {
+		return state > 1;
+	}
+
+	public boolean inMatch() {
+		return state > 2 || (einzel != null && einzel.getTreffer(false, 1) != null);
+	}
+
+	public boolean canSwitchPM() {
+		return isGestartet() && einzel.getTreffer(false, 1) == null;
+	}
+
 	public void reenable() {
 		busy = false;
-		if (view != null) view.setEnabled(true);
+		modelChanged(STATE_CHANGED);
 	}
 	
 	private void writeFile(String type, String cmd) {
@@ -106,10 +145,9 @@ public class DefaultLineModel implements LineModel, LineReader {
 		}
 
 		controller.println(this + ": " + einzel.addTreffer(t), style);
-		if (view != null) {
-			if (!t.isProbe() && t.getNummer() == 1) view.setMatch();
-		}
-		if (scheibe != null) scheibe.newTreffer();
+		modelChanged(STATE_CHANGED);
+		modelChanged(RESULT_CHANGED);
+
 		return true;
 	}
 	
@@ -124,5 +162,19 @@ public class DefaultLineModel implements LineModel, LineReader {
 
 	public ComboBoxModel<Schuetze> getSchuetzenModel() {
 		return new SchuetzenModel(controller);
+	}
+
+	@Override
+	public void addLineListener(LineListener l) {
+		listener.add(l);		
+	}
+
+	@Override
+	public void removeLineListener(LineListener l) {
+		listener.remove(l);
+	}
+
+	private void modelChanged(int type) {
+		for (LineListener l : listener) l.lineChanged(this, type);
 	}
 }

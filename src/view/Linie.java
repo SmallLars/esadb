@@ -1,4 +1,5 @@
 package view;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -13,13 +14,16 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EtchedBorder;
 
+import model.DefaultLineModel;
 import model.Disziplin;
+import model.LineListener;
 import model.LineModel;
 import model.Schuetze;
 import controller.Status;
 
+
 @SuppressWarnings("serial")
-public class Linie extends JPanel {
+public class Linie extends JPanel implements LineListener {
 	private LineModel linie;
 
 	private JComboBox<Schuetze> schuetze;
@@ -29,11 +33,9 @@ public class Linie extends JPanel {
 	private JCheckBox wertung;
 	private JButton frei;
 
-	private boolean match = false;
-
 	public Linie(LineModel linie) {
 		this.linie = linie;
-		linie.setView(this);
+		linie.addLineListener(this);
 
 		this.setLayout(null);
 		this.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
@@ -62,8 +64,6 @@ public class Linie extends JPanel {
 						linie.setStatus(Status.SPERREN);
 					}
 				} else {
-					wertung.setSelected(false);
-					match = false;
 					linie.setStatus(Status.ENTSPERREN);
 				}
 			}
@@ -121,6 +121,20 @@ public class Linie extends JPanel {
 		setEnabled(false);
 	}
 
+	public boolean isFrei() {
+		return linie.isFrei();
+	}
+
+	@Override
+	public void lineChanged(LineModel lm, int type) {
+		if (type == DefaultLineModel.STATE_CHANGED) {
+			setEnabled(!linie.isBusy());
+			sperre.setSelected(linie.isGesperrt());
+			start.setSelected(linie.isGestartet());
+			wertung.setSelected(linie.inMatch());
+		}
+	}
+
 	@Override
 	public void setEnabled(boolean enabled) {
 		Color c = enabled ? null : Color.ORANGE;
@@ -129,23 +143,11 @@ public class Linie extends JPanel {
 		sperre.setBackground(c);
 		start.setBackground(c);
 		wertung.setBackground(c);
-		schuetze.setEnabled(enabled && !sperre.isSelected());
-		disziplin.setEnabled(enabled && !sperre.isSelected());
-		sperre.setEnabled(enabled && !start.isSelected());
-		start.setEnabled(enabled && sperre.isSelected());
-		wertung.setEnabled(enabled && sperre.isSelected() && !match);
-		frei.setEnabled(enabled && !sperre.isSelected() && !linie.isFrei());
-	}
-
-	public void setMatch() {
-		match = true;
-		wertung.setSelected(true);
-		if (this.isEnabled()) {
-			wertung.setEnabled(false);
-		}
-	}
-
-	public boolean isFrei() {
-		return linie.isFrei();
+		schuetze.setEnabled(enabled && !linie.isGesperrt());
+		disziplin.setEnabled(enabled && !linie.isGesperrt());
+		sperre.setEnabled(enabled && !linie.isGestartet());
+		start.setEnabled(enabled && linie.isGesperrt());
+		wertung.setEnabled(enabled && linie.canSwitchPM());
+		frei.setEnabled(enabled && !linie.isGesperrt() && !linie.isFrei());
 	}
 }
