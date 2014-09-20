@@ -147,6 +147,7 @@ public class DefaultLineModel implements LineModel, LineReader {
 		}
 
 		controller.println(this + ": " + einzel.addTreffer(t), style);
+		controller.save();
 		modelChanged(STATE_CHANGED);
 		modelChanged(RESULT_CHANGED);
 
