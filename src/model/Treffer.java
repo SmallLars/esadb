@@ -34,7 +34,7 @@ public class Treffer implements Serializable, Comparable<Treffer> {
 		G = SchussNr
 		H = Wertung : Ja(-1), Nein(0)
 		I = Ringwert
-		J = Trefferlage     f, g, h, i, j, k, l, m, R
+		J = Trefferlage     f, g, h, i, j, k, l, m, R          LL, OR, OO, UU, OL, RR, UL, UR
 		K = X_Pos
 		L = Y_Pos
 		M = R_Pos
@@ -53,6 +53,19 @@ public class Treffer implements Serializable, Comparable<Treffer> {
    		r = Double.parseDouble(sa[12].trim());
    		phi = Double.parseDouble(sa[13].trim());
    		zeit = Integer.parseInt(sa[14].trim());
+    }
+
+    public Treffer(int linie, int nummer, boolean probe, float wert, String lage, double x, double y, double r, double phi, int zeit) {
+    	this.linie = linie;
+    	this.nummer = nummer;
+    	this.probe = probe;
+    	this.wert = wert;
+    	this.lage = lage;
+    	this.x = x;
+    	this.y = y;
+    	this.r = r;
+    	this.phi = phi;
+    	this.zeit = zeit;
     }
 
     public Treffer(boolean probe, int nummer) {
