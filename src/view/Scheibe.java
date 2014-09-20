@@ -19,13 +19,18 @@ import model.Treffer;
 public class Scheibe extends JPanel implements LineListener {
 	private final int original = 1704;
 	private final int ringe[] = {1544, 1384, 1224, 1124, 1064, 904, 744, 584, 424, 264, 104, 50};
+	private final int PROBE = 1;
+	private final int MATCH = 2;
 
 	private int mitteX;
 	private int mitteY;
 	private Einzel einzel;
 
+	private int force;
+
 	public Scheibe(Einzel einzel) {
 		this.einzel = einzel;
+		this.force = 0;
 		setSize(400, 400);
 	}
 
@@ -43,7 +48,7 @@ public class Scheibe extends JPanel implements LineListener {
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		
-		if (einzel == null || !einzel.inMatch()) {
+		if (showProbe()) {
 			Dimension de = toPixel(80);
 			g.setColor(Color.BLACK);
 			g.fillPolygon(new int[]{getWidth() - de.width, getWidth() - de.width, getWidth() - de.height * 6}, new int[]{de.height, de.height * 6, de.height}, 3);
@@ -76,10 +81,22 @@ public class Scheibe extends JPanel implements LineListener {
 		}
 
 		for (int i = 1; einzel != null; i++) {
-			Treffer t = einzel.getTreffer(!einzel.inMatch(), i);
+			Treffer t = einzel.getTreffer(showProbe(), i);
 			if (t == null) break;
 			drawTreffer(g, t.getX(), t.getY());
 		}
+	}
+
+	public void forceProbe() {
+		force = PROBE;
+	}
+
+	public void forceMatch() {
+		force = MATCH;
+	}
+
+	private boolean showProbe() {
+		return einzel == null || force == PROBE || (force != MATCH && !einzel.inMatch());
 	}
 
 	private void drawTreffer(Graphics g, double x, double y) {

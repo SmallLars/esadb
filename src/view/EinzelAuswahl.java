@@ -11,6 +11,7 @@ import java.util.Vector;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JComboBox;
@@ -20,9 +21,11 @@ import model.Einzel;
 import model.Start;
 import controller.Controller;
 
+import javax.swing.JCheckBox;
+
 
 @SuppressWarnings("serial")
-public class EinzelAuswahl extends JDialog {
+public class EinzelAuswahl extends JDialog implements ActionListener {
 
 	private final JPanel contentPanel = new JPanel();
 	private List<Einzel> ergebnisse;
@@ -32,6 +35,8 @@ public class EinzelAuswahl extends JDialog {
 	JComboBox<Disziplin> disziplin;
 	DefaultComboBoxModel<Einzel> modelS;
 	JComboBox<Einzel> start;
+	JCheckBox chckbxProbe;
+	JCheckBox chckbxMatch;
 
 	public EinzelAuswahl(Frame parent, Controller controller) {
 		super(parent, "Ergebnisauswahl");
@@ -66,29 +71,29 @@ public class EinzelAuswahl extends JDialog {
 		start.setBounds(10, 59, 422, 22);
 		contentPanel.add(start);
 
+		chckbxProbe = new JCheckBox("Probe");
+		chckbxProbe.setSelected(Einzel.print == Einzel.PROBE || Einzel.print == Einzel.BOTH);
+		chckbxProbe.setBounds(10, 106, 97, 23);
+		contentPanel.add(chckbxProbe);
+		
+		chckbxMatch = new JCheckBox("Match");
+		chckbxMatch.setSelected(Einzel.print == Einzel.MATCH || Einzel.print == Einzel.BOTH);
+		chckbxMatch.setBounds(10, 132, 97, 23);
+		contentPanel.add(chckbxMatch);
+
 		JPanel buttonPane = new JPanel();
 		buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		getContentPane().add(buttonPane, BorderLayout.SOUTH);
 
 		JButton okButton = new JButton("OK");
 		okButton.setActionCommand("OK");
-		okButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				okKlick = true;
-				setVisible(false);				
-			}
-		});
+		okButton.addActionListener(this);
 		buttonPane.add(okButton);
 		getRootPane().setDefaultButton(okButton);
 
 		JButton cancelButton = new JButton("Abbrechen");
-		cancelButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				setVisible(false);				
-			}
-		});
+		cancelButton.setActionCommand("CANCEL");
+		cancelButton.addActionListener(this);
 		buttonPane.add(cancelButton);
 	}
 
@@ -119,4 +124,24 @@ public class EinzelAuswahl extends JDialog {
 		}
 	}
 
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+		if (arg0.getActionCommand().equals("OK")) {
+			if (!chckbxProbe.isSelected() && !chckbxMatch.isSelected()) {
+				JOptionPane.showMessageDialog(	this,
+												"Probe und/oder Match muss ausgewählt werden.",
+												"Fehler",
+												JOptionPane.WARNING_MESSAGE);
+				return;
+			}
+			if (chckbxProbe.isSelected() && chckbxMatch.isSelected()) {
+				Einzel.print = Einzel.BOTH;
+			} else {
+				if (chckbxProbe.isSelected()) Einzel.print = Einzel.PROBE;
+				else Einzel.print = Einzel.MATCH;
+			}
+			okKlick = true;
+		}
+		setVisible(false);
+	}
 }

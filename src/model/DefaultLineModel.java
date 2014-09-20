@@ -114,7 +114,7 @@ public class DefaultLineModel implements LineModel, LineReader {
 	}
 
 	public boolean inMatch() {
-		return state > 2 || (einzel != null && einzel.getTreffer(false, 1) != null);
+		return state > 2 || (einzel != null && einzel.inMatch());
 	}
 
 	public boolean canSwitchPM() {

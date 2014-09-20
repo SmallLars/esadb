@@ -126,8 +126,10 @@ public class Einstellungen extends JDialog {
 		btnLschen.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				config.removeLinie(list.getSelectedValue());
-				listModel.removeElement(list.getSelectedValue());
+				Integer l = list.getSelectedValue();
+				if (l == null) return;
+				config.removeLinie(l);
+				listModel.removeElement(l);
 			}
 		});
 		btnLschen.setBounds(120, 80, 91, 23);
