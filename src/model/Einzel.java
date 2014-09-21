@@ -13,6 +13,7 @@ import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.NavigableMap;
+import java.util.NoSuchElementException;
 import java.util.TreeMap;
 
 import javax.swing.BorderFactory;
@@ -80,10 +81,10 @@ public class Einzel extends Start implements Printable {
 
 	public int lineCount() {
 		int i;
-		for (i = 0; i < disziplin.getSerienAnzahl(); i++) {
-			if (getSerie(i) == 0) break;
+		for (i = 1; i <= disziplin.getSerienAnzahl(); i++) {
+			if (getSerie(false, i) == 0) break;
 		}
-		return ((i - 1) / 4) + 1;
+		return ((i - 2) / 4) + 1;
 	}
 
 	public void draw(Graphics g, int platz) {
@@ -92,15 +93,15 @@ public class Einzel extends Start implements Printable {
 		g.drawString(String.format("%2d. %s", platz, schuetze), 0, 0);
 		int anzahl = 0;
 		for (int i = 0; i < disziplin.getSerienAnzahl(); i++) {
-			if (getSerie(i) == 0) break;
+			if (getSerie(false, i) == 0) break;
 
 			int dx = 800 + ((i % 4) * 225);
 			int dy = (i / 4) * lineheight;
-			g.drawString(String.format("%5.1f", getSerie(i)), dx, dy);
+			g.drawString(String.format("%5.1f", getSerie(false, i)), dx, dy);
 			anzahl++;
 		}
 		int height = ((anzahl - 1) / 4) * lineheight;
-		g.drawString(String.format("%5.1f", getResult()), 1800, height);
+		g.drawString(String.format("%5.1f", getResult(false)), 1800, height);
 	}
 	
 	@Override
@@ -122,7 +123,7 @@ public class Einzel extends Start implements Printable {
 			return false;
 		}
 		writer.println(probe ? "\"0\"" : "\"-1\"");
-		int anzahl = getNumberCount(probe,  12);
+		int anzahl = getNumberCount(probe)[12];
 		writer.println(anzahl);
 		for (int i = 1; i <= anzahl; i++) {
 			getTreffer(probe, i).print(writer);
@@ -143,23 +144,25 @@ public class Einzel extends Start implements Printable {
 		Einzel e = (Einzel) s;
 
 		// 1. Endergebnis vergleichen
-		c = (int) (e.getResult() * 10) - (int) (getResult() * 10);
+		c = (int) (e.getResult(false) * 10) - (int) (getResult(false) * 10);
 		if (c != 0) return c;
 		
 		// 2. Serien rückwärts vergleichen
 		for (int i = disziplin.getSerienAnzahl() - 1; i >=0; i--) {
-			c = (int) (e.getSerie(i) * 10) - (int) (getSerie(i) * 10);
+			c = (int) (e.getSerie(false, i) * 10) - (int) (getSerie(false, i) * 10);
 			if (c != 0) return c;
 		}
-		
+
+		int[] count = e.getNumberCount(false);
+		int[] mycount = getNumberCount(false);
 		// 3. Höchste Zahl der 10er, dann 9er, .... dann 1er
 		for (int i = 10; i >=0; i--) {
-			c = e.getNumberCount(false, i) - getNumberCount(false, i);
+			c = count[i] - mycount[i];
 			if (c != 0) return c;
 		}
 
 		// 4. Höchste Zahl der InnenZehner (5 mm durchmesser)
-		return e.getNumberCount(false, 11) - getNumberCount(false, 11);
+		return count[11] - mycount[11];
 	}
 
 	@Override
@@ -167,7 +170,6 @@ public class Einzel extends Start implements Printable {
 		if (pageIndex > 0) return Printable.NO_SUCH_PAGE;
 
 		final double SCALE = 2000 / pageFormat.getImageableWidth();
-		final String format = disziplin.getWertung() == 0 ? "%2.0f" : "%4.1f";
 
 		Graphics2D g2 = (Graphics2D) g;
 		g2.translate(pageFormat.getImageableX(), pageFormat.getImageableY());
@@ -199,41 +201,29 @@ public class Einzel extends Start implements Printable {
 			s.forceMatch();
 			s.print(gs);
 		}
-		g2.translate(0, scheibenSize + 2 * lineHeight);
+		g2.translate(0, scheibenSize + 1.5 * lineHeight);
+
+		// Überschrift falls Probe und Match
+		if (print == BOTH) {
+			drawHeadline(g2, lineHeight, "Probe:");
+		}
 
 		// Probeschüsse
 		if (print != MATCH) {
-			// TODO Probeschüsse anzeigen
-			// Nur Serien
-			// Kein Gesamt
+			drawValues(g2, lineHeight, true);
 			drawNumberCountTable(g2, lineHeight, true);
-			g2.translate(0, 2 * lineHeight);
+		}
+
+		// Überschrift falls Probe und Match
+		if (print == BOTH) {
+			drawHeadline(g2, lineHeight, "Match:");
 		}
 
 		// Wertungsschüsse
-		for (int i = 0; i < disziplin.getSerienAnzahl(); i++) {
-			int serienHoehe = 0;
-			drawStringRight(g2, (i + 1) + ". Serie", 300, lineHeight);
-			for (int t = 0; t < disziplin.getSerienlaenge(); t++) {
-				if (t % 10 == 0) {
-					serienHoehe -= lineHeight;
-					g2.translate(0, lineHeight);
-				}
-				float wert = getMatch(i * disziplin.getSerienlaenge() + t);
-				drawStringRight(g2, "" + String.format(format, wert), 450 + (t % 10) * 150, 0);
-			}
-			drawStringRight(g2, String.format(format, getSerie(i)), 2000, 0);
-			g2.drawLine(300, serienHoehe + g2.getFontMetrics().getLeading(), 300, g2.getFontMetrics().getLeading());
-			g2.drawLine(1800, serienHoehe + g2.getFontMetrics().getLeading(), 1800, g2.getFontMetrics().getLeading());
-			g2.drawLine(0, g2.getFontMetrics().getLeading(), 2000, g2.getFontMetrics().getLeading());
+		if (print != PROBE) {
+			drawValues(g2, lineHeight,false);
+			drawNumberCountTable(g2, lineHeight, false);
 		}
-		drawStringRight(g2, "Gesamt", 300, lineHeight);
-		drawStringRight(g2, "" + String.format(format, getResult()), 2000, lineHeight);
-		g2.drawLine(300, g2.getFontMetrics().getLeading(), 300, lineHeight + g2.getFontMetrics().getLeading());
-		g2.drawLine(1800, g2.getFontMetrics().getLeading(), 1800, lineHeight + g2.getFontMetrics().getLeading());
-		g2.translate(0, 3 * lineHeight);
-		
-		drawNumberCountTable(g2, lineHeight, false);
 
 		return Printable.PAGE_EXISTS;
 	}
@@ -243,7 +233,46 @@ public class Einzel extends Start implements Printable {
 		g.drawString(s, x - len - 10, y);
 	}
 
+	private void drawHeadline(Graphics2D g, int lineHeight, String text) {
+		g.drawString(text, 0, 0);
+		g.translate(0, 0.5 * lineHeight);
+	}
+
+	private void drawValues(Graphics2D g, int lineHeight, boolean probe) {
+		final String format = disziplin.getWertung() == 0 ? "%2.0f" : "%4.1f";
+
+		boolean run = true;
+		for (int i = 0; run; i++) {
+			int serienHoehe = 0;
+			drawStringRight(g, (i + 1) + ". Serie", 300, lineHeight);
+			for (int t = 0; run && t < disziplin.getSerienlaenge(); t++) {
+				if (t % 10 == 0) {
+					serienHoehe -= lineHeight;
+					g.translate(0, lineHeight);
+				}
+				float wert = getValue(probe, i * disziplin.getSerienlaenge() + t);
+				if (wert >= 0) {
+					drawStringRight(g, "" + String.format(format, wert), 450 + (t % 10) * 150, 0);
+				}
+				// Falls der Nächste nicht existiert -> Abbruch
+				if (getValue(probe, i * disziplin.getSerienlaenge() + t + 1) == -1) {
+					run = false;
+				}
+			}
+			drawStringRight(g, String.format(format, getSerie(probe, i)), 2000, 0);
+			g.drawLine(300, serienHoehe + g.getFontMetrics().getLeading(), 300, g.getFontMetrics().getLeading());
+			g.drawLine(1800, serienHoehe + g.getFontMetrics().getLeading(), 1800, g.getFontMetrics().getLeading());
+			g.drawLine(0, g.getFontMetrics().getLeading(), 2000, g.getFontMetrics().getLeading());
+		}
+		drawStringRight(g, "Gesamt", 300, lineHeight);
+		drawStringRight(g, "" + String.format(format, getResult(probe)), 2000, lineHeight);
+		g.drawLine(300, g.getFontMetrics().getLeading(), 300, lineHeight + g.getFontMetrics().getLeading());
+		g.drawLine(1800, g.getFontMetrics().getLeading(), 1800, lineHeight + g.getFontMetrics().getLeading());
+		g.translate(0, 2.5 * lineHeight);
+	}
+
 	private void drawNumberCountTable(Graphics2D g, int lineHeight, boolean probe) {
+		int[] count = getNumberCount(probe);
 		g.drawString("Ring", 0, 0);
 		g.drawString("Anzahl", 0, lineHeight);
 		for (int i = 0; i < 13; i++) {
@@ -251,16 +280,15 @@ public class Einzel extends Start implements Printable {
 			final int rectDiff = - g.getFontMetrics().getHeight() + g.getFontMetrics().getLeading();
 			drawStringRight(g, i == 12 ? "Sum" : i == 11 ? "10i" : "" + i, 2000 - i * width, 0);
 			g.drawRect(2000 - width*(i+1), rectDiff, width, lineHeight);
-			drawStringRight(g, "" + getNumberCount(probe, i), 2000 - i * width, lineHeight);
+			drawStringRight(g, "" + count[i], 2000 - i * width, lineHeight);
 			g.drawRect(2000 - width*(i+1), lineHeight + rectDiff, width, lineHeight);
 		}
+		g.translate(0, 3 * lineHeight);
 	}
 
-	private float getMatch(int nummer) {
-		if (nummer >= disziplin.getSchusszahl()) return 0;
-
-		Treffer t = getTreffer(false, nummer + 1);
-		if (t == null) return 0;
+	private float getValue(boolean probe, int nummer) {
+		Treffer t = getTreffer(probe, nummer + 1);
+		if (t == null) return -1;
 
 		float wert = t.getWert();
 		if (disziplin.getWertung() == 0) wert = ((int) wert);
@@ -268,48 +296,59 @@ public class Einzel extends Start implements Printable {
 		return wert;
 	}
 
-	private float getSerie(int serie) {
+	private float getSerie(boolean probe, int serie) {
 		float summe = 0;
 		int num = disziplin.getSerienlaenge() * serie;
 		for (int i = 0; i < disziplin.getSerienlaenge(); i++) {
-			summe += getMatch(num + i);
+			float value = getValue(probe, num + i);
+			if (value >= 0) summe += value;
 		}
 		return summe;
 	}
 
-	private float getResult() {
+	private float getResult(boolean probe) {
 		float summe = 0;
-		for (int i = 0; i < disziplin.getSchusszahl(); i++) {
-			summe += getMatch(i);
+		for (int i = 0; true; i++) {
+			float value = getValue(probe, i);
+			if (value == -1) break;
+			summe += value;
 		}
 		return summe;
 	}
 
-	private int getNumberCount(boolean probe, int number) {
-		if (number < 0 || number > 12) return 0;
+	private int[] getNumberCount(boolean probe) {
+		int[] count = new int[13];
 
-		int counter = 0;
-		for (int i = 0; probe || i < disziplin.getSchusszahl(); i++) {
-			Treffer t = getTreffer(probe, i + 1);
+		for (int i = 1; probe || i <= disziplin.getSchusszahl(); i++) {
+			Treffer t = getTreffer(probe, i);
 			if (t == null) break;
-			switch (number) {
-				case 12:
-					counter++;
-					break;
-				case 11:
-					if (t.isInnenZehner()) counter++;
-					break;
-				default:
-					if (number == (int) t.getWert()) counter++;
-			}
+			
+			count[12]++;
+			if (t.isInnenZehner()) count[11]++;
+			count[(int) t.getWert()]++;
 		}
-		return counter;
+		return count;
 	}
 
 	private int getNextNum(boolean probe) {
-		for (int i = 1; true; i++) {
-			Treffer t = getTreffer(probe, i);
-			if (t == null) return i;
+		Treffer t;
+
+		try {
+			t = treffer.lastKey();
+		} catch (NoSuchElementException e) {
+			return 1;
 		}
+		if (t.isProbe() == probe) {
+			return t.getNummer() + 1;
+		}
+		if (!probe) {
+			return 1;
+		}
+
+		t = treffer.lowerKey(new Treffer(false, 1));
+		if (t == null) {
+			return 1;
+		}
+		return t.getNummer() + 1;
 	}
 }
