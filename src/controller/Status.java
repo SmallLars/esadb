@@ -8,7 +8,7 @@ public enum Status {
 	STOP(4),
 	FREI(5),
 	UNKNOWN(6),
-	DATA(7),
+	UPDATE(7),
 	WERTUNG(8),
 	PROBE(9);
 

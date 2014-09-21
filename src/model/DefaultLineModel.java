@@ -146,10 +146,21 @@ public class DefaultLineModel implements LineModel, LineReader {
 			return false;
 		}
 
-		controller.println(this + ": " + einzel.addTreffer(t), style);
+		int oldNum = einzel.addTreffer(t);
+		if (oldNum > 0) {
+			einzel.toFile("HTErg" + nummer  + ".dat", t.isProbe());
+			setStatus(Status.UPDATE);
+
+			SimpleAttributeSet red = new SimpleAttributeSet();
+			StyleConstants.setBold(red, true);
+			StyleConstants.setForeground(red, Color.decode("0xC80000"));
+			controller.println(String.format("Linie %d: Treffer %s(%d) wurde empfangen und als %s(%d) gespeichert. Linie wurde aktualisiert.", nummer, t.isProbe() ? "P" : "M", oldNum, t.isProbe() ? "P" : "M", t.getNummer()), red);
+		}
+		String s = String.format("Linie %d: %s: %s: %s(%d) %s", nummer, einzel.getSchuetze(), einzel.getDisziplin(), t.isProbe() ? "P" : "M", t.getNummer(), t);
+		controller.println(s, style);
 		controller.save();
-		modelChanged(STATE_CHANGED);
 		modelChanged(RESULT_CHANGED);
+		if (!t.isProbe() && t.getNummer() == 1) modelChanged(STATE_CHANGED);
 
 		return true;
 	}

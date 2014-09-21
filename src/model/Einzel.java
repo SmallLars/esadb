@@ -60,11 +60,18 @@ public class Einzel extends Start implements Printable {
 		return schuetze;
 	}
 
-	public String addTreffer(Treffer t) {
-		// TODO schon vorhanden checken. immer anhängen. bei bedarf nummer ändern und schüsse an linie senden
+	// Rückgabe > 0 falls Treffernummer korrigiert wurde. Dann ist Rückgabe alte Treffernummer. Update der Linie erforderlich.
+	public int addTreffer(Treffer t) {
+		int next = getNextNum(t.isProbe());
+		if (t.getNummer() == next) {
+			treffer.put(t,  t);
+			return 0;
+		}
+		
+		int old = t.getNummer();
+		t.setNummer(next);
 		treffer.put(t,  t);
-		String s = String.format("%s(%d) ", t.isProbe() ? "P" : "M", t.getNummer());
-		return schuetze + ": " + disziplin + ": " + s + t;
+		return old;
 	}
 
 	public Treffer getTreffer(boolean probe, int nummer) {
@@ -106,8 +113,8 @@ public class Einzel extends Start implements Printable {
 		return s;
 	}
 
-/*
-	public boolean toFile(File file, boolean probe) {
+	public boolean toFile(String filename, boolean probe) {
+		File file = new File(filename);
 		PrintWriter writer;
 		try {
 			writer = new PrintWriter(file);
@@ -123,7 +130,6 @@ public class Einzel extends Start implements Printable {
 		writer.close();
 		return true;
 	}
-*/
 	
 	@Override
 	public int compareTo(Start s) {
@@ -298,5 +304,12 @@ public class Einzel extends Start implements Printable {
 			}
 		}
 		return counter;
+	}
+
+	private int getNextNum(boolean probe) {
+		for (int i = 1; true; i++) {
+			Treffer t = getTreffer(probe, i);
+			if (t == null) return i;
+		}
 	}
 }
