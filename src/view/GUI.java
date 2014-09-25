@@ -98,27 +98,10 @@ public class GUI extends JFrame implements ActionListener {
 		mntmSpeichern.setActionCommand("SAVEAS");
 		mntmSpeichern.addActionListener(this);
 		mnDatei.add(mntmSpeichern);
-		
-		mnDatei.addSeparator();
-		
-		mntmDrucken = new JMenuItem("Drucken...");
-		mntmDrucken.setActionCommand("PRINT");
-		mntmDrucken.addActionListener(this);
-		mnDatei.add(mntmDrucken);
-
-		mntmVorschau = new JMenuItem("Druckvorschau...");
-		mntmVorschau.setActionCommand("PRINTPREVIEW");
-		mntmVorschau.addActionListener(this);
-		mnDatei.add(mntmVorschau);
-		
-		mntmEinzel = new JMenuItem("Einzelergebnisse...");
-		mntmEinzel.setActionCommand("SINGLEPREVIEW");
-		mntmEinzel.addActionListener(this);
-		mnDatei.add(mntmEinzel);
 
 		mnDatei.addSeparator();
-		
-		mntmEinstellungen = new JMenuItem("Einstellungen");
+
+		mntmEinstellungen = new JMenuItem("Einstellungen...");
 		mntmEinstellungen.setActionCommand("PREFERENCES");
 		mntmEinstellungen.addActionListener(this);
 		mnDatei.add(mntmEinstellungen);
@@ -129,16 +112,41 @@ public class GUI extends JFrame implements ActionListener {
 		mntmBeenden.setActionCommand("CLOSE");
 		mntmBeenden.addActionListener(this);
 		mnDatei.add(mntmBeenden);
+
+		JMenu mnErgebnisse = new JMenu("Ergebnisse");
+		menuBar.add(mnErgebnisse);
+
+		mntmDrucken = new JMenuItem("Drucken...");
+		mntmDrucken.setActionCommand("PRINT");
+		mntmDrucken.addActionListener(this);
+		mnErgebnisse.add(mntmDrucken);
+
+		mntmVorschau = new JMenuItem("Druckvorschau...");
+		mntmVorschau.setActionCommand("PRINTPREVIEW");
+		mntmVorschau.addActionListener(this);
+		mnErgebnisse.add(mntmVorschau);
+		
+		mntmEinzel = new JMenuItem("Einzelergebnisse...");
+		mntmEinzel.setActionCommand("SINGLEPREVIEW");
+		mntmEinzel.addActionListener(this);
+		mnErgebnisse.add(mntmEinzel);
+
+		mnErgebnisse.addSeparator();
+
+		mntmEinzel = new JMenuItem("Bearbeiten...");
+		mntmEinzel.setActionCommand("SINGLEEDIT");
+		mntmEinzel.addActionListener(this);
+		mnErgebnisse.add(mntmEinzel);
 		
 		JMenu mnStammdaten = new JMenu("Stammdaten");
 		menuBar.add(mnStammdaten);
 		
-		mntmSchtzen = new JMenuItem("Schützen");
+		mntmSchtzen = new JMenuItem("Schützen...");
 		mntmSchtzen.setActionCommand("SCHUETZEN");
 		mntmSchtzen.addActionListener(this);
 		mnStammdaten.add(mntmSchtzen);
 		
-		mntmDisziplinen = new JMenuItem("Disziplinen");
+		mntmDisziplinen = new JMenuItem("Disziplinen...");
 		mntmDisziplinen.setActionCommand("DISZIPLINEN");
 		mntmDisziplinen.addActionListener(this);
 		mnStammdaten.add(mntmDisziplinen);

@@ -110,13 +110,13 @@ public class Einstellungen extends JDialog {
 				int toAdd = (int) spinner.getValue();
 				config.addLinie(toAdd);
 				spinner.setValue(spinner.getNextValue());
-				for (int i = listModel.getSize() - 1; i >= 0; i--) {
-					if (listModel.get(i) < toAdd) {
-						listModel.add(i + 1, toAdd);
+				for (int i = 0; i < listModel.getSize(); i++) {
+					if (listModel.get(i) > toAdd) {
+						listModel.add(i, toAdd);
 						return;
 					}
 				}
-				listModel.addElement((int) spinner.getValue());
+				listModel.addElement(toAdd);
 			}
 		});
 		btnEinfgen.setBounds(120, 46, 91, 23);
