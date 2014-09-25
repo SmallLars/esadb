@@ -38,6 +38,8 @@ import java.awt.event.WindowEvent;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import java.awt.Toolkit;
+import javax.swing.Box;
+import javax.swing.ScrollPaneConstants;
 
 
 @SuppressWarnings("serial")
@@ -69,7 +71,7 @@ public class GUI extends JFrame implements ActionListener {
 			@Override
 			public void windowClosing(WindowEvent arg0) {close();}
 		});
-		setMinimumSize(new Dimension(1196, 726));
+		setMinimumSize(new Dimension(1022, 580));
 
 		this.controller = controller;
 		scheiben = new Scheibe[linienCount];
@@ -170,24 +172,46 @@ public class GUI extends JFrame implements ActionListener {
 		contentPane.setLayout(null);
 
 		JLabel lblSperre = new JLabel("Sperre");
-		lblSperre.setBounds(40, 8, 40, 14);
+		lblSperre.setBounds(36, 8, 40, 14);
 		contentPane.add(lblSperre);
 		
 		JLabel lblStart = new JLabel("Start");
-		lblStart.setBounds(90, 8, 32, 14);
+		lblStart.setBounds(86, 8, 32, 14);
 		contentPane.add(lblStart);
 		
 		JLabel lblPm = new JLabel("Wertung");
-		lblPm.setBounds(129, 8, 56, 14);
+		lblPm.setBounds(125, 8, 56, 14);
 		contentPane.add(lblPm);
 
 		JLabel lblSchtze = new JLabel("Schütze");
-		lblSchtze.setBounds(190, 8, 46, 14);
+		lblSchtze.setBounds(186, 8, 46, 14);
 		contentPane.add(lblSchtze);
 		
 		JLabel lblDisziplin = new JLabel("Disziplin");
-		lblDisziplin.setBounds(413, 8, 56, 14);
+		lblDisziplin.setBounds(409, 8, 56, 14);
 		contentPane.add(lblDisziplin);
+
+		JLabel lblScheiben = new JLabel("Scheiben");
+		lblScheiben.setBounds(749, 8, 56, 14);
+		contentPane.add(lblScheiben);
+
+		JScrollPane scrollLinien = new JScrollPane();
+		scrollLinien.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		scrollLinien.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollLinien.setBounds(0, 32, 746, 249);
+		contentPane.add(scrollLinien);
+		
+		Box linienBox = Box.createVerticalBox();
+		scrollLinien.setViewportView(linienBox);
+
+		JScrollPane scrollScheiben = new JScrollPane();
+		scrollScheiben.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		scrollScheiben.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		scrollScheiben.setBounds(746, 32, 268, 498);
+		contentPane.add(scrollScheiben);
+		
+		Box scheibenBox = Box.createVerticalBox();
+		scrollScheiben.setViewportView(scheibenBox);
 
 		int i = 0;
 		for (int l : controller.getConfig().getLinien()) {
@@ -196,25 +220,24 @@ public class GUI extends JFrame implements ActionListener {
 			controller.add(linie);
 
 			linien[i] = new Linie(linie);
-			linien[i].setLocation(10, 32 + (i * (linien[i].getHeight() + 10)));
-			contentPane.add(linien[i]);
+			linienBox.add(linien[i]);
 
-			scheiben[i] = new Scheibe(null);
-			scheiben[i].setBounds(738 + (i % 2 * 225), i / 2 * 225, 225, 225);
-			contentPane.add(scheiben[i]);
+			scheiben[i] = new Scheibe(null, l);
+			scheibenBox.add(scheiben[i]);
 			linie.addLineListener(scheiben[i]);
 
 			i++;
 		}
+		scheibenBox.setPreferredSize(new Dimension(250, controller.getConfig().getLinienCount() * 250));
 
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(0, 278, 738, 398);
-		contentPane.add(scrollPane);
+		JScrollPane scrollKonsole = new JScrollPane();
+		scrollKonsole.setBounds(0, 281, 746, 249);
+		contentPane.add(scrollKonsole);
 
 		konsole = new JTextPane();
 		konsole.setEditable(false);
 		konsole.setFont(new Font("Consolas", Font.PLAIN, 12));
-		scrollPane.setViewportView(konsole);
+		scrollKonsole.setViewportView(konsole);
 
 		addComponentListener(new ComponentListener() {
 			@Override
@@ -228,13 +251,10 @@ public class GUI extends JFrame implements ActionListener {
 			@Override
 			public void componentResized(ComponentEvent arg0) {
 				controller.getConfig().setMainWindowBounds(getBounds());
-				scrollPane.setSize(738, contentPane.getHeight() - 278);
-				for (int i = 0; i < linienCount; i++) {
-					scheiben[i].setSize(	(contentPane.getWidth() - 738) / 2,
-											contentPane.getHeight() / 3
-					);
-					scheiben[i].setLocation(738 + (i % 2 * scheiben[i].getWidth()), i / 2 * scheiben[i].getHeight());
-				}
+				scheibenBox.setPreferredSize(new Dimension(contentPane.getWidth() - 764, controller.getConfig().getLinienCount() * (contentPane.getWidth() - 764)));
+				scrollScheiben.setSize(contentPane.getWidth() - 746, contentPane.getHeight() - 32);
+				scrollKonsole.setSize(746, contentPane.getHeight() - 281);
+				scrollScheiben.revalidate();
 			}
 
 			@Override

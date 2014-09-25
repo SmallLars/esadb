@@ -2,6 +2,7 @@ package view;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -12,6 +13,7 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
 
 import model.DefaultLineModel;
@@ -38,15 +40,19 @@ public class Linie extends JPanel implements LineListener {
 		linie.addLineListener(this);
 
 		this.setLayout(null);
-		this.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
-		this.setSize(new Dimension(718, 31));
+		Border out = BorderFactory.createEmptyBorder(5,  5,  5,  5);
+		Border in = BorderFactory.createEtchedBorder(EtchedBorder.RAISED);
+		this.setBorder(BorderFactory.createCompoundBorder(out, in));
+		Dimension d = new Dimension(728, 41);
+		this.setMinimumSize(d);
+		this.setMaximumSize(d);
 
 		JLabel label = new JLabel("" + linie.getNummer());
-		label.setBounds(14, 8, 14, 14);
+		label.setBounds(19, 13, 14, 14);
 		this.add(label);
 		
 		sperre = new JCheckBox("");
-		sperre.setBounds(39, 4, 23, 23);
+		sperre.setBounds(44, 9, 23, 23);
 		sperre.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -71,7 +77,7 @@ public class Linie extends JPanel implements LineListener {
 		this.add(sperre);
 		
 		start = new JCheckBox("");
-		start.setBounds(85, 4, 23, 23);
+		start.setBounds(90, 9, 23, 23);
 		start.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -85,7 +91,7 @@ public class Linie extends JPanel implements LineListener {
 		this.add(start);
 		
 		wertung = new JCheckBox("");
-		wertung.setBounds(131, 4, 23, 23);
+		wertung.setBounds(136, 9, 23, 23);
 		wertung.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -99,11 +105,11 @@ public class Linie extends JPanel implements LineListener {
 		this.add(wertung);
 
 		schuetze = new JComboBox<Schuetze>(linie.getSchuetzenModel());
-		schuetze.setBounds(177, 5, 200, 22);
+		schuetze.setBounds(182, 10, 200, 22);
 		this.add(schuetze);
 		
 		disziplin = new JComboBox<Disziplin>(linie.getDisziplinenModel());
-		disziplin.setBounds(400, 5, 200, 22);
+		disziplin.setBounds(405, 10, 200, 22);
 		this.add(disziplin);
 
 		frei = new JButton("Frei");
@@ -115,7 +121,7 @@ public class Linie extends JPanel implements LineListener {
 				linie.setStatus(Status.FREI);
 			}
 		});
-		frei.setBounds(623, 5, 91, 22);
+		frei.setBounds(628, 10, 91, 22);
 		this.add(frei);
 		
 		setEnabled(false);
@@ -137,9 +143,8 @@ public class Linie extends JPanel implements LineListener {
 
 	@Override
 	public void setEnabled(boolean enabled) {
-		Color c = enabled ? null : Color.ORANGE;
 		super.setEnabled(enabled);
-		setBackground(c);
+		Color c = enabled ? null : Color.ORANGE;
 		sperre.setBackground(c);
 		start.setBackground(c);
 		wertung.setBackground(c);
@@ -149,5 +154,14 @@ public class Linie extends JPanel implements LineListener {
 		start.setEnabled(enabled && linie.isGesperrt());
 		wertung.setEnabled(enabled && linie.canSwitchPM());
 		frei.setEnabled(enabled && !linie.isGesperrt() && !linie.isFrei());
+	}
+
+	@Override
+	protected void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		if (!this.isEnabled()) {
+			g.setColor(Color.ORANGE);
+			g.fillRect(5, 5, 718, 31);
+		}
 	}
 }

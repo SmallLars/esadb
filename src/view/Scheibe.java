@@ -26,10 +26,16 @@ public class Scheibe extends JPanel implements LineListener {
 	private int mitteY;
 	private Einzel einzel;
 
+	private int nummer;
 	private int force;
 
 	public Scheibe(Einzel einzel) {
+		this(einzel, 0);
+	}
+
+	public Scheibe(Einzel einzel, int nummer) {
 		this.einzel = einzel;
+		this.nummer = nummer;
 		this.force = 0;
 		setSize(400, 400);
 	}
@@ -78,6 +84,13 @@ public class Scheibe extends JPanel implements LineListener {
 			g.drawString(s, mitteX + dx, position.height + dy);					// Oben
 			g.drawString(s, getWidth() - position.width + dx , mitteY + dy);	// Rechts
 			g.drawString(s, mitteX + dx, getHeight() - position.height + dy);	// Unten
+		}
+
+		if (nummer > 0) {
+			Dimension de = toPixel(80);
+			g.setFont(new Font("Arial", Font.BOLD, toPixel(180).height));
+			g.setColor(Color.BLACK);
+			g.drawString("" + nummer, de.width, de.height + g.getFontMetrics().getAscent());
 		}
 
 		for (int i = 1; einzel != null; i++) {

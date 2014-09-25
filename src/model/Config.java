@@ -34,10 +34,9 @@ public class Config implements Serializable {
 	
 
 	private Config() {
-		mainWindow = new Rectangle(42, 42, 1196, 726);
+		mainWindow = new Rectangle(1, 1, 1022, 580);
 
 		linien = new TreeSet<Integer>();
-		linien.add(1);
 		
 		pageWidht =           21.0 * mmToDots;
 		pageHeight =          29.7 * mmToDots;
