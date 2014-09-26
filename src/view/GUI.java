@@ -253,8 +253,9 @@ public class GUI extends JFrame implements ActionListener {
 				controller.getConfig().setMainWindowBounds(getBounds());
 				scheibenBox.setPreferredSize(new Dimension(contentPane.getWidth() - 764, controller.getConfig().getLinienCount() * (contentPane.getWidth() - 764)));
 				scrollScheiben.setSize(contentPane.getWidth() - 746, contentPane.getHeight() - 32);
-				scrollKonsole.setSize(746, contentPane.getHeight() - 281);
 				scrollScheiben.revalidate();
+				scrollKonsole.setSize(746, contentPane.getHeight() - 281);
+				scrollKonsole.revalidate();
 			}
 
 			@Override
