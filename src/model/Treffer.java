@@ -56,6 +56,7 @@ public class Treffer implements Serializable, Comparable<Treffer> {
     }
 
     public Treffer(boolean probe, int nummer) {
+    	linie = 0;
    		this.nummer = nummer;
    		this.probe = probe;
    		wert = 0;
@@ -67,8 +68,25 @@ public class Treffer implements Serializable, Comparable<Treffer> {
    		zeit = 0;
     }
 
+    public Treffer(float wert, String lage, double x, double y, double r, double phi, int zeit) {
+    	this.linie = 0;
+   		this.nummer = 1;
+   		this.probe = true;
+   		this.wert = wert;
+   		this.lage = lage;
+   		this.x = x;
+   		this.y = y;
+   		this.r = r;
+   		this.phi = phi;
+   		this.zeit = zeit;
+    }
+
     public void setNummer(int nummer) {
     	this.nummer = nummer;
+    }
+
+    public void setProbe(boolean probe) {
+    	this.probe = probe;
     }
 
     public int getLinie() {

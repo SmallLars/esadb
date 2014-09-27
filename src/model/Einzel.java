@@ -75,6 +75,20 @@ public class Einzel extends Start implements Printable {
 		return old;
 	}
 
+	public void insertTreffer(Treffer t) {
+		int next = getNextNum(t.isProbe());
+		if (t.getNummer() > next) t.setNummer(next);
+		
+		for (int i = next - 1; i >= t.getNummer(); i--) {
+			Treffer tr = treffer.get(new Treffer(t.isProbe(), i));
+			treffer.remove(tr);
+			tr.setNummer(i + 1);
+			treffer.put(tr,  tr);
+		}
+		
+		treffer.put(t,  t);
+	}
+
 	public Treffer getTreffer(boolean probe, int nummer) {
 		return treffer.get(new Treffer(probe, nummer));
 	}

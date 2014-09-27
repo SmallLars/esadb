@@ -245,12 +245,16 @@ public class GUI extends JFrame implements ActionListener {
 
 			@Override
 			public void componentMoved(ComponentEvent arg0) {
-				controller.getConfig().setMainWindowBounds(getBounds());
+				if ((getExtendedState() & JFrame.MAXIMIZED_BOTH) == 0) {
+					controller.getConfig().setMainWindowBounds(getBounds());
+				}
 			}
 
 			@Override
 			public void componentResized(ComponentEvent arg0) {
-				controller.getConfig().setMainWindowBounds(getBounds());
+				if ((getExtendedState() & JFrame.MAXIMIZED_BOTH) == 0) {
+					controller.getConfig().setMainWindowBounds(getBounds());
+				}
 				scheibenBox.setPreferredSize(new Dimension(contentPane.getWidth() - 764, controller.getConfig().getLinienCount() * (contentPane.getWidth() - 764)));
 				scrollScheiben.setSize(contentPane.getWidth() - 746, contentPane.getHeight() - 32);
 				scrollScheiben.revalidate();
