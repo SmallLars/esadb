@@ -21,6 +21,7 @@ import model.Model;
 import model.ModelChangeListener;
 import model.Schuetze;
 import model.Start;
+import model.Treffer;
 
 import org.apache.commons.io.FileUtils;
 
@@ -129,6 +130,10 @@ public class Controller {
 
 	public List<Disziplin> getDisziplinen() {
 		return  model.getDisziplinen();
+	}
+
+	public List<Treffer> getTreffer() {
+		return  model.getTreffer();
 	}
 
 	public boolean add(Object o) {
