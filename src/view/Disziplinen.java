@@ -33,6 +33,8 @@ public class Disziplinen extends JDialog {
 
 	public Disziplinen(Frame parent, List<Disziplin> disziplinen) {
 		super(parent, "Disziplinen");
+		setResizable(false);
+
 		setModal(true);
 		setModalityType(ModalityType.APPLICATION_MODAL);
 		setSize(450, 300);

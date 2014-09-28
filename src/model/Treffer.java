@@ -1,7 +1,10 @@
 package model;
 import java.io.PrintWriter;
 import java.io.Serializable;
+import java.net.URL;
 import java.util.regex.Pattern;
+
+import javax.swing.ImageIcon;
 
 
 public class Treffer implements Serializable, Comparable<Treffer> {
@@ -34,7 +37,7 @@ public class Treffer implements Serializable, Comparable<Treffer> {
 		G = SchussNr
 		H = Wertung : Ja(-1), Nein(0)
 		I = Ringwert
-		J = Trefferlage     f, g, h, i, j, k, l, m, R          LL, OR, OO, UU, OL, RR, UL, UR
+		J = Trefferlage     f, g, h, i, j, k, l, m, R          LL, RR, OO, UU, OL, OR, UL, UR
 		K = X_Pos
 		L = Y_Pos
 		M = R_Pos
@@ -110,8 +113,10 @@ public class Treffer implements Serializable, Comparable<Treffer> {
     	return r <= 530;
     }
 
-    public String getLage() {
-    	return lage;
+    public ImageIcon getLage() {
+    	URL url = getClass().getResource("/" + lage + ".png");
+		if (url == null) return null;
+		return new ImageIcon(url);
     }
     
     public double getX() {

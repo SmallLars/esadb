@@ -12,9 +12,11 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.NavigableMap;
 import java.util.NoSuchElementException;
 import java.util.TreeMap;
+import java.util.Vector;
 
 import javax.swing.BorderFactory;
 
@@ -75,6 +77,10 @@ public class Einzel extends Start implements Printable {
 		return old;
 	}
 
+	public List<Treffer> getTreffer() {
+		return new Vector<Treffer>(treffer.values());
+	}
+
 	public void insertTreffer(Treffer t) {
 		int next = getNextNum(t.isProbe());
 		if (t.getNummer() > next) t.setNummer(next);
@@ -87,6 +93,10 @@ public class Einzel extends Start implements Printable {
 		}
 		
 		treffer.put(t,  t);
+	}
+
+	public Treffer removeTreffer(boolean probe, int nummer) {
+		return treffer.remove(new Treffer(probe, nummer));
 	}
 
 	public Treffer getTreffer(boolean probe, int nummer) {

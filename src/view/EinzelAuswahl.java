@@ -40,6 +40,8 @@ public class EinzelAuswahl extends JDialog implements ActionListener {
 
 	public EinzelAuswahl(Frame parent, Controller controller) {
 		super(parent, "Ergebnisauswahl");
+		setResizable(false);
+
 		ergebnisse = new Vector<Einzel>();
 		for (Start s : controller.getModel().getErgebnisse()) {
 			if (s instanceof Einzel) ergebnisse.add((Einzel) s);

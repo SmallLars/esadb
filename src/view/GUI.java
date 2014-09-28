@@ -336,6 +336,10 @@ public class GUI extends JFrame implements ActionListener {
 				dv = new Druckvorschau(this, ez, controller.getConfig().getPageFormat());
 				controller.getConfig().setPageFormat(dv.showDialog());
 				break;
+			case "SINGLEEDIT":
+				EinzelEdit ee = new EinzelEdit(this, controller);
+				ee.setVisible(true);
+				break;
 			case "PREFERENCES":
 				Einstellungen einstellungen = new Einstellungen(this, controller.getConfig());
 				einstellungen.setVisible(true);

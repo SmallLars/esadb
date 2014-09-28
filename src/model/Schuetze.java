@@ -53,8 +53,13 @@ public class Schuetze implements Serializable, Comparable<Schuetze> {
 	@Override
 	public int compareTo(Schuetze s) {
 		if (s == null) return 1;
+
 		int c = nachname.compareTo(s.nachname);
 		if (c != 0) return c;
-		return vorname.compareTo(s.vorname);
+
+		c = vorname.compareTo(s.vorname);
+		if (c != 0) return c;
+
+		return passnummer.compareTo(s.passnummer);
 	}
 }
