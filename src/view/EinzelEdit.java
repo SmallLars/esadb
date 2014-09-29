@@ -126,7 +126,7 @@ public class EinzelEdit extends JDialog implements ActionListener {
 			case "START":
 				if (start.getSelectedItem() == null) break;
 				table.setModel(new TrefferTableModel(((Einzel) start.getSelectedItem()).getTreffer()));
-				table.setDefaultRenderer(Object.class, new TrefferTableCellRenderer());
+				table.setDefaultRenderer(Treffer.class, new TrefferTableCellRenderer());
 				break;
 		}
 	}

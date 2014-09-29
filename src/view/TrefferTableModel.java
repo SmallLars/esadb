@@ -17,7 +17,7 @@ public class TrefferTableModel implements TableModel {
 
 	@Override
 	public Class<?> getColumnClass(int arg0) {
-		return Object.class;
+		return Treffer.class;
 	}
 
 	@Override
