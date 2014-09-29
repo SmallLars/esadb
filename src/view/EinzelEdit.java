@@ -1,6 +1,5 @@
 package view;
 
-import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
@@ -13,8 +12,6 @@ import java.util.Vector;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 import javax.swing.JComboBox;
 
 import model.Disziplin;
@@ -23,28 +20,37 @@ import model.Start;
 import model.Treffer;
 import controller.Controller;
 
-import javax.swing.JCheckBox;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 
 @SuppressWarnings("serial")
-public class EinzelEdit extends JDialog implements ActionListener {
+public class EinzelEdit extends JDialog implements ComponentListener, ActionListener {
 
-	private final JPanel contentPanel = new JPanel();
+	private Controller controller;
 	private List<Einzel> ergebnisse;
 	
-	DefaultComboBoxModel<Disziplin> modelD;
-	JComboBox<Disziplin> disziplin;
-	DefaultComboBoxModel<Einzel> modelS;
-	JComboBox<Einzel> start;
-	JCheckBox chckbxProbe;
-	JCheckBox chckbxMatch;
+	private DefaultComboBoxModel<Disziplin> modelD;
+	private JComboBox<Disziplin> disziplin;
+
+	private DefaultComboBoxModel<Einzel> modelS;
+	private JComboBox<Einzel> start;
+
+	private JScrollPane scrollPane;
 	private JTable table;
+
+	private JButton button;
+	private JButton button_1;
+
+	private JScrollPane scrollPane_1;
+	private JTable table_1;
+	
+	private JButton cancelButton;
 
 	public EinzelEdit(Frame parent, Controller controller) {
 		super(parent, "Ergebnisauswahl");
-		setTitle("Ergebnis bearbeiten");
+
+		this.controller = controller;
 		ergebnisse = new Vector<Einzel>();
 		for (Start s : controller.getModel().getErgebnisse()) {
 			if (s instanceof Einzel) ergebnisse.add((Einzel) s);
@@ -52,59 +58,57 @@ public class EinzelEdit extends JDialog implements ActionListener {
 
 		setModal(true);
 		setModalityType(ModalityType.APPLICATION_MODAL);
-		setBounds(100, 100, 700, 500);
+		Dimension d = new Dimension(700, 500);
+		setMinimumSize(d);
+		setSize(d);
+		setLocationRelativeTo(parent);
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-
-		getContentPane().setLayout(new BorderLayout());
-		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-		getContentPane().add(contentPanel, BorderLayout.CENTER);
-		contentPanel.setLayout(null);
-
+		getContentPane().setLayout(null);
+		
 		modelD = new DefaultComboBoxModel<Disziplin>();
 		disziplin = new JComboBox<Disziplin>(modelD);
 		disziplin.setBounds(10, 11, 300, 22);
 		disziplin.setActionCommand("DISZIPLIN");
 		disziplin.addActionListener(this);
-		contentPanel.add(disziplin);
+		getContentPane().add(disziplin);
 
 		modelS = new DefaultComboBoxModel<Einzel>();
 		start = new JComboBox<Einzel>(modelS);
-		start.setBounds(10, 59, 300, 22);
+		start.setBounds(10, 44, 300, 22);
 		start.setActionCommand("START");
 		start.addActionListener(this);
-		contentPanel.add(start);
+		getContentPane().add(start);
 
-		JButton cancelButton = new JButton("Schlieﬂen");
-		cancelButton.setBounds(582, 439, 100, 23);
-		cancelButton.setActionCommand("CANCEL");
-		cancelButton.addActionListener(this);
-		contentPanel.add(cancelButton);
-		getRootPane().setDefaultButton(cancelButton);
-		
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 92, 300, 370);
-		contentPanel.add(scrollPane);
+		scrollPane = new JScrollPane();
+		scrollPane.setBounds(10, 77, 300, 351);
+		getContentPane().add(scrollPane);
 		
 		table = new JTable(new TrefferTableModel(new Vector<Treffer>()));
 		scrollPane.setViewportView(table);
 
-		addComponentListener(new ComponentListener() {
-			@Override
-			public void componentHidden(ComponentEvent arg0) {}
+		button = new JButton("<-");
+		button.setBounds(320, 223, 50, 23);
+		getContentPane().add(button);
 
-			@Override
-			public void componentMoved(ComponentEvent arg0) {}
+		button_1 = new JButton("->");
+		button_1.setBounds(320, 258, 50, 23);
+		getContentPane().add(button_1);
+		
+		scrollPane_1 = new JScrollPane();
+		scrollPane_1.setBounds(380, 77, 300, 351);
+		getContentPane().add(scrollPane_1);
+		
+		table_1 = new JTable(new TrefferTableModel(controller.getTreffer()));
+		scrollPane_1.setViewportView(table_1);
 
-			@Override
-			public void componentResized(ComponentEvent arg0) {
-				Dimension d = getContentPane().getSize();
-				cancelButton.setLocation(d.width - 112, d.height - 34);
-			}
+		cancelButton = new JButton("Schlieﬂen");
+		cancelButton.setBounds(582, 439, 100, 23);
+		cancelButton.setActionCommand("CANCEL");
+		cancelButton.addActionListener(this);
+		getContentPane().add(cancelButton);
+		getRootPane().setDefaultButton(cancelButton);
 
-			@Override
-			public void componentShown(ComponentEvent arg0) {}
-			
-		});
+		addComponentListener(this);
 
 		for (Einzel e : ergebnisse) {
 			if (modelD.getIndexOf(e.getDisziplin()) == -1) {
@@ -130,6 +134,28 @@ public class EinzelEdit extends JDialog implements ActionListener {
 				break;
 		}
 	}
+
+	@Override
+	public void componentResized(ComponentEvent e) {
+		Dimension d = getContentPane().getSize();
+		cancelButton.setLocation(d.width - 112, d.height - 34);
+		disziplin.setSize((d.width - 92) / 2, 22);
+		start.setSize((d.width - 92) / 2, 22);
+		scrollPane.setSize((d.width - 92) / 2, d.height - 122);
+		button.setLocation((d.width / 2) - 26, 48 + scrollPane.getHeight() / 2);
+		button_1.setLocation((d.width / 2) - 26, 83 + scrollPane.getHeight() / 2);
+		scrollPane_1.setLocation((d.width / 2) + 34, 77);
+		scrollPane_1.setSize((d.width - 92) / 2, d.height - 122);
+	}
+
+	@Override
+	public void componentHidden(ComponentEvent e) {}
+
+	@Override
+	public void componentMoved(ComponentEvent e) {}
+
+	@Override
+	public void componentShown(ComponentEvent e) {}
 
 	private void setSchutzeItems() {
 		start.removeAllItems();

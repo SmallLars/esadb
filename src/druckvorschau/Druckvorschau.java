@@ -4,6 +4,7 @@ import javax.print.attribute.Size2DSyntax;
 import javax.print.attribute.standard.MediaSize;
 import javax.swing.JPanel;
 
+import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -40,7 +41,10 @@ public class Druckvorschau extends JDialog {
 
 	public Druckvorschau(Frame parent, Printable p, PageFormat pageFormat) {
 		super(parent, "Druckvorschau", true);
-		setBounds(parent.getX()+ 50, parent.getY() + 50, 887, 729);
+		Dimension d = new Dimension(887, 500);
+		setMinimumSize(d);
+		setSize(d);
+		setLocationRelativeTo(parent);
 		getContentPane().setLayout(null);
 
 		this.p = p;
@@ -126,7 +130,7 @@ public class Druckvorschau extends JDialog {
 		panel.add(btnAbbrechen);
 		
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(0, 80, 879, 622);
+		scrollPane.setBounds(0, 80, 879, 393);
 		getContentPane().add(scrollPane);
 		
 		pages = new Seitenanzeige(p, pageFormat);

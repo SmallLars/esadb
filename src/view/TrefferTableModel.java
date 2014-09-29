@@ -22,12 +22,12 @@ public class TrefferTableModel implements TableModel {
 
 	@Override
 	public int getColumnCount() {
-		return 4;
+		return 5;
 	}
 
 	@Override
 	public String getColumnName(int arg0) {
-		String[] columnNames = {"Nummer", "Art", "Wert", "Lage"};
+		String[] columnNames = {"Nummer", "Art", "Wert", "Lage", "Linie"};
 		return columnNames[arg0];
 	}
 
@@ -47,6 +47,8 @@ public class TrefferTableModel implements TableModel {
 				return treffer.get(row).getWert();
 			case 3:
 				return treffer.get(row).getLage();
+			case 4:
+				return treffer.get(row).getLinie();
 			default:
 				return treffer.get(row);
 		}

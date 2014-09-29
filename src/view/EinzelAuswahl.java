@@ -31,12 +31,12 @@ public class EinzelAuswahl extends JDialog implements ActionListener {
 	private List<Einzel> ergebnisse;
 	private boolean okKlick;
 	
-	DefaultComboBoxModel<Disziplin> modelD;
-	JComboBox<Disziplin> disziplin;
-	DefaultComboBoxModel<Einzel> modelS;
-	JComboBox<Einzel> start;
-	JCheckBox chckbxProbe;
-	JCheckBox chckbxMatch;
+	private DefaultComboBoxModel<Disziplin> modelD;
+	private JComboBox<Disziplin> disziplin;
+	private DefaultComboBoxModel<Einzel> modelS;
+	private JComboBox<Einzel> start;
+	private JCheckBox chckbxProbe;
+	private JCheckBox chckbxMatch;
 
 	public EinzelAuswahl(Frame parent, Controller controller) {
 		super(parent, "Ergebnisauswahl");

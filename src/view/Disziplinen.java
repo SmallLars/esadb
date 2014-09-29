@@ -6,6 +6,8 @@ import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -20,14 +22,14 @@ import javax.swing.JLabel;
 
 
 @SuppressWarnings("serial")
-public class Disziplinen extends JDialog {
+public class Disziplinen extends JDialog implements ComponentListener, ActionListener {
 
-	JComboBox<Disziplin> comboBox;
-	JLabel lblName;
-	JLabel lblWertung;
-	JLabel lblZeit;
-	JLabel lblSchusszahl;
-	JLabel lblSerienlaenge;
+	private JComboBox<Disziplin> comboBox;
+	private JLabel lblName;
+	private JLabel lblWertung;
+	private JLabel lblZeit;
+	private JLabel lblSchusszahl;
+	private JLabel lblSerienlaenge;
 
 	private final JPanel contentPanel = new JPanel();
 
@@ -71,12 +73,8 @@ public class Disziplinen extends JDialog {
 
 		comboBox = new JComboBox<Disziplin>(disziplinen.toArray(new Disziplin[0]));
 		comboBox.setPreferredSize(new Dimension(257, 22));
-		comboBox.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				update();
-			}
-		});
+		comboBox.setActionCommand("DISZIPLIN");
+		comboBox.addActionListener(this);
 		comboPane.add(comboBox);
 
 		JPanel buttonPane = new JPanel();
@@ -84,39 +82,58 @@ public class Disziplinen extends JDialog {
 		getContentPane().add(buttonPane, BorderLayout.SOUTH);
 
 		JButton cancelButton = new JButton("Schlieﬂen");
-		cancelButton.setActionCommand("Cancel");
-		cancelButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				setVisible(false);
-			}
-		});
+		cancelButton.setActionCommand("CANCEL");
+		cancelButton.addActionListener(this);
 		buttonPane.add(cancelButton);
 		getRootPane().setDefaultButton(cancelButton);
 
-		update();
+		addComponentListener(this);
+		
+		actionPerformed(new ActionEvent(comboBox, 0, "DISZIPLIN"));
 	}
 
-	private void update() {
-		Disziplin d = (Disziplin) comboBox.getSelectedItem();
-		lblName.setText(d.toString());
-		lblWertung.setText(d.getWertung() == 0 ? "Ringwertung" : "Zehntelwertung");
-		if (d.getProbezeit() > 0) {
-			lblZeit.setText(String.format("Zeit f¸r Probe: %d Minuten, Zeit f¸r Wertung: %d Minuten.", d.getProbezeit(), d.getSchiesszeit()));
-		} else {
-			lblZeit.setText(String.format("Zeit f¸r den Wettkampf: %d Minuten.", d.getSchiesszeit()));
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		switch (e.getActionCommand()) {
+			case "DISZIPLIN":
+				Disziplin d = (Disziplin) comboBox.getSelectedItem();
+				lblName.setText(d.toString());
+				lblWertung.setText(d.getWertung() == 0 ? "Ringwertung" : "Zehntelwertung");
+				if (d.getProbezeit() > 0) {
+					lblZeit.setText(String.format("Zeit f¸r Probe: %d Minuten, Zeit f¸r Wertung: %d Minuten.", d.getProbezeit(), d.getSchiesszeit()));
+				} else {
+					lblZeit.setText(String.format("Zeit f¸r den Wettkampf: %d Minuten.", d.getSchiesszeit()));
+				}
+				String anzahl = "";
+				if (d.getProbezeit() >= 0) {
+					if (d.getProbeschuesse() == 0) anzahl = "Probe: beliebig, ";
+					else anzahl = String.format("Probe: %d Schuﬂ, ", d.getProbeschuesse());
+				}
+				if (d.getStellungsanzahl() == 1) {
+					anzahl = anzahl.concat(String.format("Wertung: %d Schuﬂ.", d.getSchusszahl()));
+				} else {
+					anzahl = anzahl.concat(String.format("Wertung: %d Mal %d Schuﬂ.", d.getStellungsanzahl(), d.getSchusszahl() / d.getStellungsanzahl()));
+				}
+				lblSchusszahl.setText(anzahl);
+				lblSerienlaenge.setText(String.format("Serienl‰nge: %d.", d.getSerienlaenge()));
+				break;
+			case "CANCEL":
+				setVisible(false);
+				break;
 		}
-		String anzahl = "";
-		if (d.getProbezeit() >= 0) {
-			if (d.getProbeschuesse() == 0) anzahl = "Probe: beliebig, ";
-			else anzahl = String.format("Probe: %d Schuﬂ, ", d.getProbeschuesse());
-		}
-		if (d.getStellungsanzahl() == 1) {
-			anzahl = anzahl.concat(String.format("Wertung: %d Schuﬂ.", d.getSchusszahl()));
-		} else {
-			anzahl = anzahl.concat(String.format("Wertung: %d Mal %d Schuﬂ.", d.getStellungsanzahl(), d.getSchusszahl() / d.getStellungsanzahl()));
-		}
-		lblSchusszahl.setText(anzahl);
-		lblSerienlaenge.setText(String.format("Serienl‰nge: %d.", d.getSerienlaenge()));
 	}
+
+	@Override
+	public void componentResized(ComponentEvent e) {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void componentHidden(ComponentEvent e) {}
+
+	@Override
+	public void componentMoved(ComponentEvent e) {}
+
+	@Override
+	public void componentShown(ComponentEvent e) {}
 }

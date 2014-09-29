@@ -37,7 +37,7 @@ public class Treffer implements Serializable, Comparable<Treffer> {
 		G = SchussNr
 		H = Wertung : Ja(-1), Nein(0)
 		I = Ringwert
-		J = Trefferlage     f, g, h, i, j, k, l, m, R          LL, RR, OO, UU, OL, OR, UL, UR
+		J = Trefferlage     f, g, h, i, j, k, l, m, R          LL, RR, OO, UU, OL, OR, UL, UR, M
 		K = X_Pos
 		L = Y_Pos
 		M = R_Pos

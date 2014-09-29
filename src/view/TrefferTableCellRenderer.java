@@ -18,7 +18,7 @@ public class TrefferTableCellRenderer extends DefaultTableCellRenderer {
 		if (value instanceof Integer) {
 			setHorizontalAlignment(RIGHT);
 			setIcon(null);
-			setText(String.format("%d", (Integer) value));
+			setText(String.format("%d  ", (Integer) value));
 			setForeground(null);
 			return this;
 		}
@@ -27,7 +27,7 @@ public class TrefferTableCellRenderer extends DefaultTableCellRenderer {
 			setHorizontalAlignment(LEFT);
 			setIcon(null);
 			String s = (String) value;
-			setText(s);
+			setText("  " + s);
 			setForeground(s.equals("Probe") ? Color.decode("0x00A050") : Color.decode("0xC80000"));
 			return this;
 		}
@@ -35,13 +35,13 @@ public class TrefferTableCellRenderer extends DefaultTableCellRenderer {
 		if (value instanceof Float) {
 			setHorizontalAlignment(RIGHT);
 			setIcon(null);
-			setText(String.format("%.1f", (Float) value));
+			setText(String.format("%.1f  ", (Float) value));
 			setForeground(null);
 			return this;
 		}
 
 		if (value instanceof ImageIcon) {
-			setHorizontalAlignment(LEFT);
+			setHorizontalAlignment(CENTER);
 			setIcon((ImageIcon) value);
 			setText("");
 			setForeground(null);
