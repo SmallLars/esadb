@@ -378,7 +378,7 @@ public class GUI extends JFrame implements ActionListener {
 		print(string + "\n", style);
 	}
 
-	public void close() {
+	private void close() {
 		for (Linie l : linien) if (!l.isFrei()) {
 			JOptionPane.showMessageDialog(	this,
 											"Das Programm kann erst beendet werden, wenn alle Linien frei sind.",
