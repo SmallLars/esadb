@@ -29,6 +29,8 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.JRadioButton;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.JLabel;
+import java.awt.Font;
 
 
 @SuppressWarnings("serial")
@@ -53,6 +55,8 @@ public class EinzelEdit extends JDialog implements ComponentListener, ActionList
 	private JRadioButton rdbtnMatch;
 	private JSpinner spinner;
 	private JButton button_1;
+
+	private JLabel lblZwischenablage;
 
 	private JScrollPane scrollPane_1;
 	private JTable table_1;
@@ -129,6 +133,11 @@ public class EinzelEdit extends JDialog implements ComponentListener, ActionList
 		button_1.setActionCommand("ADD");
 		button_1.addActionListener(this);
 		getContentPane().add(button_1);
+
+		lblZwischenablage = new JLabel("Zwischenablage");
+		lblZwischenablage.setFont(new Font("Tahoma", Font.BOLD, 16));
+		lblZwischenablage.setBounds(380, 44, 300, 22);
+		getContentPane().add(lblZwischenablage);
 		
 		scrollPane_1 = new JScrollPane();
 		scrollPane_1.setBounds(380, 77, 300, 351);
@@ -208,17 +217,19 @@ public class EinzelEdit extends JDialog implements ComponentListener, ActionList
 	@Override
 	public void componentResized(ComponentEvent e) {
 		Dimension d = getContentPane().getSize();
-		cancelButton.setLocation(d.width - 112, d.height - 34);
-		disziplin.setSize(			(d.width - 92) / 2, 22);
-		start.setSize(				(d.width - 92) / 2, 22);
-		scrollPane.setSize(			(d.width - 92) / 2, d.height - 122);
-		button.setLocation(			(d.width / 2) - 26, -2 + scrollPane.getHeight() / 2);
-		rdbtnProbe.setLocation(		(d.width / 2) - 32, 55 + scrollPane.getHeight() / 2);
-		rdbtnMatch.setLocation(		(d.width / 2) - 32, 74 + scrollPane.getHeight() / 2);
-		spinner.setLocation(		(d.width / 2) - 26, 104 + scrollPane.getHeight() / 2);
-		button_1.setLocation(		(d.width / 2) - 26, 133 + scrollPane.getHeight() / 2);
-		scrollPane_1.setLocation(	(d.width / 2) + 34, 77);
-		scrollPane_1.setSize(		(d.width - 92) / 2, d.height - 122);
+		disziplin.setSize(				(d.width - 92) / 2, 22);
+		start.setSize(					(d.width - 92) / 2, 22);
+		scrollPane.setSize(				(d.width - 92) / 2, d.height - 122);
+		button.setLocation(				(d.width / 2) - 26, -2 + scrollPane.getHeight() / 2);
+		rdbtnProbe.setLocation(			(d.width / 2) - 32, 55 + scrollPane.getHeight() / 2);
+		rdbtnMatch.setLocation(			(d.width / 2) - 32, 74 + scrollPane.getHeight() / 2);
+		spinner.setLocation(			(d.width / 2) - 26, 104 + scrollPane.getHeight() / 2);
+		button_1.setLocation(			(d.width / 2) - 26, 133 + scrollPane.getHeight() / 2);
+		lblZwischenablage.setLocation(	(d.width / 2) + 34, 44);
+		lblZwischenablage.setSize(		(d.width - 92) / 2, 22);
+		scrollPane_1.setLocation(		(d.width / 2) + 34, 77);
+		scrollPane_1.setSize(			(d.width - 92) / 2, d.height - 122);
+		cancelButton.setLocation(		d.width - 112, d.height - 34);
 	}
 
 	@Override
