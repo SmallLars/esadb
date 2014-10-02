@@ -24,12 +24,15 @@ import javax.swing.ButtonGroup;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JSpinner;
+import javax.swing.ListSelectionModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.JRadioButton;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 
 @SuppressWarnings("serial")
-public class EinzelEdit extends JDialog implements ComponentListener, ActionListener {
+public class EinzelEdit extends JDialog implements ComponentListener, ActionListener, ListSelectionListener {
 
 	private Controller controller;
 	private List<Einzel> ergebnisse;
@@ -93,6 +96,8 @@ public class EinzelEdit extends JDialog implements ComponentListener, ActionList
 		getContentPane().add(scrollPane);
 		
 		table = new JTable(new TrefferTableModel(new Vector<Treffer>()));
+		table.setDefaultRenderer(Treffer.class, new TrefferTableCellRenderer());
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		scrollPane.setViewportView(table);
 
 		button = new JButton("->");
@@ -130,6 +135,9 @@ public class EinzelEdit extends JDialog implements ComponentListener, ActionList
 		getContentPane().add(scrollPane_1);
 		
 		table_1 = new JTable(new TrefferTableModel(controller.getTreffer()));
+		table_1.setDefaultRenderer(Treffer.class, new TrefferTableCellRenderer());
+		table_1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		table_1.getSelectionModel().addListSelectionListener(this);
 		scrollPane_1.setViewportView(table_1);
 
 		cancelButton = new JButton("Schlieﬂen");
@@ -151,6 +159,8 @@ public class EinzelEdit extends JDialog implements ComponentListener, ActionList
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
+		int row;
+		Treffer t;
 		switch (arg0.getActionCommand()) {
 			case "CANCEL":
 				setVisible(false);
@@ -159,15 +169,40 @@ public class EinzelEdit extends JDialog implements ComponentListener, ActionList
 				setSchutzeItems();
 				break;
 			case "START":
-				if (start.getSelectedItem() == null) break;
-				table.setModel(new TrefferTableModel(((Einzel) start.getSelectedItem()).getTreffer()));
-				table.setDefaultRenderer(Treffer.class, new TrefferTableCellRenderer());
+				updateEinzel();
 				break;
 			case "REMOVE":
+				row = table.getSelectedRow();
+				if (row == -1) break;
+				t = (Treffer) table.getValueAt(row, -1);
+				((Einzel) start.getSelectedItem()).removeTreffer(t);
+				updateEinzel();
+				controller.add(t);
+				updateTreffer();
 				break;
 			case "ADD":
+				row = table_1.getSelectedRow();
+				if (row == -1) break;
+				t = (Treffer) table_1.getValueAt(row, -1);
+				t.setProbe(rdbtnProbe.isSelected());
+				t.setNummer((Integer) spinner.getValue());
+				((Einzel) start.getSelectedItem()).insertTreffer(t);
+				updateEinzel();
+				controller.remove(t);
+				updateTreffer();
 				break;
 		}
+	}
+
+	@Override
+	public void valueChanged(ListSelectionEvent e) {
+		int row = table_1.getSelectedRow();
+		if (row == -1) return;
+		
+		Treffer t = (Treffer) table_1.getValueAt(row, -1);
+		rdbtnProbe.setSelected(t.isProbe());
+		rdbtnMatch.setSelected(!t.isProbe());
+		spinner.setValue(t.getNummer());
 	}
 
 	@Override
@@ -204,5 +239,14 @@ public class EinzelEdit extends JDialog implements ComponentListener, ActionList
 				}
 			}
 		}
+	}
+
+	private void updateEinzel() {
+		if (start.getSelectedItem() == null) return;
+		table.setModel(new TrefferTableModel(((Einzel) start.getSelectedItem()).getTreffer()));
+	}
+
+	private void updateTreffer() {
+		table_1.setModel(new TrefferTableModel(controller.getTreffer()));
 	}
 }

@@ -13,6 +13,7 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
 
@@ -48,11 +49,12 @@ public class Linie extends JPanel implements LineListener {
 		this.setMaximumSize(d);
 
 		JLabel label = new JLabel("" + linie.getNummer());
-		label.setBounds(19, 13, 14, 14);
+		label.setBounds(10, 13, 25, 14);
+		label.setHorizontalAlignment(SwingConstants.RIGHT);
 		this.add(label);
 		
 		sperre = new JCheckBox("");
-		sperre.setBounds(44, 9, 23, 23);
+		sperre.setBounds(55, 9, 23, 23);
 		sperre.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -77,7 +79,7 @@ public class Linie extends JPanel implements LineListener {
 		this.add(sperre);
 		
 		start = new JCheckBox("");
-		start.setBounds(90, 9, 23, 23);
+		start.setBounds(101, 9, 23, 23);
 		start.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -91,7 +93,7 @@ public class Linie extends JPanel implements LineListener {
 		this.add(start);
 		
 		wertung = new JCheckBox("");
-		wertung.setBounds(136, 9, 23, 23);
+		wertung.setBounds(147, 9, 23, 23);
 		wertung.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -105,11 +107,11 @@ public class Linie extends JPanel implements LineListener {
 		this.add(wertung);
 
 		schuetze = new JComboBox<Schuetze>(linie.getSchuetzenModel());
-		schuetze.setBounds(182, 10, 200, 22);
+		schuetze.setBounds(193, 10, 200, 22);
 		this.add(schuetze);
 		
 		disziplin = new JComboBox<Disziplin>(linie.getDisziplinenModel());
-		disziplin.setBounds(405, 10, 200, 22);
+		disziplin.setBounds(416, 10, 200, 22);
 		this.add(disziplin);
 
 		frei = new JButton("Frei");
@@ -121,7 +123,7 @@ public class Linie extends JPanel implements LineListener {
 				linie.setStatus(Status.FREI);
 			}
 		});
-		frei.setBounds(628, 10, 91, 22);
+		frei.setBounds(639, 10, 80, 22);
 		this.add(frei);
 		
 		setEnabled(false);

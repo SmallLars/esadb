@@ -114,7 +114,8 @@ public class Treffer implements Serializable, Comparable<Treffer> {
     }
 
     public ImageIcon getLage() {
-    	URL url = getClass().getResource("/" + lage + ".png");
+    	String l = isInnenZehner() ? "R" : lage;
+    	URL url = getClass().getResource("/" + l + ".png");
 		if (url == null) return null;
 		return new ImageIcon(url);
     }

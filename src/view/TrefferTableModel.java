@@ -42,7 +42,7 @@ public class TrefferTableModel implements TableModel {
 			case 0:
 				return treffer.get(row).getNummer();
 			case 1:
-				return treffer.get(row).isProbe() ? "Probe" : "Match";
+				return treffer.get(row).isProbe();
 			case 2:
 				return treffer.get(row).getWert();
 			case 3:

@@ -20,7 +20,6 @@ import model.LineReader;
 import model.Model;
 import model.ModelChangeListener;
 import model.Schuetze;
-import model.Start;
 import model.Treffer;
 
 import org.apache.commons.io.FileUtils;
@@ -143,19 +142,23 @@ public class Controller {
 
 		if (model.add(o)) {
 			modelChanged();
-			save(file);
+			save();
 			return true;
 		}
 
 		return false;
 	}
 
-	public void println(String string, SimpleAttributeSet style) {
-		gui.println(string, style);
+	public boolean remove(Object o) {
+		if (model.remove(o)) {
+			save();
+			return true;
+		}
+		return false;
 	}
 
-	public boolean remove(Start s) {
-		return model.remove(s);
+	public void println(String string, SimpleAttributeSet style) {
+		gui.println(string, style);
 	}
 
 	public void addModelChangeListener(ModelChangeListener l) {

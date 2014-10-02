@@ -23,12 +23,12 @@ public class TrefferTableCellRenderer extends DefaultTableCellRenderer {
 			return this;
 		}
 
-		if (value instanceof String) {
+		if (value instanceof Boolean) {
 			setHorizontalAlignment(LEFT);
 			setIcon(null);
-			String s = (String) value;
-			setText("  " + s);
-			setForeground(s.equals("Probe") ? Color.decode("0x00A050") : Color.decode("0xC80000"));
+			Boolean b = (Boolean) value;
+			setText(b ? "  Probe" : "  Match");
+			setForeground(b ? Color.decode("0x00A050") : Color.decode("0xC80000"));
 			return this;
 		}
 

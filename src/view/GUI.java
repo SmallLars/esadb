@@ -172,23 +172,23 @@ public class GUI extends JFrame implements ActionListener {
 		contentPane.setLayout(null);
 
 		JLabel lblSperre = new JLabel("Sperre");
-		lblSperre.setBounds(36, 8, 40, 14);
+		lblSperre.setBounds(47, 8, 40, 14);
 		contentPane.add(lblSperre);
 		
 		JLabel lblStart = new JLabel("Start");
-		lblStart.setBounds(86, 8, 32, 14);
+		lblStart.setBounds(97, 8, 32, 14);
 		contentPane.add(lblStart);
 		
 		JLabel lblPm = new JLabel("Wertung");
-		lblPm.setBounds(125, 8, 56, 14);
+		lblPm.setBounds(136, 8, 56, 14);
 		contentPane.add(lblPm);
 
 		JLabel lblSchtze = new JLabel("Schütze");
-		lblSchtze.setBounds(186, 8, 46, 14);
+		lblSchtze.setBounds(197, 8, 46, 14);
 		contentPane.add(lblSchtze);
 		
 		JLabel lblDisziplin = new JLabel("Disziplin");
-		lblDisziplin.setBounds(409, 8, 56, 14);
+		lblDisziplin.setBounds(420, 8, 56, 14);
 		contentPane.add(lblDisziplin);
 
 		JLabel lblScheiben = new JLabel("Scheiben");

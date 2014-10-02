@@ -77,8 +77,14 @@ public class Model implements Serializable, Printable {
 		return false;
 	}
 
-	public boolean remove(Start start) {
-		return ergebnisse.remove(start);
+	public boolean remove(Object o) {
+		if (o instanceof Start) {
+			return ergebnisse.remove((Start) o);
+		}
+		if (o instanceof Treffer) {
+			return treffer.remove((Treffer) o);
+		}
+		return false;
 	}
 
 	public List<Start> getErgebnisse() {

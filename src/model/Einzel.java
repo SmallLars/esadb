@@ -95,8 +95,16 @@ public class Einzel extends Start implements Printable {
 		treffer.put(t,  t);
 	}
 
-	public Treffer removeTreffer(boolean probe, int nummer) {
-		return treffer.remove(new Treffer(probe, nummer));
+	public void removeTreffer(Treffer t) {
+		if (treffer.remove(t) != null) {
+			for (int i = t.getNummer(); true; i++) {
+				Treffer tr = treffer.get(new Treffer(t.isProbe(), i + 1));
+				if (tr == null) return;
+				treffer.remove(tr);
+				tr.setNummer(i);
+				treffer.put(tr,  tr);
+			}
+		}
 	}
 
 	public Treffer getTreffer(boolean probe, int nummer) {
