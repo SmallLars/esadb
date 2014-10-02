@@ -64,7 +64,7 @@ public class EinzelEdit extends JDialog implements ComponentListener, ActionList
 	private JButton cancelButton;
 
 	public EinzelEdit(Frame parent, Controller controller) {
-		super(parent, "Ergebnisauswahl");
+		super(parent, "Ergebnisse bearbeiten");
 
 		this.controller = controller;
 		ergebnisse = new Vector<Einzel>();
