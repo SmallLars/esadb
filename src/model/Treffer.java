@@ -1,10 +1,7 @@
 package model;
 import java.io.PrintWriter;
 import java.io.Serializable;
-import java.net.URL;
 import java.util.regex.Pattern;
-
-import javax.swing.ImageIcon;
 
 
 public class Treffer implements Serializable, Comparable<Treffer> {
@@ -113,11 +110,8 @@ public class Treffer implements Serializable, Comparable<Treffer> {
     	return r <= 530;
     }
 
-    public ImageIcon getLage() {
-    	String l = isInnenZehner() ? "R" : lage;
-    	URL url = getClass().getResource("/" + l + ".png");
-		if (url == null) return null;
-		return new ImageIcon(url);
+    public String getLage() {
+    	return isInnenZehner() ? "R" : lage;
     }
     
     public double getX() {

@@ -2,6 +2,7 @@ package view;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.net.URL;
 
 import javax.swing.ImageIcon;
 import javax.swing.JTable;
@@ -40,9 +41,10 @@ public class TrefferTableCellRenderer extends DefaultTableCellRenderer {
 			return this;
 		}
 
-		if (value instanceof ImageIcon) {
+		if (value instanceof String) {
+	    	URL url = getClass().getResource("/" + (String) value + ".png");
 			setHorizontalAlignment(CENTER);
-			setIcon((ImageIcon) value);
+			setIcon(url == null ? null : new ImageIcon(url));
 			setText("");
 			setForeground(null);
 			return this;

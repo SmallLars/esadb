@@ -53,6 +53,7 @@ public class GUI extends JFrame implements ActionListener {
 	private JMenuItem mntmDrucken;
 	private JMenuItem mntmVorschau;
 	private JMenuItem mntmEinzel;
+	private JMenuItem mntmTreffer;
 	private JMenuItem mntmEinstellungen;
 
 	private JMenuItem mntmSchtzen;
@@ -139,6 +140,11 @@ public class GUI extends JFrame implements ActionListener {
 		mntmEinzel.setActionCommand("SINGLEEDIT");
 		mntmEinzel.addActionListener(this);
 		mnErgebnisse.add(mntmEinzel);
+
+		mntmTreffer = new JMenuItem("Treffer eingeben...");
+		mntmTreffer.setActionCommand("TREFFERADD");
+		mntmTreffer.addActionListener(this);
+		mnErgebnisse.add(mntmTreffer);
 		
 		JMenu mnStammdaten = new JMenu("Stammdaten");
 		menuBar.add(mnStammdaten);
@@ -339,6 +345,10 @@ public class GUI extends JFrame implements ActionListener {
 			case "SINGLEEDIT":
 				EinzelEdit ee = new EinzelEdit(this, controller);
 				ee.setVisible(true);
+				break;
+			case "TREFFERADD":
+				TrefferAdd ta = new TrefferAdd(this, controller);
+				ta.setVisible(true);
 				break;
 			case "PREFERENCES":
 				Einstellungen einstellungen = new Einstellungen(this, controller.getConfig());
