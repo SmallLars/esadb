@@ -7,6 +7,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -37,15 +41,18 @@ import javax.swing.border.LineBorder;
 import java.awt.Color;
 import java.net.URL;
 import java.text.NumberFormat;
+import java.text.ParseException;
+import java.util.Locale;
 
 import javax.swing.border.TitledBorder;
 
 
 @SuppressWarnings("serial")
-public class TrefferAdd extends JDialog implements ComponentListener, ActionListener, ListSelectionListener, DocumentListener {
+public class TrefferAdd extends JDialog implements ComponentListener, ListSelectionListener, ActionListener, DocumentListener, ItemListener, FocusListener {
 
 	private Controller controller;
 	private boolean doUpdate;
+	private NumberFormat format;
 	
 	private JButton button;
 
@@ -68,6 +75,7 @@ public class TrefferAdd extends JDialog implements ComponentListener, ActionList
 
 		this.controller = controller;
 		this.doUpdate = true;
+		this.format = NumberFormat.getInstance(Locale.GERMAN);
 
 		setModal(true);
 		setModalityType(ModalityType.APPLICATION_MODAL);
@@ -105,13 +113,14 @@ public class TrefferAdd extends JDialog implements ComponentListener, ActionList
 		});
 		comboBox.setBounds(180, 105, 62, 22);
 		comboBox.setActionCommand("LAGE");
-		comboBox.addActionListener(this);
+		comboBox.addItemListener(this);
 		getContentPane().add(comboBox);
 		
 		textField_V = new JFormattedTextField(getFormat(2, 1));
 		textField_V.setBounds(37, 105, 86, 23);
 		textField_V.getDocument().addDocumentListener(this);
 		textField_V.getDocument().putProperty("FIELD", textField_V);
+		textField_V.addFocusListener(this);
 		getContentPane().add(textField_V);
 		textField_V.setColumns(10);
 		
@@ -157,6 +166,7 @@ public class TrefferAdd extends JDialog implements ComponentListener, ActionList
 		textField_R.setBounds(20, 18, 86, 20);
 		textField_R.getDocument().addDocumentListener(this);
 		textField_R.getDocument().putProperty("FIELD", textField_R);
+		textField_R.addFocusListener(this);
 		panel_1.add(textField_R);
 		textField_R.setColumns(10);
 		
@@ -168,6 +178,7 @@ public class TrefferAdd extends JDialog implements ComponentListener, ActionList
 		textField_W.setBounds(126, 18, 86, 20);
 		textField_W.getDocument().addDocumentListener(this);
 		textField_W.getDocument().putProperty("FIELD", textField_W);
+		textField_W.addFocusListener(this);
 		panel_1.add(textField_W);
 		textField_W.setColumns(10);
 		
@@ -215,108 +226,7 @@ public class TrefferAdd extends JDialog implements ComponentListener, ActionList
 		addComponentListener(this);
 	}
 
-	private NumberFormat getFormat(int integer, int fraction) {
-		NumberFormat format = NumberFormat.getInstance();
-		format.setGroupingUsed(false);
-		format.setMaximumIntegerDigits(integer);
-		format.setMaximumFractionDigits(fraction);
-		return format;
-	}
-
-	private void update(DocumentEvent e) {
-		if (doUpdate) {
-			JFormattedTextField textField = (JFormattedTextField) e.getDocument().getProperty("FIELD");
-			doUpdate = false;
-			if (textField == textField_V) {
-				updateRwithV();
-			}
-			if (textField == textField_X || textField == textField_Y) {
-				updateRandWwithXandY();
-				updateVandLwithRandW();
-			}
-			if (textField == textField_R || textField == textField_W || textField == textField_V) {
-				updateXandYwithRandW();
-				updateVandLwithRandW();
-			}
-			doUpdate = true;
-			return;
-			
-			/*
-			NumberFormat format = NumberFormat.getInstance(Locale.FRANCE);
-    		Number number = format.parse("1,234");
-    		double d = number.doubleValue();
-			*/
-		}
-	}
-
-	private void updateRwithV() {
-		
-	}
-
-	private void updateWorRwithL() {
-		
-	}
-
-	private void updateVandLwithRandW() {
-		
-	}
-
-	private void updateXandYwithRandW() {
-		
-	}
-
-	private void updateRandWwithXandY() {
-		
-	}
-
-	private void updateTreffer() {
-		table_1.setModel(new TrefferTableModel(controller.getTreffer()));
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent arg0) {
-		switch (arg0.getActionCommand()) {
-			case "CANCEL":
-				setVisible(false);
-				break;
-			case "LAGE":
-				if (doUpdate) {
-					doUpdate = false;
-					updateWorRwithL();
-					updateXandYwithRandW();
-					updateVandLwithRandW();
-					doUpdate = true;
-				}
-				break;
-			case "ADD":
-				/*
-				Treffer t = (Treffer) table.getValueAt(row, -1);
-				((Einzel) start.getSelectedItem()).removeTreffer(t);
-				controller.add(t);
-				*/
-				updateTreffer();
-				break;
-		}
-	}
-
-	@Override
-	public void valueChanged(ListSelectionEvent e) {
-		int row = table_1.getSelectedRow();
-		if (row == -1) return;
-		
-		Treffer t = (Treffer) table_1.getValueAt(row, -1);
-		
-		doUpdate = false;
-		textField_V.setText(String.format("%.1f", t.getWert()));
-		comboBox.setSelectedItem(t.getLage());
-		textField_X.setText(String.format("%.3f", t.getX() / 100));
-		textField_Y.setText(String.format("%.3f", t.getY() / 100));
-		textField_R.setText(String.format("%.4f", t.getR() / 100));
-		textField_W.setText(String.format("%.3f", t.getPhi()));
-		textField_Z.setText(String.format("%d", t.getZeit()));
-		doUpdate = true;
-	}
-
+	// ComponentListener
 	@Override
 	public void componentResized(ComponentEvent e) {
 		Dimension d = getContentPane().getSize();
@@ -337,6 +247,44 @@ public class TrefferAdd extends JDialog implements ComponentListener, ActionList
 	@Override
 	public void componentShown(ComponentEvent e) {}
 
+	// ListSelectionListener
+	@Override
+	public void valueChanged(ListSelectionEvent e) {
+		int row = table_1.getSelectedRow();
+		if (row == -1) return;
+		
+		Treffer t = (Treffer) table_1.getValueAt(row, -1);
+		
+		doUpdate = false;
+		textField_V.setText(String.format("%.1f", t.getWert()));
+		comboBox.setSelectedItem(t.getLage());
+		textField_X.setText(String.format("%.3f", t.getX() / 100));
+		textField_Y.setText(String.format("%.3f", t.getY() / 100));
+		textField_R.setText(String.format("%.4f", t.getR() / 100));
+		textField_W.setText(String.format("%.3f", t.getPhi()));
+		textField_Z.setText(String.format("%d", t.getZeit()));
+		doUpdate = true;
+	}
+	
+	// ActionListener
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+		switch (arg0.getActionCommand()) {
+			case "CANCEL":
+				setVisible(false);
+				break;
+			case "ADD":
+				/*
+				Treffer t = (Treffer) table.getValueAt(row, -1);
+				((Einzel) start.getSelectedItem()).removeTreffer(t);
+				controller.add(t);
+				*/
+				table_1.setModel(new TrefferTableModel(controller.getTreffer()));
+				break;
+		}
+	}
+	
+	// DocumentListener
 	@Override
 	public void changedUpdate(DocumentEvent e) {
 		update(e);
@@ -350,5 +298,189 @@ public class TrefferAdd extends JDialog implements ComponentListener, ActionList
 	@Override
 	public void removeUpdate(DocumentEvent e) {
 		update(e);
+	}
+	
+	// ItemListener
+	@Override
+	public void itemStateChanged(ItemEvent e) {
+		if (e.getStateChange() == ItemEvent.SELECTED && doUpdate) {
+			doUpdate = false;
+			updateWorRwithL();
+			updateXandYwithRandW();
+			updateVwithR();
+			doUpdate = true;
+		}
+	}
+	
+	// FocusListener
+	@Override
+	public void focusGained(FocusEvent e) {}
+
+	@Override
+	public void focusLost(FocusEvent e) {
+		JFormattedTextField textField = (JFormattedTextField) e.getComponent();
+		Double d = null;
+		try {
+			d = format.parse(textField.getText()).doubleValue();
+		} catch (ParseException e1) {
+			textField.setText("0");
+			return;
+		}
+
+		if (textField == textField_V) {
+			if (d != 0) {
+				if (d < 1) {
+					textField.setText("1");
+					return;
+				}
+				if (d > 10.9) {
+					textField.setText("10,9");
+					return;
+				}
+			}
+			return;
+		}
+
+		if (textField == textField_R) {
+			if (d < 0) {
+				textField.setText("0");
+			}
+			return;
+		}
+
+		if (textField == textField_W) {
+			if (d < 0 || d >= 360) {
+				textField.setText("0");
+			}
+			return;
+		}
+	}
+
+	// Private Hilfsmethoden
+
+	private NumberFormat getFormat(int integer, int fraction) {
+		NumberFormat format = NumberFormat.getInstance();
+		format.setGroupingUsed(false);
+		format.setMaximumIntegerDigits(integer);
+		format.setMaximumFractionDigits(fraction);
+		return format;
+	}
+
+	private void update(DocumentEvent e) {
+		if (doUpdate) {
+			JFormattedTextField textField = (JFormattedTextField) e.getDocument().getProperty("FIELD");
+			try {
+				format.parse(textField.getText());
+			} catch (ParseException e1) {
+				return;
+			}
+
+			doUpdate = false;
+			if (textField == textField_V) {
+				updateRwithV();
+				updateXandYwithRandW();
+			}
+			if (textField == textField_X || textField == textField_Y) {
+				updateRandWwithXandY();
+				updateVwithR();
+				updateLwithRandW();
+			}
+			if (textField == textField_R || textField == textField_W) {
+				updateXandYwithRandW();
+				updateVwithR();
+				updateLwithRandW();
+			}
+			doUpdate = true;
+			return;
+		}
+	}
+
+	private void updateRwithV() {
+		double d;
+		try {
+			d = format.parse(textField_V.getText()).floatValue();
+		} catch (ParseException e) {
+			return;
+		}
+		
+		if (d == 0 || (d >= 1 && d <= 10.9)) {
+			textField_R.setText(String.format("%.1f", Math.round(880 - d * 80) / 10f));
+		}
+	}
+
+	private void updateWorRwithL() {
+		double d;
+		try {
+			d = format.parse(textField_R.getText()).doubleValue();
+		} catch (ParseException e) {
+			return;
+		}
+
+		String lage = (String) comboBox.getSelectedItem();
+		if (lage.equals("R")) {
+			if (d > 5.3) {
+				textField_R.setText("5,3");
+			}
+		} else {
+			if (d <= 5.3) {
+				textField_R.setText("7");
+			}
+			switch (lage) {
+				case "f": textField_W.setText("180"); break;
+				case "g": textField_W.setText("0"); break;
+				case "h": textField_W.setText("90"); break;
+				case "i": textField_W.setText("270"); break;
+				case "j": textField_W.setText("135"); break;
+				case "k": textField_W.setText("45"); break;
+				case "l": textField_W.setText("225"); break;
+				case "m": textField_W.setText("315"); break;
+			}
+		}
+	}
+
+	private void updateVwithR() {
+		double d;
+		try {
+			d = format.parse(textField_R.getText()).doubleValue();
+		} catch (ParseException e) {
+			return;
+		}
+
+		d = (int) (110 - d / 0.8) / 10f;
+		if (d < 1) d = 0;
+		if (d > 10.9) d = 10.9;
+		textField_V.setText(String.format("%.1f", d));
+	}
+
+	private void updateLwithRandW() {
+		double r;
+		double w;
+		try {
+			r = format.parse(textField_R.getText()).doubleValue();
+			w = format.parse(textField_W.getText()).doubleValue();
+		} catch (ParseException e) {
+			return;
+		}
+
+		if (r <= 5.3) {
+			comboBox.setSelectedItem("R");
+		} else {
+			String[] values = {"g", "k", "h", "j", "f", "l", "i", "m", "g"};
+			for (int i = 0; i <= 8; i++) {
+				if (w < 22.5 + i * 45) {
+					comboBox.setSelectedItem(values[i]);
+					break;
+				}
+			}
+		}
+		
+	}
+
+	private void updateXandYwithRandW() {
+		
+	}
+
+	private void updateRandWwithXandY() {
+		
 	}
 }
