@@ -25,16 +25,21 @@ public class Scheibe extends JPanel implements LineListener {
 	private int mitteX;
 	private int mitteY;
 	private Einzel einzel;
+	private Treffer treffer;
 
 	private int nummer;
 	private int force;
 
+	/**
+	 * @wbp.parser.constructor
+	 */
 	public Scheibe(Einzel einzel) {
 		this(einzel, 0);
 	}
 
 	public Scheibe(Einzel einzel, int nummer) {
 		this.einzel = einzel;
+		this.treffer = null;
 		this.nummer = nummer;
 		this.force = 0;
 		setSize(400, 400);
@@ -98,6 +103,8 @@ public class Scheibe extends JPanel implements LineListener {
 			if (t == null) break;
 			drawTreffer(g, t.getX(), t.getY());
 		}
+
+		if (treffer != null) drawTreffer(g, treffer.getX(), treffer.getY());
 	}
 
 	public void forceProbe() {
@@ -106,6 +113,11 @@ public class Scheibe extends JPanel implements LineListener {
 
 	public void forceMatch() {
 		force = MATCH;
+	}
+
+	public void setTreffer(Treffer treffer) {
+		this.treffer = treffer;
+		repaint();
 	}
 
 	private boolean showProbe() {
