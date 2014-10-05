@@ -477,10 +477,32 @@ public class TrefferAdd extends JDialog implements ComponentListener, ListSelect
 	}
 
 	private void updateXandYwithRandW() {
-		
+		double r;
+		double w;
+		try {
+			r = format.parse(textField_R.getText()).doubleValue();
+			w = format.parse(textField_W.getText()).doubleValue();
+		} catch (ParseException e) {
+			return;
+		}
+
+		double rad = w / 180 * Math.PI;
+		textField_X.setText(String.format("%.3f",  Math.cos(rad) * r));
+		textField_Y.setText(String.format("%.3f",  Math.sin(rad) * r));
 	}
 
 	private void updateRandWwithXandY() {
-		
+		double x;
+		double y;
+		try {
+			x = format.parse(textField_X.getText()).doubleValue();
+			y = format.parse(textField_Y.getText()).doubleValue();
+		} catch (ParseException e) {
+			return;
+		}
+
+		double w = Math.atan2(y , x) / Math.PI * 180;
+		textField_R.setText(String.format("%.4f", Math.sqrt(x * x + y * y)));
+		textField_W.setText(String.format("%.3f", w < 0 ? 360 + w : w));	
 	}
 }
