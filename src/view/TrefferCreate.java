@@ -26,6 +26,7 @@ import javax.swing.event.DocumentListener;
 
 import model.Treffer;
 
+
 @SuppressWarnings("serial")
 public class TrefferCreate extends JPanel implements DocumentListener, ItemListener, FocusListener {
 	
@@ -42,21 +43,21 @@ public class TrefferCreate extends JPanel implements DocumentListener, ItemListe
 	private JFormattedTextField component_Z;
 
 	public TrefferCreate(Scheibe scheibe) {
-		setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "Trefferdetails", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		setBorder(new TitledBorder(new LineBorder(new Color(122, 138, 153)), "Trefferdetails", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(51, 51, 51)));
 		this.doUpdate = true;
 		this.format = NumberFormat.getInstance(Locale.GERMAN);
 		this.scheibe = scheibe;
 
 		setLayout(null);
-		this.setSize(300, 200);
+		this.setSize(300, 225);
 
 		JLabel lblWert = new JLabel("Wert");
-		lblWert.setBounds(10, 25, 46, 14);
+		lblWert.setBounds(20, 26, 40, 16);
 		add(lblWert);
 
 		component_V = new JFormattedTextField(getFormat(2, 1));
 		component_V.setText("10,9");
-		component_V.setBounds(37, 21, 86, 23);
+		component_V.setBounds(60, 24, 64, 20);
 		component_V.getDocument().addDocumentListener(this);
 		component_V.getDocument().putProperty("FIELD", component_V);
 		component_V.addFocusListener(this);
@@ -64,7 +65,7 @@ public class TrefferCreate extends JPanel implements DocumentListener, ItemListe
 		component_V.setColumns(10);
 		
 		JLabel lblLage = new JLabel("Lage");
-		lblLage.setBounds(151, 25, 46, 14);
+		lblLage.setBounds(160, 26, 40, 16);
 		add(lblLage);
 		
 		component_L = new JComboBox<String>();
@@ -81,84 +82,101 @@ public class TrefferCreate extends JPanel implements DocumentListener, ItemListe
 			}
 			
 		});
-		component_L.setBounds(178, 21, 62, 22);
+		component_L.setBounds(200, 24, 64, 20);
 		component_L.setActionCommand("LAGE");
 		component_L.addItemListener(this);
 		add(component_L);
 		
 		JPanel panel = new JPanel();
-		panel.setBorder(new TitledBorder(new LineBorder(null), "Kartesische Koordinaten", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		panel.setBounds(10, 55, 232, 46);
+		panel.setBorder(new TitledBorder(new LineBorder(new Color(122, 138, 153)), "Kartesische Koordinaten", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		panel.setBounds(10, 55, 280, 46);
 		add(panel);
 		panel.setLayout(null);
 		
 		JLabel lblX = new JLabel("X");
-		lblX.setBounds(10, 21, 14, 14);
+		lblX.setBounds(10, 21, 16, 16);
 		panel.add(lblX);
 		
 		component_X = new JFormattedTextField(getFormat(2, 3));
 		component_X.setText("0,000");
-		component_X.setBounds(20, 18, 86, 20);
+		component_X.setBounds(26, 19, 64, 20);
 		component_X.getDocument().addDocumentListener(this);
 		component_X.getDocument().putProperty("FIELD", component_X);
 		panel.add(component_X);
-		component_X.setColumns(10);
+		
+		JLabel lblMm = new JLabel("mm");
+		lblMm.setBounds(94, 21, 26, 16);
+		panel.add(lblMm);
 		
 		JLabel lblY = new JLabel("Y");
-		lblY.setBounds(116, 21, 14, 14);
+		lblY.setBounds(150, 21, 16, 16);
 		panel.add(lblY);
 		
 		component_Y = new JFormattedTextField(getFormat(2, 3));
 		component_Y.setText("0,000");
-		component_Y.setBounds(126, 18, 86, 20);
+		component_Y.setBounds(166, 19, 64, 20);
 		component_Y.getDocument().addDocumentListener(this);
 		component_Y.getDocument().putProperty("FIELD", component_Y);
 		panel.add(component_Y);
-		component_Y.setColumns(10);
+		
+		JLabel label = new JLabel("mm");
+		label.setBounds(234, 21, 26, 16);
+		panel.add(label);
 		
 		JPanel panel_1 = new JPanel();
-		panel_1.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "Polarkoordinaten", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panel_1.setBounds(10, 112, 232, 46);
+		panel_1.setBorder(new TitledBorder(new LineBorder(new Color(122, 138, 153)), "Polarkoordinaten", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(51, 51, 51)));
+		panel_1.setBounds(10, 112, 280, 46);
 		add(panel_1);
 		panel_1.setLayout(null);
 		
 		JLabel lblR = new JLabel("R");
-		lblR.setBounds(10, 21, 14, 14);
+		lblR.setBounds(10, 21, 16, 16);
 		panel_1.add(lblR);
 		
 		component_R = new JFormattedTextField(getFormat(2, 4));
 		component_R.setText("0,0000");
-		component_R.setBounds(20, 18, 86, 20);
+		component_R.setBounds(26, 19, 64, 20);
 		component_R.getDocument().addDocumentListener(this);
 		component_R.getDocument().putProperty("FIELD", component_R);
 		component_R.addFocusListener(this);
 		panel_1.add(component_R);
-		component_R.setColumns(10);
+		
+		JLabel label_1 = new JLabel("mm");
+		label_1.setBounds(94, 21, 26, 16);
+		panel_1.add(label_1);
 		
 		JLabel lblW = new JLabel("W");
-		lblW.setBounds(116, 21, 14, 14);
+		lblW.setBounds(150, 21, 16, 16);
 		panel_1.add(lblW);
 		
 		component_W = new JFormattedTextField(getFormat(3, 3));
 		component_W.setText("0,000");
-		component_W.setBounds(126, 18, 86, 20);
+		component_W.setBounds(166, 19, 64, 20);
 		component_W.getDocument().addDocumentListener(this);
 		component_W.getDocument().putProperty("FIELD", component_W);
 		component_W.addFocusListener(this);
 		panel_1.add(component_W);
-		component_W.setColumns(10);
 		
-		JLabel lblZeit = new JLabel("Zeit");
-		lblZeit.setBounds(10, 169, 46, 14);
-		add(lblZeit);
+		JLabel label_2 = new JLabel("\u00B0");
+		label_2.setBounds(234, 21, 26, 16);
+		panel_1.add(label_2);
+		
+		JPanel panel_2 = new JPanel();
+		panel_2.setBorder(new TitledBorder(new LineBorder(new Color(122, 138, 153)), "Zeit", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(51, 51, 51)));
+		panel_2.setBounds(10, 169, 280, 46);
+		add(panel_2);
+		panel_2.setLayout(null);
 		
 		component_Z = new JFormattedTextField(getFormat(4, 0));
+		component_Z.setBounds(10, 19, 64, 20);
+		panel_2.add(component_Z);
 		component_Z.setText("0");
-		component_Z.setBounds(37, 166, 86, 20);
 		component_Z.getDocument().addDocumentListener(this);
 		component_Z.getDocument().putProperty("FIELD", component_Z);
-		add(component_Z);
-		component_Z.setColumns(10);
+		
+		JLabel lblZeit = new JLabel("Sekunden seit Start");
+		lblZeit.setBounds(84, 21, 186, 16);
+		panel_2.add(lblZeit);
 
 		scheibe.setTreffer(getTreffer());
 	}
@@ -251,7 +269,7 @@ public class TrefferCreate extends JPanel implements DocumentListener, ItemListe
 
 		if (textField == component_R) {
 			if (d < 0) {
-				textField.setText("0");
+				textField.setText("0,0000");
 			}
 			return;
 		}
@@ -314,7 +332,7 @@ public class TrefferCreate extends JPanel implements DocumentListener, ItemListe
 		}
 		
 		if (d == 0 || (d >= 1 && d <= 10.9)) {
-			component_R.setText(String.format("%.1f", Math.round(880 - d * 80) / 10f));
+			component_R.setText(String.format("%.4f", Math.round(880 - d * 80) / 10f));
 		}
 	}
 
@@ -329,21 +347,21 @@ public class TrefferCreate extends JPanel implements DocumentListener, ItemListe
 		String lage = (String) component_L.getSelectedItem();
 		if (lage.equals("R")) {
 			if (d > 5.3) {
-				component_R.setText("5,3");
+				component_R.setText("5,3000");
 			}
 		} else {
 			if (d <= 5.3) {
-				component_R.setText("7");
+				component_R.setText("7,0000");
 			}
 			switch (lage) {
-				case "f": component_W.setText("180"); break;
-				case "g": component_W.setText("0"); break;
-				case "h": component_W.setText("90"); break;
-				case "i": component_W.setText("270"); break;
-				case "j": component_W.setText("135"); break;
-				case "k": component_W.setText("45"); break;
-				case "l": component_W.setText("225"); break;
-				case "m": component_W.setText("315"); break;
+				case "f": component_W.setText("180,000"); break;
+				case "g": component_W.setText("0,000"); break;
+				case "h": component_W.setText("90,000"); break;
+				case "i": component_W.setText("270,000"); break;
+				case "j": component_W.setText("135,000"); break;
+				case "k": component_W.setText("45,000"); break;
+				case "l": component_W.setText("225,000"); break;
+				case "m": component_W.setText("315,000"); break;
 			}
 		}
 	}
@@ -415,5 +433,4 @@ public class TrefferCreate extends JPanel implements DocumentListener, ItemListe
 		component_R.setText(String.format("%.4f", Math.sqrt(x * x + y * y)));
 		component_W.setText(String.format("%.3f", w < 0 ? 360 + w : w));	
 	}
-
 }

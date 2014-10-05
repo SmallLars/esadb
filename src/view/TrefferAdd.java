@@ -22,6 +22,7 @@ import javax.swing.JLabel;
 
 import java.awt.Font;
 
+
 @SuppressWarnings("serial")
 public class TrefferAdd extends JDialog implements ComponentListener, ListSelectionListener, ActionListener {
 
@@ -58,7 +59,7 @@ public class TrefferAdd extends JDialog implements ComponentListener, ListSelect
 		getContentPane().add(scheibe);
 
 		treffer = new TrefferCreate(scheibe);
-		treffer.setSize(300, 200);
+		treffer.setSize(300, 225);
 		treffer.setLocation(10, 228);
 		getContentPane().add(treffer);
 		
