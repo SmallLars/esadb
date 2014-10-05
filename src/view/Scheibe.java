@@ -121,6 +121,7 @@ public class Scheibe extends JPanel implements LineListener {
 	}
 
 	private boolean showProbe() {
+		if (treffer != null) return false;
 		return einzel == null || force == PROBE || (force != MATCH && !einzel.inMatch());
 	}
 

@@ -6,6 +6,10 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.net.URL;
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -28,7 +32,7 @@ import model.Treffer;
 
 
 @SuppressWarnings("serial")
-public class TrefferCreate extends JPanel implements DocumentListener, ItemListener, FocusListener {
+public class TrefferCreate extends JPanel implements MouseWheelListener, KeyListener, DocumentListener, ItemListener, FocusListener {
 	
 	private boolean doUpdate;
 	private NumberFormat format;
@@ -58,6 +62,8 @@ public class TrefferCreate extends JPanel implements DocumentListener, ItemListe
 		component_V = new JFormattedTextField(getFormat(2, 1));
 		component_V.setText("10,9");
 		component_V.setBounds(60, 24, 64, 20);
+		component_V.addMouseWheelListener(this);
+		component_V.addKeyListener(this);
 		component_V.getDocument().addDocumentListener(this);
 		component_V.getDocument().putProperty("FIELD", component_V);
 		component_V.addFocusListener(this);
@@ -100,6 +106,8 @@ public class TrefferCreate extends JPanel implements DocumentListener, ItemListe
 		component_X = new JFormattedTextField(getFormat(2, 3));
 		component_X.setText("0,000");
 		component_X.setBounds(26, 19, 64, 20);
+		component_X.addMouseWheelListener(this);
+		component_X.addKeyListener(this);
 		component_X.getDocument().addDocumentListener(this);
 		component_X.getDocument().putProperty("FIELD", component_X);
 		panel.add(component_X);
@@ -115,6 +123,8 @@ public class TrefferCreate extends JPanel implements DocumentListener, ItemListe
 		component_Y = new JFormattedTextField(getFormat(2, 3));
 		component_Y.setText("0,000");
 		component_Y.setBounds(166, 19, 64, 20);
+		component_Y.addMouseWheelListener(this);
+		component_Y.addKeyListener(this);
 		component_Y.getDocument().addDocumentListener(this);
 		component_Y.getDocument().putProperty("FIELD", component_Y);
 		panel.add(component_Y);
@@ -136,6 +146,8 @@ public class TrefferCreate extends JPanel implements DocumentListener, ItemListe
 		component_R = new JFormattedTextField(getFormat(2, 4));
 		component_R.setText("0,0000");
 		component_R.setBounds(26, 19, 64, 20);
+		component_R.addMouseWheelListener(this);
+		component_R.addKeyListener(this);
 		component_R.getDocument().addDocumentListener(this);
 		component_R.getDocument().putProperty("FIELD", component_R);
 		component_R.addFocusListener(this);
@@ -152,6 +164,8 @@ public class TrefferCreate extends JPanel implements DocumentListener, ItemListe
 		component_W = new JFormattedTextField(getFormat(3, 3));
 		component_W.setText("0,000");
 		component_W.setBounds(166, 19, 64, 20);
+		component_W.addMouseWheelListener(this);
+		component_W.addKeyListener(this);
 		component_W.getDocument().addDocumentListener(this);
 		component_W.getDocument().putProperty("FIELD", component_W);
 		component_W.addFocusListener(this);
@@ -208,6 +222,26 @@ public class TrefferCreate extends JPanel implements DocumentListener, ItemListe
 			return null;
 		}	
 	}
+
+	// MouseWheelListener
+	@Override
+	public void mouseWheelMoved(MouseWheelEvent e) {
+		scrollField((JFormattedTextField) e.getComponent(), -e.getWheelRotation());
+	}
+
+	// KeyListener
+	@Override
+	public void keyPressed(KeyEvent e) {
+		JFormattedTextField textField = (JFormattedTextField) e.getComponent();
+		if (e.getKeyCode() == 38) scrollField(textField, 1);
+		if (e.getKeyCode() == 40) scrollField(textField, -1);
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {}
+
+	@Override
+	public void keyTyped(KeyEvent e) {}
 
 	// DocumentListener
 	@Override
@@ -292,6 +326,37 @@ public class TrefferCreate extends JPanel implements DocumentListener, ItemListe
 		format.setMinimumFractionDigits(fraction);
 		format.setMaximumFractionDigits(fraction);
 		return format;
+	}
+
+	private void scrollField(JFormattedTextField textField, int amount) {
+		Double d = null;
+		try {
+			d = format.parse(textField.getText()).doubleValue();
+		} catch (ParseException e1) {
+			return;
+		}
+		
+		if (textField == component_V) {
+			d += 0.1 * amount;
+			if (d < 1) d = amount < 0 ? 0.0 : 1.0;
+			if (d > 10.9) d = 10.9;
+			textField.setText(String.format("%.1f", d));
+			return;
+		}
+
+		d += amount;
+
+		if (textField == component_R) {
+			if (d < 0) d = 0.0;
+			textField.setText(String.format("%.4f", d));
+			return;
+		}
+
+		if (textField == component_W) {
+			if (d < 0) d += 360;
+			if (d >= 360) d -= 360;
+		}
+		textField.setText(String.format("%.3f", d));
 	}
 
 	private void update(DocumentEvent e) {
