@@ -6,35 +6,47 @@ public enum ScheibeTyp {
 	KK50M(1124, 1544, 160, 50, 8),
 	KK100M(2000, 5000, 500, 250, 9);
 
-    private final int durchmesser_spiegel;
-    private final int durchmesser_aussen;
-    private final int durchmesser_step;
-    private final int durchmesser_innenzehn;
-    private final int maxNumber;
-    
-    ScheibeTyp(int durchmesser_spiegel, int durchmesser_aussen, int durchmesser_step, int durchmesser_innenzehn, int maxNumber) {
-        this.durchmesser_spiegel = durchmesser_spiegel;
-        this.durchmesser_aussen = durchmesser_aussen;
-        this.durchmesser_step = durchmesser_step;
-        this.durchmesser_innenzehn = durchmesser_innenzehn;
-        this.maxNumber = maxNumber;
-    }
-    
-    public int getRing(int i) {
-    	if (i < 0 || i > 10) return 0;
+	private final int durchmesser_spiegel;
+	private final int durchmesser_aussen;
+	private final int durchmesser_step;
+	private final int durchmesser_innenzehn;
+	private final int maxNumber;
 
-   		return durchmesser_aussen - (i - 1) * durchmesser_step;
-    }
+	ScheibeTyp(int durchmesser_spiegel, int durchmesser_aussen, int durchmesser_step, int durchmesser_innenzehn, int maxNumber) {
+		this.durchmesser_spiegel = durchmesser_spiegel;
+		this.durchmesser_aussen = durchmesser_aussen;
+		this.durchmesser_step = durchmesser_step;
+		this.durchmesser_innenzehn = durchmesser_innenzehn;
+		this.maxNumber = maxNumber;
+	}
 
-    public int getInnenZehn() {
-    	return durchmesser_innenzehn;
-    }
+	public int getRing(int i) {
+		if (i < 0 || i > 10) return 0;
+	
+		return durchmesser_aussen - (i - 1) * durchmesser_step;
+	}
+	
+	public int getSpiegel() {
+		return durchmesser_spiegel;
+	}
+	
+	public int getInnenZehn() {
+		return durchmesser_innenzehn;
+	}
+	
+	public int getFontSize() {
+		return (durchmesser_step) * 9 / 32;
+	}
+	
+	public boolean drawNumber(int i) {
+		return i <= maxNumber;
+	}
 
-    public int getSpiegel() {
-    	return durchmesser_spiegel;
-    }
+	public int getNumberRadius(int i) {
+		return (getRing(i) - durchmesser_step * 3 / 8) / 2;
+	}
 
-    public boolean drawNumber(int i) {
-    	return i <= maxNumber;
-    }
+	public boolean blackNumber(int i) {
+		return getNumberRadius(i) > durchmesser_spiegel / 2;
+	}
 }

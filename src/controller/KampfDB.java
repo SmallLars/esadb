@@ -38,7 +38,8 @@ public class KampfDB {
 		try {
 			Database db = getDB("Stammdaten.mdb");
 			Table table = db.getTable("Disziplin");
-			for (Row row : table) set.add(new Disziplin(row));
+			for (Row row : table)
+				set.add(new Disziplin(row));
 			db.close();
 		} catch (IOException e) {
 			e.printStackTrace();
