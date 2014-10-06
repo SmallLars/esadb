@@ -39,7 +39,10 @@ public class Scheibe extends JPanel implements LineListener {
 		this(einzel, 0);
 	}
 
-	// GUI mit (null, num)
+	// GUI
+	/**
+	 * @wbp.parser.constructor
+	 */
 	public Scheibe(int nummer) {
 		this(null, nummer);
 	}
@@ -155,7 +158,7 @@ public class Scheibe extends JPanel implements LineListener {
 	private void updateTyp() {
 		if (einzel != null) {
 			typ = ScheibeTyp.getTypByGattung(einzel.getDisziplin().getWaffengattung());
-		} else if (typ == null ){
+		} else if (typ == null) {
 			typ = ScheibeTyp.KK50M;
 		}
 	}
