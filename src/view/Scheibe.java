@@ -1,10 +1,9 @@
 package view;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Point;
+import java.awt.Graphics2D;
 
 import javax.swing.JPanel;
 
@@ -20,8 +19,7 @@ public class Scheibe extends JPanel implements LineListener {
 	private final int PROBE = 1;
 	private final int MATCH = 2;
 
-	private int mitteX;
-	private int mitteY;
+	private int mitte;
 
 	private ScheibeTyp typ = ScheibeTyp.KK50M;
 	private Einzel einzel;
@@ -59,60 +57,59 @@ public class Scheibe extends JPanel implements LineListener {
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		Dimension d;
+
+		Graphics2D g2 = (Graphics2D) g.create();
+		g2.scale(new Double(getWidth()) / new Double(typ.getRing(0)), new Double(getHeight()) / new Double(typ.getRing(0)));
+		g2.setColor(Color.BLACK);
+
+		if (nummer > 0) {
+			int dist = (typ.getRing(0) - typ.getRing(1)) / 2;
+			g2.setFont(new Font("Arial", Font.BOLD, typ.getFontSize() * 4));
+			g2.drawString("" + nummer, dist, dist + g2.getFontMetrics().getAscent());
+		}
 		
 		if (showProbe()) {
-			d = toPixel(80);
-			g.setColor(Color.BLACK);
-			g.fillPolygon(new int[]{getWidth() - d.width, getWidth() - d.width, getWidth() - d.height * 6}, new int[]{d.height, d.height * 6, d.height}, 3);
+			g2.fillPolygon(typ.getProbe());
 		}
 
-		mitteX = getWidth() / 2;
-		mitteY = getHeight() / 2;
-
-		d = toPixel(typ.getSpiegel());
-	    g.setColor(Color.BLACK);
-	    g.fillOval(mitteX - d.width/2, mitteY - d.height/2, d.width, d.height);
+		mitte = typ.getRing(0) / 2;
+		int d;
+		
+		d =  typ.getSpiegel();
+	    g2.fillOval(mitte - d/2, mitte - d/2, d, d);
 
 		for (int i = 1; i <= 10; i++) {
-			d = toPixel(typ.getRing(i));
-		    g.setColor(typ.getRing(i) > typ.getSpiegel() ? Color.BLACK : Color.WHITE);
-	    	g.drawOval(mitteX - d.width/2, mitteY - d.height/2, d.width, d.height);
+			d = typ.getRing(i);
+		    g2.setColor(d > typ.getSpiegel() ? Color.BLACK : Color.WHITE);
+	    	g2.drawOval(mitte - d/2, mitte - d/2, d, d);
 		}
 
 		if (typ.getInnenZehn() > 0) {
-			d = toPixel(typ.getInnenZehn());
-		    g.setColor(Color.WHITE);
-		    g.drawOval(mitteX - d.width/2, mitteY - d.height/2, d.width, d.height);
+			d = typ.getInnenZehn();
+		    g2.setColor(Color.WHITE);
+		    g2.drawOval(mitte - d/2, mitte - d/2, d, d);
 		}
 
-		g.setFont(new Font("Arial", Font.BOLD, toPixel(typ.getFontSize()).height));
-		int dy = g.getFontMetrics().getAscent() / 2;
-		int dx = (int) (g.getFontMetrics().getStringBounds("0", g).getWidth() / -2) + 1;
+		g2.setFont(new Font("Arial", Font.BOLD, typ.getFontSize()));
+		int dy = g2.getFontMetrics().getAscent() / 2;
+		int dx = (int) (g2.getFontMetrics().getStringBounds("0", g2).getWidth() / -2) + 1;
 		for (int i = 1; typ.drawNumber(i); i++) {
-			g.setColor(typ.blackNumber(i) ? Color.BLACK : Color.WHITE);
+			g2.setColor(typ.blackNumber(i) ? Color.BLACK : Color.WHITE);
 			String s = "" + i;
-			d = toPixel(typ.getNumberRadius(i));
-			g.drawString(s, mitteX - d.width + dx, mitteY + dy);	// Links
-			g.drawString(s, mitteX + dx, mitteY - d.height + dy);	// Oben
-			g.drawString(s, mitteX + d.width + dx , mitteY + dy);	// Rechts
-			g.drawString(s, mitteX + dx, mitteY + d.height + dy);	// Unten
-		}
-
-		if (nummer > 0) {
-			d = toPixel(80);
-			g.setFont(new Font("Arial", Font.BOLD, toPixel(180).height));
-			g.setColor(Color.BLACK);
-			g.drawString("" + nummer, d.width, d.height + g.getFontMetrics().getAscent());
+			d = typ.getNumberRadius(i);
+			g2.drawString(s, mitte - d + dx, mitte + dy);	// Links
+			g2.drawString(s, mitte + dx, mitte - d + dy);	// Oben
+			g2.drawString(s, mitte + d + dx , mitte + dy);	// Rechts
+			g2.drawString(s, mitte + dx, mitte + d + dy);	// Unten
 		}
 
 		for (int i = 1; einzel != null; i++) {
 			Treffer t = einzel.getTreffer(showProbe(), i);
 			if (t == null) break;
-			drawTreffer(g, t.getX(), t.getY());
+			drawTreffer(g2, t);
 		}
 
-		if (treffer != null) drawTreffer(g, treffer.getX(), treffer.getY());
+		if (treffer != null) drawTreffer(g2, treffer);
 	}
 
 	public void forceProbe() {
@@ -133,27 +130,14 @@ public class Scheibe extends JPanel implements LineListener {
 		return einzel == null || force == PROBE || (force != MATCH && !einzel.inMatch());
 	}
 
-	private void drawTreffer(Graphics g, double x, double y) {
-		Dimension d = toPixel(56);
-		Point p = toPixel((int) x/10, (int) y/10);
+	private void drawTreffer(Graphics g, Treffer t) {
+		int d = typ.getSchuss();
+		int nx = (int) (t.getX() / 10);
+		int ny = (int) (t.getY() / 10);
 		g.setColor(Color.GREEN);
-		g.fillOval(mitteX + p.x - d.width/2, mitteY - p.y - d.height/2, d.width, d.height);
+		g.fillOval(mitte + nx - d/2, mitte - ny - d/2, d, d);
 		g.setColor(Color.BLUE);
-		g.drawOval(mitteX + p.x - d.width/2, mitteY - p.y - d.height/2, d.width, d.height);
-	}
-
-	private Dimension toPixel(int zmm) {		
-		Dimension d = new Dimension();
-		d.height = zmm * getHeight() / typ.getRing(0);
-		d.width = zmm * getWidth() / typ.getRing(0);
-		return d;
-	}
-
-	private Point toPixel(int x, int y) {
-		Point p = new Point();
-		p.y = y * getHeight() / typ.getRing(0);
-		p.x = x * getWidth() / typ.getRing(0);
-		return p;
+		g.drawOval(mitte + nx - d/2, mitte - ny - d/2, d, d);
 	}
 
 	@Override

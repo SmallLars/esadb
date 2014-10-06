@@ -201,11 +201,11 @@ public class Einzel extends Start implements Printable {
 	public int print(Graphics g, PageFormat pageFormat, int pageIndex) throws PrinterException {
 		if (pageIndex > 0) return Printable.NO_SUCH_PAGE;
 
-		final double SCALE = 2000 / pageFormat.getImageableWidth();
+		final double SCALE = pageFormat.getImageableWidth() / 2000;
 
 		Graphics2D g2 = (Graphics2D) g;
 		g2.translate(pageFormat.getImageableX(), pageFormat.getImageableY());
-		g2.scale(1.0 / SCALE, 1.0 / SCALE);
+		g2.scale(SCALE, SCALE);
 		g2.setFont(new Font("Consolas", Font.PLAIN, 48));
 		final int lineHeight = g2.getFontMetrics().getHeight();
 
