@@ -2,6 +2,8 @@ package controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collections;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.Vector;
@@ -10,6 +12,7 @@ import model.Disziplin;
 import model.Schuetze;
 import model.Verein;
 
+import com.healthmarketscience.jackcess.CursorBuilder;
 import com.healthmarketscience.jackcess.Database;
 import com.healthmarketscience.jackcess.DatabaseBuilder;
 import com.healthmarketscience.jackcess.Row;
@@ -37,9 +40,18 @@ public class KampfDB {
 
 		try {
 			Database db = getDB("Stammdaten.mdb");
-			Table table = db.getTable("Disziplin");
-			for (Row row : table)
-				set.add(new Disziplin(row));
+			for (Row row : db.getTable("Disziplin")) {
+				Disziplin d = new Disziplin(row);
+				Table t = db.getTable("DisziplinWaffe");
+				Map<String, Integer> m = Collections.singletonMap("DisziplinID", d.getId());
+				Row r = CursorBuilder.findRow(t, m);
+				if (r != null) {
+					d.setWaffengattung(r);
+					set.add(d);
+				} else {
+				  System.out.println("Keine Waffengattung für " + d.toString() + " definiert. Disziplin wird ignoriert.");
+				}
+			}
 			db.close();
 		} catch (IOException e) {
 			e.printStackTrace();

@@ -144,6 +144,9 @@ public class Scheibe extends JPanel implements LineListener {
 	public void lineChanged(LineModel lm, int type) {
 		if (type == DefaultLineModel.RESULT_CHANGED) {
 			einzel = lm.getResult();
+			if (einzel != null) {
+				typ = ScheibeTyp.getTypByGattung(einzel.getDisziplin().getWaffengattung());
+			}
 			repaint();
 		}
 	}

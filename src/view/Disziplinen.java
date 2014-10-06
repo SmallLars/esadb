@@ -30,6 +30,7 @@ public class Disziplinen extends JDialog implements ComponentListener, ActionLis
 	private JLabel lblZeit;
 	private JLabel lblSchusszahl;
 	private JLabel lblSerienlaenge;
+	private JLabel lblWaffengattung;
 
 	private final JPanel contentPanel = new JPanel();
 
@@ -66,6 +67,10 @@ public class Disziplinen extends JDialog implements ComponentListener, ActionLis
 		lblSerienlaenge = new JLabel("Serienlänge");
 		lblSerienlaenge.setBounds(10, 111, 422, 14);
 		contentPanel.add(lblSerienlaenge);
+		
+		lblWaffengattung = new JLabel("Waffengattung");
+		lblWaffengattung.setBounds(10, 136, 422, 14);
+		contentPanel.add(lblWaffengattung);
 
 		JPanel comboPane = new JPanel();
 		comboPane.setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -116,6 +121,7 @@ public class Disziplinen extends JDialog implements ComponentListener, ActionLis
 				}
 				lblSchusszahl.setText(anzahl);
 				lblSerienlaenge.setText(String.format("Serienlänge: %d.", d.getSerienlaenge()));
+				lblWaffengattung.setText("Waffengattung: " + d.getWaffengattung());
 				break;
 			case "CANCEL":
 				setVisible(false);

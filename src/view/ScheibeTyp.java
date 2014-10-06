@@ -62,4 +62,12 @@ public enum ScheibeTyp {
 	public int getSchuss() {
 		return durchmesser_schuss;
 	}
+
+	public static ScheibeTyp getTypByGattung(String s) {
+		switch (s) {
+			case "1.40": return KK50M;
+			case "1.35": return KK100M;
+			default:  return KK50M;
+		}
+	}
 }
