@@ -41,9 +41,9 @@ public class Treffer implements Serializable, Comparable<Treffer> {
 		N = Phi_pos
 		O = Relative Zeit in Sekunden
 	 */
-    public Treffer(String raw) {
-    	String sa[] = raw.replace('"', '$').substring(1).split(Pattern.quote("$"));
-    	linie = Integer.parseInt(sa[5].trim());
+	public Treffer(String raw) {
+		String sa[] = raw.replace('"', '$').substring(1).split(Pattern.quote("$"));
+		linie = Integer.parseInt(sa[5].trim());
    		nummer = Integer.parseInt(sa[6].trim());
    		probe = (sa[7].equals("0") ? true : false);
    		wert = Float.parseFloat(sa[8].trim());
@@ -53,10 +53,10 @@ public class Treffer implements Serializable, Comparable<Treffer> {
    		r = Double.parseDouble(sa[12].trim());
    		phi = Double.parseDouble(sa[13].trim());
    		zeit = Integer.parseInt(sa[14].trim());
-    }
+	}
 
-    public Treffer(boolean probe, int nummer) {
-    	linie = 0;
+	public Treffer(boolean probe, int nummer) {
+		linie = 0;
    		this.nummer = nummer;
    		this.probe = probe;
    		wert = 0;
@@ -66,10 +66,10 @@ public class Treffer implements Serializable, Comparable<Treffer> {
    		r = 0;
    		phi = 0;
    		zeit = 0;
-    }
+	}
 
-    public Treffer(float wert, String lage, double x, double y, double r, double phi, int zeit) {
-    	this.linie = 0;
+	public Treffer(float wert, String lage, double x, double y, double r, double phi, int zeit) {
+		this.linie = 0;
    		this.nummer = 1;
    		this.probe = true;
    		this.wert = wert;
@@ -79,84 +79,84 @@ public class Treffer implements Serializable, Comparable<Treffer> {
    		this.r = r;
    		this.phi = phi;
    		this.zeit = zeit;
-    }
+	}
 
-    public void setNummer(int nummer) {
-    	this.nummer = nummer;
-    }
+	public void setNummer(int nummer) {
+		this.nummer = nummer;
+	}
 
-    public void setProbe(boolean probe) {
-    	this.probe = probe;
-    }
+	public void setProbe(boolean probe) {
+		this.probe = probe;
+	}
 
-    public int getLinie() {
-    	return linie;
-    }
+	public int getLinie() {
+		return linie;
+	}
 
-    public int getNummer() {
-    	return nummer;
-    }
+	public int getNummer() {
+		return nummer;
+	}
 
-    public boolean isProbe() {
-    	return probe;
-    }
+	public boolean isProbe() {
+		return probe;
+	}
 
-    public float getWert() {
-    	return wert;
-    }
+	public float getWert() {
+		return wert;
+	}
 
-    public boolean isInnenZehner() {
-    	//return lage.equals("R"); <- Gibt leider keine Auskunft :(
-    	return r <= 530;
-    }
+	public boolean isInnenZehner() {
+		//return lage.equals("R"); <- Gibt leider keine Auskunft :(
+		return r <= 530;
+	}
 
-    public String getLage() {
-    	return isInnenZehner() ? "R" : lage;
-    }
-    
-    public double getX() {
-    	return x;
-    }
-    
-    public double getY() {
-    	return y;
-    }
+	public String getLage() {
+		return isInnenZehner() ? "R" : lage;
+	}
+	
+	public double getX() {
+		return x;
+	}
+	
+	public double getY() {
+		return y;
+	}
 
-    public double getR() {
-    	return r;
-    }
-    
-    public double getPhi() {
-    	return phi;
-    }
+	public double getR() {
+		return r;
+	}
+	
+	public double getPhi() {
+		return phi;
+	}
 
-    public int getZeit() {
-    	return zeit;
-    }
+	public int getZeit() {
+		return zeit;
+	}
 
-    @Override
-    public String toString() {
-    	return String.format("%4.1f", wert);
-    }
+	@Override
+	public String toString() {
+		return String.format("%4.1f", wert);
+	}
 
-    public void print(PrintWriter writer) {
-    	writer.println(String.format("%d", nummer));
-    	writer.println(formatDouble(wert));
-    	writer.println(String.format("\"%s\"", lage));
-    	writer.println(formatDouble(x));
-    	writer.println(formatDouble(y));
-    	writer.println(formatDouble(r));
-    	writer.println(formatDouble(phi));
-    	writer.println(String.format("%d", zeit));
-    }
-    
-    private String formatDouble(double d) {
-    	String s = String.format("%f", d);
-    	s = s.replace(',', '.');
-    	while (s.endsWith("0")) s = s.substring(0, s.length() - 1);
-    	if (s.endsWith(".")) s = s.concat("0");
-    	return s;
-    }
+	public void print(PrintWriter writer) {
+		writer.println(String.format("%d", nummer));
+		writer.println(formatDouble(wert));
+		writer.println(String.format("\"%s\"", lage));
+		writer.println(formatDouble(x));
+		writer.println(formatDouble(y));
+		writer.println(formatDouble(r));
+		writer.println(formatDouble(phi));
+		writer.println(String.format("%d", zeit));
+	}
+	
+	private String formatDouble(double d) {
+		String s = String.format("%f", d);
+		s = s.replace(',', '.');
+		while (s.endsWith("0")) s = s.substring(0, s.length() - 1);
+		if (s.endsWith(".")) s = s.concat("0");
+		return s;
+	}
 
 	@Override
 	public int compareTo(Treffer t) {
@@ -165,15 +165,10 @@ public class Treffer implements Serializable, Comparable<Treffer> {
 		}
 		return nummer - t.nummer;		
 	}
-	
+
 	@Override
 	public boolean equals(Object o) {
-		if (o instanceof Treffer) {
-			if (compareTo((Treffer) o) == 0) {
-				return true;
-			}
-		}
-		return false;
+		return this == o;
 	}
 
 	@Override

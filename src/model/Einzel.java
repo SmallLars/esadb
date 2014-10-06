@@ -86,8 +86,7 @@ public class Einzel extends Start implements Printable {
 		if (t.getNummer() > next) t.setNummer(next);
 		
 		for (int i = next - 1; i >= t.getNummer(); i--) {
-			Treffer tr = treffer.get(new Treffer(t.isProbe(), i));
-			treffer.remove(tr);
+			Treffer tr = treffer.remove(new Treffer(t.isProbe(), i));
 			tr.setNummer(i + 1);
 			treffer.put(tr,  tr);
 		}

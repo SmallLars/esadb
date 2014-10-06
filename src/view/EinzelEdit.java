@@ -207,7 +207,7 @@ public class EinzelEdit extends JDialog implements ComponentListener, ActionList
 	public void valueChanged(ListSelectionEvent e) {
 		int row = table_1.getSelectedRow();
 		if (row == -1) return;
-		
+
 		Treffer t = (Treffer) table_1.getValueAt(row, -1);
 		rdbtnProbe.setSelected(t.isProbe());
 		rdbtnMatch.setSelected(!t.isProbe());
