@@ -1,4 +1,4 @@
-package controller;
+package model;
 
 public enum Status {
 	INIT(0),
@@ -12,7 +12,7 @@ public enum Status {
 	WERTUNG(8),
 	PROBE(9);
 
-    public final int code;
+    private final int code;
     
     Status(int code) {
     	this.code = code;

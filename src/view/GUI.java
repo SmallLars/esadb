@@ -29,8 +29,8 @@ import javax.swing.JMenu;
 import model.DefaultLineModel;
 import model.LineModel;
 import model.Einzel;
+import model.Status;
 import controller.Controller;
-import controller.Status;
 import druckvorschau.Druckvorschau;
 
 import java.awt.event.WindowAdapter;
@@ -38,6 +38,7 @@ import java.awt.event.WindowEvent;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import java.awt.Toolkit;
+
 import javax.swing.Box;
 import javax.swing.ScrollPaneConstants;
 

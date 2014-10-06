@@ -22,7 +22,7 @@ import model.Disziplin;
 import model.LineListener;
 import model.LineModel;
 import model.Schuetze;
-import controller.Status;
+import model.Status;
 
 
 @SuppressWarnings("serial")

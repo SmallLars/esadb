@@ -2,8 +2,6 @@ package model;
 
 import javax.swing.ComboBoxModel;
 
-import controller.Status;
-
 
 public interface LineModel {
 

@@ -1,4 +1,5 @@
 package model;
+
 import java.awt.Color;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
@@ -11,7 +12,6 @@ import javax.swing.text.StyleConstants;
 import model.comboBoxModel.DisziplinenModel;
 import model.comboBoxModel.SchuetzenModel;
 import controller.Controller;
-import controller.Status;
 
 
 public class DefaultLineModel implements LineModel, LineReader {
