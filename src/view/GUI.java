@@ -229,7 +229,7 @@ public class GUI extends JFrame implements ActionListener {
 			linien[i] = new Linie(linie);
 			linienBox.add(linien[i]);
 
-			scheiben[i] = new Scheibe(null, l);
+			scheiben[i] = new Scheibe(l);
 			scheibenBox.add(scheiben[i]);
 			linie.addLineListener(scheiben[i]);
 

@@ -1,6 +1,5 @@
 package view;
 
-import java.awt.Polygon;
 
 public enum ScheibeTyp {
 	LG10M(305, 455, 50, 0, 8, 45),
@@ -52,11 +51,6 @@ public enum ScheibeTyp {
 
 	public boolean blackNumber(int i) {
 		return getNumberRadius(i) > durchmesser_spiegel / 2;
-	}
-
-	public Polygon getProbe() {
-		int r = durchmesser_step / 2;
-		return new Polygon(new int[]{getRing(0) - r, getRing(0) - r, getRing(0) - r * 6}, new int[]{r, r * 6, r}, 3);
 	}
 
 	public int getSchuss() {

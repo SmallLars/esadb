@@ -21,26 +21,35 @@ public class Scheibe extends JPanel implements LineListener {
 
 	private int mitte;
 
-	private ScheibeTyp typ = ScheibeTyp.KK50M;
+	private ScheibeTyp typ;
 	private Einzel einzel;
 	private Treffer treffer;
 
 	private int nummer;
 	private int force;
 
-	public Scheibe() {
-		this(null);
+	// TrefferAdd
+	public Scheibe(ScheibeTyp typ) {
+		this(null, 0);
+		this.typ = typ;
 	}
 
+	// Einzel im Druck mit this
 	public Scheibe(Einzel einzel) {
 		this(einzel, 0);
 	}
 
-	public Scheibe(Einzel einzel, int nummer) {
+	// GUI mit (null, num)
+	public Scheibe(int nummer) {
+		this(null, nummer);
+	}
+
+	private Scheibe(Einzel einzel, int nummer) {
 		this.einzel = einzel;
 		this.treffer = null;
 		this.nummer = nummer;
 		this.force = 0;
+		updateTyp();
 		setSize(400, 400);
 	}
 
@@ -58,20 +67,23 @@ public class Scheibe extends JPanel implements LineListener {
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 
-		Graphics2D g2 = (Graphics2D) g.create();
-		g2.scale(new Double(getWidth()) / new Double(typ.getRing(0)), new Double(getHeight()) / new Double(typ.getRing(0)));
-		g2.setColor(Color.BLACK);
+		Graphics2D g1 = (Graphics2D) g.create();
+		g1.scale(new Double(getWidth()) / 1000, new Double(getHeight()) / 1000);
+		g1.setColor(Color.BLACK);
 
 		if (nummer > 0) {
-			int dist = (typ.getRing(0) - typ.getRing(1)) / 2;
-			g2.setFont(new Font("Arial", Font.BOLD, typ.getFontSize() * 4));
-			g2.drawString("" + nummer, dist, dist + g2.getFontMetrics().getAscent());
+			g1.setFont(new Font("Arial", Font.BOLD, 128));
+			g1.drawString("" + nummer, 25, 25 + g1.getFontMetrics().getAscent());
 		}
 		
 		if (showProbe()) {
-			g2.fillPolygon(typ.getProbe());
+			g1.fillPolygon(new int[] {700, 975, 975}, new int[] {25, 25, 300}, 3);
 		}
 
+		Graphics2D g2 = (Graphics2D) g.create();
+		g2.scale(new Double(getWidth()) / new Double(typ.getRing(0)), new Double(getHeight()) / new Double(typ.getRing(0)));
+		
+		g2.setColor(Color.BLACK);
 		mitte = typ.getRing(0) / 2;
 		int d;
 		
@@ -140,13 +152,19 @@ public class Scheibe extends JPanel implements LineListener {
 		g.drawOval(mitte + nx - d/2, mitte - ny - d/2, d, d);
 	}
 
+	private void updateTyp() {
+		if (einzel != null) {
+			typ = ScheibeTyp.getTypByGattung(einzel.getDisziplin().getWaffengattung());
+		} else if (typ == null ){
+			typ = ScheibeTyp.KK50M;
+		}
+	}
+
 	@Override
 	public void lineChanged(LineModel lm, int type) {
 		if (type == DefaultLineModel.RESULT_CHANGED) {
 			einzel = lm.getResult();
-			if (einzel != null) {
-				typ = ScheibeTyp.getTypByGattung(einzel.getDisziplin().getWaffengattung());
-			}
+			updateTyp();
 			repaint();
 		}
 	}

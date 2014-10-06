@@ -54,7 +54,7 @@ public class TrefferAdd extends JDialog implements ComponentListener, ListSelect
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		getContentPane().setLayout(null);
 
-		scheibe = new Scheibe();
+		scheibe = new Scheibe(ScheibeTyp.KK50M);
 		scheibe.setBounds(60, 11, 200, 200);
 		getContentPane().add(scheibe);
 
