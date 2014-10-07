@@ -54,6 +54,11 @@ public class Scheibe extends JPanel implements LineListener {
 		setSize(400, 400);
 	}
 
+	public void setTyp(ScheibeTyp typ) {
+		this.typ = typ;
+		repaint();
+	}
+
 	@Override
 	public void setSize(int w, int h) {
 		super.setSize(w < h ? w : h, w < h ? w : h);

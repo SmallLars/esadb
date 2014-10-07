@@ -37,6 +37,7 @@ public class TrefferCreate extends JPanel implements MouseWheelListener, KeyList
 	private boolean doUpdate;
 	private NumberFormat format;
 	private Scheibe scheibe;
+	private ScheibeTyp typ;
 
 	private JFormattedTextField component_V;
 	private JComboBox<String>   component_L;
@@ -46,11 +47,12 @@ public class TrefferCreate extends JPanel implements MouseWheelListener, KeyList
 	private JFormattedTextField component_W;
 	private JFormattedTextField component_Z;
 
-	public TrefferCreate(Scheibe scheibe) {
+	public TrefferCreate(Scheibe scheibe, ScheibeTyp typ) {
 		setBorder(new TitledBorder(new LineBorder(new Color(122, 138, 153)), "Trefferdetails", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(51, 51, 51)));
 		this.doUpdate = true;
 		this.format = NumberFormat.getInstance(Locale.GERMAN);
 		this.scheibe = scheibe;
+		this.typ = typ;
 
 		setLayout(null);
 		this.setSize(300, 225);
@@ -193,6 +195,14 @@ public class TrefferCreate extends JPanel implements MouseWheelListener, KeyList
 		panel_2.add(lblZeit);
 
 		scheibe.setTreffer(getTreffer());
+	}
+
+	public void setTyp(ScheibeTyp typ) {
+		this.typ = typ;
+		doUpdate = false;
+		updateVwithR();
+		updateLwithRandW();
+		doUpdate = true;
 	}
 
 	public void setValues(Treffer t) {
@@ -389,15 +399,15 @@ public class TrefferCreate extends JPanel implements MouseWheelListener, KeyList
 	}
 
 	private void updateRwithV() {
-		double d;
+		float f;
 		try {
-			d = format.parse(component_V.getText()).floatValue();
+			f = format.parse(component_V.getText()).floatValue();
 		} catch (ParseException e) {
 			return;
 		}
 		
-		if (d == 0 || (d >= 1 && d <= 10.9)) {
-			component_R.setText(String.format("%.4f", Math.round(880 - d * 80) / 10f));
+		if (f == 0 || (f >= 1 && f <= 10.9)) {
+			component_R.setText(String.format("%.4f", typ.getRadiusByValue(f) / 100));
 		}
 	}
 
@@ -408,15 +418,16 @@ public class TrefferCreate extends JPanel implements MouseWheelListener, KeyList
 		} catch (ParseException e) {
 			return;
 		}
+		boolean isInnenZehn = typ.isInnenZehn(d * 100);
 
 		String lage = (String) component_L.getSelectedItem();
 		if (lage.equals("R")) {
-			if (d > 5.3) {
-				component_R.setText("5,3000");
+			if (!isInnenZehn) {
+				component_R.setText(String.format("%.4f", (typ.getInnenZehnRadius() + typ.getSchussRadius()) / 100f));
 			}
 		} else {
-			if (d <= 5.3) {
-				component_R.setText("7,0000");
+			if (isInnenZehn) {
+				component_R.setText(String.format("%.4f", (typ.getRingRadius(10) + typ.getSchussRadius()) / 100f));
 			}
 			switch (lage) {
 				case "f": component_W.setText("180,000"); break;
@@ -439,10 +450,7 @@ public class TrefferCreate extends JPanel implements MouseWheelListener, KeyList
 			return;
 		}
 
-		d = (int) (110 - d / 0.8) / 10f;
-		if (d < 1) d = 0;
-		if (d > 10.9) d = 10.9;
-		component_V.setText(String.format("%.1f", d));
+		component_V.setText(String.format("%.1f", typ.getValuebyRadius(d * 100)));
 	}
 
 	private void updateLwithRandW() {
@@ -455,7 +463,7 @@ public class TrefferCreate extends JPanel implements MouseWheelListener, KeyList
 			return;
 		}
 
-		if (r <= 5.3) {
+		if (typ.isInnenZehn(r * 100)) {
 			component_L.setSelectedItem("R");
 		} else {
 			String[] values = {"g", "k", "h", "j", "f", "l", "i", "m", "g"};

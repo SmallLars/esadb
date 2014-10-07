@@ -57,6 +57,23 @@ public enum ScheibeTyp {
 		return radius_schuss;
 	}
 
+	public float getValuebyRadius(double radius) {
+		// TODO funktioniert eventuell nur für KK50M
+		float v = (int) (110 - radius * 10 / radius_step) / 10f;
+		if (v < 1) return 0.0f;
+		if (v > 10.9) return 10.9f;
+		return v;
+	}
+
+	public double getRadiusByValue(float value) {
+		// TODO funktioniert eventuell nur für KK50M
+		return Math.round(radius_aussen + radius_step + radius_schuss - value * radius_step);
+	}
+
+	public boolean isInnenZehn(double radius) {
+		return radius <= radius_innenzehn + radius_schuss;
+	}
+
 	public static ScheibeTyp getTypByGattung(String s) {
 		switch (s) {
 			case "1.40": return KK50M;

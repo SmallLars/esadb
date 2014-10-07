@@ -21,6 +21,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.JLabel;
 
 import java.awt.Font;
+import javax.swing.JComboBox;
 
 
 @SuppressWarnings("serial")
@@ -28,6 +29,7 @@ public class TrefferAdd extends JDialog implements ComponentListener, ListSelect
 
 	private Controller controller;
 	
+	private JComboBox<ScheibeTyp> comboBox;
 	private Scheibe scheibe;
 	private TrefferCreate treffer;
 	
@@ -54,11 +56,18 @@ public class TrefferAdd extends JDialog implements ComponentListener, ListSelect
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		getContentPane().setLayout(null);
 
+		comboBox = new JComboBox<ScheibeTyp>(ScheibeTyp.values());
+		comboBox.setSelectedItem(ScheibeTyp.KK50M);
+		comboBox.setBounds(10, 11, 88, 25);
+		comboBox.setActionCommand("TYP");
+		comboBox.addActionListener(this);
+		getContentPane().add(comboBox);
+
 		scheibe = new Scheibe(ScheibeTyp.KK50M);
-		scheibe.setBounds(60, 11, 200, 200);
+		scheibe.setBounds(110, 11, 200, 200);
 		getContentPane().add(scheibe);
 
-		treffer = new TrefferCreate(scheibe);
+		treffer = new TrefferCreate(scheibe, ScheibeTyp.KK50M);
 		treffer.setSize(300, 225);
 		treffer.setLocation(10, 228);
 		getContentPane().add(treffer);
@@ -131,6 +140,11 @@ public class TrefferAdd extends JDialog implements ComponentListener, ListSelect
 		switch (arg0.getActionCommand()) {
 			case "CANCEL":
 				setVisible(false);
+				break;
+			case "TYP":
+				ScheibeTyp typ = (ScheibeTyp) comboBox.getSelectedItem();
+				scheibe.setTyp(typ);
+				treffer.setTyp(typ);
 				break;
 			case "ADD":
 				controller.add(treffer.getTreffer());
