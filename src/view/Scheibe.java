@@ -19,8 +19,6 @@ public class Scheibe extends JPanel implements LineListener {
 	private final int PROBE = 1;
 	private final int MATCH = 2;
 
-	private int mitte;
-
 	private ScheibeTyp typ;
 	private Einzel einzel;
 	private Treffer treffer;
@@ -83,26 +81,27 @@ public class Scheibe extends JPanel implements LineListener {
 			g1.fillPolygon(new int[] {700, 975, 975}, new int[] {25, 25, 300}, 3);
 		}
 
+		int r;
+		int mitte = typ.getRingRadius(0);;
+
 		Graphics2D g2 = (Graphics2D) g.create();
-		g2.scale(new Double(getWidth()) / new Double(typ.getRing(0)), new Double(getHeight()) / new Double(typ.getRing(0)));
-		
+		g2.scale(new Double(getWidth()) / new Double(2 * mitte), new Double(getHeight()) / new Double(2 * mitte));
+
 		g2.setColor(Color.BLACK);
-		mitte = typ.getRing(0) / 2;
-		int d;
-		
-		d =  typ.getSpiegel();
-	    g2.fillOval(mitte - d/2, mitte - d/2, d, d);
+
+		r =  typ.getSpiegelRadius();
+	    g2.fillOval(mitte - r, mitte - r, 2 * r, 2 * r);
 
 		for (int i = 1; i <= 10; i++) {
-			d = typ.getRing(i);
-		    g2.setColor(d > typ.getSpiegel() ? Color.BLACK : Color.WHITE);
-	    	g2.drawOval(mitte - d/2, mitte - d/2, d, d);
+			r = typ.getRingRadius(i);
+		    g2.setColor(r > typ.getSpiegelRadius() ? Color.BLACK : Color.WHITE);
+	    	g2.drawOval(mitte - r, mitte - r, r * 2, r * 2);
 		}
 
-		if (typ.getInnenZehn() > 0) {
-			d = typ.getInnenZehn();
+		if (typ.getInnenZehnRadius() > 0) {
+			r = typ.getInnenZehnRadius();
 		    g2.setColor(Color.WHITE);
-		    g2.drawOval(mitte - d/2, mitte - d/2, d, d);
+		    g2.drawOval(mitte - r, mitte - r, 2 * r, 2 * r);
 		}
 
 		g2.setFont(new Font("Arial", Font.BOLD, typ.getFontSize()));
@@ -111,20 +110,20 @@ public class Scheibe extends JPanel implements LineListener {
 		for (int i = 1; typ.drawNumber(i); i++) {
 			g2.setColor(typ.blackNumber(i) ? Color.BLACK : Color.WHITE);
 			String s = "" + i;
-			d = typ.getNumberRadius(i);
-			g2.drawString(s, mitte - d + dx, mitte + dy);	// Links
-			g2.drawString(s, mitte + dx, mitte - d + dy);	// Oben
-			g2.drawString(s, mitte + d + dx , mitte + dy);	// Rechts
-			g2.drawString(s, mitte + dx, mitte + d + dy);	// Unten
+			r = typ.getNumberRadius(i);
+			g2.drawString(s, mitte - r + dx, mitte + dy);	// Links
+			g2.drawString(s, mitte + dx, mitte - r + dy);	// Oben
+			g2.drawString(s, mitte + r + dx , mitte + dy);	// Rechts
+			g2.drawString(s, mitte + dx, mitte + r + dy);	// Unten
 		}
 
 		for (int i = 1; einzel != null; i++) {
 			Treffer t = einzel.getTreffer(showProbe(), i);
 			if (t == null) break;
-			drawTreffer(g2, t);
+			drawTreffer(g2, t, mitte);
 		}
 
-		if (treffer != null) drawTreffer(g2, treffer);
+		if (treffer != null) drawTreffer(g2, treffer, mitte);
 	}
 
 	public void forceProbe() {
@@ -145,14 +144,14 @@ public class Scheibe extends JPanel implements LineListener {
 		return einzel == null || force == PROBE || (force != MATCH && !einzel.inMatch());
 	}
 
-	private void drawTreffer(Graphics g, Treffer t) {
-		int d = typ.getSchuss();
-		int nx = (int) (t.getX() / 10);
-		int ny = (int) (t.getY() / 10);
+	private void drawTreffer(Graphics g, Treffer t, int mitte) {
+		int r = typ.getSchussRadius();
+		int nx = (int) (t.getX());
+		int ny = (int) (t.getY());
 		g.setColor(Color.GREEN);
-		g.fillOval(mitte + nx - d/2, mitte - ny - d/2, d, d);
+		g.fillOval(mitte + nx - r, mitte - ny - r, 2 * r, 2 * r);
 		g.setColor(Color.BLUE);
-		g.drawOval(mitte + nx - d/2, mitte - ny - d/2, d, d);
+		g.drawOval(mitte + nx - r, mitte - ny - r, 2 * r, 2 * r);
 	}
 
 	private void updateTyp() {
