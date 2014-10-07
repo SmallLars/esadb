@@ -55,7 +55,7 @@ public class TrefferCreate extends JPanel implements MouseWheelListener, KeyList
 		this.typ = typ;
 
 		setLayout(null);
-		this.setSize(300, 225);
+		this.setSize(300, 200);
 
 		JLabel lblWert = new JLabel("Wert");
 		lblWert.setBounds(20, 26, 40, 16);
@@ -96,8 +96,8 @@ public class TrefferCreate extends JPanel implements MouseWheelListener, KeyList
 		add(component_L);
 		
 		JPanel panel = new JPanel();
-		panel.setBorder(new TitledBorder(new LineBorder(new Color(122, 138, 153)), "Kartesische Koordinaten", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		panel.setBounds(10, 55, 280, 46);
+		panel.setBorder(new TitledBorder(new LineBorder(new Color(122, 138, 153)), "Koordinaten - kartesisch / polar", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		panel.setBounds(10, 55, 280, 80);
 		add(panel);
 		panel.setLayout(null);
 		
@@ -135,51 +135,45 @@ public class TrefferCreate extends JPanel implements MouseWheelListener, KeyList
 		label.setBounds(234, 21, 26, 16);
 		panel.add(label);
 		
-		JPanel panel_1 = new JPanel();
-		panel_1.setBorder(new TitledBorder(new LineBorder(new Color(122, 138, 153)), "Polarkoordinaten", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(51, 51, 51)));
-		panel_1.setBounds(10, 112, 280, 46);
-		add(panel_1);
-		panel_1.setLayout(null);
-		
 		JLabel lblR = new JLabel("R");
-		lblR.setBounds(10, 21, 16, 16);
-		panel_1.add(lblR);
+		lblR.setBounds(10, 51, 16, 16);
+		panel.add(lblR);
 		
 		component_R = new JFormattedTextField(getFormat(2, 4));
+		component_R.setBounds(26, 49, 64, 20);
+		panel.add(component_R);
 		component_R.setText("0,0000");
-		component_R.setBounds(26, 19, 64, 20);
 		component_R.addMouseWheelListener(this);
 		component_R.addKeyListener(this);
 		component_R.getDocument().addDocumentListener(this);
 		component_R.getDocument().putProperty("FIELD", component_R);
-		component_R.addFocusListener(this);
-		panel_1.add(component_R);
 		
 		JLabel label_1 = new JLabel("mm");
-		label_1.setBounds(94, 21, 26, 16);
-		panel_1.add(label_1);
+		label_1.setBounds(94, 51, 26, 16);
+		panel.add(label_1);
 		
 		JLabel lblW = new JLabel("W");
-		lblW.setBounds(150, 21, 16, 16);
-		panel_1.add(lblW);
+		lblW.setBounds(150, 51, 16, 16);
+		panel.add(lblW);
 		
 		component_W = new JFormattedTextField(getFormat(3, 3));
+		component_W.setBounds(166, 49, 64, 20);
+		panel.add(component_W);
 		component_W.setText("0,000");
-		component_W.setBounds(166, 19, 64, 20);
 		component_W.addMouseWheelListener(this);
 		component_W.addKeyListener(this);
 		component_W.getDocument().addDocumentListener(this);
 		component_W.getDocument().putProperty("FIELD", component_W);
-		component_W.addFocusListener(this);
-		panel_1.add(component_W);
 		
 		JLabel label_2 = new JLabel("\u00B0");
-		label_2.setBounds(234, 21, 26, 16);
-		panel_1.add(label_2);
+		label_2.setBounds(234, 51, 26, 16);
+		panel.add(label_2);
+		component_W.addFocusListener(this);
+		component_R.addFocusListener(this);
 		
 		JPanel panel_2 = new JPanel();
 		panel_2.setBorder(new TitledBorder(new LineBorder(new Color(122, 138, 153)), "Zeit", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(51, 51, 51)));
-		panel_2.setBounds(10, 169, 280, 46);
+		panel_2.setBounds(10, 142, 280, 46);
 		add(panel_2);
 		panel_2.setLayout(null);
 		

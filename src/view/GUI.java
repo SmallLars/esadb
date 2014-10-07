@@ -54,6 +54,7 @@ public class GUI extends JFrame implements ActionListener {
 	private JMenuItem mntmDrucken;
 	private JMenuItem mntmVorschau;
 	private JMenuItem mntmEinzel;
+	private JMenuItem mntmEinzel_1;
 	private JMenuItem mntmTreffer;
 	private JMenuItem mntmEinstellungen;
 
@@ -88,77 +89,83 @@ public class GUI extends JFrame implements ActionListener {
 		JMenu mnDatei = new JMenu("Datei");
 		menuBar.add(mnDatei);
 
-		mntmNeu = new JMenuItem("Neu...");
-		mntmNeu.setActionCommand("NEW");
-		mntmNeu.addActionListener(this);
-		mnDatei.add(mntmNeu);
-
-		mntmLaden = new JMenuItem("Öffnen...");
-		mntmLaden.setActionCommand("OPEN");
-		mntmLaden.addActionListener(this);
-		mnDatei.add(mntmLaden);
-		
-		mntmSpeichern = new JMenuItem("Speichern unter...");
-		mntmSpeichern.setActionCommand("SAVEAS");
-		mntmSpeichern.addActionListener(this);
-		mnDatei.add(mntmSpeichern);
-
-		mnDatei.addSeparator();
-
-		mntmEinstellungen = new JMenuItem("Einstellungen...");
-		mntmEinstellungen.setActionCommand("PREFERENCES");
-		mntmEinstellungen.addActionListener(this);
-		mnDatei.add(mntmEinstellungen);
-		
-		mnDatei.addSeparator();
-		
-		mntmBeenden = new JMenuItem("Beenden");
-		mntmBeenden.setActionCommand("CLOSE");
-		mntmBeenden.addActionListener(this);
-		mnDatei.add(mntmBeenden);
+			mntmNeu = new JMenuItem("Neu...");
+			mntmNeu.setActionCommand("NEW");
+			mntmNeu.addActionListener(this);
+			mnDatei.add(mntmNeu);
+	
+			mntmLaden = new JMenuItem("Öffnen...");
+			mntmLaden.setActionCommand("OPEN");
+			mntmLaden.addActionListener(this);
+			mnDatei.add(mntmLaden);
+			
+			mntmSpeichern = new JMenuItem("Speichern unter...");
+			mntmSpeichern.setActionCommand("SAVEAS");
+			mntmSpeichern.addActionListener(this);
+			mnDatei.add(mntmSpeichern);
+	
+			mnDatei.addSeparator();
+	
+			mntmEinstellungen = new JMenuItem("Einstellungen...");
+			mntmEinstellungen.setActionCommand("PREFERENCES");
+			mntmEinstellungen.addActionListener(this);
+			mnDatei.add(mntmEinstellungen);
+			
+			mnDatei.addSeparator();
+			
+			mntmBeenden = new JMenuItem("Beenden");
+			mntmBeenden.setActionCommand("CLOSE");
+			mntmBeenden.addActionListener(this);
+			mnDatei.add(mntmBeenden);
 
 		JMenu mnErgebnisse = new JMenu("Ergebnisse");
 		menuBar.add(mnErgebnisse);
-
-		mntmDrucken = new JMenuItem("Drucken...");
-		mntmDrucken.setActionCommand("PRINT");
-		mntmDrucken.addActionListener(this);
-		mnErgebnisse.add(mntmDrucken);
-
-		mntmVorschau = new JMenuItem("Druckvorschau...");
-		mntmVorschau.setActionCommand("PRINTPREVIEW");
-		mntmVorschau.addActionListener(this);
-		mnErgebnisse.add(mntmVorschau);
 		
-		mntmEinzel = new JMenuItem("Einzelergebnisse...");
-		mntmEinzel.setActionCommand("SINGLEPREVIEW");
-		mntmEinzel.addActionListener(this);
-		mnErgebnisse.add(mntmEinzel);
+			JMenu mnErgebnisliste = new JMenu("Ergebnisliste");
+			mnErgebnisse.add(mnErgebnisliste);
+			
+				mntmDrucken = new JMenuItem("Drucken...");
+				mnErgebnisliste.add(mntmDrucken);
+				mntmDrucken.setActionCommand("PRINT");
+				mntmDrucken.addActionListener(this);
+						
+				mntmVorschau = new JMenuItem("Druckvorschau...");
+				mnErgebnisliste.add(mntmVorschau);
+				mntmVorschau.setActionCommand("PRINTPREVIEW");
+				mntmVorschau.addActionListener(this);
+		
+			JMenu mnEinzelergebnisse = new JMenu("Einzelergebnisse");
+			mnErgebnisse.add(mnEinzelergebnisse);
+			
+				mntmEinzel = new JMenuItem("Druckvorschau...");
+				mnEinzelergebnisse.add(mntmEinzel);
+				mntmEinzel.setActionCommand("SINGLEPREVIEW");
+				mntmEinzel.addActionListener(this);
+				
+				mntmEinzel_1 = new JMenuItem("Bearbeiten...");
+				mnEinzelergebnisse.add(mntmEinzel_1);
+				mntmEinzel_1.setActionCommand("SINGLEEDIT");
+				mntmEinzel_1.addActionListener(this);
 
-		mnErgebnisse.addSeparator();
-
-		mntmEinzel = new JMenuItem("Bearbeiten...");
-		mntmEinzel.setActionCommand("SINGLEEDIT");
-		mntmEinzel.addActionListener(this);
-		mnErgebnisse.add(mntmEinzel);
-
-		mntmTreffer = new JMenuItem("Treffer eingeben...");
-		mntmTreffer.setActionCommand("TREFFERADD");
-		mntmTreffer.addActionListener(this);
-		mnErgebnisse.add(mntmTreffer);
+			mnErgebnisse.addSeparator();
+	
+			mntmTreffer = new JMenuItem("Treffer eingeben...");
+			mntmTreffer.setActionCommand("TREFFERADD");
+			mntmTreffer.addActionListener(this);
+			mnErgebnisse.add(mntmTreffer);
 		
 		JMenu mnStammdaten = new JMenu("Stammdaten");
 		menuBar.add(mnStammdaten);
 		
-		mntmSchtzen = new JMenuItem("Schützen...");
-		mntmSchtzen.setActionCommand("SCHUETZEN");
-		mntmSchtzen.addActionListener(this);
-		mnStammdaten.add(mntmSchtzen);
-		
-		mntmDisziplinen = new JMenuItem("Disziplinen...");
-		mntmDisziplinen.setActionCommand("DISZIPLINEN");
-		mntmDisziplinen.addActionListener(this);
-		mnStammdaten.add(mntmDisziplinen);
+			mntmSchtzen = new JMenuItem("Schützen...");
+			mntmSchtzen.setActionCommand("SCHUETZEN");
+			mntmSchtzen.addActionListener(this);
+			mnStammdaten.add(mntmSchtzen);
+			
+			mntmDisziplinen = new JMenuItem("Disziplinen...");
+			mntmDisziplinen.setActionCommand("DISZIPLINEN");
+			mntmDisziplinen.addActionListener(this);
+			mnStammdaten.add(mntmDisziplinen);
 		
 		fc = new JFileChooser();
 	    fc.setCurrentDirectory(new File("."));

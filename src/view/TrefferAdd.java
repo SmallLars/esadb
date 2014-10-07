@@ -68,7 +68,7 @@ public class TrefferAdd extends JDialog implements ComponentListener, ListSelect
 		getContentPane().add(scheibe);
 
 		treffer = new TrefferCreate(scheibe, ScheibeTyp.KK50M);
-		treffer.setSize(300, 225);
+		treffer.setSize(300, 200);
 		treffer.setLocation(10, 228);
 		getContentPane().add(treffer);
 		
