@@ -76,8 +76,10 @@ public enum ScheibeTyp {
 
 	public static ScheibeTyp getTypByGattung(String s) {
 		switch (s) {
-			case "1.40": return KK50M;
+			case "1.10": return LG10M;
 			case "1.35": return KK100M;
+			case "1.40": return KK50M;
+			case "2.10": return LP10M;
 			default:  return KK50M;
 		}
 	}
