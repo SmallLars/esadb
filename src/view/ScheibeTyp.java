@@ -2,25 +2,25 @@ package view;
 
 
 public enum ScheibeTyp {
-	LG10M(3050, 4550, 500, 0, 8, 450),
-	LP10M(5950, 15550, 1600, 500, 8, 450),
-	KK50M(11240, 15440, 1600, 500, 8, 560),
-	KK100M(20000, 50000, 5000, 2500, 9, 560);
+	LG10M(3050, 4550, 500, 0, 8, Kaliber.LGLP),
+	LP10M(5950, 15550, 1600, 500, 8, Kaliber.LGLP),
+	KK50M(11240, 15440, 1600, 500, 8, Kaliber.KK),
+	KK100M(20000, 50000, 5000, 2500, 9, Kaliber.KK);
 
 	private final int radius_spiegel;
 	private final int radius_aussen;
 	private final int radius_step;
 	private final int radius_innenzehn;
 	private final int maxNumber;
-	private final int radius_schuss;
+	private final Kaliber kaliber;
 
-	ScheibeTyp(int durchmesser_spiegel, int durchmesser_aussen, int durchmesser_step, int durchmesser_innenzehn, int maxNumber, int durchmesser_schuss) {
+	ScheibeTyp(int durchmesser_spiegel, int durchmesser_aussen, int durchmesser_step, int durchmesser_innenzehn, int maxNumber, Kaliber kaliber) {
 		this.radius_spiegel = durchmesser_spiegel / 2;
 		this.radius_aussen = durchmesser_aussen / 2;
 		this.radius_step = durchmesser_step / 2;
 		this.radius_innenzehn = durchmesser_innenzehn / 2;
 		this.maxNumber = maxNumber;
-		this.radius_schuss = durchmesser_schuss / 2;
+		this.kaliber = kaliber;
 	}
 
 	public int getRingRadius(int i) {
@@ -54,7 +54,7 @@ public enum ScheibeTyp {
 	}
 
 	public int getSchussRadius() {
-		return radius_schuss;
+		return kaliber.getRadius();
 	}
 
 	public float getValuebyRadius(double radius) {
@@ -67,11 +67,11 @@ public enum ScheibeTyp {
 
 	public double getRadiusByValue(float value) {
 		// TODO funktioniert eventuell nur für KK50M
-		return Math.round(radius_aussen + radius_step + radius_schuss - value * radius_step);
+		return Math.round(radius_aussen + radius_step + kaliber.getRadius() - value * radius_step);
 	}
 
 	public boolean isInnenZehn(double radius) {
-		return radius <= radius_innenzehn + radius_schuss;
+		return radius <= radius_innenzehn + kaliber.getRadius();
 	}
 
 	public static ScheibeTyp getTypByGattung(String s) {
