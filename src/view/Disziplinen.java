@@ -121,7 +121,7 @@ public class Disziplinen extends JDialog implements ComponentListener, ActionLis
 				}
 				lblSchusszahl.setText(anzahl);
 				lblSerienlaenge.setText(String.format("Serienlänge: %d.", d.getSerienlaenge()));
-				lblWaffengattung.setText("Waffengattung: " + d.getWaffengattung());
+				lblWaffengattung.setText("Regel: " + d.getRegel());
 				break;
 			case "CANCEL":
 				setVisible(false);

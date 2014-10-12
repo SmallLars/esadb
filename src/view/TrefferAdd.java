@@ -10,6 +10,7 @@ import java.awt.event.ComponentListener;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 
+import model.RegelTyp;
 import model.Treffer;
 import controller.Controller;
 
@@ -21,6 +22,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.JLabel;
 
 import java.awt.Font;
+
 import javax.swing.JComboBox;
 
 
@@ -29,7 +31,7 @@ public class TrefferAdd extends JDialog implements ComponentListener, ListSelect
 
 	private Controller controller;
 	
-	private JComboBox<ScheibeTyp> comboBox;
+	private JComboBox<RegelTyp> comboBox;
 	private Scheibe scheibe;
 	private TrefferCreate treffer;
 	
@@ -56,18 +58,18 @@ public class TrefferAdd extends JDialog implements ComponentListener, ListSelect
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		getContentPane().setLayout(null);
 
-		comboBox = new JComboBox<ScheibeTyp>(ScheibeTyp.values());
-		comboBox.setSelectedItem(ScheibeTyp.KK50M);
+		comboBox = new JComboBox<RegelTyp>(RegelTyp.values());
+		comboBox.setSelectedItem(RegelTyp.R_1_40);
 		comboBox.setBounds(10, 11, 88, 25);
 		comboBox.setActionCommand("TYP");
 		comboBox.addActionListener(this);
 		getContentPane().add(comboBox);
 
-		scheibe = new Scheibe(ScheibeTyp.KK50M);
+		scheibe = new Scheibe(RegelTyp.R_1_40);
 		scheibe.setBounds(110, 11, 200, 200);
 		getContentPane().add(scheibe);
 
-		treffer = new TrefferCreate(scheibe, ScheibeTyp.KK50M);
+		treffer = new TrefferCreate(scheibe, RegelTyp.R_1_40);
 		treffer.setSize(300, 200);
 		treffer.setLocation(10, 228);
 		getContentPane().add(treffer);
@@ -142,7 +144,7 @@ public class TrefferAdd extends JDialog implements ComponentListener, ListSelect
 				setVisible(false);
 				break;
 			case "TYP":
-				ScheibeTyp typ = (ScheibeTyp) comboBox.getSelectedItem();
+				RegelTyp typ = (RegelTyp) comboBox.getSelectedItem();
 				scheibe.setTyp(typ);
 				treffer.setTyp(typ);
 				break;

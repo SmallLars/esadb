@@ -1,12 +1,12 @@
-package view;
+package model;
 
-public enum Kaliber {
-	LGLP(450),
-	KK(560);
+public enum WaffeTyp {
+	LUFTDRUCK(450),
+	KLEINKALIBER(560);
 
 	private final int radius;
 	
-	Kaliber(int durchmesser) {
+	WaffeTyp(int durchmesser) {
 		this.radius = durchmesser / 2;
 	}
 

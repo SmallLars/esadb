@@ -28,6 +28,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import model.RegelTyp;
 import model.Treffer;
 
 
@@ -37,7 +38,7 @@ public class TrefferCreate extends JPanel implements MouseWheelListener, KeyList
 	private boolean doUpdate;
 	private NumberFormat format;
 	private Scheibe scheibe;
-	private ScheibeTyp typ;
+	private RegelTyp typ;
 
 	private JFormattedTextField component_V;
 	private JComboBox<String>   component_L;
@@ -47,7 +48,7 @@ public class TrefferCreate extends JPanel implements MouseWheelListener, KeyList
 	private JFormattedTextField component_W;
 	private JFormattedTextField component_Z;
 
-	public TrefferCreate(Scheibe scheibe, ScheibeTyp typ) {
+	public TrefferCreate(Scheibe scheibe, RegelTyp typ) {
 		setBorder(new TitledBorder(new LineBorder(new Color(122, 138, 153)), "Trefferdetails", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(51, 51, 51)));
 		this.doUpdate = true;
 		this.format = NumberFormat.getInstance(Locale.GERMAN);
@@ -191,7 +192,7 @@ public class TrefferCreate extends JPanel implements MouseWheelListener, KeyList
 		scheibe.setTreffer(getTreffer());
 	}
 
-	public void setTyp(ScheibeTyp typ) {
+	public void setTyp(RegelTyp typ) {
 		this.typ = typ;
 		doUpdate = false;
 		updateVwithR();
@@ -417,11 +418,11 @@ public class TrefferCreate extends JPanel implements MouseWheelListener, KeyList
 		String lage = (String) component_L.getSelectedItem();
 		if (lage.equals("R")) {
 			if (!isInnenZehn) {
-				component_R.setText(String.format("%.4f", (typ.getInnenZehnRadius() + typ.getSchussRadius()) / 100f));
+				component_R.setText(String.format("%.4f", (typ.getScheibe().getInnenZehnRadius() + typ.getWaffe().getRadius()) / 100f));
 			}
 		} else {
 			if (isInnenZehn) {
-				component_R.setText(String.format("%.4f", (typ.getRingRadius(10) + typ.getSchussRadius()) / 100f));
+				component_R.setText(String.format("%.4f", (typ.getScheibe().getRingRadius(10) + typ.getWaffe().getRadius()) / 100f));
 			}
 			switch (lage) {
 				case "f": component_W.setText("180,000"); break;

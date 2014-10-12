@@ -16,7 +16,7 @@ public class Disziplin implements Serializable, Comparable<Disziplin> {
 	private int probeschuesse;		// Anzahl der Probeschüsse (-1 = beliebig viele)
 	private int probezeit;			// Zeit für Probeschüsse (-1 = ist in der Matchzeit enthalten)
 	private int serienlaenge;		// Gibt die Länge der Serien an
-	private String waffengattung;
+	private RegelTyp regel;
 
 	public Disziplin(Row row) {
 		id = (int) row.get("DisziplinID");
@@ -28,11 +28,11 @@ public class Disziplin implements Serializable, Comparable<Disziplin> {
 		probeschuesse = (short) row.get("Probeschuesse");
 		probezeit = (short) row.get("Probezeit");
 		serienlaenge = (short) row.get("Serienlaenge");
-		waffengattung = null;
+		regel = null;
 	}
 
-	public void setWaffengattung(Row row) {
-		waffengattung = (String) row.get("WaffengattungNr");
+	public void setRegel(Row row) {
+		regel = RegelTyp.getTypByGattung((String) row.get("WaffengattungNr"));
 	}
 
 	public int getId() {
@@ -71,8 +71,8 @@ public class Disziplin implements Serializable, Comparable<Disziplin> {
 		return getSchusszahl() / serienlaenge;
 	}
 
-	public String getWaffengattung() {
-		return waffengattung;
+	public RegelTyp getRegel() {
+		return regel;
 	}
 
 	@Override

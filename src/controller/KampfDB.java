@@ -46,7 +46,7 @@ public class KampfDB {
 				Map<String, Integer> m = Collections.singletonMap("DisziplinID", d.getId());
 				Row r = CursorBuilder.findRow(t, m);
 				if (r != null) {
-					d.setWaffengattung(r);
+					d.setRegel(r);
 					set.add(d);
 				} else {
 				  System.out.println("Keine Waffengattung für " + d.toString() + " definiert. Disziplin wird ignoriert.");
