@@ -28,7 +28,7 @@ public class Disziplin implements Serializable, Comparable<Disziplin> {
 		probeschuesse = (short) row.get("Probeschuesse");
 		probezeit = (short) row.get("Probezeit");
 		serienlaenge = (short) row.get("Serienlaenge");
-		regel = null;
+		regel = RegelTyp.R_1_40;
 	}
 
 	public void setRegel(Row row) {
