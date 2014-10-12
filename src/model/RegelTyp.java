@@ -39,6 +39,12 @@ public enum RegelTyp {
 		return radius <= scheibe.getInnenZehnRadius() + waffe.getRadius();
 	}
 
+	public void toFile() {
+		String file_scheibe = scheibe.toFile();
+		String file_waffe = waffe.toFile();
+		// TODO regel selbst printen mit rückgabewerten von scheibe und waffe
+	}
+
 	public static RegelTyp getTypByGattung(String s) {
 		switch (s) {
 			case "1.10": return R_1_10;

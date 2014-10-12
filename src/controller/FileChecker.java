@@ -50,7 +50,7 @@ public class FileChecker extends Thread {
 
 		File folder = new File(".");
 		for (File file : folder.listFiles()) {
-			if (file.getName().matches(".*\\.((nrt)|(ctl)|(dat))")) {
+			if (file.getName().matches(".*\\.((nrt)|(ctl)|(dat)|(def))")) {
 				if (!file.delete()) {
 					System.err.println("Can't remove " + file.getAbsolutePath());
 				}

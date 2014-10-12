@@ -42,6 +42,7 @@ public class DefaultLineModel implements LineModel, LineReader {
 	
 	public void configure(Schuetze schuetze, Disziplin disziplin) {
 		if (einzel == null || einzel.getSchuetze() != schuetze || einzel.getDisziplin() != disziplin) {
+			disziplin.getRegel().toFile();
 			einzel = new Einzel(nummer, disziplin, schuetze);
 			controller.add(einzel);
 			modelChanged(RESULT_CHANGED);

@@ -1,6 +1,8 @@
 package model;
 import java.io.PrintWriter;
 import java.io.Serializable;
+import java.text.NumberFormat;
+import java.util.Locale;
 import java.util.regex.Pattern;
 
 
@@ -140,22 +142,18 @@ public class Treffer implements Serializable, Comparable<Treffer> {
 	}
 
 	public void print(PrintWriter writer) {
+		NumberFormat format = NumberFormat.getInstance(Locale.ENGLISH);
+		format.setGroupingUsed(false);
+		format.setMinimumFractionDigits(0);
+
 		writer.println(String.format("%d", nummer));
-		writer.println(formatDouble(wert));
+		writer.println(format.format(wert));
 		writer.println(String.format("\"%s\"", lage));
-		writer.println(formatDouble(x));
-		writer.println(formatDouble(y));
-		writer.println(formatDouble(r));
-		writer.println(formatDouble(phi));
+		writer.println(format.format(x));
+		writer.println(format.format(y));
+		writer.println(format.format(r));
+		writer.println(format.format(phi));
 		writer.println(String.format("%d", zeit));
-	}
-	
-	private String formatDouble(double d) {
-		String s = String.format("%f", d);
-		s = s.replace(',', '.');
-		while (s.endsWith("0")) s = s.substring(0, s.length() - 1);
-		if (s.endsWith(".")) s = s.concat("0");
-		return s;
 	}
 
 	@Override
