@@ -1,15 +1,22 @@
 package model;
 
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+
 public enum RegelTyp {
-	R_1_10(ScheibeTyp.LUFTGEWEHR, WaffeTyp.LUFTDRUCK),
-	R_1_35(ScheibeTyp.GEWEHR100M, WaffeTyp.KLEINKALIBER),
-	R_1_40(ScheibeTyp.GEWEHR50M, WaffeTyp.KLEINKALIBER),
-	R_2_10(ScheibeTyp.LUFTPISTOLE, WaffeTyp.LUFTDRUCK);
-	
+	R_1_10("Luftgewehr",        "1.10", ScheibeTyp.LUFTGEWEHR,  WaffeTyp.LUFTDRUCK),
+	R_1_35("Kleinkaliber 100m", "1.35", ScheibeTyp.GEWEHR100M,  WaffeTyp.KLEINKALIBER),
+	R_1_40("Kleinkaliber 50m",  "1.40", ScheibeTyp.GEWEHR50M,   WaffeTyp.KLEINKALIBER),
+	R_2_10("Luftpistole",       "2.10", ScheibeTyp.LUFTPISTOLE, WaffeTyp.LUFTDRUCK);
+
+	private final String bezeichnung;
+	private final String regelnummer;
 	private ScheibeTyp scheibe;
 	private WaffeTyp waffe;
 	
-	RegelTyp(ScheibeTyp scheibe, WaffeTyp waffe) {
+	RegelTyp(String bezeichnung, String regelnummer, ScheibeTyp scheibe, WaffeTyp waffe) {
+		this.bezeichnung = bezeichnung;
+		this.regelnummer = regelnummer;
 		this.scheibe = scheibe;
 		this.waffe = waffe;
 	}
@@ -42,7 +49,40 @@ public enum RegelTyp {
 	public void toFile() {
 		String file_scheibe = scheibe.toFile();
 		String file_waffe = waffe.toFile();
-		// TODO regel selbst printen mit rückgabewerten von scheibe und waffe
+
+		String fileName = String.format("0_hd_%s.def", regelnummer.replace('.', '-'));
+		try {
+			PrintWriter writer = new PrintWriter(fileName);
+			writer.println("\">Bezeichnung\"");
+			writer.println(String.format("\"%s\"", bezeichnung));
+
+			writer.println("\">KennNummer\"");
+			writer.println("\"0\"");
+
+			writer.println("\">RegelNummer\"");
+			writer.println(String.format("\"DSB %s\"", regelnummer));
+
+			writer.println("\">WertungsRadius\"");
+//			writer.println(String.format("\"%d\"", getRadius()));					TODO
+
+			writer.println("\">MaximalDurchmesser\"");
+//			writer.println(String.format("\"%s\"", getDurchmesser(Einheit.MM)));	TODO
+
+			writer.println("\">MinimalDurchmesser\"");
+//			writer.println(String.format("\"%s\"", getDurchmesser(Einheit.INCH)));	TODO
+
+			writer.println("\">DateiWaffe\"");
+			writer.println(String.format("\"%s\"", file_waffe));
+
+			writer.println("\">DateiScheibe\"");
+			writer.println(String.format("\"%s\"", file_scheibe));
+
+			writer.println("\">DateiName\"");
+			writer.println(String.format("\"%s\"", fileName));
+			writer.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public static RegelTyp getTypByGattung(String s) {
