@@ -63,13 +63,13 @@ public enum RegelTyp {
 			writer.println(String.format("\"DSB %s\"", regelnummer));
 
 			writer.println("\">WertungsRadius\"");
-//			writer.println(String.format("\"%d\"", getRadius()));					TODO
+			writer.println(String.format("\"%d\"", waffe.getRadius()));
 
 			writer.println("\">MaximalDurchmesser\"");
-//			writer.println(String.format("\"%s\"", getDurchmesser(Einheit.MM)));	TODO
+			writer.println(String.format("\"%d\"", waffe.getRadius() * 2));
 
 			writer.println("\">MinimalDurchmesser\"");
-//			writer.println(String.format("\"%s\"", getDurchmesser(Einheit.INCH)));	TODO
+			writer.println(String.format("\"%d\"", waffe.getRadius() * 2));
 
 			writer.println("\">DateiWaffe\"");
 			writer.println(String.format("\"%s\"", file_waffe));
