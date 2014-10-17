@@ -71,6 +71,21 @@ public enum RegelTyp {
 			writer.println("\">MinimalDurchmesser\"");
 			writer.println(String.format("\"%d\"", waffe.getRadius() * 2));
 
+			writer.println("\">Schusszahl\"");
+			writer.println("\"40\"");
+			writer.println("\">ProbeSchuesse\"");
+			writer.println("\"0\"");
+			writer.println("\">SchiessZeit\"");
+			writer.println("\"75 min\"");
+			writer.println("\">ProbeZeit\"");
+			writer.println("\"0 min\"");
+			writer.println("\">Wertung\"");
+			writer.println("\"0\"");
+			writer.println("\">SchiessPosition\"");
+			writer.println("\"stehend\"");
+			writer.println("\">SerienLaenge\"");
+			writer.println("\"10\"");
+			
 			writer.println("\">DateiWaffe\"");
 			writer.println(String.format("\"%s\"", file_waffe));
 
