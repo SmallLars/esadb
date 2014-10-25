@@ -49,26 +49,29 @@ public enum WaffeTyp {
 		String fileName = String.format("0_hw_%02d.def", kennnummer);
 		try {
 			PrintWriter writer = new PrintWriter(fileName);
-			writer.println("\">Bezeichnung\"");
+
+			writer.println("\">Bezeichnung\"");                                        // Bezeichnung oder Name der Waffe
 			writer.println(String.format("\"%s\"", bezeichnung));
 
-			writer.println("\">KennNummer\"");
+			writer.println("\">KennNummer\"");                                         // Kennnummer der Waffe nach DSB oder DJV
 			writer.println(String.format("\"%02d\"", kennnummer));
 
-			writer.println("\">AnzeigeGeschossRadius\"");
-			writer.println(String.format("\"%d\"", getRadius()));
+			writer.println("\">AnzeigeGeschossRadius\"");                              // Radius in 1/100 mm für die Darstellung auf der Scheibe
+			writer.println(String.format("\"%d\"", getRadius()));                      // Ist in der Disziplin beim Punkt Wertungsradius -1 eingetragen, so
+			                                                                           // wird dieser Wert als Wertungsradius benutzt.
 
-			writer.println("\">GeschossDurchmesser\"");
-			writer.println(String.format("\"%s\"", getDurchmesser(Einheit.MM)));
+			writer.println("\">GeschossDurchmesser\"");                                // Geschoss-Durchmesser in Millimeter.
+			writer.println(String.format("\"%s\"", getDurchmesser(Einheit.MM)));       // Informativer Wert
 
-			writer.println("\">KaliberDurchmesser\"");
-			writer.println(String.format("\"%s\"", getDurchmesser(Einheit.INCH)));
+			writer.println("\">KaliberDurchmesser\"");                                 // Angabe des Geschoss-Durchmessers in Kaliberwerten.
+			writer.println(String.format("\"%s\"", getDurchmesser(Einheit.INCH)));     // Informativer Wert
 
-			writer.println("\">Mikofoneinstellung\"");
-			writer.println(String.format("\"%d\"", mikofoneinstellung));
+			writer.println("\">Mikofoneinstellung\"");                                 // Einstellung der Mikrofonempfindlichkeit, die gesetzt wird,
+			writer.println(String.format("\"%d\"", mikofoneinstellung));               // wenn der Autosensor aktiviert ist (Kapitel 2, Punkt 2 c)
 
-			writer.println("\">DateiName\"");
-			writer.println(String.format("\"%s\"", fileName));
+			writer.println("\">DateiName\"");                                          // Gibt den Namen der Datei an, unter der sie im Verzeichnis
+			writer.println(String.format("\"%s\"", fileName));                         // C:\Programme\ESA2002 abgespeichert wird.
+
 			writer.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();

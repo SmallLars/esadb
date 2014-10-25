@@ -12,6 +12,7 @@ import model.Einzel;
 import model.LineListener;
 import model.LineModel;
 import model.RegelTyp;
+import model.ScheibeTyp;
 import model.Treffer;
 
 
@@ -73,6 +74,8 @@ public class Scheibe extends JPanel implements LineListener {
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
+		
+		ScheibeTyp scheibe = typ.getScheibe();
 
 		Graphics2D g1 = (Graphics2D) g.create();
 		g1.scale(new Double(getWidth()) / 1000, new Double(getHeight()) / 1000);
@@ -88,35 +91,43 @@ public class Scheibe extends JPanel implements LineListener {
 		}
 
 		int r;
-		int mitte = typ.getScheibe().getRingRadius(0);;
+		int mitte = scheibe.getRingRadius(0);;
 
 		Graphics2D g2 = (Graphics2D) g.create();
 		g2.scale(new Double(getWidth()) / new Double(2 * mitte), new Double(getHeight()) / new Double(2 * mitte));
 
 		g2.setColor(Color.BLACK);
 
-		r =  typ.getScheibe().getSpiegelRadius();
+		r =  scheibe.getSpiegelRadius();
 	    g2.fillOval(mitte - r, mitte - r, 2 * r, 2 * r);
 
 		for (int i = 1; i <= 10; i++) {
-			r = typ.getScheibe().getRingRadius(i);
-		    g2.setColor(r > typ.getScheibe().getSpiegelRadius() ? Color.BLACK : Color.WHITE);
-	    	g2.drawOval(mitte - r, mitte - r, r * 2, r * 2);
+			r = scheibe.getRingRadius(i);
+		    g2.setColor(r > scheibe.getSpiegelRadius() ? Color.BLACK : Color.WHITE);
+		    if (i == 10 && scheibe.getStyle() > 1) {
+		    	g2.fillOval(mitte - r, mitte - r, 2 * r, 2 * r);
+		    } else {
+		    	g2.drawOval(mitte - r, mitte - r, r * 2, r * 2);
+		    }
 		}
 
-		if (typ.getScheibe().getInnenZehnRadius() > 0) {
-			r = typ.getScheibe().getInnenZehnRadius();
+		if (scheibe.getInnenZehnRadius() > 0) {
+			r = scheibe.getInnenZehnRadius();
 		    g2.setColor(Color.WHITE);
-		    g2.drawOval(mitte - r, mitte - r, 2 * r, 2 * r);
+		    if (scheibe.getStyle() > 0) {
+		    	g2.fillOval(mitte - r, mitte - r, 2 * r, 2 * r);
+		    } else {
+		    	g2.drawOval(mitte - r, mitte - r, 2 * r, 2 * r);
+		    }
 		}
 
-		g2.setFont(new Font("Arial", Font.BOLD, typ.getScheibe().getFontSize()));
+		g2.setFont(new Font("Arial", Font.BOLD, scheibe.getFontSize()));
 		int dy = g2.getFontMetrics().getAscent() / 2;
 		int dx = (int) (g2.getFontMetrics().getStringBounds("0", g2).getWidth() / -2) + 1;
-		for (int i = 1; typ.getScheibe().drawNumber(i); i++) {
-			g2.setColor(typ.getScheibe().blackNumber(i) ? Color.BLACK : Color.WHITE);
+		for (int i = 1; scheibe.drawNumber(i); i++) {
+			g2.setColor(scheibe.blackNumber(i) ? Color.BLACK : Color.WHITE);
 			String s = "" + i;
-			r = typ.getScheibe().getNumberRadius(i);
+			r = scheibe.getNumberRadius(i);
 			g2.drawString(s, mitte - r + dx, mitte + dy);	// Links
 			g2.drawString(s, mitte + dx, mitte - r + dy);	// Oben
 			g2.drawString(s, mitte + r + dx , mitte + dy);	// Rechts

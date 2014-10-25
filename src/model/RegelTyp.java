@@ -4,10 +4,10 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 
 public enum RegelTyp {
-	R_1_10("Luftgewehr",        "1.10", ScheibeTyp.LUFTGEWEHR,  WaffeTyp.LUFTDRUCK),
-	R_1_35("Kleinkaliber 100m", "1.35", ScheibeTyp.GEWEHR100M,  WaffeTyp.KLEINKALIBER),
-	R_1_40("Kleinkaliber 50m",  "1.40", ScheibeTyp.GEWEHR50M,   WaffeTyp.KLEINKALIBER),
-	R_2_10("Luftpistole",       "2.10", ScheibeTyp.LUFTPISTOLE, WaffeTyp.LUFTDRUCK);
+	R_1_10("Luftgewehr",        "1.10", ScheibeTyp.GEWEHR_10M,  WaffeTyp.LUFTDRUCK),
+	R_1_35("Kleinkaliber 100m", "1.35", ScheibeTyp.GEWEHR_100M,  WaffeTyp.KLEINKALIBER),
+	R_1_40("Kleinkaliber 50m",  "1.40", ScheibeTyp.GEWEHR_50M,   WaffeTyp.KLEINKALIBER),
+	R_2_10("Luftpistole",       "2.10", ScheibeTyp.PISTOLE_LUFT, WaffeTyp.LUFTDRUCK);
 
 	private final String bezeichnung;
 	private final String regelnummer;
