@@ -339,7 +339,7 @@ public class Einzel extends Start implements Printable {
 
 	private float getResult(boolean probe) {
 		float summe = 0;
-		for (int i = 0; true; i++) {
+		for (int i = 0; i < disziplin.getSchusszahl(); i++) {
 			float value = getValue(probe, i);
 			if (value == -1) break;
 			summe += value;
