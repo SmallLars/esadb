@@ -2,6 +2,8 @@ package controller;
 
 import java.awt.Color;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.OutputStream;
@@ -28,13 +30,15 @@ import view.GUI;
 
 
 public class Controller {
+	private OutputStream errorLog = null;
+
 	private Config config;
 	private List<ModelChangeListener> modelChangeListener;
 	
 	private File file;
 	private Model model;
 	private FileChecker fileChecker;
-	private GUI gui;
+	private GUI gui = null;
 
 	private SimpleAttributeSet redStyle;
 
@@ -42,6 +46,25 @@ public class Controller {
 		redStyle = new SimpleAttributeSet();
 		StyleConstants.setBold(redStyle, true);
 		StyleConstants.setForeground(redStyle, Color.decode("0xC80000"));
+
+		try {
+			errorLog = new FileOutputStream("error.log", true);
+		} catch (FileNotFoundException e) {}
+		PrintStream ps = new PrintStream(new OutputStream() {
+			@Override
+			public void write(int b) throws IOException {
+				if (gui != null) gui.print(String.valueOf((char) b), redStyle);
+				if (errorLog != null) errorLog.write(b);
+			}
+		}, false);
+		System.setOut(ps);
+		System.setErr(ps);
+		System.out.println();
+		System.out.print("   Start: ");
+		System.out.println((new SimpleDateFormat("dd.MM.yyyy - HH:mm")).format(new Date()));
+		System.out.println();
+
+		// --------------------------------------------------------------------
 
 		config = Config.load();
 		modelChangeListener = new Vector<ModelChangeListener>();
@@ -69,16 +92,6 @@ public class Controller {
 
 		fileChecker = new FileChecker(config.getLinienCount());
 		gui = new GUI(this, config.getLinienCount());
-
-		PrintStream ps = new PrintStream(new OutputStream() {
-			@Override
-			public void write(int b) throws IOException {
-				gui.print(String.valueOf((char) b), redStyle);
-			}
-			
-		}, false);
-		System.setOut(ps);
-		System.setErr(ps);
 	}
 
 	public Config getConfig() {

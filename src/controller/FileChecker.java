@@ -104,7 +104,9 @@ public class FileChecker extends Thread {
 				}
 				key.reset();
 			} catch (InterruptedException | IOException | ClosedWatchServiceException e) {
-				System.out.println("Err");
+				if (running) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}

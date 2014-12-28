@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.NavigableMap;
@@ -43,7 +44,7 @@ public class Einzel extends Start implements Printable {
 		this.datum = new Date();
 		this.disziplin = disziplin;
 		this.schuetze = schuetze;
-		this.treffer = new TreeMap<Treffer, Treffer>();
+		this.treffer = Collections.synchronizedNavigableMap(new TreeMap<Treffer, Treffer>());
 	}
 
 	public boolean isEmpty() {
