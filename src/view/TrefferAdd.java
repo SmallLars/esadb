@@ -51,7 +51,7 @@ public class TrefferAdd extends JDialog implements ComponentListener, ListSelect
 
 		setModal(true);
 		setModalityType(ModalityType.APPLICATION_MODAL);
-		Dimension d = new Dimension(700, 500);
+		Dimension d = new Dimension(719, 500);
 		setMinimumSize(d);
 		setSize(d);
 		setLocationRelativeTo(parent);
@@ -60,33 +60,33 @@ public class TrefferAdd extends JDialog implements ComponentListener, ListSelect
 
 		comboBox = new JComboBox<RegelTyp>(RegelTyp.values());
 		comboBox.setSelectedItem(RegelTyp.R_1_40);
-		comboBox.setBounds(10, 11, 88, 25);
+		comboBox.setBounds(324, 15, 88, 25);
 		comboBox.setActionCommand("TYP");
 		comboBox.addActionListener(this);
 		getContentPane().add(comboBox);
 
 		scheibe = new Scheibe(RegelTyp.R_1_40);
-		scheibe.setBounds(110, 11, 200, 200);
+		scheibe.setBounds(324, 52, 375, 375);
 		getContentPane().add(scheibe);
 
 		treffer = new TrefferCreate(scheibe, RegelTyp.R_1_40);
 		treffer.setSize(300, 200);
-		treffer.setLocation(10, 228);
+		treffer.setLocation(12, 10);
 		getContentPane().add(treffer);
 		
-		button = new JButton("->");
-		button.setBounds(320, 173, 50, 23);
+		button = new JButton("\\/");
+		button.setBounds(137, 222, 50, 23);
 		button.setActionCommand("ADD");
 		button.addActionListener(this);
 		getContentPane().add(button);
 
 		lblZwischenablage = new JLabel("Zwischenablage");
 		lblZwischenablage.setFont(new Font("Tahoma", Font.BOLD, 16));
-		lblZwischenablage.setBounds(380, 11, 300, 22);
+		lblZwischenablage.setBounds(12, 257, 300, 22);
 		getContentPane().add(lblZwischenablage);
 		
 		scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBounds(380, 44, 300, 384);
+		scrollPane_1.setBounds(12, 290, 300, 172);
 		getContentPane().add(scrollPane_1);
 		
 		table_1 = new JTable(new TrefferTableModel(controller.getTreffer()));
@@ -96,12 +96,12 @@ public class TrefferAdd extends JDialog implements ComponentListener, ListSelect
 		scrollPane_1.setViewportView(table_1);
 
 		cancelButton = new JButton("Schlieﬂen");
-		cancelButton.setBounds(582, 439, 100, 23);
+		cancelButton.setBounds(599, 439, 100, 23);
 		cancelButton.setActionCommand("CANCEL");
 		cancelButton.addActionListener(this);
 		getContentPane().add(cancelButton);
 		getRootPane().setDefaultButton(cancelButton);
-		
+
 		addComponentListener(this);
 	}
 
@@ -109,12 +109,10 @@ public class TrefferAdd extends JDialog implements ComponentListener, ListSelect
 	@Override
 	public void componentResized(ComponentEvent e) {
 		Dimension d = getContentPane().getSize();
-		button.setLocation(				(d.width / 2) - 26, -2 + scrollPane_1.getHeight() / 2);
-		lblZwischenablage.setLocation(	(d.width / 2) + 34, 11);
-		lblZwischenablage.setSize(		(d.width - 92) / 2, 22);
-		scrollPane_1.setLocation(		(d.width / 2) + 34, 44);
-		scrollPane_1.setSize(			(d.width - 92) / 2, d.height - 89);
-		cancelButton.setLocation(		d.width - 112, d.height - 34);
+		scrollPane_1.setSize(300, d.height - 301);
+		cancelButton.setLocation(d.width - 112, d.height - 34);
+		scheibe.setSize(d.width - 336, d.height - 98);
+		comboBox.setLocation(280 + scheibe.getWidth() / 2, 15);
 	}
 
 	@Override
