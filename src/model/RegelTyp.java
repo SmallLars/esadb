@@ -30,16 +30,36 @@ public enum RegelTyp {
 	}
 
 	public float getValuebyRadius(double radius) {
-		// TODO funktioniert eventuell nur für KK50M
-		float v = (int) (110 - radius * 10 / scheibe.getRingBreite()) / 10f;
-		if (v < 1) return 0.0f;
-		if (v > 10.9) return 10.9f;
-		return v;
+		int aussenRadius = scheibe.getAussenRadius();
+		int zehnerRadius = scheibe.getRingRadius(10);
+		int geschossRadius = waffe.getRadius();
+
+		// Berechnung für < 1
+		if (radius > aussenRadius + geschossRadius) {
+			return 0f;
+		}
+		
+		// Berechnung >= 10,0
+		if (radius <= zehnerRadius + geschossRadius) {
+			float v = (int) (10 - radius * 10 / (zehnerRadius + geschossRadius)) / 10f;
+			if (v > 0.9) return 10.9f;
+			return 10f + v;
+		}
+
+		// Berechnung für >=1 && < 10,0
+		float v = (int) (((aussenRadius - radius + geschossRadius) * 90) / (aussenRadius - zehnerRadius)) / 10f;
+		return 1f + v;
 	}
 
 	public double getRadiusByValue(float value) {
-		// TODO funktioniert eventuell nur für KK50M
-		return Math.round(scheibe.getAussenRadius() + scheibe.getRingBreite() + waffe.getRadius() - value * scheibe.getRingBreite());
+		int zehnerRadius = scheibe.getRingRadius(10);
+		int geschossRadius = waffe.getRadius();
+		
+		if (value < 10) {
+			return Math.round(scheibe.getAussenRadius() + geschossRadius - (value - 1) * scheibe.getRingBreite());
+		}
+		
+		return Math.round(zehnerRadius + geschossRadius - (value - 10) * (zehnerRadius + geschossRadius));
 	}
 
 	public boolean isInnenZehn(double radius) {

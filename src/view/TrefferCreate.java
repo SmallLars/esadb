@@ -106,7 +106,7 @@ public class TrefferCreate extends JPanel implements MouseWheelListener, KeyList
 		lblX.setBounds(10, 21, 16, 16);
 		panel.add(lblX);
 		
-		component_X = new JFormattedTextField(getFormat(2, 3));
+		component_X = new JFormattedTextField(getFormat(3, 3));
 		component_X.setText("0,000");
 		component_X.setBounds(26, 19, 64, 20);
 		component_X.addMouseWheelListener(this);
@@ -123,7 +123,7 @@ public class TrefferCreate extends JPanel implements MouseWheelListener, KeyList
 		lblY.setBounds(150, 21, 16, 16);
 		panel.add(lblY);
 		
-		component_Y = new JFormattedTextField(getFormat(2, 3));
+		component_Y = new JFormattedTextField(getFormat(3, 3));
 		component_Y.setText("0,000");
 		component_Y.setBounds(166, 19, 64, 20);
 		component_Y.addMouseWheelListener(this);
@@ -140,7 +140,7 @@ public class TrefferCreate extends JPanel implements MouseWheelListener, KeyList
 		lblR.setBounds(10, 51, 16, 16);
 		panel.add(lblR);
 		
-		component_R = new JFormattedTextField(getFormat(2, 4));
+		component_R = new JFormattedTextField(getFormat(3, 4));
 		component_R.setBounds(26, 49, 64, 20);
 		panel.add(component_R);
 		component_R.setText("0,0000");
