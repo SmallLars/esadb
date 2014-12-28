@@ -60,7 +60,7 @@ public class TrefferAdd extends JDialog implements ComponentListener, ListSelect
 
 		comboBox = new JComboBox<RegelTyp>(RegelTyp.values());
 		comboBox.setSelectedItem(RegelTyp.R_1_40);
-		comboBox.setBounds(324, 15, 88, 25);
+		comboBox.setBounds(411, 15, 200, 25);
 		comboBox.setActionCommand("TYP");
 		comboBox.addActionListener(this);
 		getContentPane().add(comboBox);
@@ -112,7 +112,7 @@ public class TrefferAdd extends JDialog implements ComponentListener, ListSelect
 		scrollPane_1.setSize(300, d.height - 301);
 		cancelButton.setLocation(d.width - 112, d.height - 34);
 		scheibe.setSize(d.width - 336, d.height - 98);
-		comboBox.setLocation(280 + scheibe.getWidth() / 2, 15);
+		comboBox.setLocation(224 + scheibe.getWidth() / 2, 15);
 	}
 
 	@Override

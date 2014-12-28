@@ -21,6 +21,11 @@ public enum RegelTyp {
 		this.waffe = waffe;
 	}
 
+	@Override
+	public String toString() {
+		return bezeichnung;
+	}
+
 	public ScheibeTyp getScheibe() {
 		return scheibe;
 	}
