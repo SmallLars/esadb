@@ -377,6 +377,7 @@ public class TrefferCreate extends JPanel implements MouseWheelListener, KeyList
 			if (textField == component_V) {
 				updateRwithV();
 				updateXandYwithRandW();
+				updateLwithRandW();
 			}
 			if (textField == component_X || textField == component_Y) {
 				updateRandWwithXandY();
