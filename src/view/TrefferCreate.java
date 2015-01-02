@@ -395,15 +395,18 @@ public class TrefferCreate extends JPanel implements MouseWheelListener, KeyList
 	}
 
 	private void updateRwithV() {
-		float f;
+		double d;
 		try {
-			f = format.parse(component_V.getText()).floatValue();
+			d = format.parse(component_V.getText()).doubleValue();
+			//Prüfen, ob eine Änderung des Radius notwendig ist:
+			double d2 = typ.getValuebyRadius(format.parse(component_R.getText()).doubleValue() * 100);
+			if (Math.abs(d - d2) < 0.01) return;			
 		} catch (ParseException e) {
 			return;
 		}
 		
-		if (f == 0 || (f >= 1 && f <= 10.9)) {
-			component_R.setText(String.format("%.4f", typ.getRadiusByValue(f) / 100));
+		if (d == 0 || (d >= 1 && d <= 10.9)) {
+			component_R.setText(String.format("%.4f", typ.getRadiusByValue(d) / 100));
 		}
 	}
 

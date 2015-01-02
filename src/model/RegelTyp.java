@@ -56,7 +56,7 @@ public enum RegelTyp {
 		return 1f + v;
 	}
 
-	public double getRadiusByValue(float value) {
+	public double getRadiusByValue(double value) {
 		int zehnerRadius = scheibe.getRingRadius(10);
 		int geschossRadius = waffe.getRadius();
 		
