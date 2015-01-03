@@ -5,11 +5,14 @@ import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.Vector;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.ListSelectionModel;
 import javax.swing.SpinnerModel;
@@ -22,6 +25,9 @@ import model.Config;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
+import javax.swing.border.TitledBorder;
+import javax.swing.border.LineBorder;
+import java.awt.Color;
 
 
 @SuppressWarnings("serial")
@@ -35,18 +41,28 @@ public class Einstellungen extends JDialog {
 
 		setModal(true);
 		setModalityType(ModalityType.APPLICATION_MODAL);
-		setSize(225, 200);
+		setSize(260, 230);
 		setLocationRelativeTo(parent);
-		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+		setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent arg0) {close();}
+		});
 
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
+
+		JPanel panel = new JPanel();
+		panel.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0)), "Linien", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel.setBounds(10, 11, 234, 150);
+		panel.setLayout(null);
+		contentPanel.add(panel);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 11, 100, 118);
-		contentPanel.add(scrollPane);
+		scrollPane.setBounds(14, 21, 100, 118);
+		panel.add(scrollPane);
 
 		DefaultListModel<Integer> listModel = new DefaultListModel<Integer>();
 		for (int i : config.getLinien()) listModel.addElement(i);
@@ -54,7 +70,7 @@ public class Einstellungen extends JDialog {
 		scrollPane.setViewportView(list);
 		list.setLayoutOrientation(JList.VERTICAL);
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-
+		
 		JSpinner spinner = new JSpinner(new SpinnerModel() {
 			Vector<ChangeListener> listener = new Vector<ChangeListener>();
 			int value = -1;
@@ -99,11 +115,13 @@ public class Einstellungen extends JDialog {
 				listener.remove(l);
 			}
 		});
+		spinner.setBounds(133, 20, 91, 23);
+		panel.add(spinner);
 		spinner.setEditor(new JSpinner.DefaultEditor(spinner));
-		spinner.setBounds(120, 12, 91, 23);
-		contentPanel.add(spinner);
 		
 		JButton btnEinfgen = new JButton("Einfügen");
+		btnEinfgen.setBounds(133, 54, 91, 23);
+		panel.add(btnEinfgen);
 		btnEinfgen.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -119,10 +137,10 @@ public class Einstellungen extends JDialog {
 				listModel.addElement(toAdd);
 			}
 		});
-		btnEinfgen.setBounds(120, 46, 91, 23);
-		contentPanel.add(btnEinfgen);
-		
+
 		JButton btnLschen = new JButton("Löschen");
+		btnLschen.setBounds(133, 116, 91, 23);
+		panel.add(btnLschen);
 		btnLschen.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -132,8 +150,6 @@ public class Einstellungen extends JDialog {
 				listModel.removeElement(l);
 			}
 		});
-		btnLschen.setBounds(120, 80, 91, 23);
-		contentPanel.add(btnLschen);
 
 		JPanel buttonPane = new JPanel();
 		buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
@@ -142,11 +158,18 @@ public class Einstellungen extends JDialog {
 		JButton closeButton = new JButton("Schließen");
 		closeButton.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				setVisible(false);				
-			}
+			public void actionPerformed(ActionEvent arg0) {close();}
 		});
 		buttonPane.add(closeButton);
 		getRootPane().setDefaultButton(closeButton);
+	}
+
+	private void close() {
+		JOptionPane.showMessageDialog(	this,
+										"Um die Änderung zu übernehmen ist ein Neustart des Programms erforderlich.",
+										"Neustart erforderlich",
+										JOptionPane.INFORMATION_MESSAGE);
+
+		dispose();
 	}
 }
