@@ -24,7 +24,7 @@ public class KampfDB {
 		Set<Schuetze> set = new TreeSet<Schuetze>();
 
 		try {
-			Database db = getDB("Stammdaten.mdb");
+			Database db = getDB("data.mdb");
 			Table table = db.getTable("WettkampfSchuetzen");
 			for (Row row : table) if ((byte) row.get("Sichtbar") == 1) set.add(new Schuetze(row));
 			db.close();
@@ -39,7 +39,7 @@ public class KampfDB {
 		Set<Disziplin> set = new TreeSet<Disziplin>();
 
 		try {
-			Database db = getDB("Stammdaten.mdb");
+			Database db = getDB("data.mdb");
 			for (Row row : db.getTable("Disziplin")) {
 				Disziplin d = new Disziplin(row);
 				Table t = db.getTable("DisziplinWaffe");

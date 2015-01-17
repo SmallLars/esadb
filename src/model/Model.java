@@ -42,7 +42,7 @@ public class Model implements Serializable, Printable {
 		disziplinen = KampfDB.getDisziplinen();
 		treffer = new Vector<Treffer>();
 		try {
-			file = Files.readAllBytes(Paths.get("Stammdaten.mdb"));
+			file = Files.readAllBytes(Paths.get("data.mdb"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

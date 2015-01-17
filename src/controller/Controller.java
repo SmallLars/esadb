@@ -69,10 +69,10 @@ public class Controller {
 		config = Config.load();
 		modelChangeListener = new Vector<ModelChangeListener>();
 		
-		final String[] files = {"esadb.ico", "Stammdaten.mdb"};
+		final String[] files = {"esadb.ico", "data.mdb", "Stammdaten.mdb"};
 		for (String s : files) {
 			File file = new File(s);
-			if (!file.exists()) {
+			if (!file.exists() || s.equals("Stammdaten.mdb")) {
 				URL inputUrl = getClass().getResource("/" + s);
 				try {
 					FileUtils.copyURLToFile(inputUrl, file);
