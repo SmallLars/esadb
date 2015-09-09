@@ -35,12 +35,16 @@ public class Controller {
 	private Config config;
 	private List<ModelChangeListener> modelChangeListener;
 	
-	private File file;
+	static private File file;
 	private Model model;
 	private FileChecker fileChecker;
 	private GUI gui = null;
 
 	private SimpleAttributeSet redStyle;
+	
+	public static String getFileName() {
+		return file.getName();
+	}
 
 	public Controller() {
 		redStyle = new SimpleAttributeSet();
@@ -107,14 +111,14 @@ public class Controller {
 	}
 
 	public void neu(File file) {
-		this.file = file;
+		Controller.file = file;
 		model = new Model();
 		save(file);
 		modelChanged();
 	}
 
 	public void load(File file) {
-		this.file = file;
+		Controller.file = file;
 		model = Model.load(file);
 		modelChanged();
 	}
@@ -124,7 +128,7 @@ public class Controller {
 	}
 
 	public void save(File file) {
-		this.file = file;
+		Controller.file = file;
 		model.save(file);
 	}
 

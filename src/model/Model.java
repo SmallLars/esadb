@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.Vector;
 
+import controller.Controller;
 import controller.KampfDB;
 
 
@@ -166,7 +167,7 @@ public class Model implements Serializable, Printable {
 		final int startX = (int) (pageFormat.getImageableX() * SCALE);
 
 		SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
-		String headline = String.format("%s - Seite %2d", sdf.format(new Date()), pageIndex + 1);
+		String headline = String.format("%s - Seite %2d - %s", Controller.getFileName(), pageIndex + 1, sdf.format(new Date()));
 		double headLen = g2.getFontMetrics().getStringBounds(headline, null).getCenterX();
 		g2.drawString(headline, startX + 1000 - (int) headLen, startY - 2 * lineHeight);
 

@@ -21,6 +21,7 @@ import java.util.Vector;
 
 import javax.swing.BorderFactory;
 
+import controller.Controller;
 import view.Scheibe;
 
 
@@ -211,6 +212,7 @@ public class Einzel extends Start implements Printable {
 
 		// Überschriften
 		g2.drawString("Linie " + linie, 0, lineHeight);
+		drawStringCenter(g2, Controller.getFileName(), 1000, lineHeight);
 		SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
 		drawStringRight(g2, sdf.format(datum), 2000, lineHeight);
 		g2.translate(0, lineHeight);
@@ -258,6 +260,11 @@ public class Einzel extends Start implements Printable {
 		}
 
 		return Printable.PAGE_EXISTS;
+	}
+
+	private void drawStringCenter(Graphics2D g, String s, int x, int y) {
+		int len = (int) g.getFontMetrics().getStringBounds(s, g).getWidth();
+		g.drawString(s, x - len / 2, y);
 	}
 	
 	private void drawStringRight(Graphics2D g, String s, int x, int y) {

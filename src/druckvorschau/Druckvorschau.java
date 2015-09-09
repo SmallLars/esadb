@@ -16,6 +16,7 @@ import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 
 import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JLabel;
 import javax.swing.JButton;
@@ -25,7 +26,7 @@ import javax.swing.event.ChangeListener;
 
 
 @SuppressWarnings("serial")
-public class Druckvorschau extends JDialog {
+public class Druckvorschau extends JDialog implements ActionListener {
 	
 	private static final double ZOLL = 72 / 2.54;
 	
@@ -70,18 +71,8 @@ public class Druckvorschau extends JDialog {
 		
 		JButton btnndern = new JButton("Ändern");
 		btnndern.setBounds(10, 38, 91, 23);
-		btnndern.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				pf = PrinterJob.getPrinterJob().pageDialog(pf);
-				lblTest.setText(String.format(	"%s: %4.1f - %4.1f\n",
-						MediaSize.findMedia((float) (pf.getWidth() / ZOLL * 10), (float) (pf.getHeight() / ZOLL * 10), Size2DSyntax.MM),
-						pf.getWidth() / ZOLL,
-						pf.getHeight() / ZOLL)
-				);
-				pages.setPageFormat(pf);
-			}
-		});
+		btnndern.setActionCommand("CHANGE");
+		btnndern.addActionListener(this);
 		panel.add(btnndern);
 		
 		slider = new JSlider();
@@ -104,29 +95,14 @@ public class Druckvorschau extends JDialog {
 		
 		JButton btnDrucken = new JButton("Drucken");
 		btnDrucken.setBounds(625, 25, 91, 23);
-		btnDrucken.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				PrinterJob pjob = PrinterJob.getPrinterJob();
-				pjob.setPageable(new MyPageable(pages.getNumberOfPages(), pf, p));
-			    if (pjob.printDialog() == false) return;
-			    try {
-					pjob.print();
-				} catch (PrinterException e1) {
-					e1.printStackTrace();
-				}
-			}
-		});
+		btnDrucken.setActionCommand("PRINT");
+		btnDrucken.addActionListener(this);
 		panel.add(btnDrucken);
 		
 		JButton btnAbbrechen = new JButton("Abbrechen");
 		btnAbbrechen.setBounds(737, 25, 100, 23);
-		btnAbbrechen.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				setVisible(false);
-			}
-		});
+		btnAbbrechen.setActionCommand("CANCEL");
+		btnAbbrechen.addActionListener(this);
 		panel.add(btnAbbrechen);
 		
 		scrollPane = new JScrollPane();
@@ -157,5 +133,37 @@ public class Druckvorschau extends JDialog {
 	public PageFormat showDialog() {
 		setVisible(true);
 		return pf;
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		switch (e.getActionCommand()) {
+			case "CHANGE":
+				pf = PrinterJob.getPrinterJob().pageDialog(pf);
+				lblTest.setText(String.format(	"%s: %4.1f - %4.1f\n",
+						MediaSize.findMedia((float) (pf.getWidth() / ZOLL * 10), (float) (pf.getHeight() / ZOLL * 10), Size2DSyntax.MM),
+						pf.getWidth() / ZOLL,
+						pf.getHeight() / ZOLL)
+				);
+				pages.setPageFormat(pf);
+				break;
+			case "PRINT":
+				PrinterJob pjob = PrinterJob.getPrinterJob();
+				pjob.setPageable(new MyPageable(pages.getNumberOfPages(), pf, p));
+			    if (pjob.printDialog() == false) return;
+			    try {
+					pjob.print();
+				} catch (PrinterException e1) {
+					JOptionPane.showMessageDialog(	this,
+													"Druckfehler: " + e1.getMessage(),
+													"Fehler",
+													JOptionPane.WARNING_MESSAGE);
+					//e1.printStackTrace();
+				}
+				break;
+			case "CANCEL":
+				setVisible(false);
+				break;
+		}
 	}
 }

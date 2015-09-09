@@ -294,6 +294,13 @@ public class GUI extends JFrame implements ActionListener {
 		Druckvorschau dv;
 		switch (e.getActionCommand()) {
 			case "NEW":
+				for (Linie l : linien) if (!l.isFrei()) {
+					JOptionPane.showMessageDialog(	this,
+													"Ein neuer Wettkampf kann erst angelegt werden, wenn alle Linien frei sind.",
+													"Fehler",
+													JOptionPane.WARNING_MESSAGE);
+					return;
+				}
 				returnVal = fc.showDialog(this, "Neu");
 				if (returnVal == JFileChooser.APPROVE_OPTION) {
 					File file = checkPath(fc.getSelectedFile());
@@ -304,6 +311,13 @@ public class GUI extends JFrame implements ActionListener {
 				}
 				break;
 			case "OPEN":
+				for (Linie l : linien) if (!l.isFrei()) {
+					JOptionPane.showMessageDialog(	this,
+													"Ein Wettkampf kann erst geladen werden, wenn alle Linien frei sind.",
+													"Fehler",
+													JOptionPane.WARNING_MESSAGE);
+					return;
+				}
 				returnVal = fc.showOpenDialog(this);
 				if (returnVal == JFileChooser.APPROVE_OPTION) {
 					File file = fc.getSelectedFile();
@@ -336,7 +350,11 @@ public class GUI extends JFrame implements ActionListener {
 			    try {
 					pjob.print();
 				} catch (PrinterException e1) {
-					e1.printStackTrace();
+					JOptionPane.showMessageDialog(	this,
+													"Druckfehler: " + e1.getMessage(),
+													"Fehler",
+													JOptionPane.WARNING_MESSAGE);
+					//e1.printStackTrace();
 				}
 				break;
 			case "PRINTPREVIEW":
