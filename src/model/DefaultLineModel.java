@@ -1,11 +1,14 @@
 package model;
 
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.Vector;
 
 import javax.swing.ComboBoxModel;
+import javax.swing.Timer;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 
@@ -14,7 +17,7 @@ import model.comboBoxModel.SchuetzenModel;
 import controller.Controller;
 
 
-public class DefaultLineModel implements LineModel, LineReader {
+public class DefaultLineModel implements LineModel, LineReader, ActionListener {
 	public static final int STATE_CHANGED = 1;
 	public static final int RESULT_CHANGED = 2;
 
@@ -23,6 +26,8 @@ public class DefaultLineModel implements LineModel, LineReader {
 	private Einzel einzel;
 
 	private boolean busy = false;
+	private Timer busyTimer;
+	private boolean error = false;
 	private Vector<LineListener> listener;
 
 	private int state;
@@ -56,6 +61,8 @@ public class DefaultLineModel implements LineModel, LineReader {
 	public void setStatus(Status status) {
 		if (busy == false) {
 			busy = true;
+			busyTimer = new Timer(30000, this);
+			busyTimer.start();
 			String cmd = null;
 			if (status == Status.SPERREN) {
 				if (einzel != null) {
@@ -102,8 +109,12 @@ public class DefaultLineModel implements LineModel, LineReader {
 		return busy;
 	}
 	
+	public boolean isError() {
+		return error;
+	}
+	
 	public boolean isFrei() {
-		return !busy && einzel == null;
+		return einzel == null;
 	}
 
 	public boolean isGesperrt() {
@@ -124,6 +135,8 @@ public class DefaultLineModel implements LineModel, LineReader {
 
 	public void reenable() {
 		busy = false;
+		busyTimer.stop();
+		error = false;
 		modelChanged(STATE_CHANGED);
 	}
 	
@@ -191,5 +204,14 @@ public class DefaultLineModel implements LineModel, LineReader {
 
 	private void modelChanged(int type) {
 		for (LineListener l : listener) l.lineChanged(this, type);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+		if (busy) {
+			error = true;
+			busyTimer.stop();
+			modelChanged(STATE_CHANGED);
+		}
 	}
 }

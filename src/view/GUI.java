@@ -294,7 +294,7 @@ public class GUI extends JFrame implements ActionListener {
 		Druckvorschau dv;
 		switch (e.getActionCommand()) {
 			case "NEW":
-				for (Linie l : linien) if (!l.isFrei()) {
+				for (Linie l : linien) if (!l.isFrei() || (l.isBusy() && !l.isError())) {
 					JOptionPane.showMessageDialog(	this,
 													"Ein neuer Wettkampf kann erst angelegt werden, wenn alle Linien frei sind.",
 													"Fehler",
@@ -311,7 +311,7 @@ public class GUI extends JFrame implements ActionListener {
 				}
 				break;
 			case "OPEN":
-				for (Linie l : linien) if (!l.isFrei()) {
+				for (Linie l : linien) if (!l.isFrei() || (l.isBusy() && !l.isError())) {
 					JOptionPane.showMessageDialog(	this,
 													"Ein Wettkampf kann erst geladen werden, wenn alle Linien frei sind.",
 													"Fehler",
@@ -415,7 +415,7 @@ public class GUI extends JFrame implements ActionListener {
 	}
 
 	private void close() {
-		for (Linie l : linien) if (!l.isFrei()) {
+		for (Linie l : linien) if (!l.isError() && (!l.isFrei() || l.isBusy())) {
 			JOptionPane.showMessageDialog(	this,
 											"Das Programm kann erst beendet werden, wenn alle Linien frei sind.",
 											"Fehler",

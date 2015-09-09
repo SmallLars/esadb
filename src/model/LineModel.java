@@ -14,6 +14,8 @@ public interface LineModel {
 	public void setStatus(Status status);
 
 	public boolean isBusy();
+
+	public boolean isError();
 	
 	public boolean isFrei();
 

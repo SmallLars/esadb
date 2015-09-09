@@ -129,6 +129,14 @@ public class Linie extends JPanel implements LineListener {
 		setEnabled(false);
 	}
 
+	public boolean isBusy() {
+		return linie.isBusy();
+	}
+
+	public boolean isError() {
+		return linie.isError();
+	}
+
 	public boolean isFrei() {
 		return linie.isFrei();
 	}
@@ -140,13 +148,14 @@ public class Linie extends JPanel implements LineListener {
 			sperre.setSelected(linie.isGesperrt());
 			start.setSelected(linie.isGestartet());
 			wertung.setSelected(linie.inMatch());
+			repaint();
 		}
 	}
 
 	@Override
 	public void setEnabled(boolean enabled) {
 		super.setEnabled(enabled);
-		Color c = enabled ? null : Color.ORANGE;
+		Color c = enabled ? null : (linie.isError() ? Color.red : Color.ORANGE);
 		sperre.setBackground(c);
 		start.setBackground(c);
 		wertung.setBackground(c);
@@ -161,6 +170,11 @@ public class Linie extends JPanel implements LineListener {
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
+		if (linie.isError()) {
+			g.setColor(Color.RED);
+			g.fillRect(5, 5, 718, 31);
+			return;
+		}
 		if (!this.isEnabled()) {
 			g.setColor(Color.ORANGE);
 			g.fillRect(5, 5, 718, 31);
