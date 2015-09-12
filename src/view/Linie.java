@@ -19,6 +19,7 @@ import javax.swing.border.EtchedBorder;
 
 import model.DefaultLineModel;
 import model.Disziplin;
+import model.Einzel;
 import model.LineListener;
 import model.LineModel;
 import model.Schuetze;
@@ -64,11 +65,20 @@ public class Linie extends JPanel implements LineListener {
 					if (s == null || d == null) {
 						sperre.setSelected(false);
 						JOptionPane.showMessageDialog(	null,
-														"Ein Sperren der Linie ist erst nach Auswahl eines Schützen und einer Disziplin möglich.",
-														"Fehler",
-														JOptionPane.WARNING_MESSAGE);
+								"Ein Sperren der Linie ist erst nach Auswahl eines Schützen und einer Disziplin möglich.",
+								"Fehler",
+								JOptionPane.WARNING_MESSAGE);
 					} else {
-						linie.configure(s, d);
+						Einzel e = linie.configure(s, d);
+						if (e != null) {
+							int answer = JOptionPane.showConfirmDialog(	null,
+									"Der Schütze ist in dieser Disziplin bereits einmal gestartet ohne den Wettkampf abzuschließen. Soll der Wettkampf fortgesetzt werden?",
+									"Information",
+									JOptionPane.YES_NO_OPTION);
+							if (answer == JOptionPane.NO_OPTION) {
+								linie.configure(e);
+							}
+						}
 						linie.setStatus(Status.SPERREN);
 					}
 				} else {

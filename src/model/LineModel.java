@@ -7,7 +7,9 @@ public interface LineModel {
 
 	public int getNummer();
 	
-	public void configure(Schuetze schuetze, Disziplin disziplin);
+	public void configure(Einzel e);
+	
+	public Einzel configure(Schuetze schuetze, Disziplin disziplin);
 
 	public Einzel getResult();
 

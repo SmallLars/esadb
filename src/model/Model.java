@@ -88,6 +88,17 @@ public class Model implements Serializable, Printable {
 		return false;
 	}
 
+	public List<Einzel> getIncomplete() {
+		Vector<Einzel> incomplete = new Vector<Einzel>();
+		for (Start s : ergebnisse) {
+			if (s instanceof Einzel) {
+				Einzel e = (Einzel) s;
+				if (!e.isComplete()) incomplete.add(e);
+			}
+		}
+		return incomplete;
+	}
+
 	public List<Start> getErgebnisse() {
 		return ergebnisse;
 	}

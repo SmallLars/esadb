@@ -45,13 +45,27 @@ public class DefaultLineModel implements LineModel, LineReader, ActionListener {
 		return nummer;
 	}
 	
-	public void configure(Schuetze schuetze, Disziplin disziplin) {
-		if (einzel == null || einzel.getSchuetze() != schuetze || einzel.getDisziplin() != disziplin) {
-			disziplin.getRegel().toFile();
-			einzel = new Einzel(nummer, disziplin, schuetze);
+	public void configure(Einzel e) {
+		if (e != null) {
+			einzel = e;
 			controller.add(einzel);
 			modelChanged(RESULT_CHANGED);
 		}
+	}
+	
+	public Einzel configure(Schuetze schuetze, Disziplin disziplin) {
+		if (einzel == null || einzel.getSchuetze() != schuetze || einzel.getDisziplin() != disziplin) {
+			disziplin.getRegel().toFile();
+
+			Einzel incomplete = controller.findIncomplete(schuetze, disziplin);
+			Einzel new_event = new Einzel(nummer, disziplin, schuetze);
+			if (incomplete != null) {
+				einzel = incomplete;
+				return new_event;
+			}
+			configure(new_event);
+		}
+		return null;
 	}
 
 	public Einzel getResult() {

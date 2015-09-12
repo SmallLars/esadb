@@ -13,11 +13,13 @@ import java.util.Date;
 import java.util.List;
 import java.util.Vector;
 
+import javax.swing.JOptionPane;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 
 import model.Config;
 import model.Disziplin;
+import model.Einzel;
 import model.LineReader;
 import model.Model;
 import model.ModelChangeListener;
@@ -136,6 +138,17 @@ public class Controller {
 		fileChecker.exit();
 	}
 
+	public Einzel findIncomplete(Schuetze schuetze, Disziplin disziplin) {
+		for (Einzel e : model.getIncomplete()) {
+			if (e.getSchuetze().compareTo(schuetze) == 0) {
+				if (e.getDisziplin().compareTo(disziplin) == 0) {
+					return e;
+				}
+			}
+		}
+		return null;
+	}
+
 	public boolean contains(Object item) {
 		return model.contains(item);
 	}
@@ -192,7 +205,28 @@ public class Controller {
 		}
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
+		File lockfile = new File("esadb.lock");
+		FileOutputStream out = new FileOutputStream(lockfile);
+		Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
+			public void run() {
+				try {
+					out.close();
+					lockfile.delete();
+				} catch (IOException e) {
+					// e.printStackTrace();
+				}
+			}
+		}));
+
+		if (out.getChannel().tryLock() == null) {
+			JOptionPane.showMessageDialog(	null,
+					"Das Programm kann nur einmal zur Zeit gestartet werden.",
+					"Fehler",
+					JOptionPane.WARNING_MESSAGE);
+			return;
+		}
+
 		new Controller();
 	}
 }

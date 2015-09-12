@@ -52,6 +52,10 @@ public class Einzel extends Start implements Printable {
 		return treffer.isEmpty();
 	}
 
+	public boolean isComplete() {
+		return getTreffer(false, disziplin.getSchusszahl()) != null;
+	}
+
 	public boolean inMatch() {
 		Treffer t = getTreffer(false, 1);
 		return t != null;
