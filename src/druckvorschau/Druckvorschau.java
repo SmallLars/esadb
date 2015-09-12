@@ -62,9 +62,9 @@ public class Druckvorschau extends JDialog implements ActionListener {
 		
 		lblTest = new JLabel("Test");
 		lblTest.setText(String.format(	"%s: %4.1f - %4.1f\n",
-										MediaSize.findMedia((float) (pf.getWidth() / ZOLL * 10), (float) (pf.getHeight() / ZOLL * 10), Size2DSyntax.MM),
-										pf.getWidth() / ZOLL,
-										pf.getHeight() / ZOLL)
+				MediaSize.findMedia((float) (pf.getWidth() / ZOLL * 10), (float) (pf.getHeight() / ZOLL * 10), Size2DSyntax.MM),
+				pf.getWidth() / ZOLL,
+				pf.getHeight() / ZOLL)
 		);
 		lblTest.setBounds(10, 11, 224, 14);
 		panel.add(lblTest);

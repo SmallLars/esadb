@@ -179,7 +179,7 @@ public class Model implements Serializable, Printable {
 
 		SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
 		String headline = String.format("%s - Seite %2d - %s", Controller.getFileName(), pageIndex + 1, sdf.format(new Date()));
-		double headLen = g2.getFontMetrics().getStringBounds(headline, null).getCenterX();
+		double headLen = g2.getFontMetrics().getStringBounds(headline, g2).getCenterX();
 		g2.drawString(headline, startX + 1000 - (int) headLen, startY - 2 * lineHeight);
 
         int lineIndex = pageIndex * -pageLines;
