@@ -50,16 +50,19 @@ public class GUI extends JFrame implements ActionListener {
 	private JMenuItem mntmNeu;
 	private JMenuItem mntmLaden;
 	private JMenuItem mntmSpeichern;
+	private JMenuItem mntmEinstellungen;
 	private JMenuItem mntmBeenden;
+
 	private JMenuItem mntmDrucken;
 	private JMenuItem mntmVorschau;
 	private JMenuItem mntmEinzel;
 	private JMenuItem mntmEinzel_1;
 	private JMenuItem mntmTreffer;
-	private JMenuItem mntmEinstellungen;
 
 	private JMenuItem mntmSchtzen;
 	private JMenuItem mntmDisziplinen;
+	
+	private JMenuItem mntmInfo;
 
 	private JPanel contentPane;
 	private JTextPane konsole;
@@ -82,10 +85,10 @@ public class GUI extends JFrame implements ActionListener {
 
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setBounds(controller.getConfig().getMainWindowBounds());
-		
+
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
-		
+
 		JMenu mnDatei = new JMenu("Datei");
 		menuBar.add(mnDatei);
 
@@ -93,26 +96,26 @@ public class GUI extends JFrame implements ActionListener {
 			mntmNeu.setActionCommand("NEW");
 			mntmNeu.addActionListener(this);
 			mnDatei.add(mntmNeu);
-	
+
 			mntmLaden = new JMenuItem("Öffnen...");
 			mntmLaden.setActionCommand("OPEN");
 			mntmLaden.addActionListener(this);
 			mnDatei.add(mntmLaden);
-			
+
 			mntmSpeichern = new JMenuItem("Speichern unter...");
 			mntmSpeichern.setActionCommand("SAVEAS");
 			mntmSpeichern.addActionListener(this);
 			mnDatei.add(mntmSpeichern);
-	
+
 			mnDatei.addSeparator();
-	
+
 			mntmEinstellungen = new JMenuItem("Einstellungen...");
 			mntmEinstellungen.setActionCommand("PREFERENCES");
 			mntmEinstellungen.addActionListener(this);
 			mnDatei.add(mntmEinstellungen);
-			
+
 			mnDatei.addSeparator();
-			
+
 			mntmBeenden = new JMenuItem("Beenden");
 			mntmBeenden.setActionCommand("CLOSE");
 			mntmBeenden.addActionListener(this);
@@ -120,53 +123,61 @@ public class GUI extends JFrame implements ActionListener {
 
 		JMenu mnErgebnisse = new JMenu("Ergebnisse");
 		menuBar.add(mnErgebnisse);
-		
+
 			JMenu mnErgebnisliste = new JMenu("Ergebnisliste");
 			mnErgebnisse.add(mnErgebnisliste);
-			
+
 				mntmDrucken = new JMenuItem("Drucken...");
 				mnErgebnisliste.add(mntmDrucken);
 				mntmDrucken.setActionCommand("PRINT");
 				mntmDrucken.addActionListener(this);
-						
+
 				mntmVorschau = new JMenuItem("Druckvorschau...");
 				mnErgebnisliste.add(mntmVorschau);
 				mntmVorschau.setActionCommand("PRINTPREVIEW");
 				mntmVorschau.addActionListener(this);
-		
+
 			JMenu mnEinzelergebnisse = new JMenu("Einzelergebnisse");
 			mnErgebnisse.add(mnEinzelergebnisse);
-			
+
 				mntmEinzel = new JMenuItem("Druckvorschau...");
 				mnEinzelergebnisse.add(mntmEinzel);
 				mntmEinzel.setActionCommand("SINGLEPREVIEW");
 				mntmEinzel.addActionListener(this);
-				
+
 				mntmEinzel_1 = new JMenuItem("Bearbeiten...");
 				mnEinzelergebnisse.add(mntmEinzel_1);
 				mntmEinzel_1.setActionCommand("SINGLEEDIT");
 				mntmEinzel_1.addActionListener(this);
 
 			mnErgebnisse.addSeparator();
-	
+
 			mntmTreffer = new JMenuItem("Treffer eingeben...");
 			mntmTreffer.setActionCommand("TREFFERADD");
 			mntmTreffer.addActionListener(this);
 			mnErgebnisse.add(mntmTreffer);
-		
+
 		JMenu mnStammdaten = new JMenu("Stammdaten");
 		menuBar.add(mnStammdaten);
-		
+
 			mntmSchtzen = new JMenuItem("Schützen...");
 			mntmSchtzen.setActionCommand("SCHUETZEN");
 			mntmSchtzen.addActionListener(this);
 			mnStammdaten.add(mntmSchtzen);
-			
+
 			mntmDisziplinen = new JMenuItem("Disziplinen...");
 			mntmDisziplinen.setActionCommand("DISZIPLINEN");
 			mntmDisziplinen.addActionListener(this);
 			mnStammdaten.add(mntmDisziplinen);
-		
+
+		JMenu mnHilfe = new JMenu("Hilfe");
+		menuBar.add(mnHilfe);
+
+			mntmInfo = new JMenuItem("Info");
+			mntmInfo.setActionCommand("INFO");
+			mntmInfo.addActionListener(this);
+			mnHilfe.add(mntmInfo);
+
 		fc = new JFileChooser();
 	    fc.setCurrentDirectory(new File("."));
 	    fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
@@ -390,6 +401,10 @@ public class GUI extends JFrame implements ActionListener {
 			case "SCHUETZEN":
 				Schuetzen schuetze = new Schuetzen(this, controller);
 				schuetze.setVisible(true);
+				break;
+			case "INFO":
+				Info info = new Info(this);
+				info.setVisible(true);
 				break;
 		}
 	}

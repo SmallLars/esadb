@@ -6,8 +6,6 @@ import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -22,7 +20,7 @@ import javax.swing.JLabel;
 
 
 @SuppressWarnings("serial")
-public class Disziplinen extends JDialog implements ComponentListener, ActionListener {
+public class Disziplinen extends JDialog implements ActionListener {
 
 	private JComboBox<Disziplin> comboBox;
 	private JLabel lblName;
@@ -40,9 +38,9 @@ public class Disziplinen extends JDialog implements ComponentListener, ActionLis
 
 		setModal(true);
 		setModalityType(ModalityType.APPLICATION_MODAL);
+		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setSize(450, 300);
 		setLocationRelativeTo(parent);
-		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setLayout(null);
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -92,8 +90,6 @@ public class Disziplinen extends JDialog implements ComponentListener, ActionLis
 		buttonPane.add(cancelButton);
 		getRootPane().setDefaultButton(cancelButton);
 
-		addComponentListener(this);
-		
 		actionPerformed(new ActionEvent(comboBox, 0, "DISZIPLIN"));
 	}
 
@@ -128,18 +124,4 @@ public class Disziplinen extends JDialog implements ComponentListener, ActionLis
 				break;
 		}
 	}
-
-	@Override
-	public void componentResized(ComponentEvent e) {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
-	public void componentHidden(ComponentEvent e) {}
-
-	@Override
-	public void componentMoved(ComponentEvent e) {}
-
-	@Override
-	public void componentShown(ComponentEvent e) {}
 }
