@@ -64,6 +64,8 @@ public class DefaultLineModel implements LineModel, LineReader, ActionListener {
 				return new_event;
 			}
 			configure(new_event);
+		} else {
+			if (einzel.isEmpty()) controller.add(einzel);
 		}
 		return null;
 	}

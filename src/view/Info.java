@@ -33,7 +33,7 @@ public class Info extends JDialog implements ActionListener {
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		
-		JLabel lblEsadb = new JLabel("ESADB (1.0.0)");
+		JLabel lblEsadb = new JLabel("ESADB (1.0.1)");
 		lblEsadb.setBounds(10, 10, 280, 20);
 		contentPanel.add(lblEsadb);
 
