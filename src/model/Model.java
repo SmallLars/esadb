@@ -93,7 +93,7 @@ public class Model implements Serializable, Printable {
 		for (Start s : ergebnisse) {
 			if (s instanceof Einzel) {
 				Einzel e = (Einzel) s;
-				if (!e.isComplete()) incomplete.add(e);
+				if (!e.isEmpty() && !e.isComplete()) incomplete.add(e);
 			}
 		}
 		return incomplete;
