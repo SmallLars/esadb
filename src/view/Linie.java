@@ -47,6 +47,7 @@ public class Linie extends JPanel implements LineListener {
 		this.setBorder(BorderFactory.createCompoundBorder(out, in));
 		Dimension d = new Dimension(728, 41);
 		this.setMinimumSize(d);
+		this.setSize(d);
 		this.setMaximumSize(d);
 
 		JLabel label = new JLabel("" + linie.getNummer());

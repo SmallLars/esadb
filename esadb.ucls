@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <class-diagram version="1.1.6" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
   associations="true" dependencies="false" nesting-relationships="true">  
-  <class id="1" language="java" name="model.Config" project="ESADB" file="/ESADB/src/model/Config.java" binary="false" 
+  <class id="1" language="java" name="model.Config" project="esadb" file="/esadb/src/model/Config.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="118" y="1041"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -10,7 +10,7 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <class id="2" language="java" name="model.Disziplin" project="ESADB" file="/ESADB/src/model/Disziplin.java" 
+  <class id="2" language="java" name="model.Disziplin" project="esadb" file="/esadb/src/model/Disziplin.java" 
     binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="325" y="1189"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -19,7 +19,7 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <class id="3" language="java" name="model.Model" project="ESADB" file="/ESADB/src/model/Model.java" binary="false" 
+  <class id="3" language="java" name="model.Model" project="esadb" file="/esadb/src/model/Model.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="326" y="1040"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -28,7 +28,7 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <class id="4" language="java" name="model.Schuetze" project="ESADB" file="/ESADB/src/model/Schuetze.java" 
+  <class id="4" language="java" name="model.Schuetze" project="esadb" file="/esadb/src/model/Schuetze.java" 
     binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="175" y="1189"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -37,8 +37,8 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <class id="5" language="java" name="druckvorschau.Druckvorschau" project="ESADB" 
-    file="/ESADB/src/druckvorschau/Druckvorschau.java" binary="false" corner="BOTTOM_RIGHT">    
+  <class id="5" language="java" name="druckvorschau.Druckvorschau" project="esadb" 
+    file="/esadb/src/druckvorschau/Druckvorschau.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="-500" y="29"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
@@ -46,7 +46,7 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <class id="6" language="java" name="druckvorschau.Seite" project="ESADB" file="/ESADB/src/druckvorschau/Seite.java" 
+  <class id="6" language="java" name="druckvorschau.Seite" project="esadb" file="/esadb/src/druckvorschau/Seite.java" 
     binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="-143" y="29"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -55,8 +55,8 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <class id="7" language="java" name="druckvorschau.Seitenanzeige" project="ESADB" 
-    file="/ESADB/src/druckvorschau/Seitenanzeige.java" binary="false" corner="BOTTOM_RIGHT">    
+  <class id="7" language="java" name="druckvorschau.Seitenanzeige" project="esadb" 
+    file="/esadb/src/druckvorschau/Seitenanzeige.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="-324" y="29"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
@@ -64,7 +64,7 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <class id="8" language="java" name="view.GUI" project="ESADB" file="/ESADB/src/view/GUI.java" binary="false" 
+  <class id="8" language="java" name="view.GUI" project="esadb" file="/esadb/src/view/GUI.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="326" y="170"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -73,7 +73,7 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <class id="9" language="java" name="model.Treffer" project="ESADB" file="/ESADB/src/model/Treffer.java" binary="false" 
+  <class id="9" language="java" name="model.Treffer" project="esadb" file="/esadb/src/model/Treffer.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="39" y="1347"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -82,7 +82,7 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <class id="10" language="java" name="view.Linie" project="ESADB" file="/ESADB/src/view/Linie.java" binary="false" 
+  <class id="10" language="java" name="view.Linie" project="esadb" file="/esadb/src/view/Linie.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="808" y="274"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -91,7 +91,7 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <class id="11" language="java" name="view.Scheibe" project="ESADB" file="/ESADB/src/view/Scheibe.java" binary="false" 
+  <class id="11" language="java" name="view.Scheibe" project="esadb" file="/esadb/src/view/Scheibe.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="1017" y="274"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -100,7 +100,7 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <class id="12" language="java" name="model.Start" project="ESADB" file="/ESADB/src/model/Start.java" binary="false" 
+  <class id="12" language="java" name="model.Start" project="esadb" file="/esadb/src/model/Start.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="466" y="1189"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -109,7 +109,7 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <class id="13" language="java" name="model.Einzel" project="ESADB" file="/ESADB/src/model/Einzel.java" binary="false" 
+  <class id="13" language="java" name="model.Einzel" project="esadb" file="/esadb/src/model/Einzel.java" binary="false" 
     corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="325" y="1346"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -118,7 +118,7 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <class id="14" language="java" name="model.Mannschaft" project="ESADB" file="/ESADB/src/model/Mannschaft.java" 
+  <class id="14" language="java" name="model.Mannschaft" project="esadb" file="/esadb/src/model/Mannschaft.java" 
     binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="555" y="1294"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -127,8 +127,8 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <class id="15" language="java" name="model.comboBoxModel.MyComboBoxModel" project="ESADB" 
-    file="/ESADB/src/model/comboBoxModel/MyComboBoxModel.java" binary="false" corner="BOTTOM_RIGHT">    
+  <class id="15" language="java" name="model.comboBoxModel.MyComboBoxModel" project="esadb" 
+    file="/esadb/src/model/comboBoxModel/MyComboBoxModel.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="486" y="487"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
@@ -136,8 +136,8 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <class id="16" language="java" name="model.comboBoxModel.DisziplinenModel" project="ESADB" 
-    file="/ESADB/src/model/comboBoxModel/DisziplinenModel.java" binary="false" corner="BOTTOM_RIGHT">    
+  <class id="16" language="java" name="model.comboBoxModel.DisziplinenModel" project="esadb" 
+    file="/esadb/src/model/comboBoxModel/DisziplinenModel.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="661" y="443"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
@@ -145,8 +145,8 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <class id="17" language="java" name="model.comboBoxModel.SchuetzenModel" project="ESADB" 
-    file="/ESADB/src/model/comboBoxModel/SchuetzenModel.java" binary="false" corner="BOTTOM_RIGHT">    
+  <class id="17" language="java" name="model.comboBoxModel.SchuetzenModel" project="esadb" 
+    file="/esadb/src/model/comboBoxModel/SchuetzenModel.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="661" y="524"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
@@ -154,7 +154,7 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <class id="18" language="java" name="javax.swing.JComboBox" project="ESADB" 
+  <class id="18" language="java" name="javax.swing.JComboBox" project="esadb" 
     file="C:/Program Files (x86)/Java/jre1.8.0_20/lib/rt.jar" binary="true" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="486" y="273"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -163,7 +163,7 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <interface id="19" language="java" name="javax.swing.ComboBoxModel" project="ESADB" 
+  <interface id="19" language="java" name="javax.swing.ComboBoxModel" project="esadb" 
     file="C:/Program Files (x86)/Java/jre1.8.0_20/lib/rt.jar" binary="true" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="486" y="379"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -172,8 +172,8 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </interface>  
-  <class id="20" language="java" name="view.SchuetzenRowFilter" project="ESADB" 
-    file="/ESADB/src/view/SchuetzenRowFilter.java" binary="false" corner="BOTTOM_RIGHT">    
+  <class id="20" language="java" name="view.SchuetzenRowFilter" project="esadb" 
+    file="/esadb/src/view/SchuetzenRowFilter.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="120" y="743"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
@@ -181,8 +181,8 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <class id="21" language="java" name="view.SchuetzenTableModel" project="ESADB" 
-    file="/ESADB/src/view/SchuetzenTableModel.java" binary="false" corner="BOTTOM_RIGHT">    
+  <class id="21" language="java" name="view.SchuetzenTableModel" project="esadb" 
+    file="/esadb/src/view/SchuetzenTableModel.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="167" y="411"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
@@ -190,7 +190,7 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <class id="22" language="java" name="javax.swing.JTable" project="ESADB" 
+  <class id="22" language="java" name="javax.swing.JTable" project="esadb" 
     file="C:/Program Files (x86)/Java/jre1.8.0_20/lib/rt.jar" binary="true" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="-225" y="411"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -199,7 +199,7 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <class id="23" language="java" name="javax.swing.JTable.SortManager" project="ESADB" 
+  <class id="23" language="java" name="javax.swing.JTable.SortManager" project="esadb" 
     file="C:/Program Files (x86)/Java/jre1.8.0_20/lib/rt.jar" binary="true" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="-225" y="554"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -208,7 +208,7 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <class id="24" language="java" name="javax.swing.RowSorter" project="ESADB" 
+  <class id="24" language="java" name="javax.swing.RowSorter" project="esadb" 
     file="C:/Program Files (x86)/Java/jre1.8.0_20/lib/rt.jar" binary="true" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="-225" y="650"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -217,7 +217,7 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <class id="25" language="java" name="javax.swing.RowFilter" project="ESADB" 
+  <class id="25" language="java" name="javax.swing.RowFilter" project="esadb" 
     file="C:/Program Files (x86)/Java/jre1.8.0_20/lib/rt.jar" binary="true" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="120" y="650"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -226,7 +226,7 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <class id="26" language="java" name="javax.swing.DefaultRowSorter" project="ESADB" 
+  <class id="26" language="java" name="javax.swing.DefaultRowSorter" project="esadb" 
     file="C:/Program Files (x86)/Java/jre1.8.0_20/lib/rt.jar" binary="true" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="-55" y="650"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -235,7 +235,7 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <class id="27" language="java" name="view.Einstellungen" project="ESADB" file="/ESADB/src/view/Einstellungen.java" 
+  <class id="27" language="java" name="view.Einstellungen" project="esadb" file="/esadb/src/view/Einstellungen.java" 
     binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="185" y="170"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -244,8 +244,8 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <class id="28" language="java" name="controller.FileChecker" project="ESADB" 
-    file="/ESADB/src/controller/FileChecker.java" binary="false" corner="BOTTOM_RIGHT">    
+  <class id="28" language="java" name="controller.FileChecker" project="esadb" 
+    file="/esadb/src/controller/FileChecker.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="576" y="844"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
@@ -253,7 +253,7 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <interface id="29" language="java" name="model.LineReader" project="ESADB" file="/ESADB/src/model/LineReader.java" 
+  <interface id="29" language="java" name="model.LineReader" project="esadb" file="/esadb/src/model/LineReader.java" 
     binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="808" y="843"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -262,7 +262,7 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </interface>  
-  <interface id="30" language="java" name="model.LineModel" project="ESADB" file="/ESADB/src/model/LineModel.java" 
+  <interface id="30" language="java" name="model.LineModel" project="esadb" file="/esadb/src/model/LineModel.java" 
     binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="808" y="475"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -271,8 +271,8 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </interface>  
-  <class id="31" language="java" name="model.DefaultLineModel" project="ESADB" 
-    file="/ESADB/src/model/DefaultLineModel.java" binary="false" corner="BOTTOM_RIGHT">    
+  <class id="31" language="java" name="model.DefaultLineModel" project="esadb" 
+    file="/esadb/src/model/DefaultLineModel.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="914" y="665"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
@@ -280,7 +280,7 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <interface id="32" language="java" name="model.LineListener" project="ESADB" file="/ESADB/src/model/LineListener.java" 
+  <interface id="32" language="java" name="model.LineListener" project="esadb" file="/esadb/src/model/LineListener.java" 
     binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="914" y="372"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -289,8 +289,8 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </interface>  
-  <interface id="33" language="java" name="model.ModelChangeListener" project="ESADB" 
-    file="/ESADB/src/model/ModelChangeListener.java" binary="false" corner="BOTTOM_RIGHT">    
+  <interface id="33" language="java" name="model.ModelChangeListener" project="esadb" 
+    file="/esadb/src/model/ModelChangeListener.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="563" y="627"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
@@ -298,8 +298,8 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </interface>  
-  <class id="34" language="java" name="controller.Controller" project="ESADB" 
-    file="/ESADB/src/controller/Controller.java" binary="false" corner="BOTTOM_RIGHT">    
+  <class id="34" language="java" name="controller.Controller" project="esadb" 
+    file="/esadb/src/controller/Controller.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="327" y="843"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
@@ -307,7 +307,7 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <class id="35" language="java" name="view.Schuetzen" project="ESADB" file="/ESADB/src/view/Schuetzen.java" 
+  <class id="35" language="java" name="view.Schuetzen" project="esadb" file="/esadb/src/view/Schuetzen.java" 
     binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="-104" y="170"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -316,7 +316,7 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <class id="36" language="java" name="javax.swing.table.TableRowSorter" project="ESADB" 
+  <class id="36" language="java" name="javax.swing.table.TableRowSorter" project="esadb" 
     file="C:/Program Files (x86)/Java/jre1.8.0_20/lib/rt.jar" binary="true" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="-55" y="412"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -325,7 +325,7 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <class id="37" language="java" name="view.Disziplinen" project="ESADB" file="/ESADB/src/view/Disziplinen.java" 
+  <class id="37" language="java" name="view.Disziplinen" project="esadb" file="/esadb/src/view/Disziplinen.java" 
     binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="45" y="170"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -334,7 +334,7 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <class id="38" language="java" name="view.EinzelEdit" project="ESADB" file="/ESADB/src/view/EinzelEdit.java" 
+  <class id="38" language="java" name="view.EinzelEdit" project="esadb" file="/esadb/src/view/EinzelEdit.java" 
     binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="-360" y="170"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -343,8 +343,8 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <class id="39" language="java" name="view.TrefferTableModel" project="ESADB" 
-    file="/ESADB/src/view/TrefferTableModel.java" binary="false" corner="BOTTOM_RIGHT">    
+  <class id="39" language="java" name="view.TrefferTableModel" project="esadb" 
+    file="/esadb/src/view/TrefferTableModel.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="-492" y="411"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
