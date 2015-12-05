@@ -7,13 +7,17 @@ import java.awt.Graphics2D;
 
 import javax.swing.JPanel;
 
+import org.apache.commons.lang.Validate;
+
 import model.DefaultLineModel;
+import model.Einheit;
 import model.Einzel;
 import model.LineListener;
 import model.LineModel;
 import model.RegelTyp;
-import model.ScheibeTyp;
+import model.ScheibeModel;
 import model.Treffer;
+import model.WaffeModel;
 
 
 @SuppressWarnings("serial")
@@ -28,26 +32,34 @@ public class Scheibe extends JPanel implements LineListener {
 	private int nummer;
 	private int force;
 
-	// TrefferAdd
-	public Scheibe(RegelTyp typ) {
-		this(null, 0);
-		this.typ = typ;
+	/**
+	 * @wbp.parser.constructor
+	 */
+	public Scheibe() {
+		this(	new RegelTyp(	"Kleinkaliber 50m",  "1.40",
+								new ScheibeModel("Gewehr 50m",           "0.4.3.03",  55000,       5,  11240, 15440,      500,   800,   1, 8),
+								new WaffeModel( 3, "Kleinkaliber",               5600, Einheit.MM,   2)
+				),
+				1
+		);
 	}
 
-	// Einzel im Druck mit this
+	public Scheibe(RegelTyp typ) {
+		this(typ, 0);
+	}
+
 	public Scheibe(Einzel einzel) {
 		this(einzel, 0);
 	}
 
-	// GUI
-	/**
-	 * @wbp.parser.constructor
-	 */
-	public Scheibe(int nummer) {
-		this(null, nummer);
+	public Scheibe(RegelTyp typ, int nummer) {
+		Validate.notNull(typ, "typ can't be null");
+		this.typ = typ;
+		this.nummer = nummer;
 	}
 
 	private Scheibe(Einzel einzel, int nummer) {
+		Validate.notNull(einzel, "einzel can't be null");
 		this.einzel = einzel;
 		this.treffer = null;
 		this.nummer = nummer;
@@ -57,6 +69,7 @@ public class Scheibe extends JPanel implements LineListener {
 	}
 
 	public void setTyp(RegelTyp typ) {
+		Validate.notNull(typ, "typ can't be null");
 		this.typ = typ;
 		repaint();
 	}
@@ -75,7 +88,7 @@ public class Scheibe extends JPanel implements LineListener {
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		
-		ScheibeTyp scheibe = typ.getScheibe();
+		ScheibeModel scheibe = typ.getScheibe();
 
 		Graphics2D g1 = (Graphics2D) g.create();
 		g1.scale(new Double(getWidth()) / 1000, new Double(getHeight()) / 1000);
@@ -174,8 +187,6 @@ public class Scheibe extends JPanel implements LineListener {
 	private void updateTyp() {
 		if (einzel != null) {
 			typ = einzel.getDisziplin().getRegel();
-		} else if (typ == null) {
-			typ = RegelTyp.R_1_40;
 		}
 	}
 

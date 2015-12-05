@@ -93,7 +93,7 @@ public class Controller {
 		if (file.exists()) {
 			model = Model.load(file);
 		} else {
-			model = new Model();
+			model = new Model(config);
 		}
 
 		fileChecker = new FileChecker(config.getLinienCount());
@@ -114,7 +114,7 @@ public class Controller {
 
 	public void neu(File file) {
 		Controller.file = file;
-		model = new Model();
+		model = new Model(config);
 		save(file);
 		modelChanged();
 	}

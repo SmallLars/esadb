@@ -18,21 +18,17 @@ public class Disziplin implements Serializable, Comparable<Disziplin> {
 	private int serienlaenge;		// Gibt die Länge der Serien an
 	private RegelTyp regel;
 
-	public Disziplin(Row row) {
-		id = (int) row.get("DisziplinID");
-		name = (String) row.get("Bezeichnung");
-		wertung = (byte) row.get("Wertung");
-		schusszahl = (short) row.get("Schusszahl");
-		schiesszeit = (short) row.get("Schiesszeit");
-		stellungsanzahl = (byte) row.get("Stellungsanzahl");
-		probeschuesse = (short) row.get("Probeschuesse");
-		probezeit = (short) row.get("Probezeit");
-		serienlaenge = (short) row.get("Serienlaenge");
-		regel = RegelTyp.R_1_40;
-	}
-
-	public void setRegel(Row row) {
-		regel = RegelTyp.getTypByGattung((String) row.get("WaffengattungNr"));
+	public Disziplin(Row disziplin, RegelTyp regel) {
+		id = (int) disziplin.get("DisziplinID");
+		name = (String) disziplin.get("Bezeichnung");
+		wertung = (byte) disziplin.get("Wertung");
+		schusszahl = (short) disziplin.get("Schusszahl");
+		schiesszeit = (short) disziplin.get("Schiesszeit");
+		stellungsanzahl = (byte) disziplin.get("Stellungsanzahl");
+		probeschuesse = (short) disziplin.get("Probeschuesse");
+		probezeit = (short) disziplin.get("Probezeit");
+		serienlaenge = (short) disziplin.get("Serienlaenge");
+		this.regel = regel;
 	}
 
 	public int getId() {

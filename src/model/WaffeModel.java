@@ -2,23 +2,12 @@ package model;
 
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.io.Serializable;
 import java.text.NumberFormat;
 import java.util.Locale;
 
-public enum WaffeTyp {
-	LUFTDRUCK      ( 1, "Luftdruck",                  4500, Einheit.MM,   1),
-	ZIMMERSTUTZEBN ( 2, "Zimmerstutzen",              4650, Einheit.MM,   1),
-	KLEINKALIBER   ( 3, "Kleinkaliber",               5600, Einheit.MM,   2),
-	GROﬂKALIBER_B8 ( 4, "Groﬂkalibergewehr (<=8mm)",  8000, Einheit.MM,   5),
-	GROﬂKALIBER_P8 ( 5, "Groﬂkalibergewehr (>8mm)",  10000, Einheit.MM,   6),
-	KALIBER30      ( 6, "Kaliber .30",                 300, Einheit.INCH, 6),
-	KALIBER32      ( 7, "Kaliber .32",                 320, Einheit.INCH, 6),
-	KALIBER357     ( 8, "Kaliber .357",                357, Einheit.INCH, 6),
-	KALIBER38      ( 9, "Kaliber .38",                 380, Einheit.INCH, 6),
-	KALIBER10MM    (10, "Kaliber 10mm",              10000, Einheit.MM,   6),
-	KALIBER44      (11, "Kaliber .44",                 440, Einheit.INCH, 6),
-	KALIBER45      (12, "Kaliber .45",                 450, Einheit.INCH, 6),
-	VORDERLADER    (13, "Vorderlader",               14000, Einheit.MM,   6);
+public class WaffeModel implements Serializable {
+	private static final long serialVersionUID = 1L;
 
 	private final int kennnummer;
 	private final String bezeichnung;
@@ -26,7 +15,7 @@ public enum WaffeTyp {
 	private final Einheit einheit;
 	private final int mikofoneinstellung;
 	
-	WaffeTyp(int kennnummer, String bezeichnung, int durchmesser, Einheit einheit, int mikofoneinstellung) {
+	public WaffeModel(int kennnummer, String bezeichnung, int durchmesser, Einheit einheit, int mikofoneinstellung) {
 		this.kennnummer = kennnummer;
 		this.bezeichnung = bezeichnung;
 		this.durchmesser = durchmesser;

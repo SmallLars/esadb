@@ -8,7 +8,9 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.Vector;
 
+import model.Config;
 import model.Disziplin;
+import model.RegelTyp;
 import model.Schuetze;
 import model.Verein;
 
@@ -35,21 +37,20 @@ public class KampfDB {
 		return set;
 	}
 
-	public static Set<Disziplin> getDisziplinen() {
+	public static Set<Disziplin> getDisziplinen(Config config) {
 		Set<Disziplin> set = new TreeSet<Disziplin>();
 
 		try {
 			Database db = getDB("data.mdb");
 			for (Row row : db.getTable("Disziplin")) {
-				Disziplin d = new Disziplin(row);
-				Table t = db.getTable("DisziplinWaffe");
-				Map<String, Integer> m = Collections.singletonMap("DisziplinID", d.getId());
-				Row r = CursorBuilder.findRow(t, m);
+				Map<String, Integer> m = Collections.singletonMap("DisziplinID", (int) row.get("DisziplinID"));
+				Row r = CursorBuilder.findRow(db.getTable("DisziplinWaffe"), m);
 				if (r != null) {
-					d.setRegel(r);
+					RegelTyp regel = config.getRegelTypByNumber((String) r.get("WaffengattungNr"));
+					Disziplin d = new Disziplin(row, regel);
 					set.add(d);
 				} else {
-				  System.out.println("Keine Waffengattung für " + d.toString() + " definiert. Disziplin wird ignoriert.");
+				  System.out.println("Keine Waffengattung für " + (String) row.get("Bezeichnung") + " definiert. Disziplin wird ignoriert.");
 				}
 			}
 			db.close();

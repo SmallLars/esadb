@@ -2,19 +2,17 @@ package model;
 
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.io.Serializable;
 
-public enum RegelTyp {
-	R_1_10("Luftgewehr",        "1.10", ScheibeTyp.GEWEHR_10M,  WaffeTyp.LUFTDRUCK),
-	R_1_35("Kleinkaliber 100m", "1.35", ScheibeTyp.GEWEHR_100M,  WaffeTyp.KLEINKALIBER),
-	R_1_40("Kleinkaliber 50m",  "1.40", ScheibeTyp.GEWEHR_50M,   WaffeTyp.KLEINKALIBER),
-	R_2_10("Luftpistole",       "2.10", ScheibeTyp.PISTOLE_LUFT, WaffeTyp.LUFTDRUCK);
+public class RegelTyp  implements Serializable {
+	private static final long serialVersionUID = 1L;
 
 	private final String bezeichnung;
 	private final String regelnummer;
-	private ScheibeTyp scheibe;
-	private WaffeTyp waffe;
+	private ScheibeModel scheibe;
+	private WaffeModel waffe;
 	
-	RegelTyp(String bezeichnung, String regelnummer, ScheibeTyp scheibe, WaffeTyp waffe) {
+	public RegelTyp(String bezeichnung, String regelnummer, ScheibeModel scheibe, WaffeModel waffe) {
 		this.bezeichnung = bezeichnung;
 		this.regelnummer = regelnummer;
 		this.scheibe = scheibe;
@@ -26,11 +24,15 @@ public enum RegelTyp {
 		return bezeichnung;
 	}
 
-	public ScheibeTyp getScheibe() {
+	public String getRegelnummer() {
+		return regelnummer;
+	}
+
+	public ScheibeModel getScheibe() {
 		return scheibe;
 	}
 
-	public WaffeTyp getWaffe() {
+	public WaffeModel getWaffe() {
 		return waffe;
 	}
 
@@ -122,16 +124,6 @@ public enum RegelTyp {
 			writer.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
-		}
-	}
-
-	public static RegelTyp getTypByGattung(String s) {
-		switch (s) {
-			case "1.10": return R_1_10;
-			case "1.35": return R_1_35;
-			case "1.40": return R_1_40;
-			case "2.10": return R_2_10;
-			default:  return R_1_40;
 		}
 	}
 }

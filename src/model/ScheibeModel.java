@@ -2,25 +2,13 @@ package model;
 
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.io.Serializable;
 import java.text.NumberFormat;
 import java.util.Locale;
 
 
-public enum ScheibeTyp {
-	//          |                       |           |       |Band-   |      Durchmesser       |Ring- |Min |  Nummer  |   |     |  Vorhalte-   |
-	//          |Bezeichnung            | Kennummer | Karton|vorschub|Spiegel|Aussen|Innenzehn|breite|Ring|Max|Wimkel|Art|Style|Radius|Abstand|
-	GEWEHR_10M(   "Gewehr 10m",           "0.4.3.01",  17000,       2,   3050,  4550,        0,   250,   1, 8,      0,  0,    2),
- 	GEWEHR_15M(   "Gewehr 15m",           "0.4.3.02",  17000,       3,   4050,  8550,        0,   450,   1, 9),
-	GEWEHR_50M(   "Gewehr 50m",           "0.4.3.03",  55000,       5,  11240, 15440,      500,   800,   1, 8),
-	GEWEHR_100M(  "Gewehr 100m",          "0.4.3.04",  55000,       5,  20000, 50000,     2500,  2500,   1, 9),
-	GEWEHR_300M(  "Gewehr 300m",          "0.4.3.05", 130000,       0,  60000, 100000,       0,  5000,   1, 9,     45,  0,    0),
-	MUSKETE(      "Muskete",              "0.4.3.06",  55000,       5,  40000, 80000,     4000,  4000,   1, 8),
-	PISTOLE_PRÄZ( "Pistole - Präzision",  "0.4.3.04",  55000,       5,  20000, 50000,     5000,  2500,   1, 9,      0,  4,    0),
-	PISTOLE_LUFT( "Pistole 10m",          "0.4.3.20",  17000,       3,   5950, 15550,      500,   800,   1, 8),
-	PISTOLE_DUEL( "Pistole - Duell",      "0.4.3.22",  55000,       5,  50000, 50000,     5000,  4000,   5, 9,      0,  4,    0),
-	LAUFEND_10M(  "Laufende Scheibe 10m", "0.4.3.40",  17000,       2,   3050,  5050,       50,   250,   1, 9,     45,  0,    1,  1550,   7000),
-	LAUFEND_50M(  "Laufende Scheibe 50m", "0.4.3.41",  70000,       0,      2, 36600,     3000,  1700,   1, 9,     45,  5,    0);
-
+public class ScheibeModel implements Serializable {
+	private static final long serialVersionUID = 1L;
 
 	private final String bezeichnung;
 	private final String kennnummer;
@@ -39,7 +27,7 @@ public enum ScheibeTyp {
 	private final int vorhalteradius;
 	private final int vorhalteabstand;
 
-	ScheibeTyp(String bezeichnung, String kennnummer, int karton, int bandvorschub,
+	public ScheibeModel(String bezeichnung, String kennnummer, int karton, int bandvorschub,
 			   int durchmesser_spiegel, int durchmesser_aussen, int durchmesser_innenzehn, int ringbreite,
 			   int min_ring, int max_number) {
 		this.bezeichnung = bezeichnung;
@@ -60,7 +48,7 @@ public enum ScheibeTyp {
 		this.vorhalteabstand = 0;
 	}
 
-	ScheibeTyp(String bezeichnung, String kennnummer, int karton, int bandvorschub,
+	public ScheibeModel(String bezeichnung, String kennnummer, int karton, int bandvorschub,
 			   int durchmesser_spiegel, int durchmesser_aussen, int durchmesser_innenzehn, int ringbreite,
 			   int min_ring, int max_number, int winkel, int art, int style) {
 		this.bezeichnung = bezeichnung;
@@ -81,7 +69,7 @@ public enum ScheibeTyp {
 		this.vorhalteabstand = 0;
 	}
 
-	ScheibeTyp(String bezeichnung, String kennnummer, int karton, int bandvorschub,
+	public ScheibeModel(String bezeichnung, String kennnummer, int karton, int bandvorschub,
 			   int durchmesser_spiegel, int durchmesser_aussen, int durchmesser_innenzehn, int ringbreite,
 			   int min_ring, int max_number, int winkel, int art, int style, int vorhalteradius, int vorhalteabstand) {
 		this.bezeichnung = bezeichnung;

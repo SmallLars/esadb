@@ -37,10 +37,10 @@ public class Model implements Serializable, Printable {
 	transient private List<Schuetze> s;
 	transient private List<Disziplin> d;
 
-	public Model() {
+	public Model(Config config) {
 		ergebnisse = new Vector<Start>();
 		schuetzen = KampfDB.getSchuetzen();
-		disziplinen = KampfDB.getDisziplinen();
+		disziplinen = KampfDB.getDisziplinen(config);
 		treffer = new Vector<Treffer>();
 		try {
 			file = Files.readAllBytes(Paths.get("data.mdb"));

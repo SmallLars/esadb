@@ -58,18 +58,18 @@ public class TrefferAdd extends JDialog implements ComponentListener, ListSelect
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		getContentPane().setLayout(null);
 
-		comboBox = new JComboBox<RegelTyp>(RegelTyp.values());
-		comboBox.setSelectedItem(RegelTyp.R_1_40);
+		comboBox = new JComboBox<RegelTyp>(controller.getConfig().getRegeln());
+		comboBox.setSelectedItem(controller.getConfig().getStandardRegel());
 		comboBox.setBounds(411, 15, 200, 25);
 		comboBox.setActionCommand("TYP");
 		comboBox.addActionListener(this);
 		getContentPane().add(comboBox);
 
-		scheibe = new Scheibe(RegelTyp.R_1_40);
+		scheibe = new Scheibe(controller.getConfig().getStandardRegel());
 		scheibe.setBounds(324, 52, 375, 375);
 		getContentPane().add(scheibe);
 
-		treffer = new TrefferCreate(scheibe, RegelTyp.R_1_40);
+		treffer = new TrefferCreate(scheibe, controller.getConfig().getStandardRegel());
 		treffer.setSize(300, 200);
 		treffer.setLocation(12, 10);
 		getContentPane().add(treffer);

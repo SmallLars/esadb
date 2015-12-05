@@ -247,7 +247,7 @@ public class GUI extends JFrame implements ActionListener {
 			linien[i] = new Linie(linie);
 			linienBox.add(linien[i]);
 
-			scheiben[i] = new Scheibe(l);
+			scheiben[i] = new Scheibe(controller.getConfig().getStandardRegel(), l);
 			scheibenBox.add(scheiben[i]);
 			linie.addLineListener(scheiben[i]);
 
