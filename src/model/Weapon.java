@@ -6,16 +6,16 @@ import java.io.Serializable;
 import java.text.NumberFormat;
 import java.util.Locale;
 
-public class WaffeModel implements Serializable {
+public class Weapon implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private final int kennnummer;
 	private final String bezeichnung;
 	private final int durchmesser;
-	private final Einheit einheit;
+	private final Unit einheit;
 	private final int mikofoneinstellung;
 	
-	public WaffeModel(int kennnummer, String bezeichnung, int durchmesser, Einheit einheit, int mikofoneinstellung) {
+	public Weapon(int kennnummer, String bezeichnung, int durchmesser, Unit einheit, int mikofoneinstellung) {
 		this.kennnummer = kennnummer;
 		this.bezeichnung = bezeichnung;
 		this.durchmesser = durchmesser;
@@ -50,10 +50,10 @@ public class WaffeModel implements Serializable {
 			                                                                           // wird dieser Wert als Wertungsradius benutzt.
 
 			writer.println("\">GeschossDurchmesser\"");                                // Geschoss-Durchmesser in Millimeter.
-			writer.println(String.format("\"%s\"", getDurchmesser(Einheit.MM)));       // Informativer Wert
+			writer.println(String.format("\"%s\"", getDurchmesser(Unit.MM)));       // Informativer Wert
 
 			writer.println("\">KaliberDurchmesser\"");                                 // Angabe des Geschoss-Durchmessers in Kaliberwerten.
-			writer.println(String.format("\"%s\"", getDurchmesser(Einheit.INCH)));     // Informativer Wert
+			writer.println(String.format("\"%s\"", getDurchmesser(Unit.INCH)));     // Informativer Wert
 
 			writer.println("\">Mikofoneinstellung\"");                                 // Einstellung der Mikrofonempfindlichkeit, die gesetzt wird,
 			writer.println(String.format("\"%d\"", mikofoneinstellung));               // wenn der Autosensor aktiviert ist (Kapitel 2, Punkt 2 c)
@@ -73,7 +73,7 @@ public class WaffeModel implements Serializable {
 		return bezeichnung;
 	}
 
-	private String getDurchmesser(Einheit einheit) {
+	private String getDurchmesser(Unit einheit) {
 		NumberFormat format = NumberFormat.getInstance(Locale.ENGLISH);
 		format.setGroupingUsed(false);
 		format.setMinimumFractionDigits(1);

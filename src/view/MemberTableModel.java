@@ -1,56 +1,54 @@
 package view;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
-import model.Treffer;
+import model.Member;
 
 
-public class TrefferTableModel implements TableModel {
-	List<Treffer> treffer;
+public class MemberTableModel implements TableModel {
+	List<Member> schuetzen;
 
-	public TrefferTableModel(List<Treffer> treffer) {
-		this.treffer = treffer;
+	public MemberTableModel(List<Member> schuetzen) {
+		this.schuetzen = schuetzen;
 	}
 
 	@Override
 	public Class<?> getColumnClass(int arg0) {
-		return Treffer.class;
+		if (arg0 == 2) return Date.class;
+		return Object.class;
 	}
 
 	@Override
 	public int getColumnCount() {
-		return 5;
+		return 3;
 	}
 
 	@Override
 	public String getColumnName(int arg0) {
-		String[] columnNames = {"Nummer", "Art", "Wert", "Lage", "Linie"};
+		String[] columnNames = {"Nachname", "Vorname", "Geburtsdatum"};
 		return columnNames[arg0];
 	}
 
 	@Override
 	public int getRowCount() {
-		return treffer.size();
+		return schuetzen.size();
 	}
 
 	@Override
 	public Object getValueAt(int row, int col) {
 		switch (col) {
 			case 0:
-				return treffer.get(row).getNummer();
+				return schuetzen.get(row).nachname;
 			case 1:
-				return treffer.get(row).isProbe();
+				return schuetzen.get(row).vorname;
 			case 2:
-				return treffer.get(row).getWert();
-			case 3:
-				return treffer.get(row).getLage();
-			case 4:
-				return treffer.get(row).getLinie();
+				return schuetzen.get(row).geburtsdatum;
 			default:
-				return treffer.get(row);
+				return schuetzen.get(row);
 		}
 	}
 

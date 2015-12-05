@@ -6,6 +6,6 @@ public interface LineReader {
 
 	public void reenable();
 
-	public boolean addTreffer(Treffer t);
+	public boolean addTreffer(Hit t);
 
 }

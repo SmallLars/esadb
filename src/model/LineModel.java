@@ -7,11 +7,11 @@ public interface LineModel {
 
 	public int getNummer();
 	
-	public void configure(Einzel e);
+	public void configure(Single e);
 	
-	public Einzel configure(Schuetze schuetze, Disziplin disziplin);
+	public Single configure(Member schuetze, Discipline disziplin);
 
-	public Einzel getResult();
+	public Single getResult();
 
 	public void setStatus(Status status);
 
@@ -32,9 +32,9 @@ public interface LineModel {
 	@Override
 	public String toString();
 
-	public ComboBoxModel<Disziplin> getDisziplinenModel();
+	public ComboBoxModel<Discipline> getDisziplinenModel();
 
-	public ComboBoxModel<Schuetze> getSchuetzenModel();
+	public ComboBoxModel<Member> getSchuetzenModel();
 	
 	public void addLineListener(LineListener l);
 	

@@ -7,7 +7,7 @@ import java.io.Serializable;
 public abstract class Start implements Serializable, Comparable<Start> {
 	private static final long serialVersionUID = 1L;
 
-	public abstract Disziplin getDisziplin();
+	public abstract Discipline getDisziplin();
 
 	public abstract int lineCount();
 

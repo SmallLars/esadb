@@ -22,10 +22,10 @@ import java.util.Vector;
 import javax.swing.BorderFactory;
 
 import controller.Controller;
-import view.Scheibe;
+import view.Target;
 
 
-public class Einzel extends Start implements Printable {
+public class Single extends Start implements Printable {
 	private static final long serialVersionUID = 1L;
 	
 	public static final int PROBE = 0;
@@ -36,16 +36,16 @@ public class Einzel extends Start implements Printable {
 
 	private int linie;
 	private Date datum;
-	private Disziplin disziplin;
-	private Schuetze schuetze;
-	private NavigableMap<Treffer, Treffer> treffer;
+	private Discipline disziplin;
+	private Member schuetze;
+	private NavigableMap<Hit, Hit> treffer;
 	
-	public Einzel(int linie, Disziplin disziplin, Schuetze schuetze) {
+	public Single(int linie, Discipline disziplin, Member schuetze) {
 		this.linie = linie;
 		this.datum = new Date();
 		this.disziplin = disziplin;
 		this.schuetze = schuetze;
-		this.treffer = Collections.synchronizedNavigableMap(new TreeMap<Treffer, Treffer>());
+		this.treffer = Collections.synchronizedNavigableMap(new TreeMap<Hit, Hit>());
 	}
 
 	public boolean isEmpty() {
@@ -57,20 +57,20 @@ public class Einzel extends Start implements Printable {
 	}
 
 	public boolean inMatch() {
-		Treffer t = getTreffer(false, 1);
+		Hit t = getTreffer(false, 1);
 		return t != null;
 	}
 
-	public Disziplin getDisziplin() {
+	public Discipline getDisziplin() {
 		return disziplin;
 	}
 
-	public Schuetze getSchuetze() {
+	public Member getSchuetze() {
 		return schuetze;
 	}
 
 	// Rückgabe > 0 falls Treffernummer korrigiert wurde. Dann ist Rückgabe alte Treffernummer. Update der Linie erforderlich.
-	public int addTreffer(Treffer t) {
+	public int addTreffer(Hit t) {
 		int next = getNextNum(t.isProbe());
 		if (t.getNummer() == next) {
 			treffer.put(t,  t);
@@ -83,16 +83,16 @@ public class Einzel extends Start implements Printable {
 		return old;
 	}
 
-	public List<Treffer> getTreffer() {
-		return new Vector<Treffer>(treffer.values());
+	public List<Hit> getTreffer() {
+		return new Vector<Hit>(treffer.values());
 	}
 
-	public void insertTreffer(Treffer t) {
+	public void insertTreffer(Hit t) {
 		int next = getNextNum(t.isProbe());
 		if (t.getNummer() > next) t.setNummer(next);
 		
 		for (int i = next - 1; i >= t.getNummer(); i--) {
-			Treffer tr = treffer.remove(new Treffer(t.isProbe(), i));
+			Hit tr = treffer.remove(new Hit(t.isProbe(), i));
 			tr.setNummer(i + 1);
 			treffer.put(tr,  tr);
 		}
@@ -100,10 +100,10 @@ public class Einzel extends Start implements Printable {
 		treffer.put(t,  t);
 	}
 
-	public void removeTreffer(Treffer t) {
+	public void removeTreffer(Hit t) {
 		if (treffer.remove(t) != null) {
 			for (int i = t.getNummer(); true; i++) {
-				Treffer tr = treffer.get(new Treffer(t.isProbe(), i + 1));
+				Hit tr = treffer.get(new Hit(t.isProbe(), i + 1));
 				if (tr == null) return;
 				treffer.remove(tr);
 				tr.setNummer(i);
@@ -112,8 +112,8 @@ public class Einzel extends Start implements Printable {
 		}
 	}
 
-	public Treffer getTreffer(boolean probe, int nummer) {
-		return treffer.get(new Treffer(probe, nummer));
+	public Hit getTreffer(boolean probe, int nummer) {
+		return treffer.get(new Hit(probe, nummer));
 	}
 
 	public int lineCount() {
@@ -176,9 +176,9 @@ public class Einzel extends Start implements Printable {
 		c = disziplin.compareTo(s.getDisziplin());
 		if (c != 0) return c;
 		
-		if (s instanceof Mannschaft) return 1;
+		if (s instanceof Team) return 1;
 
-		Einzel e = (Einzel) s;
+		Single e = (Single) s;
 
 		// 1. Endergebnis vergleichen
 		c = (int) (e.getResult(false) * 10) - (int) (getResult(false) * 10);
@@ -228,7 +228,7 @@ public class Einzel extends Start implements Printable {
 		// Scheibe(n)
 		int scheibenSize = print == BOTH ? 995 : 2000;
 		Graphics gs = g2.create(0, 0, 2000, scheibenSize);
-		Scheibe s = new Scheibe(this);
+		Target s = new Target(this);
 		s.setBackground(Color.WHITE);
 		s.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5, true));
 		s.setSize(scheibenSize, scheibenSize);
@@ -330,7 +330,7 @@ public class Einzel extends Start implements Printable {
 	}
 
 	private float getValue(boolean probe, int nummer) {
-		Treffer t = getTreffer(probe, nummer + 1);
+		Hit t = getTreffer(probe, nummer + 1);
 		if (t == null) return -1;
 
 		float wert = t.getWert();
@@ -363,7 +363,7 @@ public class Einzel extends Start implements Printable {
 		int[] count = new int[13];
 
 		for (int i = 1; probe || i <= disziplin.getSchusszahl(); i++) {
-			Treffer t = getTreffer(probe, i);
+			Hit t = getTreffer(probe, i);
 			if (t == null) break;
 			
 			count[12]++;
@@ -374,7 +374,7 @@ public class Einzel extends Start implements Printable {
 	}
 
 	private int getNextNum(boolean probe) {
-		Treffer t;
+		Hit t;
 
 		try {
 			t = treffer.lastKey();
@@ -388,7 +388,7 @@ public class Einzel extends Start implements Printable {
 			return 1;
 		}
 
-		t = treffer.lowerKey(new Treffer(false, 1));
+		t = treffer.lowerKey(new Hit(false, 1));
 		if (t == null) {
 			return 1;
 		}

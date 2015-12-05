@@ -15,7 +15,7 @@ import java.nio.file.WatchService;
 import java.util.Vector;
 
 import model.LineReader;
-import model.Treffer;
+import model.Hit;
 import static java.nio.file.StandardWatchEventKinds.*;
 
 
@@ -84,7 +84,7 @@ public class FileChecker extends Thread {
 								File datei = new File(dateiname);
 								if (dateiname.endsWith(".ctl")) {
 									BufferedReader reader = new BufferedReader(new FileReader(dateiname));
-									lr.addTreffer(new Treffer(reader.readLine()));
+									lr.addTreffer(new Hit(reader.readLine()));
 									reader.close();
 								}
 								datei.delete();

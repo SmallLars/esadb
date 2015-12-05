@@ -2,17 +2,17 @@ package model.comboBoxModel;
 
 import java.util.List;
 
-import model.Disziplin;
+import model.Discipline;
 import controller.Controller;
 
-public class DisziplinenModel extends MyComboBoxModel<Disziplin> {
+public class DisziplinenModel extends MyComboBoxModel<Discipline> {
 
 	public DisziplinenModel(Controller controller) {
 		super(controller);
 	}
 
 	@Override
-	public List<Disziplin> getList(Controller controller) {
+	public List<Discipline> getList(Controller controller) {
 		return controller.getDisziplinen();
 	}
 }

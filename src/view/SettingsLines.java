@@ -15,15 +15,15 @@ import javax.swing.SpinnerModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import model.Config;
+import model.SettingsModel;
 
 @SuppressWarnings("serial")
-public class EinstellungenLinien extends JPanel {
+public class SettingsLines extends JPanel {
 
 	/**
 	 * Create the panel.
 	 */
-	public EinstellungenLinien(Config config) {
+	public SettingsLines(SettingsModel config) {
 		this.setSize(234, 150);
 		this.setLayout(null);
 		

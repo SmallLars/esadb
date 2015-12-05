@@ -1,6 +1,6 @@
 package model;
 
-public enum Einheit {
+public enum Unit {
 	MM,
 	INCH;
 }

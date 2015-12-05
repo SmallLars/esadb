@@ -28,17 +28,17 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import model.RegelTyp;
-import model.Treffer;
+import model.Rule;
+import model.Hit;
 
 
 @SuppressWarnings("serial")
-public class TrefferCreate extends JPanel implements MouseWheelListener, KeyListener, DocumentListener, ItemListener, FocusListener {
+public class HitCreate extends JPanel implements MouseWheelListener, KeyListener, DocumentListener, ItemListener, FocusListener {
 	
 	private boolean doUpdate;
 	private NumberFormat format;
-	private Scheibe scheibe;
-	private RegelTyp typ;
+	private Target scheibe;
+	private Rule typ;
 
 	private JFormattedTextField component_V;
 	private JComboBox<String>   component_L;
@@ -48,7 +48,7 @@ public class TrefferCreate extends JPanel implements MouseWheelListener, KeyList
 	private JFormattedTextField component_W;
 	private JFormattedTextField component_Z;
 
-	public TrefferCreate(Scheibe scheibe, RegelTyp typ) {
+	public HitCreate(Target scheibe, Rule typ) {
 		setBorder(new TitledBorder(new LineBorder(new Color(122, 138, 153)), "Trefferdetails", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(51, 51, 51)));
 		this.doUpdate = true;
 		this.format = NumberFormat.getInstance(Locale.GERMAN);
@@ -189,10 +189,10 @@ public class TrefferCreate extends JPanel implements MouseWheelListener, KeyList
 		lblZeit.setBounds(84, 21, 186, 16);
 		panel_2.add(lblZeit);
 
-		scheibe.setTreffer(getTreffer());
+		scheibe.setHit(getTreffer());
 	}
 
-	public void setTyp(RegelTyp typ) {
+	public void setTyp(Rule typ) {
 		this.typ = typ;
 		doUpdate = false;
 		updateVwithR();
@@ -200,7 +200,7 @@ public class TrefferCreate extends JPanel implements MouseWheelListener, KeyList
 		doUpdate = true;
 	}
 
-	public void setValues(Treffer t) {
+	public void setValues(Hit t) {
 		doUpdate = false;
 		component_V.setText(String.format("%.1f", t.getWert()));
 		component_L.setSelectedItem(t.getLage());
@@ -210,10 +210,10 @@ public class TrefferCreate extends JPanel implements MouseWheelListener, KeyList
 		component_W.setText(String.format("%.3f", t.getPhi()));
 		component_Z.setText(String.format("%d", t.getZeit()));
 		doUpdate = true;
-		scheibe.setTreffer(getTreffer());
+		scheibe.setHit(getTreffer());
 	}
 
-	public Treffer getTreffer() {
+	public Hit getTreffer() {
 		try {
 			float wert = format.parse(component_V.getText()).floatValue();
 			String lage = (String) component_L.getSelectedItem();
@@ -222,7 +222,7 @@ public class TrefferCreate extends JPanel implements MouseWheelListener, KeyList
 			double r = format.parse(component_R.getText()).doubleValue() * 100;
 			double phi = format.parse(component_W.getText()).doubleValue();
 			int zeit = format.parse(component_Z.getText()).intValue();
-			return new Treffer(wert, lage, x, y, r, phi, zeit);
+			return new Hit(wert, lage, x, y, r, phi, zeit);
 		} catch (ParseException e) {
 			return null;
 		}	
@@ -273,7 +273,7 @@ public class TrefferCreate extends JPanel implements MouseWheelListener, KeyList
 			updateXandYwithRandW();
 			updateVwithR();
 			doUpdate = true;
-			scheibe.setTreffer(getTreffer());
+			scheibe.setHit(getTreffer());
 		}
 	}
 	
@@ -390,7 +390,7 @@ public class TrefferCreate extends JPanel implements MouseWheelListener, KeyList
 				updateLwithRandW();
 			}
 			doUpdate = true;
-			scheibe.setTreffer(getTreffer());
+			scheibe.setHit(getTreffer());
 		}
 	}
 

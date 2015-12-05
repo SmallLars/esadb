@@ -2,17 +2,17 @@ package model.comboBoxModel;
 
 import java.util.List;
 
-import model.Schuetze;
+import model.Member;
 import controller.Controller;
 
-public class SchuetzenModel extends MyComboBoxModel<Schuetze> {
+public class SchuetzenModel extends MyComboBoxModel<Member> {
 
 	public SchuetzenModel(Controller controller) {
 		super(controller);
 	}
 
 	@Override
-	public List<Schuetze> getList(Controller controller) {
+	public List<Member> getList(Controller controller) {
 		return controller.getSchuetzen();
 	}
 }

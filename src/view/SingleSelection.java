@@ -16,8 +16,8 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JComboBox;
 
-import model.Disziplin;
-import model.Einzel;
+import model.Discipline;
+import model.Single;
 import model.Start;
 import controller.Controller;
 
@@ -25,26 +25,26 @@ import javax.swing.JCheckBox;
 
 
 @SuppressWarnings("serial")
-public class EinzelAuswahl extends JDialog implements ActionListener {
+public class SingleSelection extends JDialog implements ActionListener {
 
 	private final JPanel contentPanel = new JPanel();
-	private List<Einzel> ergebnisse;
+	private List<Single> ergebnisse;
 	private boolean okKlick;
 	
-	private DefaultComboBoxModel<Disziplin> modelD;
-	private JComboBox<Disziplin> disziplin;
-	private DefaultComboBoxModel<Einzel> modelS;
-	private JComboBox<Einzel> start;
+	private DefaultComboBoxModel<Discipline> modelD;
+	private JComboBox<Discipline> disziplin;
+	private DefaultComboBoxModel<Single> modelS;
+	private JComboBox<Single> start;
 	private JCheckBox chckbxProbe;
 	private JCheckBox chckbxMatch;
 
-	public EinzelAuswahl(Frame parent, Controller controller) {
+	public SingleSelection(Frame parent, Controller controller) {
 		super(parent, "Ergebnisauswahl");
 		setResizable(false);
 
-		ergebnisse = new Vector<Einzel>();
+		ergebnisse = new Vector<Single>();
 		for (Start s : controller.getModel().getErgebnisse()) {
-			if (s instanceof Einzel) ergebnisse.add((Einzel) s);
+			if (s instanceof Single) ergebnisse.add((Single) s);
 		}
 
 		setModal(true);
@@ -57,8 +57,8 @@ public class EinzelAuswahl extends JDialog implements ActionListener {
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
 
-		modelD = new DefaultComboBoxModel<Disziplin>();
-		disziplin = new JComboBox<Disziplin>(modelD);
+		modelD = new DefaultComboBoxModel<Discipline>();
+		disziplin = new JComboBox<Discipline>(modelD);
 		disziplin.setBounds(10, 11, 422, 22);
 		disziplin.addActionListener(new ActionListener() {
 			@Override
@@ -68,18 +68,18 @@ public class EinzelAuswahl extends JDialog implements ActionListener {
 		});
 		contentPanel.add(disziplin);
 
-		modelS = new DefaultComboBoxModel<Einzel>();
-		start = new JComboBox<Einzel>(modelS);
+		modelS = new DefaultComboBoxModel<Single>();
+		start = new JComboBox<Single>(modelS);
 		start.setBounds(10, 59, 422, 22);
 		contentPanel.add(start);
 
 		chckbxProbe = new JCheckBox("Probe");
-		chckbxProbe.setSelected(Einzel.print == Einzel.PROBE || Einzel.print == Einzel.BOTH);
+		chckbxProbe.setSelected(Single.print == Single.PROBE || Single.print == Single.BOTH);
 		chckbxProbe.setBounds(10, 106, 97, 23);
 		contentPanel.add(chckbxProbe);
 		
 		chckbxMatch = new JCheckBox("Match");
-		chckbxMatch.setSelected(Einzel.print == Einzel.MATCH || Einzel.print == Einzel.BOTH);
+		chckbxMatch.setSelected(Single.print == Single.MATCH || Single.print == Single.BOTH);
 		chckbxMatch.setBounds(10, 132, 97, 23);
 		contentPanel.add(chckbxMatch);
 
@@ -99,10 +99,10 @@ public class EinzelAuswahl extends JDialog implements ActionListener {
 		buttonPane.add(cancelButton);
 	}
 
-	public Einzel showDialog() {
+	public Single showDialog() {
 		okKlick = false;
 		disziplin.removeAllItems();
-		for (Einzel e : ergebnisse) {
+		for (Single e : ergebnisse) {
 			if (modelD.getIndexOf(e.getDisziplin()) == -1) {
 				disziplin.addItem(e.getDisziplin());
 			}
@@ -110,17 +110,17 @@ public class EinzelAuswahl extends JDialog implements ActionListener {
 		setSchutzeItems();
 		setVisible(true);
 		if (okKlick) {
-			return (Einzel) start.getSelectedItem();
+			return (Single) start.getSelectedItem();
 		}
 		return null;
 	}
 
 	private void setSchutzeItems() {
 		start.removeAllItems();
-		for (Einzel e : ergebnisse) {
+		for (Single e : ergebnisse) {
 			if (e.getDisziplin() == disziplin.getSelectedItem()) {
 				if (modelS.getIndexOf(e) == -1) {
-					start.addItem((Einzel) e);
+					start.addItem((Single) e);
 				}
 			}
 		}
@@ -137,10 +137,10 @@ public class EinzelAuswahl extends JDialog implements ActionListener {
 				return;
 			}
 			if (chckbxProbe.isSelected() && chckbxMatch.isSelected()) {
-				Einzel.print = Einzel.BOTH;
+				Single.print = Single.BOTH;
 			} else {
-				if (chckbxProbe.isSelected()) Einzel.print = Einzel.PROBE;
-				else Einzel.print = Einzel.MATCH;
+				if (chckbxProbe.isSelected()) Single.print = Single.PROBE;
+				else Single.print = Single.MATCH;
 			}
 			okKlick = true;
 		}

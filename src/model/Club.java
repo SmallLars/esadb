@@ -3,12 +3,12 @@ package model;
 import com.healthmarketscience.jackcess.Row;
 
 
-public class Verein implements Comparable<Verein> {
+public class Club implements Comparable<Club> {
 
 	private int id;
 	private String name;
 
-	public Verein(Row row) {
+	public Club(Row row) {
 		id = (int) row.get("VereinsNr");
 		name = (String) row.get("Vereinsname");
 	}
@@ -23,7 +23,7 @@ public class Verein implements Comparable<Verein> {
 	}
 
 	@Override
-	public int compareTo(Verein d) {
+	public int compareTo(Club d) {
 		if (d == null) return 1;
 		return id - d.id;
 	}

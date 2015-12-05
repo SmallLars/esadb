@@ -6,7 +6,7 @@ import java.util.Locale;
 import java.util.regex.Pattern;
 
 
-public class Treffer implements Serializable, Comparable<Treffer> {
+public class Hit implements Serializable, Comparable<Hit> {
 	private static final long serialVersionUID = 1L;
 
 	private int linie;
@@ -43,7 +43,7 @@ public class Treffer implements Serializable, Comparable<Treffer> {
 		N = Phi_pos
 		O = Relative Zeit in Sekunden
 	 */
-	public Treffer(String raw) {
+	public Hit(String raw) {
 		String sa[] = raw.replace('"', '$').substring(1).split(Pattern.quote("$"));
 		linie = Integer.parseInt(sa[5].trim());
    		nummer = Integer.parseInt(sa[6].trim());
@@ -57,7 +57,7 @@ public class Treffer implements Serializable, Comparable<Treffer> {
    		zeit = Integer.parseInt(sa[14].trim());
 	}
 
-	public Treffer(boolean probe, int nummer) {
+	public Hit(boolean probe, int nummer) {
 		linie = 0;
    		this.nummer = nummer;
    		this.probe = probe;
@@ -70,7 +70,7 @@ public class Treffer implements Serializable, Comparable<Treffer> {
    		zeit = 0;
 	}
 
-	public Treffer(float wert, String lage, double x, double y, double r, double phi, int zeit) {
+	public Hit(float wert, String lage, double x, double y, double r, double phi, int zeit) {
 		this.linie = 0;
    		this.nummer = 1;
    		this.probe = true;
@@ -157,7 +157,7 @@ public class Treffer implements Serializable, Comparable<Treffer> {
 	}
 
 	@Override
-	public int compareTo(Treffer t) {
+	public int compareTo(Hit t) {
 		if (probe != t.probe) {
 			return (probe ? -1 : 1);
 		}

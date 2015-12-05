@@ -18,26 +18,26 @@ import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
 
 import model.DefaultLineModel;
-import model.Disziplin;
-import model.Einzel;
+import model.Discipline;
+import model.Single;
 import model.LineListener;
 import model.LineModel;
-import model.Schuetze;
+import model.Member;
 import model.Status;
 
 
 @SuppressWarnings("serial")
-public class Linie extends JPanel implements LineListener {
+public class Line extends JPanel implements LineListener {
 	private LineModel linie;
 
-	private JComboBox<Schuetze> schuetze;
-	private JComboBox<Disziplin> disziplin;
+	private JComboBox<Member> schuetze;
+	private JComboBox<Discipline> disziplin;
 	private JCheckBox sperre;
 	private JCheckBox start;
 	private JCheckBox wertung;
 	private JButton frei;
 
-	public Linie(LineModel linie) {
+	public Line(LineModel linie) {
 		this.linie = linie;
 		linie.addLineListener(this);
 
@@ -61,8 +61,8 @@ public class Linie extends JPanel implements LineListener {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				if (sperre.isSelected()) {
-					Schuetze s = (Schuetze) schuetze.getSelectedItem();
-					Disziplin d = (Disziplin) disziplin.getSelectedItem();
+					Member s = (Member) schuetze.getSelectedItem();
+					Discipline d = (Discipline) disziplin.getSelectedItem();
 					if (s == null || d == null) {
 						sperre.setSelected(false);
 						JOptionPane.showMessageDialog(	null,
@@ -70,7 +70,7 @@ public class Linie extends JPanel implements LineListener {
 								"Fehler",
 								JOptionPane.WARNING_MESSAGE);
 					} else {
-						Einzel e = linie.configure(s, d);
+						Single e = linie.configure(s, d);
 						if (e != null) {
 							int answer = JOptionPane.showConfirmDialog(	null,
 									"Der Schütze ist in dieser Disziplin bereits einmal gestartet ohne den Wettkampf abzuschließen. Soll der Wettkampf fortgesetzt werden?",
@@ -117,11 +117,11 @@ public class Linie extends JPanel implements LineListener {
 		});
 		this.add(wertung);
 
-		schuetze = new JComboBox<Schuetze>(linie.getSchuetzenModel());
+		schuetze = new JComboBox<Member>(linie.getSchuetzenModel());
 		schuetze.setBounds(193, 10, 200, 22);
 		this.add(schuetze);
 		
-		disziplin = new JComboBox<Disziplin>(linie.getDisziplinenModel());
+		disziplin = new JComboBox<Discipline>(linie.getDisziplinenModel());
 		disziplin.setBounds(416, 10, 200, 22);
 		this.add(disziplin);
 

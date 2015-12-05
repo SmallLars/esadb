@@ -6,88 +6,82 @@ import java.io.Serializable;
 import java.text.NumberFormat;
 import java.util.Locale;
 
+import org.apache.commons.lang.Validate;
 
-public class ScheibeModel implements Serializable {
+
+public class TargetModel implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	private final String bezeichnung;
-	private final String kennnummer;
-	private final int karton;
-	private final int bandvorschub;
-	private final int radius_spiegel;
-	private final int radius_aussen;
-	private final int radius_innenzehn;
-	private final int ringbreite;
-	private final int min_ring;
-	private final int max_number;
+	public static enum VALUE_TYPE {
+		SIZE,
+		FEED,
+		DIA_BLACK,
+		DIA_OUTSIDE,
+		DIA_INNER_TEN,
+		RING_WIDTH,
+		RING_MIN,
+		RING_MAX,
+		NUM_MAX,
+		NUM_ANGLE,
+		TYPE,
+		STYLE_TEN,
+		SUSP_RADIUS,
+		SUSP_DISTANCE
+	}
+
+	private String bezeichnung;
+	private String kennnummer;
+	private int karton;
+	private int bandvorschub;
+	private int radius_spiegel;
+	private int radius_aussen;
+	private int radius_innenzehn;
+	private int ringbreite;
+	private int min_ring;
+	private int max_ring;
+	private int max_number;
 	
-	private final int winkel;
-	private final int art;
-	private final int style;           // 0 => Zehn und Innenzehn: Ringe       1=> Innezehn ausgefüllt    2=>     Zehn ausgefüllt, Innenzehn irrelevant 
-	private final int vorhalteradius;
-	private final int vorhalteabstand;
+	private int winkel;
+	private int art;
+	private int style;           // 0 => Zehn und Innenzehn: Ringe       1=> Innezehn ausgefüllt    2=>     Zehn ausgefüllt, Innenzehn irrelevant 
+	private int vorhalteradius;
+	private int vorhalteabstand;
 
-	public ScheibeModel(String bezeichnung, String kennnummer, int karton, int bandvorschub,
-			   int durchmesser_spiegel, int durchmesser_aussen, int durchmesser_innenzehn, int ringbreite,
-			   int min_ring, int max_number) {
-		this.bezeichnung = bezeichnung;
-		this.kennnummer = kennnummer;
-		this.karton = karton;
-		this.bandvorschub = bandvorschub;
-		this.radius_spiegel = durchmesser_spiegel / 2;
-		this.radius_aussen = durchmesser_aussen / 2;
-		this.radius_innenzehn = durchmesser_innenzehn / 2;
-		this.ringbreite = ringbreite;
-		this.min_ring = min_ring;
-		this.max_number = max_number;
+	public TargetModel(String bezeichnung, String kennnummer, int... values) {
+		Validate.isTrue(values.length >= 9, "need 9 or more values in array");
 		
-		this.winkel = 0;
-		this.art = 0;
-		this.style = 0;
-		this.vorhalteradius = 0;
-		this.vorhalteabstand = 0;
-	}
-
-	public ScheibeModel(String bezeichnung, String kennnummer, int karton, int bandvorschub,
-			   int durchmesser_spiegel, int durchmesser_aussen, int durchmesser_innenzehn, int ringbreite,
-			   int min_ring, int max_number, int winkel, int art, int style) {
 		this.bezeichnung = bezeichnung;
 		this.kennnummer = kennnummer;
-		this.karton = karton;
-		this.bandvorschub = bandvorschub;
-		this.radius_spiegel = durchmesser_spiegel / 2;
-		this.radius_aussen = durchmesser_aussen / 2;
-		this.radius_innenzehn = durchmesser_innenzehn / 2;
-		this.ringbreite = ringbreite;
-		this.min_ring = min_ring;
-		this.max_number = max_number;
-
-		this.winkel = winkel;
-		this.art = art;
-		this.style = style;
-		this.vorhalteradius = 0;
-		this.vorhalteabstand = 0;
+		for (int i = 0; i < 14; i++) {
+			setValue(VALUE_TYPE.values()[i], i < values.length ? values[i] : 0);
+		}
 	}
 
-	public ScheibeModel(String bezeichnung, String kennnummer, int karton, int bandvorschub,
-			   int durchmesser_spiegel, int durchmesser_aussen, int durchmesser_innenzehn, int ringbreite,
-			   int min_ring, int max_number, int winkel, int art, int style, int vorhalteradius, int vorhalteabstand) {
-		this.bezeichnung = bezeichnung;
-		this.kennnummer = kennnummer;
-		this.karton = karton;
-		this.bandvorschub = bandvorschub;
-		this.radius_spiegel = durchmesser_spiegel / 2;
-		this.radius_aussen = durchmesser_aussen / 2;
-		this.radius_innenzehn = durchmesser_innenzehn / 2;
-		this.ringbreite = ringbreite;
-		this.min_ring = min_ring;
-		this.max_number = max_number;
+	public void setName(String name) {
+		this.bezeichnung = name;
+	}
 
-		this.winkel = winkel;
-		this.art = art;
-		this.style = style;
-		this.vorhalteradius = vorhalteradius;
-		this.vorhalteabstand = vorhalteabstand;
+	public void setNumber(String number) {
+		this.kennnummer = number;
+	}
+
+	public void setValue(VALUE_TYPE type, int value) {
+		switch (type) {
+			case SIZE:                    karton = value;     break;
+			case FEED:              bandvorschub = value;     break;
+			case DIA_BLACK:       radius_spiegel = value / 2; break;
+			case DIA_OUTSIDE:      radius_aussen = value / 2; break;
+			case DIA_INNER_TEN: radius_innenzehn = value / 2; break;
+			case RING_WIDTH:          ringbreite = value;     break;
+			case RING_MIN:              min_ring = value;     break;
+			case RING_MAX:              max_ring = value;     break;
+			case NUM_MAX:             max_number = value;     break;
+			case NUM_ANGLE:               winkel = value;     break;
+			case TYPE:                       art = value;     break;
+			case STYLE_TEN:                style = value;     break;
+			case SUSP_RADIUS:     vorhalteradius = value;     break;
+			case SUSP_DISTANCE:  vorhalteabstand = value;     break;
+		}
 	}
 
 	public int getRingRadius(int i) {
@@ -117,7 +111,7 @@ public class ScheibeModel implements Serializable {
 	}
 
 	public boolean drawRing(int i) {
-		return i >= min_ring;
+		return i >= min_ring && i <= max_ring;
 	}
 	
 	public boolean drawNumber(int i) {
@@ -149,12 +143,12 @@ public class ScheibeModel implements Serializable {
 
 			writer.println("\">ScheibenArt\"");                                // Systeminterne Scheibenbezeichnung
 			writer.println(String.format("\"%d\"", art));
-			                                                                   //  1 => Trefferzonenscheibe mit Klappscheibensteuerung
-			                                                                   //  2 => Trefferzonenscheibe / Jagdscheibe
+			                                                                   // 1 => Trefferzonenscheibe mit Klappscheibensteuerung
+			                                                                   // 2 => Trefferzonenscheibe / Jagdscheibe
 			                                                                   // 3 => Ringscheibe mit weißem Zehner und schwarzer Schrift
 			                                                                   // 4 => Ringscheibe mit PA25PC - Modul
 			                                                                   // 5 => Inverse Ringscheibe
-			                                                                   //  6 => Trefferzonenscheibe mit Doppelsau
+			                                                                   // 6 => Trefferzonenscheibe mit Doppelsau
 
 			writer.println("\">KennNummer\"");                                 // Kennnr. der Scheibe nach DSB/DJV nur Informativ
 			writer.println(String.format("\"DSB %s\"", kennnummer));
@@ -193,7 +187,7 @@ public class ScheibeModel implements Serializable {
 			writer.println(String.format("\"%d\"", max_number));
 
 			writer.println("\">RingAnzahl\"");                                 // Anzahl der abgebildeten Ringe
-			writer.println("\"10\"");
+			writer.println(String.format("\"%d\"", max_ring));
 
 			writer.println("\">RingNummerWinkel\"");                           // Anordnungswinkel der Beschriftungszahlen
 			writer.println(String.format("\"%d\"", winkel));

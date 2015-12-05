@@ -4,15 +4,19 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.Serializable;
 
-public class RegelTyp  implements Serializable {
+import org.apache.commons.lang.Validate;
+
+public class Rule  implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private final String bezeichnung;
 	private final String regelnummer;
-	private ScheibeModel scheibe;
-	private WaffeModel waffe;
+	private TargetModel scheibe;
+	private Weapon waffe;
 	
-	public RegelTyp(String bezeichnung, String regelnummer, ScheibeModel scheibe, WaffeModel waffe) {
+	public Rule(String bezeichnung, String regelnummer, TargetModel scheibe, Weapon waffe) {
+		Validate.notNull(scheibe, "scheibe can't be null");
+		Validate.notNull(waffe, "waffe can't be null");
 		this.bezeichnung = bezeichnung;
 		this.regelnummer = regelnummer;
 		this.scheibe = scheibe;
@@ -28,11 +32,11 @@ public class RegelTyp  implements Serializable {
 		return regelnummer;
 	}
 
-	public ScheibeModel getScheibe() {
+	public TargetModel getScheibe() {
 		return scheibe;
 	}
 
-	public WaffeModel getWaffe() {
+	public Weapon getWaffe() {
 		return waffe;
 	}
 

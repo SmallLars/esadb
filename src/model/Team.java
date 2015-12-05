@@ -2,7 +2,7 @@ package model;
 
 import java.awt.Graphics;
 
-public class Mannschaft extends Start {
+public class Team extends Start {
 	private static final long serialVersionUID = 1L;
 
 	@Override
@@ -12,7 +12,7 @@ public class Mannschaft extends Start {
 	}
 
 	@Override
-	public Disziplin getDisziplin() {
+	public Discipline getDisziplin() {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -17,14 +17,14 @@ import javax.swing.JOptionPane;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 
-import model.Config;
-import model.Disziplin;
-import model.Einzel;
+import model.SettingsModel;
+import model.Discipline;
+import model.Single;
 import model.LineReader;
 import model.Model;
 import model.ModelChangeListener;
-import model.Schuetze;
-import model.Treffer;
+import model.Member;
+import model.Hit;
 
 import org.apache.commons.io.FileUtils;
 
@@ -34,7 +34,7 @@ import view.GUI;
 public class Controller {
 	private OutputStream errorLog = null;
 
-	private Config config;
+	private SettingsModel config;
 	private List<ModelChangeListener> modelChangeListener;
 	
 	static private File file;
@@ -72,7 +72,7 @@ public class Controller {
 
 		// --------------------------------------------------------------------
 
-		config = Config.load();
+		config = SettingsModel.load();
 		modelChangeListener = new Vector<ModelChangeListener>();
 		
 		final String[] files = {"esadb.ico", "data.mdb", "Stammdaten.mdb"};
@@ -100,7 +100,7 @@ public class Controller {
 		gui = new GUI(this, config.getLinienCount());
 	}
 
-	public Config getConfig() {
+	public SettingsModel getConfig() {
 		return config;
 	}
 
@@ -138,8 +138,8 @@ public class Controller {
 		fileChecker.exit();
 	}
 
-	public Einzel findIncomplete(Schuetze schuetze, Disziplin disziplin) {
-		for (Einzel e : model.getIncomplete()) {
+	public Single findIncomplete(Member schuetze, Discipline disziplin) {
+		for (Single e : model.getIncomplete()) {
 			if (e.getSchuetze().compareTo(schuetze) == 0) {
 				if (e.getDisziplin().compareTo(disziplin) == 0) {
 					return e;
@@ -153,15 +153,15 @@ public class Controller {
 		return model.contains(item);
 	}
 
-	public List<Schuetze> getSchuetzen() {
+	public List<Member> getSchuetzen() {
 		return model.getSchuetzen();
 	}
 
-	public List<Disziplin> getDisziplinen() {
+	public List<Discipline> getDisziplinen() {
 		return  model.getDisziplinen();
 	}
 
-	public List<Treffer> getTreffer() {
+	public List<Hit> getTreffer() {
 		return  model.getTreffer();
 	}
 

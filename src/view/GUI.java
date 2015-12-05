@@ -28,7 +28,7 @@ import javax.swing.JMenu;
 
 import model.DefaultLineModel;
 import model.LineModel;
-import model.Einzel;
+import model.Single;
 import model.Status;
 import controller.Controller;
 import druckvorschau.Druckvorschau;
@@ -66,8 +66,8 @@ public class GUI extends JFrame implements ActionListener {
 
 	private JPanel contentPane;
 	private JTextPane konsole;
-	private Scheibe scheiben[];
-	private Linie linien[];
+	private Target scheiben[];
+	private Line linien[];
 	private JFileChooser fc;
 
 	public GUI(Controller controller, int linienCount) {
@@ -80,8 +80,8 @@ public class GUI extends JFrame implements ActionListener {
 		setMinimumSize(new Dimension(1022, 580));
 
 		this.controller = controller;
-		scheiben = new Scheibe[linienCount];
-		linien = new Linie[linienCount];
+		scheiben = new Target[linienCount];
+		linien = new Line[linienCount];
 
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setBounds(controller.getConfig().getMainWindowBounds());
@@ -244,10 +244,10 @@ public class GUI extends JFrame implements ActionListener {
 			linie.setStatus(Status.INIT);
 			controller.add(linie);
 
-			linien[i] = new Linie(linie);
+			linien[i] = new Line(linie);
 			linienBox.add(linien[i]);
 
-			scheiben[i] = new Scheibe(controller.getConfig().getStandardRegel(), l);
+			scheiben[i] = new Target(controller.getConfig().getStandardRegel(), l);
 			scheibenBox.add(scheiben[i]);
 			linie.addLineListener(scheiben[i]);
 
@@ -305,7 +305,7 @@ public class GUI extends JFrame implements ActionListener {
 		Druckvorschau dv;
 		switch (e.getActionCommand()) {
 			case "NEW":
-				for (Linie l : linien) if (!l.isFrei() || (l.isBusy() && !l.isError())) {
+				for (Line l : linien) if (!l.isFrei() || (l.isBusy() && !l.isError())) {
 					JOptionPane.showMessageDialog(	this,
 													"Ein neuer Wettkampf kann erst angelegt werden, wenn alle Linien frei sind.",
 													"Fehler",
@@ -322,7 +322,7 @@ public class GUI extends JFrame implements ActionListener {
 				}
 				break;
 			case "OPEN":
-				for (Linie l : linien) if (!l.isFrei() || (l.isBusy() && !l.isError())) {
+				for (Line l : linien) if (!l.isFrei() || (l.isBusy() && !l.isError())) {
 					JOptionPane.showMessageDialog(	this,
 													"Ein Wettkampf kann erst geladen werden, wenn alle Linien frei sind.",
 													"Fehler",
@@ -373,33 +373,33 @@ public class GUI extends JFrame implements ActionListener {
 				controller.getConfig().setPageFormat(dv.showDialog());
 				break;
 			case "SINGLEPREVIEW":
-				EinzelAuswahl einzel = new EinzelAuswahl(this, controller);
-				Einzel ez = einzel.showDialog();
+				SingleSelection einzel = new SingleSelection(this, controller);
+				Single ez = einzel.showDialog();
 				if (ez == null) return;
 				dv = new Druckvorschau(this, ez, controller.getConfig().getPageFormat());
 				controller.getConfig().setPageFormat(dv.showDialog());
 				break;
 			case "SINGLEEDIT":
-				EinzelEdit ee = new EinzelEdit(this, controller);
+				SingleEdit ee = new SingleEdit(this, controller);
 				ee.setVisible(true);
 				break;
 			case "TREFFERADD":
-				TrefferAdd ta = new TrefferAdd(this, controller);
+				HitAdd ta = new HitAdd(this, controller);
 				ta.setVisible(true);
 				break;
 			case "PREFERENCES":
-				Einstellungen einstellungen = new Einstellungen(this, controller.getConfig());
+				Settings einstellungen = new Settings(this, controller.getConfig());
 				einstellungen.setVisible(true);
 				break;
 			case "CLOSE":
 				close();
 				break;
 			case "DISZIPLINEN":
-				Disziplinen disziplin = new Disziplinen(this, controller.getDisziplinen());
+				Disciplines disziplin = new Disciplines(this, controller.getDisziplinen());
 				disziplin.setVisible(true);
 				break;
 			case "SCHUETZEN":
-				Schuetzen schuetze = new Schuetzen(this, controller);
+				Members schuetze = new Members(this, controller);
 				schuetze.setVisible(true);
 				break;
 			case "INFO":
@@ -430,7 +430,7 @@ public class GUI extends JFrame implements ActionListener {
 	}
 
 	private void close() {
-		for (Linie l : linien) if (!l.isError() && (!l.isFrei() || l.isBusy())) {
+		for (Line l : linien) if (!l.isError() && (!l.isFrei() || l.isBusy())) {
 			JOptionPane.showMessageDialog(	this,
 											"Das Programm kann erst beendet werden, wenn alle Linien frei sind.",
 											"Fehler",

@@ -23,7 +23,7 @@ public class DefaultLineModel implements LineModel, LineReader, ActionListener {
 
 	private int nummer;
 	private Controller controller;
-	private Einzel einzel;
+	private Single einzel;
 
 	private boolean busy = false;
 	private Timer busyTimer;
@@ -45,7 +45,7 @@ public class DefaultLineModel implements LineModel, LineReader, ActionListener {
 		return nummer;
 	}
 	
-	public void configure(Einzel e) {
+	public void configure(Single e) {
 		if (e != null) {
 			einzel = e;
 			controller.add(einzel);
@@ -53,12 +53,12 @@ public class DefaultLineModel implements LineModel, LineReader, ActionListener {
 		}
 	}
 	
-	public Einzel configure(Schuetze schuetze, Disziplin disziplin) {
+	public Single configure(Member schuetze, Discipline disziplin) {
 		if (einzel == null || einzel.getSchuetze() != schuetze || einzel.getDisziplin() != disziplin) {
 			disziplin.getRegel().toFile();
 
-			Einzel incomplete = controller.findIncomplete(schuetze, disziplin);
-			Einzel new_event = new Einzel(nummer, disziplin, schuetze);
+			Single incomplete = controller.findIncomplete(schuetze, disziplin);
+			Single new_event = new Single(nummer, disziplin, schuetze);
 			if (incomplete != null) {
 				einzel = incomplete;
 				return new_event;
@@ -70,7 +70,7 @@ public class DefaultLineModel implements LineModel, LineReader, ActionListener {
 		return null;
 	}
 
-	public Einzel getResult() {
+	public Single getResult() {
 		return einzel;
 	}
 
@@ -166,7 +166,7 @@ public class DefaultLineModel implements LineModel, LineReader, ActionListener {
 		}
 	}
 
-	public boolean addTreffer(Treffer t) {
+	public boolean addTreffer(Hit t) {
 		SimpleAttributeSet style = new SimpleAttributeSet();
 		StyleConstants.setBold(style, true);
 		StyleConstants.setForeground(style, Color.decode("0x0050A0"));
@@ -200,11 +200,11 @@ public class DefaultLineModel implements LineModel, LineReader, ActionListener {
 		return "Linie " + nummer;
 	}
 
-	public ComboBoxModel<Disziplin> getDisziplinenModel() {
+	public ComboBoxModel<Discipline> getDisziplinenModel() {
 		return new DisziplinenModel(controller);
 	}
 
-	public ComboBoxModel<Schuetze> getSchuetzenModel() {
+	public ComboBoxModel<Member> getSchuetzenModel() {
 		return new SchuetzenModel(controller);
 	}
 

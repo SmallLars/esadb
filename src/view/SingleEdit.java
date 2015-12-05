@@ -14,10 +14,10 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JComboBox;
 
-import model.Disziplin;
-import model.Einzel;
+import model.Discipline;
+import model.Single;
 import model.Start;
-import model.Treffer;
+import model.Hit;
 import controller.Controller;
 
 import javax.swing.ButtonGroup;
@@ -34,16 +34,16 @@ import java.awt.Font;
 
 
 @SuppressWarnings("serial")
-public class EinzelEdit extends JDialog implements ComponentListener, ActionListener, ListSelectionListener {
+public class SingleEdit extends JDialog implements ComponentListener, ActionListener, ListSelectionListener {
 
 	private Controller controller;
-	private List<Einzel> ergebnisse;
+	private List<Single> ergebnisse;
 	
-	private DefaultComboBoxModel<Disziplin> modelD;
-	private JComboBox<Disziplin> disziplin;
+	private DefaultComboBoxModel<Discipline> modelD;
+	private JComboBox<Discipline> disziplin;
 
-	private DefaultComboBoxModel<Einzel> modelS;
-	private JComboBox<Einzel> start;
+	private DefaultComboBoxModel<Single> modelS;
+	private JComboBox<Single> start;
 
 	private JScrollPane scrollPane;
 	private JTable table;
@@ -63,13 +63,13 @@ public class EinzelEdit extends JDialog implements ComponentListener, ActionList
 	
 	private JButton cancelButton;
 
-	public EinzelEdit(Frame parent, Controller controller) {
+	public SingleEdit(Frame parent, Controller controller) {
 		super(parent, "Ergebnisse bearbeiten");
 
 		this.controller = controller;
-		ergebnisse = new Vector<Einzel>();
+		ergebnisse = new Vector<Single>();
 		for (Start s : controller.getModel().getErgebnisse()) {
-			if (s instanceof Einzel) ergebnisse.add((Einzel) s);
+			if (s instanceof Single) ergebnisse.add((Single) s);
 		}
 
 		setModal(true);
@@ -81,15 +81,15 @@ public class EinzelEdit extends JDialog implements ComponentListener, ActionList
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		getContentPane().setLayout(null);
 		
-		modelD = new DefaultComboBoxModel<Disziplin>();
-		disziplin = new JComboBox<Disziplin>(modelD);
+		modelD = new DefaultComboBoxModel<Discipline>();
+		disziplin = new JComboBox<Discipline>(modelD);
 		disziplin.setBounds(10, 11, 300, 22);
 		disziplin.setActionCommand("DISZIPLIN");
 		disziplin.addActionListener(this);
 		getContentPane().add(disziplin);
 
-		modelS = new DefaultComboBoxModel<Einzel>();
-		start = new JComboBox<Einzel>(modelS);
+		modelS = new DefaultComboBoxModel<Single>();
+		start = new JComboBox<Single>(modelS);
 		start.setBounds(10, 44, 300, 22);
 		start.setActionCommand("START");
 		start.addActionListener(this);
@@ -99,8 +99,8 @@ public class EinzelEdit extends JDialog implements ComponentListener, ActionList
 		scrollPane.setBounds(10, 77, 300, 351);
 		getContentPane().add(scrollPane);
 		
-		table = new JTable(new TrefferTableModel(new Vector<Treffer>()));
-		table.setDefaultRenderer(Treffer.class, new TrefferTableCellRenderer());
+		table = new JTable(new HitTableModel(new Vector<Hit>()));
+		table.setDefaultRenderer(Hit.class, new HitTableCellRenderer());
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		scrollPane.setViewportView(table);
 
@@ -143,8 +143,8 @@ public class EinzelEdit extends JDialog implements ComponentListener, ActionList
 		scrollPane_1.setBounds(380, 77, 300, 351);
 		getContentPane().add(scrollPane_1);
 		
-		table_1 = new JTable(new TrefferTableModel(controller.getTreffer()));
-		table_1.setDefaultRenderer(Treffer.class, new TrefferTableCellRenderer());
+		table_1 = new JTable(new HitTableModel(controller.getTreffer()));
+		table_1.setDefaultRenderer(Hit.class, new HitTableCellRenderer());
 		table_1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table_1.getSelectionModel().addListSelectionListener(this);
 		scrollPane_1.setViewportView(table_1);
@@ -158,7 +158,7 @@ public class EinzelEdit extends JDialog implements ComponentListener, ActionList
 
 		addComponentListener(this);
 
-		for (Einzel e : ergebnisse) {
+		for (Single e : ergebnisse) {
 			if (modelD.getIndexOf(e.getDisziplin()) == -1) {
 				disziplin.addItem(e.getDisziplin());
 			}
@@ -169,7 +169,7 @@ public class EinzelEdit extends JDialog implements ComponentListener, ActionList
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		int row;
-		Treffer t;
+		Hit t;
 		switch (arg0.getActionCommand()) {
 			case "CANCEL":
 				setVisible(false);
@@ -183,8 +183,8 @@ public class EinzelEdit extends JDialog implements ComponentListener, ActionList
 			case "REMOVE":
 				row = table.getSelectedRow();
 				if (row == -1) break;
-				t = (Treffer) table.getValueAt(row, -1);
-				((Einzel) start.getSelectedItem()).removeTreffer(t);
+				t = (Hit) table.getValueAt(row, -1);
+				((Single) start.getSelectedItem()).removeTreffer(t);
 				updateEinzel();
 				controller.add(t);
 				updateTreffer();
@@ -192,10 +192,10 @@ public class EinzelEdit extends JDialog implements ComponentListener, ActionList
 			case "ADD":
 				row = table_1.getSelectedRow();
 				if (row == -1) break;
-				t = (Treffer) table_1.getValueAt(row, -1);
+				t = (Hit) table_1.getValueAt(row, -1);
 				t.setProbe(rdbtnProbe.isSelected());
 				t.setNummer((Integer) spinner.getValue());
-				((Einzel) start.getSelectedItem()).insertTreffer(t);
+				((Single) start.getSelectedItem()).insertTreffer(t);
 				updateEinzel();
 				controller.remove(t);
 				updateTreffer();
@@ -208,7 +208,7 @@ public class EinzelEdit extends JDialog implements ComponentListener, ActionList
 		int row = table_1.getSelectedRow();
 		if (row == -1) return;
 
-		Treffer t = (Treffer) table_1.getValueAt(row, -1);
+		Hit t = (Hit) table_1.getValueAt(row, -1);
 		rdbtnProbe.setSelected(t.isProbe());
 		rdbtnMatch.setSelected(!t.isProbe());
 		spinner.setValue(t.getNummer());
@@ -243,10 +243,10 @@ public class EinzelEdit extends JDialog implements ComponentListener, ActionList
 
 	private void setSchutzeItems() {
 		start.removeAllItems();
-		for (Einzel e : ergebnisse) {
+		for (Single e : ergebnisse) {
 			if (e.getDisziplin() == disziplin.getSelectedItem()) {
 				if (modelS.getIndexOf(e) == -1) {
-					start.addItem((Einzel) e);
+					start.addItem((Single) e);
 				}
 			}
 		}
@@ -254,10 +254,10 @@ public class EinzelEdit extends JDialog implements ComponentListener, ActionList
 
 	private void updateEinzel() {
 		if (start.getSelectedItem() == null) return;
-		table.setModel(new TrefferTableModel(((Einzel) start.getSelectedItem()).getTreffer()));
+		table.setModel(new HitTableModel(((Single) start.getSelectedItem()).getTreffer()));
 	}
 
 	private void updateTreffer() {
-		table_1.setModel(new TrefferTableModel(controller.getTreffer()));
+		table_1.setModel(new HitTableModel(controller.getTreffer()));
 	}
 }

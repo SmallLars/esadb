@@ -14,15 +14,15 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JComboBox;
 
-import model.Disziplin;
+import model.Discipline;
 
 import javax.swing.JLabel;
 
 
 @SuppressWarnings("serial")
-public class Disziplinen extends JDialog implements ActionListener {
+public class Disciplines extends JDialog implements ActionListener {
 
-	private JComboBox<Disziplin> comboBox;
+	private JComboBox<Discipline> comboBox;
 	private JLabel lblName;
 	private JLabel lblWertung;
 	private JLabel lblZeit;
@@ -32,7 +32,7 @@ public class Disziplinen extends JDialog implements ActionListener {
 
 	private final JPanel contentPanel = new JPanel();
 
-	public Disziplinen(Frame parent, List<Disziplin> disziplinen) {
+	public Disciplines(Frame parent, List<Discipline> disziplinen) {
 		super(parent, "Disziplinen");
 		setResizable(false);
 
@@ -74,7 +74,7 @@ public class Disziplinen extends JDialog implements ActionListener {
 		comboPane.setLayout(new FlowLayout(FlowLayout.LEFT));
 		getContentPane().add(comboPane, BorderLayout.NORTH);
 
-		comboBox = new JComboBox<Disziplin>(disziplinen.toArray(new Disziplin[0]));
+		comboBox = new JComboBox<Discipline>(disziplinen.toArray(new Discipline[0]));
 		comboBox.setPreferredSize(new Dimension(257, 22));
 		comboBox.setActionCommand("DISZIPLIN");
 		comboBox.addActionListener(this);
@@ -97,7 +97,7 @@ public class Disziplinen extends JDialog implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		switch (e.getActionCommand()) {
 			case "DISZIPLIN":
-				Disziplin d = (Disziplin) comboBox.getSelectedItem();
+				Discipline d = (Discipline) comboBox.getSelectedItem();
 				lblName.setText(d.toString());
 				lblWertung.setText(d.getWertung() == 0 ? "Ringwertung" : "Zehntelwertung");
 				if (d.getProbezeit() > 0) {

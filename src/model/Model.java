@@ -28,20 +28,20 @@ import controller.KampfDB;
 public class Model implements Serializable, Printable {
 	private static final long serialVersionUID = 1L;
 
-	private Set<Schuetze> schuetzen;
-	private Set<Disziplin> disziplinen;
+	private Set<Member> schuetzen;
+	private Set<Discipline> disziplinen;
 	private List<Start> ergebnisse;
-	private List<Treffer> treffer;
+	private List<Hit> treffer;
 	private byte[] file;
 
-	transient private List<Schuetze> s;
-	transient private List<Disziplin> d;
+	transient private List<Member> s;
+	transient private List<Discipline> d;
 
-	public Model(Config config) {
+	public Model(SettingsModel config) {
 		ergebnisse = new Vector<Start>();
 		schuetzen = KampfDB.getSchuetzen();
 		disziplinen = KampfDB.getDisziplinen(config);
-		treffer = new Vector<Treffer>();
+		treffer = new Vector<Hit>();
 		try {
 			file = Files.readAllBytes(Paths.get("data.mdb"));
 		} catch (IOException e) {
@@ -58,23 +58,23 @@ public class Model implements Serializable, Printable {
 		if (o instanceof Start) {
 			return ergebnisse.add((Start) o);
 		}
-		if (o instanceof Schuetze) {
+		if (o instanceof Member) {
 			s = null;
-			return schuetzen.add((Schuetze) o);
+			return schuetzen.add((Member) o);
 		}
-		if (o instanceof Disziplin) {
+		if (o instanceof Discipline) {
 			d = null;
-			return disziplinen.add((Disziplin) o);
+			return disziplinen.add((Discipline) o);
 		}
-		if (o instanceof Treffer) {
-			return treffer.add((Treffer) o);
+		if (o instanceof Hit) {
+			return treffer.add((Hit) o);
 		}
 		return false;
 	}
 
 	public boolean contains(Object o) {
-		if (o instanceof Schuetze) return schuetzen.contains(o);
-		if (o instanceof Disziplin) return disziplinen.contains(o);
+		if (o instanceof Member) return schuetzen.contains(o);
+		if (o instanceof Discipline) return disziplinen.contains(o);
 		return false;
 	}
 
@@ -82,17 +82,17 @@ public class Model implements Serializable, Printable {
 		if (o instanceof Start) {
 			return ergebnisse.remove((Start) o);
 		}
-		if (o instanceof Treffer) {
-			return treffer.remove((Treffer) o);
+		if (o instanceof Hit) {
+			return treffer.remove((Hit) o);
 		}
 		return false;
 	}
 
-	public List<Einzel> getIncomplete() {
-		Vector<Einzel> incomplete = new Vector<Einzel>();
+	public List<Single> getIncomplete() {
+		Vector<Single> incomplete = new Vector<Single>();
 		for (Start s : ergebnisse) {
-			if (s instanceof Einzel) {
-				Einzel e = (Einzel) s;
+			if (s instanceof Single) {
+				Single e = (Single) s;
 				if (!e.isEmpty() && !e.isComplete()) incomplete.add(e);
 			}
 		}
@@ -103,17 +103,17 @@ public class Model implements Serializable, Printable {
 		return ergebnisse;
 	}
 
-	public List<Schuetze> getSchuetzen() {
-		if (s == null) s = new Vector<Schuetze>(schuetzen);
+	public List<Member> getSchuetzen() {
+		if (s == null) s = new Vector<Member>(schuetzen);
 		return s;
 	}
 
-	public List<Disziplin> getDisziplinen() {
-		if (d == null) d = new Vector<Disziplin>(disziplinen); 
+	public List<Discipline> getDisziplinen() {
+		if (d == null) d = new Vector<Discipline>(disziplinen); 
 		return d;
 	}
 
-	public List<Treffer> getTreffer() {
+	public List<Hit> getTreffer() {
 		return treffer;
 	}
 
@@ -184,7 +184,7 @@ public class Model implements Serializable, Printable {
 
         int lineIndex = pageIndex * -pageLines;
 		int platz = 1;
-		Disziplin d = ergebnisse.get(0).getDisziplin();
+		Discipline d = ergebnisse.get(0).getDisziplin();
 		for (Start s : ergebnisse) {
 			if (s.getDisziplin() != d) {
 				if (lineIndex % pageLines != 0) lineIndex++;

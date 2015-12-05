@@ -10,8 +10,8 @@ import java.awt.event.ComponentListener;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 
-import model.RegelTyp;
-import model.Treffer;
+import model.Rule;
+import model.Hit;
 import controller.Controller;
 
 import javax.swing.JScrollPane;
@@ -27,13 +27,13 @@ import javax.swing.JComboBox;
 
 
 @SuppressWarnings("serial")
-public class TrefferAdd extends JDialog implements ComponentListener, ListSelectionListener, ActionListener {
+public class HitAdd extends JDialog implements ComponentListener, ListSelectionListener, ActionListener {
 
 	private Controller controller;
 	
-	private JComboBox<RegelTyp> comboBox;
-	private Scheibe scheibe;
-	private TrefferCreate treffer;
+	private JComboBox<Rule> comboBox;
+	private Target scheibe;
+	private HitCreate treffer;
 	
 	private JButton button;
 
@@ -44,7 +44,7 @@ public class TrefferAdd extends JDialog implements ComponentListener, ListSelect
 	
 	private JButton cancelButton;
 
-	public TrefferAdd(Frame parent, Controller controller) {
+	public HitAdd(Frame parent, Controller controller) {
 		super(parent, "Treffer eingeben");
 
 		this.controller = controller;
@@ -58,18 +58,18 @@ public class TrefferAdd extends JDialog implements ComponentListener, ListSelect
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		getContentPane().setLayout(null);
 
-		comboBox = new JComboBox<RegelTyp>(controller.getConfig().getRegeln());
+		comboBox = new JComboBox<Rule>(controller.getConfig().getRegeln());
 		comboBox.setSelectedItem(controller.getConfig().getStandardRegel());
 		comboBox.setBounds(411, 15, 200, 25);
 		comboBox.setActionCommand("TYP");
 		comboBox.addActionListener(this);
 		getContentPane().add(comboBox);
 
-		scheibe = new Scheibe(controller.getConfig().getStandardRegel());
+		scheibe = new Target(controller.getConfig().getStandardRegel());
 		scheibe.setBounds(324, 52, 375, 375);
 		getContentPane().add(scheibe);
 
-		treffer = new TrefferCreate(scheibe, controller.getConfig().getStandardRegel());
+		treffer = new HitCreate(scheibe, controller.getConfig().getStandardRegel());
 		treffer.setSize(300, 200);
 		treffer.setLocation(12, 10);
 		getContentPane().add(treffer);
@@ -89,8 +89,8 @@ public class TrefferAdd extends JDialog implements ComponentListener, ListSelect
 		scrollPane_1.setBounds(12, 290, 300, 172);
 		getContentPane().add(scrollPane_1);
 		
-		table_1 = new JTable(new TrefferTableModel(controller.getTreffer()));
-		table_1.setDefaultRenderer(Treffer.class, new TrefferTableCellRenderer());
+		table_1 = new JTable(new HitTableModel(controller.getTreffer()));
+		table_1.setDefaultRenderer(Hit.class, new HitTableCellRenderer());
 		table_1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table_1.getSelectionModel().addListSelectionListener(this);
 		scrollPane_1.setViewportView(table_1);
@@ -130,7 +130,7 @@ public class TrefferAdd extends JDialog implements ComponentListener, ListSelect
 		int row = table_1.getSelectedRow();
 		if (row == -1) return;
 		
-		Treffer t = (Treffer) table_1.getValueAt(row, -1);
+		Hit t = (Hit) table_1.getValueAt(row, -1);
 		treffer.setValues(t);
 	}
 	
@@ -142,13 +142,13 @@ public class TrefferAdd extends JDialog implements ComponentListener, ListSelect
 				setVisible(false);
 				break;
 			case "TYP":
-				RegelTyp typ = (RegelTyp) comboBox.getSelectedItem();
-				scheibe.setTyp(typ);
+				Rule typ = (Rule) comboBox.getSelectedItem();
+				scheibe.setRule(typ);
 				treffer.setTyp(typ);
 				break;
 			case "ADD":
 				controller.add(treffer.getTreffer());
-				table_1.setModel(new TrefferTableModel(controller.getTreffer()));
+				table_1.setModel(new HitTableModel(controller.getTreffer()));
 				break;
 		}
 	}

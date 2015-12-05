@@ -14,22 +14,22 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import model.Config;
+import model.SettingsModel;
 
 import javax.swing.JTabbedPane;
 
 @SuppressWarnings("serial")
-public class Einstellungen extends JDialog {
+public class Settings extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
 
-	public Einstellungen(Frame parent, Config config) {
+	public Settings(Frame parent, SettingsModel config) {
 		super(parent, "Einstellungen");
 		setResizable(false);
 
 		setModal(true);
 		setModalityType(ModalityType.APPLICATION_MODAL);
-		setSize(650, 510);
+		setSize(765, 525);
 		setLocationRelativeTo(parent);
 		setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
 		addWindowListener(new WindowAdapter() {
@@ -44,12 +44,12 @@ public class Einstellungen extends JDialog {
 
 
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane.setBounds(10, 10, 625, 430);
+		tabbedPane.setBounds(10, 10, 740, 445);
 
-		JPanel oho1 = new EinstellungenLinien(config);
+		JPanel oho1 = new SettingsLines(config);
 		tabbedPane.addTab("Linien", oho1);
 		
-		JPanel oho2 = new EinstellungenScheiben(config);
+		JPanel oho2 = new SettingsTargets(config);
 		tabbedPane.addTab("Scheiben", oho2);
 		
 		contentPanel.add(tabbedPane);

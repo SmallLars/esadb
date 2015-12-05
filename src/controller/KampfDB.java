@@ -8,11 +8,11 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.Vector;
 
-import model.Config;
-import model.Disziplin;
-import model.RegelTyp;
-import model.Schuetze;
-import model.Verein;
+import model.SettingsModel;
+import model.Discipline;
+import model.Rule;
+import model.Member;
+import model.Club;
 
 import com.healthmarketscience.jackcess.CursorBuilder;
 import com.healthmarketscience.jackcess.Database;
@@ -22,13 +22,13 @@ import com.healthmarketscience.jackcess.Table;
 
 
 public class KampfDB {
-	public static Set<Schuetze> getSchuetzen() {
-		Set<Schuetze> set = new TreeSet<Schuetze>();
+	public static Set<Member> getSchuetzen() {
+		Set<Member> set = new TreeSet<Member>();
 
 		try {
 			Database db = getDB("data.mdb");
 			Table table = db.getTable("WettkampfSchuetzen");
-			for (Row row : table) if ((byte) row.get("Sichtbar") == 1) set.add(new Schuetze(row));
+			for (Row row : table) if ((byte) row.get("Sichtbar") == 1) set.add(new Member(row));
 			db.close();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -37,8 +37,8 @@ public class KampfDB {
 		return set;
 	}
 
-	public static Set<Disziplin> getDisziplinen(Config config) {
-		Set<Disziplin> set = new TreeSet<Disziplin>();
+	public static Set<Discipline> getDisziplinen(SettingsModel config) {
+		Set<Discipline> set = new TreeSet<Discipline>();
 
 		try {
 			Database db = getDB("data.mdb");
@@ -46,8 +46,8 @@ public class KampfDB {
 				Map<String, Integer> m = Collections.singletonMap("DisziplinID", (int) row.get("DisziplinID"));
 				Row r = CursorBuilder.findRow(db.getTable("DisziplinWaffe"), m);
 				if (r != null) {
-					RegelTyp regel = config.getRegelTypByNumber((String) r.get("WaffengattungNr"));
-					Disziplin d = new Disziplin(row, regel);
+					Rule regel = config.getRegelTypByNumber((String) r.get("WaffengattungNr"));
+					Discipline d = new Discipline(row, regel);
 					set.add(d);
 				} else {
 				  System.out.println("Keine Waffengattung für " + (String) row.get("Bezeichnung") + " definiert. Disziplin wird ignoriert.");
@@ -61,13 +61,13 @@ public class KampfDB {
 		return set;
 	}
 
-	public static Vector<Schuetze> getAllSchuetzen() {
-		Vector<Schuetze> list = new Vector<Schuetze>();
+	public static Vector<Member> getAllSchuetzen() {
+		Vector<Member> list = new Vector<Member>();
 
 		try {
 			Database db = getDB("Kampf.mdb");
 			Table table = db.getTable("WettkampfSchuetzen");
-			for (Row row : table) list.add(new Schuetze(row));
+			for (Row row : table) list.add(new Member(row));
 			db.close();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -77,13 +77,13 @@ public class KampfDB {
 		return list;
 	}
 
-	public static Vector<Verein> getVereine() {
-		Vector<Verein> list = new Vector<Verein>();
+	public static Vector<Club> getVereine() {
+		Vector<Club> list = new Vector<Club>();
 
 		try {
 			Database db = getDB("Kampf.mdb");
 			Table table = db.getTable("Vereine");
-			for(Row row : table) list.add(new Verein(row));
+			for(Row row : table) list.add(new Club(row));
 			db.close();
 		} catch (IOException e) {
 			e.printStackTrace();

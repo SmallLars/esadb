@@ -6,7 +6,7 @@ import java.util.Date;
 import com.healthmarketscience.jackcess.Row;
 
 
-public class Schuetze implements Serializable, Comparable<Schuetze> {
+public class Member implements Serializable, Comparable<Member> {
 	private static final long serialVersionUID = 1L;
 
 	public int wettkampfID;			// Identifikationsnummer des Wettkampf
@@ -19,7 +19,7 @@ public class Schuetze implements Serializable, Comparable<Schuetze> {
 	public short startnummer;		// Startnummer des Schützen
 	public int vereinsnummer;		// Identifikationsnummer des Vereins
 
-	public Schuetze() {
+	public Member() {
 		wettkampfID = 0;
 		passnummer = "0000000-0000";
 		nachname = "Demoschütz";
@@ -33,7 +33,7 @@ public class Schuetze implements Serializable, Comparable<Schuetze> {
 		vereinsnummer = 0;
 	}
 
-	public Schuetze(Row row) {
+	public Member(Row row) {
 		wettkampfID = (int) row.get("WettkampfID");
 		passnummer = (String) row.get("Passnummer");
 		nachname = (String) row.get("Nachname");
@@ -51,7 +51,7 @@ public class Schuetze implements Serializable, Comparable<Schuetze> {
 	}
 
 	@Override
-	public int compareTo(Schuetze s) {
+	public int compareTo(Member s) {
 		if (s == null) return 1;
 
 		int c = nachname.compareTo(s.nachname);

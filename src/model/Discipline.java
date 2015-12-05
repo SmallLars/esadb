@@ -4,7 +4,7 @@ import java.io.Serializable;
 import com.healthmarketscience.jackcess.Row;
 
 
-public class Disziplin implements Serializable, Comparable<Disziplin> {
+public class Discipline implements Serializable, Comparable<Discipline> {
 	private static final long serialVersionUID = 1L;
 
 	private int id;
@@ -16,9 +16,9 @@ public class Disziplin implements Serializable, Comparable<Disziplin> {
 	private int probeschuesse;		// Anzahl der Probeschüsse (-1 = beliebig viele)
 	private int probezeit;			// Zeit für Probeschüsse (-1 = ist in der Matchzeit enthalten)
 	private int serienlaenge;		// Gibt die Länge der Serien an
-	private RegelTyp regel;
+	private Rule regel;
 
-	public Disziplin(Row disziplin, RegelTyp regel) {
+	public Discipline(Row disziplin, Rule regel) {
 		id = (int) disziplin.get("DisziplinID");
 		name = (String) disziplin.get("Bezeichnung");
 		wertung = (byte) disziplin.get("Wertung");
@@ -67,7 +67,7 @@ public class Disziplin implements Serializable, Comparable<Disziplin> {
 		return getSchusszahl() / serienlaenge;
 	}
 
-	public RegelTyp getRegel() {
+	public Rule getRegel() {
 		return regel;
 	}
 
@@ -77,7 +77,7 @@ public class Disziplin implements Serializable, Comparable<Disziplin> {
 	}
 
 	@Override
-	public int compareTo(Disziplin d) {
+	public int compareTo(Discipline d) {
 		if (d == null) return 1;
 		return id - d.id;
 	}
