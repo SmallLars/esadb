@@ -92,7 +92,7 @@ public class TargetModel implements Serializable {
 	}
 
 	public int getRingRadius(int i) {
-		if (i < 0 || i > 10) return 0;
+		if (i < 0 || i > max_ring) return 0;
 	
 		return (dia_aussen / 2) - (i - min_ring) * ringbreite;
 	}

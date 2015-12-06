@@ -122,7 +122,7 @@ public class Target extends JPanel implements LineListener {
 		}
 
 		int r;
-		int mitte = target.getRingRadius(0);;
+		int mitte = target.getRingRadius(target.getValue(TargetValue.RING_MIN)) + target.getValue(TargetValue.RING_WIDTH);
 
 		Graphics2D g2 = (Graphics2D) g.create();
 		g2.scale(new Double(getWidth()) / new Double(2 * mitte), new Double(getHeight()) / new Double(2 * mitte));
@@ -132,7 +132,7 @@ public class Target extends JPanel implements LineListener {
 		r =  target.getSpiegelRadius();
 	    g2.fillOval(mitte - r, mitte - r, 2 * r, 2 * r);
 
-		for (int i = 1; i <= 10; i++) {
+		for (int i = target.getValue(TargetValue.RING_MIN); i <= target.getValue(TargetValue.RING_MAX); i++) {
 			r = target.getRingRadius(i);
 		    g2.setColor(r > target.getSpiegelRadius() ? Color.BLACK : Color.WHITE);
 		    if (i == 10 && target.getValue(TargetValue.STYLE_TEN) > 1) {
@@ -155,7 +155,7 @@ public class Target extends JPanel implements LineListener {
 		g2.setFont(new Font("Arial", Font.BOLD, target.getFontSize()));
 		int dy = g2.getFontMetrics().getAscent() / 2;
 		int dx = (int) (g2.getFontMetrics().getStringBounds("0", g2).getWidth() / -2) + 1;
-		for (int i = 1; target.drawNumber(i); i++) {
+		for (int i = target.getValue(TargetValue.RING_MIN); target.drawNumber(i); i++) {
 			g2.setColor(target.blackNumber(i) ? Color.BLACK : Color.WHITE);
 			String s = "" + i;
 			r = target.getNumberRadius(i);

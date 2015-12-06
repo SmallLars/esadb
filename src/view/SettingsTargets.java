@@ -2,6 +2,8 @@ package view;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
@@ -14,6 +16,8 @@ import model.TargetType;
 import model.TargetValue;
 
 import javax.swing.border.LineBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -28,8 +32,10 @@ import javax.swing.DefaultComboBoxModel;
 
 
 @SuppressWarnings("serial")
-public class SettingsTargets extends JPanel implements ActionListener {
-	
+public class SettingsTargets extends JPanel implements ActionListener, ChangeListener {
+
+	private boolean doUpdate = false;;
+
 	private JComboBox<TargetModel> comboBox;
 	private Target scheibe;
 	private JTextField text_name;
@@ -106,15 +112,7 @@ public class SettingsTargets extends JPanel implements ActionListener {
 		spinner_vorhalteabstand =  addJSpinner(this, X[0] + X[1], Y[0] + 7 * Y[1], "Vorhalteabstand", "mm");
 		
 		updateDisplay();
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent arg0) {
-		switch (arg0.getActionCommand()) {
-			case "TYP":
-				updateDisplay();
-				break;
-		}
+		doUpdate = true;
 	}
 
 	private void updateDisplay() {
@@ -134,8 +132,50 @@ public class SettingsTargets extends JPanel implements ActionListener {
 		comboBox_ring_angle.setSelectedIndex(target.getValue(TargetValue.NUM_ANGLE));
 		comboBox_typ.setSelectedIndex(target.getValue(TargetValue.TYPE));
 		comboBox_style.setSelectedIndex(target.getValue(TargetValue.STYLE_TEN));
-		spinner_vorhaltediameter.setValue(target.getValue(TargetValue.SUSP_DIA));
-		spinner_vorhalteabstand.setValue(target.getValue(TargetValue.SUSP_DISTANCE));
+		spinner_vorhaltediameter.setValue(target.getValue(TargetValue.SUSP_DIA) / 100.);
+		spinner_vorhalteabstand.setValue(target.getValue(TargetValue.SUSP_DISTANCE) / 100.);
+	}
+
+	private void updateModel() {
+		if (!doUpdate) return;
+
+		TargetModel target = (TargetModel) comboBox.getSelectedItem();
+		target.setName(text_name.getText());
+		target.setNumber(text_number.getText());
+		target.setValue(TargetValue.SIZE, (int) ((double) spinner_size.getValue() * 100));
+		target.setValue(TargetValue.FEED, (int) spinner_feed.getValue());
+		target.setValue(TargetValue.DIA_OUTSIDE, (int) ((double) spinner_dia_outside.getValue() * 100));
+		target.setValue(TargetValue.RING_WIDTH, (int) ((double) spinner_ring_width.getValue() * 100));
+		target.setValue(TargetValue.DIA_BLACK, (int) ((double) spinner_dia_black.getValue() * 100));
+		target.setValue(TargetValue.DIA_INNER_TEN, (int) ((double) spinner_dia_inner_ten.getValue() * 100));
+		target.setValue(TargetValue.RING_MIN, (int) spinner_ring_min.getValue());
+		target.setValue(TargetValue.RING_MAX, (int) spinner_ring_max.getValue());
+		target.setValue(TargetValue.NUM_MAX, (int) spinner_num_max.getValue());
+		target.setValue(TargetValue.NUM_ANGLE, comboBox_ring_angle.getSelectedIndex());
+		target.setValue(TargetValue.TYPE, comboBox_typ.getSelectedIndex());
+		target.setValue(TargetValue.STYLE_TEN, comboBox_style.getSelectedIndex());
+		target.setValue(TargetValue.SUSP_DIA, (int) ((double) spinner_vorhaltediameter.getValue() * 100));
+		target.setValue(TargetValue.SUSP_DISTANCE, (int) ((double) spinner_vorhalteabstand.getValue() * 100));		
+		scheibe.setTarget(target);
+	}
+	
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+		switch (arg0.getActionCommand()) {
+			case "TYP":
+				doUpdate = false;
+				updateDisplay();
+				doUpdate = true;
+				break;
+			case "VALUE":
+				updateModel();
+				break;
+		}
+	}
+
+	@Override
+	public void stateChanged(ChangeEvent arg0) {
+		updateModel();
 	}
 
 	private JTextField addJTextField(JPanel parent, int x, int y, int width, String caption) {
@@ -157,6 +197,21 @@ public class SettingsTargets extends JPanel implements ActionListener {
 			spinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), new Integer(9999999), new Integer(1)));
 		}
 		spinner.setBounds(x, y, 110, 20);
+		spinner.addMouseWheelListener(new MouseWheelListener() {
+			@Override
+			public void mouseWheelMoved(MouseWheelEvent e) {
+				if (e.getWheelRotation() == 0) return;
+				JSpinner s = (JSpinner) e.getComponent();
+				Object o = null;
+				if (e.getWheelRotation() < 0) {
+					o = s.getModel().getNextValue();
+				} else {
+					o = s.getModel().getPreviousValue();
+				}
+				if (o != null) s.setValue(o);
+			}
+		});
+		spinner.addChangeListener(this);
 		parent.add(spinner);
 		addCaption(spinner, parent, caption, unit);
 		return spinner;
@@ -173,6 +228,8 @@ public class SettingsTargets extends JPanel implements ActionListener {
 		};
 		comboBox.setModel(new DefaultComboBoxModel<Object>(content));
 		comboBox.setBounds(x, y, 110, 20);
+		comboBox.setActionCommand("VALUE");
+		comboBox.addActionListener(this);
 		parent.add(comboBox);
 		addCaption(comboBox, parent, caption, unit);
 		return comboBox;
