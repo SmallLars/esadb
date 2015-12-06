@@ -7,11 +7,16 @@ import javax.swing.JComboBox;
 import javax.swing.JPanel;
 
 import model.SettingsModel;
+import model.TargetAngle;
+import model.TargetFill;
 import model.TargetModel;
+import model.TargetType;
+import model.TargetValue;
 
 import javax.swing.border.LineBorder;
 
 import java.awt.Color;
+import java.awt.Dimension;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -29,17 +34,18 @@ public class SettingsTargets extends JPanel implements ActionListener {
 	private Target scheibe;
 	private JTextField text_name;
 	private JTextField text_number;
-	private JSpinner spinner_feed;
 	private JSpinner spinner_size;
-	private JSpinner spinner_dia_black;
+	private JSpinner spinner_feed;
 	private JSpinner spinner_dia_outside;
+	private JSpinner spinner_ring_width;
+	private JSpinner spinner_dia_black;
 	private JSpinner spinner_dia_inner_ten;
 	private JSpinner spinner_ring_min;
 	private JSpinner spinner_ring_max;
 	private JSpinner spinner_num_max;
-	private JComboBox comboBox_ring_angle;
-	private JComboBox comboBox_typ;
-	private JComboBox comboBox_style;
+	private JComboBox<Object> comboBox_ring_angle;
+	private JComboBox<Object> comboBox_typ;
+	private JComboBox<Object> comboBox_style;
 	private JSpinner spinner_vorhaltediameter;
 	private JSpinner spinner_vorhalteabstand;
 
@@ -50,57 +56,86 @@ public class SettingsTargets extends JPanel implements ActionListener {
 		this.setSize(735,  420);
 		this.setLayout(null);
 
+		scheibe = new Target(config.getStandardRegel().getScheibe());
+		scheibe.setBorder(new LineBorder(new Color(0, 0, 0)));
+		scheibe.setBounds(15, 15, 390, 390);
+		this.add(scheibe);
+
+		JButton button_minus = new JButton("-");
+		button_minus.setBounds(420, 15, 45, 20);
+		add(button_minus);
+
 		comboBox = new JComboBox<TargetModel>(config.getScheiben());
 		//comboBox = new JComboBox<TargetModel>();
 		comboBox.setSelectedItem(config.getStandardRegel().getScheibe());
-		comboBox.setBounds(15, 15, 250, 25);
+		comboBox.setBounds(480, 15, 180, 20);
 		comboBox.setActionCommand("TYP");
 		comboBox.addActionListener(this);
 		this.add(comboBox);
-
-		scheibe = new Target((TargetModel) comboBox.getSelectedItem());
-		scheibe.setBorder(new LineBorder(new Color(0, 0, 0)));
-		scheibe.setBounds(330, 15, 390, 390);
-		this.add(scheibe);
 		
-		JButton button = new JButton("+");
-		button.setBounds(275, 16, 45, 23);
-		add(button);
+		JButton button_plus = new JButton("+");
+		button_plus.setBounds(675, 15, 45, 20);
+		add(button_plus);
 		
-		final int X[] = {15, 160};
+		final int X[] = {420, 160};
 		final int Y[] = {70, 45};
 		
-		text_name = addJTextField(this, X[0], Y[0] + 0 * Y[1], 270, "Name");
-		
-		text_number = addJTextField(this, X[0], Y[0] + 1 * Y[1], 110, "Kennnummer");
+		text_name = addJTextField(this, X[0], Y[0] + 0 * Y[1], 170, "Name");
+		text_number = addJTextField(this, X[0] + 190, Y[0] + 0 * Y[1], 80, "Kennnummer");
+
+		spinner_size = addJSpinner(this, X[0], Y[0] + 1 * Y[1], "Kartongröße", "mm");
 		spinner_feed = addJSpinner(this, X[0] + X[1], Y[0] + 1 * Y[1], "Bandvorschub", "");
 
-		spinner_size = addJSpinner(this, X[0], Y[0] + 2 * Y[1], "Kartongröße", "mm");		
-		spinner_dia_black = addJSpinner(this, X[0] + X[1], Y[0] + 2 * Y[1], "Ø Spiegel", "mm");
+		spinner_dia_outside = addJSpinner(this, X[0], Y[0] + 2 * Y[1], "Ø Aussen", "mm");
+		spinner_ring_width = addJSpinner(this, X[0] + X[1], Y[0] + 2 * Y[1], "Ringbreite", "mm");
 
-		spinner_dia_outside = addJSpinner(this, X[0], Y[0] + 3 * Y[1], "Ø Aussen", "mm");
+		spinner_dia_black = addJSpinner(this, X[0], Y[0] + 3 * Y[1], "Ø Spiegel", "mm");
 		spinner_dia_inner_ten = addJSpinner(this, X[0] + X[1], Y[0] + 3 * Y[1], "Ø Innenzehn", "mm");
 		
 		spinner_ring_min = addJSpinner(this, X[0], Y[0] + 4 * Y[1], "Kleinster Ring", "");
 		spinner_ring_max = addJSpinner(this, X[0] + X[1], Y[0] + 4 * Y[1], "Größter Ring", "");
 
-		spinner_num_max = addJSpinner(this, X[0], Y[0] + 5 * Y[1], "Größte Ringzahl", "mm");
-		comboBox_ring_angle = addJComboBox(this, X[0] + X[1], Y[0] + 5 * Y[1], "Winkel Ringzahlen", "°", "0", "45");
+		spinner_num_max = addJSpinner(this, X[0], Y[0] + 5 * Y[1], "Größte Ringzahl", "");
+		comboBox_ring_angle = addJComboBox(this, X[0] + X[1], Y[0] + 5 * Y[1], "Winkel Ringzahlen", "°", TargetAngle.values());
+		((JLabel) comboBox_ring_angle.getRenderer()).setHorizontalAlignment(JLabel.RIGHT);
 
-		comboBox_typ = addJComboBox(this, X[0], Y[0] + 6 * Y[1], "Scheibenart", "", "1", "2", "3", "4", "5", "6");
-		comboBox_style = addJComboBox(this, X[0] + X[1], Y[0] + 6 * Y[1], "Ausgefüllt", "", "Keiner", "Innenzehn", "Zehn");
+		comboBox_typ = addJComboBox(this, X[0], Y[0] + 6 * Y[1], "Scheibenart", "", TargetType.values());
+		comboBox_style = addJComboBox(this, X[0] + X[1], Y[0] + 6 * Y[1], "Ausgefüllter Ring", "", TargetFill.values());
 	
 		spinner_vorhaltediameter = addJSpinner(this, X[0], Y[0] + 7 * Y[1], "Ø Vorhaltespiegel", "mm");
 		spinner_vorhalteabstand =  addJSpinner(this, X[0] + X[1], Y[0] + 7 * Y[1], "Vorhalteabstand", "mm");
+		
+		updateDisplay();
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		switch (arg0.getActionCommand()) {
 			case "TYP":
-				scheibe.setTarget((TargetModel) comboBox.getSelectedItem());
+				updateDisplay();
 				break;
 		}
+	}
+
+	private void updateDisplay() {
+		TargetModel target = (TargetModel) comboBox.getSelectedItem();
+		scheibe.setTarget(target);
+		text_name.setText(target.toString());
+		text_number.setText(target.getNumber());			
+		spinner_size.setValue(target.getValue(TargetValue.SIZE) / 100.);
+		spinner_feed.setValue(target.getValue(TargetValue.FEED));
+		spinner_dia_outside.setValue(target.getValue(TargetValue.DIA_OUTSIDE) / 100.);
+		spinner_ring_width.setValue(target.getValue(TargetValue.RING_WIDTH) / 100.);
+		spinner_dia_black.setValue(target.getValue(TargetValue.DIA_BLACK) / 100.);
+		spinner_dia_inner_ten.setValue(target.getValue(TargetValue.DIA_INNER_TEN) / 100.);
+		spinner_ring_min.setValue(target.getValue(TargetValue.RING_MIN));
+		spinner_ring_max.setValue(target.getValue(TargetValue.RING_MAX));
+		spinner_num_max.setValue(target.getValue(TargetValue.NUM_MAX));
+		comboBox_ring_angle.setSelectedIndex(target.getValue(TargetValue.NUM_ANGLE));
+		comboBox_typ.setSelectedIndex(target.getValue(TargetValue.TYPE));
+		comboBox_style.setSelectedIndex(target.getValue(TargetValue.STYLE_TEN));
+		spinner_vorhaltediameter.setValue(target.getValue(TargetValue.SUSP_DIA));
+		spinner_vorhalteabstand.setValue(target.getValue(TargetValue.SUSP_DISTANCE));
 	}
 
 	private JTextField addJTextField(JPanel parent, int x, int y, int width, String caption) {
@@ -114,17 +149,29 @@ public class SettingsTargets extends JPanel implements ActionListener {
 
 	private JSpinner addJSpinner(JPanel parent, int x, int y, String caption, String unit) {
 		JSpinner spinner = new JSpinner();
-		spinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), new Integer(9999999), new Integer(1)));
+		if (unit.equals("mm")) {
+			spinner.setModel(new SpinnerNumberModel(new Double(0), new Double(0), null, new Double(0.1)));
+			JSpinner.NumberEditor editor = new JSpinner.NumberEditor(spinner, "0.00");
+			spinner.setEditor(editor);
+		} else {
+			spinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), new Integer(9999999), new Integer(1)));
+		}
 		spinner.setBounds(x, y, 110, 20);
 		parent.add(spinner);
 		addCaption(spinner, parent, caption, unit);
 		return spinner;
 	}
 
-	private JComboBox<String> addJComboBox(JPanel parent, int x, int y, String caption, String unit, String... values) {
-		JComboBox<String> comboBox = new JComboBox<String>();
-		comboBox.setModel(new DefaultComboBoxModel<String>(values));
-		((JLabel) comboBox.getRenderer()).setHorizontalAlignment(JLabel.RIGHT);
+	private JComboBox<Object> addJComboBox(JPanel parent, int x, int y, String caption, String unit, Object content[]) {
+		JComboBox<Object> comboBox = new JComboBox<Object>() {
+			@Override
+			public Dimension getSize() {
+				Dimension dim = super.getSize();
+				dim.width = Math.max(dim.width, getPreferredSize().width - 20);
+				return dim;
+			}
+		};
+		comboBox.setModel(new DefaultComboBoxModel<Object>(content));
 		comboBox.setBounds(x, y, 110, 20);
 		parent.add(comboBox);
 		addCaption(comboBox, parent, caption, unit);

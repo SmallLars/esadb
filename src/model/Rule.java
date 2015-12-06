@@ -67,7 +67,7 @@ public class Rule  implements Serializable {
 		int geschossRadius = waffe.getRadius();
 		
 		if (value < 10) {
-			return Math.round(scheibe.getAussenRadius() + geschossRadius - (value - 1) * scheibe.getRingBreite());
+			return Math.round(scheibe.getAussenRadius() + geschossRadius - (value - 1) * scheibe.getValue(TargetValue.RING_WIDTH));
 		}
 		
 		return Math.round(zehnerRadius + geschossRadius - (value - 10) * (zehnerRadius + geschossRadius));

@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 import org.apache.commons.lang.Validate;
 
 import model.DefaultLineModel;
+import model.TargetValue;
 import model.Unit;
 import model.Single;
 import model.LineListener;
@@ -134,7 +135,7 @@ public class Target extends JPanel implements LineListener {
 		for (int i = 1; i <= 10; i++) {
 			r = target.getRingRadius(i);
 		    g2.setColor(r > target.getSpiegelRadius() ? Color.BLACK : Color.WHITE);
-		    if (i == 10 && target.getStyle() > 1) {
+		    if (i == 10 && target.getValue(TargetValue.STYLE_TEN) > 1) {
 		    	g2.fillOval(mitte - r, mitte - r, 2 * r, 2 * r);
 		    } else {
 		    	g2.drawOval(mitte - r, mitte - r, r * 2, r * 2);
@@ -144,7 +145,7 @@ public class Target extends JPanel implements LineListener {
 		if (target.getInnenZehnRadius() > 0) {
 			r = target.getInnenZehnRadius();
 		    g2.setColor(Color.WHITE);
-		    if (target.getStyle() > 0) {
+		    if (target.getValue(TargetValue.STYLE_TEN) > 0) {
 		    	g2.fillOval(mitte - r, mitte - r, 2 * r, 2 * r);
 		    } else {
 		    	g2.drawOval(mitte - r, mitte - r, 2 * r, 2 * r);

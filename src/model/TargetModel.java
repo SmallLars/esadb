@@ -12,30 +12,13 @@ import org.apache.commons.lang.Validate;
 public class TargetModel implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	public static enum VALUE_TYPE {
-		SIZE,
-		FEED,
-		DIA_BLACK,
-		DIA_OUTSIDE,
-		DIA_INNER_TEN,
-		RING_WIDTH,
-		RING_MIN,
-		RING_MAX,
-		NUM_MAX,
-		NUM_ANGLE,
-		TYPE,
-		STYLE_TEN,
-		SUSP_RADIUS,
-		SUSP_DISTANCE
-	}
-
 	private String bezeichnung;
 	private String kennnummer;
 	private int karton;
 	private int bandvorschub;
-	private int radius_spiegel;
-	private int radius_aussen;
-	private int radius_innenzehn;
+	private int dia_spiegel;
+	private int dia_aussen;
+	private int dia_innenzehn;
 	private int ringbreite;
 	private int min_ring;
 	private int max_ring;
@@ -44,7 +27,7 @@ public class TargetModel implements Serializable {
 	private int winkel;
 	private int art;
 	private int style;           // 0 => Zehn und Innenzehn: Ringe       1=> Innezehn ausgefüllt    2=>     Zehn ausgefüllt, Innenzehn irrelevant 
-	private int vorhalteradius;
+	private int vorhaltedia;
 	private int vorhalteabstand;
 
 	public TargetModel(String bezeichnung, String kennnummer, int... values) {
@@ -53,7 +36,7 @@ public class TargetModel implements Serializable {
 		this.bezeichnung = bezeichnung;
 		this.kennnummer = kennnummer;
 		for (int i = 0; i < 14; i++) {
-			setValue(VALUE_TYPE.values()[i], i < values.length ? values[i] : 0);
+			setValue(TargetValue.values()[i], i < values.length ? values[i] : 0);
 		}
 	}
 
@@ -65,45 +48,65 @@ public class TargetModel implements Serializable {
 		this.kennnummer = number;
 	}
 
-	public void setValue(VALUE_TYPE type, int value) {
+	public String getNumber() {
+		return kennnummer;
+	}
+
+	public void setValue(TargetValue type, int value) {
 		switch (type) {
-			case SIZE:                    karton = value;     break;
-			case FEED:              bandvorschub = value;     break;
-			case DIA_BLACK:       radius_spiegel = value / 2; break;
-			case DIA_OUTSIDE:      radius_aussen = value / 2; break;
-			case DIA_INNER_TEN: radius_innenzehn = value / 2; break;
-			case RING_WIDTH:          ringbreite = value;     break;
-			case RING_MIN:              min_ring = value;     break;
-			case RING_MAX:              max_ring = value;     break;
-			case NUM_MAX:             max_number = value;     break;
-			case NUM_ANGLE:               winkel = value;     break;
-			case TYPE:                       art = value;     break;
-			case STYLE_TEN:                style = value;     break;
-			case SUSP_RADIUS:     vorhalteradius = value;     break;
-			case SUSP_DISTANCE:  vorhalteabstand = value;     break;
+			case SIZE:                   karton = value; break;
+			case FEED:             bandvorschub = value; break;
+			case DIA_BLACK:         dia_spiegel = value; break;
+			case DIA_OUTSIDE:        dia_aussen = value; break;
+			case DIA_INNER_TEN:   dia_innenzehn = value; break;
+			case RING_WIDTH:         ringbreite = value; break;
+			case RING_MIN:             min_ring = value; break;
+			case RING_MAX:             max_ring = value; break;
+			case NUM_MAX:            max_number = value; break;
+			case NUM_ANGLE:              winkel = value; break;
+			case TYPE:                      art = value; break;
+			case STYLE_TEN:               style = value; break;
+			case SUSP_DIA:          vorhaltedia = value; break;
+			case SUSP_DISTANCE: vorhalteabstand = value; break;
+		}
+	}
+
+	public int getValue(TargetValue type) {
+		switch (type) {
+			case SIZE:          return karton;
+			case FEED:          return bandvorschub;
+			case DIA_BLACK:     return dia_spiegel;
+			case DIA_OUTSIDE:   return dia_aussen;
+			case DIA_INNER_TEN: return dia_innenzehn;
+			case RING_WIDTH:    return ringbreite;
+			case RING_MIN:      return min_ring;
+			case RING_MAX:      return max_ring;
+			case NUM_MAX:       return max_number;
+			case NUM_ANGLE:     return winkel;
+			case TYPE:          return art;
+			case STYLE_TEN:     return style;
+			case SUSP_DIA:      return vorhaltedia;
+			case SUSP_DISTANCE: return vorhalteabstand;
+			default: return 0;
 		}
 	}
 
 	public int getRingRadius(int i) {
 		if (i < 0 || i > 10) return 0;
 	
-		return radius_aussen - (i - min_ring) * ringbreite;
+		return (dia_aussen / 2) - (i - min_ring) * ringbreite;
 	}
 
 	public int getAussenRadius() {
-		return radius_aussen;
+		return dia_aussen / 2;
 	}
 	
 	public int getSpiegelRadius() {
-		return radius_spiegel;
+		return dia_spiegel / 2;
 	}
 
-	public int getRingBreite() {
-		return ringbreite;
-	}
-	
 	public int getInnenZehnRadius() {
-		return radius_innenzehn;
+		return dia_innenzehn / 2;
 	}
 	
 	public int getFontSize() {
@@ -123,11 +126,7 @@ public class TargetModel implements Serializable {
 	}
 
 	public boolean blackNumber(int i) {
-		return getNumberRadius(i) > radius_spiegel;
-	}
-
-	public int getStyle() {
-		return style;
+		return getNumberRadius(i) > (dia_spiegel / 2);
 	}
 
 	public String toFile() {
@@ -154,9 +153,9 @@ public class TargetModel implements Serializable {
 			writer.println(String.format("\"DSB %s\"", kennnummer));
 
 			writer.println("\">AussenRadius\"");                               // Radius des 1. Rings in 1/100 mm
-			writer.println(String.format("\"%d\"", radius_aussen));
+			writer.println(String.format("\"%d\"", dia_aussen / 2));
 			writer.println("\">SpiegelRadius\"");                              // Radius des Spiegels in 1/100 mm
-			writer.println(String.format("\"%d\"", radius_spiegel));			
+			writer.println(String.format("\"%d\"", dia_spiegel / 2));			
 
 			writer.println("\">ZehnerRadius\"");                               // Radius des 10. Rings in 1/100 mm
 			writer.println(String.format("\"%d\"", getRingRadius(10)));
@@ -164,7 +163,7 @@ public class TargetModel implements Serializable {
 			writer.println(style >= 2 ? "\"0\"": "\"1\"");
 
 			writer.println("\">InnenZehnerRadius\"");                          // Radius des Innenzehners in 1/100mm
-			writer.println(String.format("\"%d\"", radius_innenzehn));
+			writer.println(String.format("\"%d\"", dia_innenzehn / 2));
 			writer.println("\">InnenZehnerRingStyle\"");                       // Gibt die Optik des Innenzehnerrings vor, 0=ausgefüllt, 1=Ring
 			writer.println(style >= 1 ? "\"0\"": "\"1\"");
 
@@ -174,7 +173,7 @@ public class TargetModel implements Serializable {
 			writer.println("\"0\"");
 
 			writer.println("\">VorhalteSpiegelRadius\"");                      // Gibt an ob Vorhaltespiegel dargestellt werden, 0=keinen
-			writer.println(String.format("\"%d\"", vorhalteradius));
+			writer.println(String.format("\"%d\"", vorhaltedia / 2));
 			writer.println("\">VorhalteAbstand\"");                            // Abstand der Vorhaltespiegel zur Scheibenmitte
 			writer.println(String.format("\"%d\"", vorhalteabstand));
 
@@ -190,7 +189,7 @@ public class TargetModel implements Serializable {
 			writer.println(String.format("\"%d\"", max_ring));
 
 			writer.println("\">RingNummerWinkel\"");                           // Anordnungswinkel der Beschriftungszahlen
-			writer.println(String.format("\"%d\"", winkel));
+			writer.println(String.format("\"%d\"", winkel * 45));
 
 			writer.println("\">KartonBreite\"");                               // Breite des Scheibenkartons
 			writer.println(String.format("\"%d\"", karton));
