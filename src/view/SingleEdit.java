@@ -149,7 +149,7 @@ public class SingleEdit extends JDialog implements ComponentListener, ActionList
 		table_1.getSelectionModel().addListSelectionListener(this);
 		scrollPane_1.setViewportView(table_1);
 
-		cancelButton = new JButton("Schlieﬂen");
+		cancelButton = new JButton("Schlie√üen");
 		cancelButton.setBounds(582, 439, 100, 23);
 		cancelButton.setActionCommand("CANCEL");
 		cancelButton.addActionListener(this);

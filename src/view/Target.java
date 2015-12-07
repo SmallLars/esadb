@@ -153,16 +153,29 @@ public class Target extends JPanel implements LineListener {
 		}
 
 		g2.setFont(new Font("Arial", Font.BOLD, target.getFontSize()));
-		int dy = g2.getFontMetrics().getAscent() / 2;
-		int dx = (int) (g2.getFontMetrics().getStringBounds("0", g2).getWidth() / -2) + 1;
-		for (int i = target.getValue(TargetValue.RING_MIN); target.drawNumber(i); i++) {
-			g2.setColor(target.blackNumber(i) ? Color.BLACK : Color.WHITE);
-			String s = "" + i;
-			r = target.getNumberRadius(i);
-			g2.drawString(s, mitte - r + dx, mitte + dy);	// Links
-			g2.drawString(s, mitte + dx, mitte - r + dy);	// Oben
-			g2.drawString(s, mitte + r + dx , mitte + dy);	// Rechts
-			g2.drawString(s, mitte + dx, mitte + r + dy);	// Unten
+		if (target.getValue(TargetValue.NUM_ANGLE) == 0) {
+			int dy = g2.getFontMetrics().getAscent() / 2 - 2;
+			for (int i = target.getValue(TargetValue.RING_MIN); target.drawNumber(i); i++) {
+				int dx = (int) (g2.getFontMetrics().getStringBounds("" + i, g2).getWidth() / -2) + 2;
+				g2.setColor(target.blackNumber(i) ? Color.BLACK : Color.WHITE);
+				String s = "" + i;
+				r = target.getNumberRadius(i);
+				g2.drawString(s, mitte - r + dx, mitte + dy);	// Links
+				g2.drawString(s, mitte + dx, mitte - r + dy);	// Oben
+				g2.drawString(s, mitte + r + dx , mitte + dy);	// Rechts
+				g2.drawString(s, mitte + dx, mitte + r + dy);	// Unten
+			}
+		} else {
+			for (int w = 0; w < 4; w++) {
+				Graphics2D gn = (Graphics2D) g2.create();
+				gn.rotate(Math.PI / 4 + Math.PI / 2 * w, mitte, mitte);
+				int dy = gn.getFontMetrics().getAscent() / 2 - 2;
+				for (int i = target.getValue(TargetValue.RING_MIN); target.drawNumber(i); i++) {
+					int dx = (int) (gn.getFontMetrics().getStringBounds("" + i, gn).getWidth() / -2) + 2;
+					gn.setColor(target.blackNumber(i) ? Color.BLACK : Color.WHITE);
+					gn.drawString("" + i, mitte + dx, mitte - target.getNumberRadius(i) + dy);
+				}
+			}
 		}
 
 		for (int i = 1; single != null; i++) {

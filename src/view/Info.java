@@ -64,7 +64,7 @@ public class Info extends JDialog implements ActionListener {
 		});
 		contentPanel.add(lblSource);
 		
-		JLabel lblAuthor = new JLabel("Copyright © 2015-2016 Lars Schmertmann.");
+		JLabel lblAuthor = new JLabel("Copyright Â© 2015-2016 Lars Schmertmann.");
 		lblAuthor.setBounds(10, 50, 280, 20);
 		contentPanel.add(lblAuthor);
 
@@ -80,7 +80,7 @@ public class Info extends JDialog implements ActionListener {
 		buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		getContentPane().add(buttonPane, BorderLayout.SOUTH);
 
-		JButton cancelButton = new JButton("Schließen");
+		JButton cancelButton = new JButton("SchlieÃŸen");
 		cancelButton.setActionCommand("CANCEL");
 		cancelButton.addActionListener(this);
 		buttonPane.add(cancelButton);

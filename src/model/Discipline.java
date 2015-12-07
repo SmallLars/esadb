@@ -10,12 +10,12 @@ public class Discipline implements Serializable, Comparable<Discipline> {
 	private int id;
 	private String name;			// Bezeichnung der Disziplin
 	private int wertung;			// 0=Ringwertung, 1=Zehntelwertung
-	private int schusszahl;			// Anzahl der Schüsse im Match
-	private int schiesszeit;		// Zeit in Minuten für die Schüsse im Match
+	private int schusszahl;			// Anzahl der SchÃ¼sse im Match
+	private int schiesszeit;		// Zeit in Minuten fÃ¼r die SchÃ¼sse im Match
 	private int stellungsanzahl;	// Anzahl der Stellungen
-	private int probeschuesse;		// Anzahl der Probeschüsse (-1 = beliebig viele)
-	private int probezeit;			// Zeit für Probeschüsse (-1 = ist in der Matchzeit enthalten)
-	private int serienlaenge;		// Gibt die Länge der Serien an
+	private int probeschuesse;		// Anzahl der Probeschï¿½sse (-1 = beliebig viele)
+	private int probezeit;			// Zeit fÃ¼r ProbeschÃ¼sse (-1 = ist in der Matchzeit enthalten)
+	private int serienlaenge;		// Gibt die LÃ¤nge der Serien an
 	private Rule regel;
 
 	public Discipline(Row disziplin, Rule regel) {

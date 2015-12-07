@@ -71,7 +71,7 @@ public class GUI extends JFrame implements ActionListener {
 	private JFileChooser fc;
 
 	public GUI(Controller controller, int linienCount) {
-		super("ESADB - Datenbank für ESA 2002 - " + controller.getFile().getName());
+		super("ESADB - Datenbank fÃ¼r ESA 2002 - " + controller.getFile().getName());
 		setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/esadb.png")));
 		addWindowListener(new WindowAdapter() {
 			@Override
@@ -97,7 +97,7 @@ public class GUI extends JFrame implements ActionListener {
 			mntmNeu.addActionListener(this);
 			mnDatei.add(mntmNeu);
 
-			mntmLaden = new JMenuItem("Öffnen...");
+			mntmLaden = new JMenuItem("Ã–ffnen...");
 			mntmLaden.setActionCommand("OPEN");
 			mntmLaden.addActionListener(this);
 			mnDatei.add(mntmLaden);
@@ -160,7 +160,7 @@ public class GUI extends JFrame implements ActionListener {
 		JMenu mnStammdaten = new JMenu("Stammdaten");
 		menuBar.add(mnStammdaten);
 
-			mntmSchtzen = new JMenuItem("Schützen...");
+			mntmSchtzen = new JMenuItem("SchÃ¼tzen...");
 			mntmSchtzen.setActionCommand("SCHUETZEN");
 			mntmSchtzen.addActionListener(this);
 			mnStammdaten.add(mntmSchtzen);
@@ -208,7 +208,7 @@ public class GUI extends JFrame implements ActionListener {
 		lblPm.setBounds(136, 8, 56, 14);
 		contentPane.add(lblPm);
 
-		JLabel lblSchtze = new JLabel("Schütze");
+		JLabel lblSchtze = new JLabel("SchÃ¼tze");
 		lblSchtze.setBounds(197, 8, 46, 14);
 		contentPane.add(lblSchtze);
 		
@@ -317,7 +317,7 @@ public class GUI extends JFrame implements ActionListener {
 					File file = checkPath(fc.getSelectedFile());
 					if (file == null) return;
 					controller.neu(file);
-					setTitle("ESADB - Datenbank für ESA 2002 - " + controller.getFile().getName());
+					setTitle("ESADB - Datenbank fÃ¼r ESA 2002 - " + controller.getFile().getName());
 					println("Neu: " + file.getPath() + ".", style);
 				}
 				break;
@@ -334,11 +334,11 @@ public class GUI extends JFrame implements ActionListener {
 					File file = fc.getSelectedFile();
 					if (file.exists()) {
 						controller.load(file);
-						setTitle("ESADB - Datenbank für ESA 2002 - " + controller.getFile().getName());
-						println("Öffnen: " + file.getPath() + ".", style);
+						setTitle("ESADB - Datenbank fï¿½r ESA 2002 - " + controller.getFile().getName());
+						println("ï¿½ffnen: " + file.getPath() + ".", style);
 					} else {
 						JOptionPane.showMessageDialog(	this,
-														"Die gewählte Datei existiert nicht.",
+														"Die gewÃ¤hlte Datei existiert nicht.",
 														"Fehler",
 														JOptionPane.WARNING_MESSAGE);
 					}
@@ -350,7 +350,7 @@ public class GUI extends JFrame implements ActionListener {
 					File file = checkPath(fc.getSelectedFile());
 					if (file == null) return;
 					controller.save(file);
-					setTitle("ESADB - Datenbank für ESA 2002 - " + controller.getFile().getName());
+					setTitle("ESADB - Datenbank fÃ¼r ESA 2002 - " + controller.getFile().getName());
 					println("Speichern: " + file.getPath() + ".", style);
 				}
 				break;
@@ -457,7 +457,7 @@ public class GUI extends JFrame implements ActionListener {
 		file = new File(name);
 		if (file.exists()) {
 			int v = JOptionPane.showConfirmDialog(	this,
-													"Soll die gewählte Datei wirklich überschrieben werden?",
+													"Soll die gewÃ¤hlte Datei wirklich Ã¼berschrieben werden?",
 													"Warnung",
 													JOptionPane.YES_NO_OPTION,
 													JOptionPane.WARNING_MESSAGE);

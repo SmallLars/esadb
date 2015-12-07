@@ -66,14 +66,14 @@ public class Line extends JPanel implements LineListener {
 					if (s == null || d == null) {
 						sperre.setSelected(false);
 						JOptionPane.showMessageDialog(	null,
-								"Ein Sperren der Linie ist erst nach Auswahl eines Schützen und einer Disziplin möglich.",
+								"Ein Sperren der Linie ist erst nach Auswahl eines Schï¿½tzen und einer Disziplin mÃ¶glich.",
 								"Fehler",
 								JOptionPane.WARNING_MESSAGE);
 					} else {
 						Single e = linie.configure(s, d);
 						if (e != null) {
 							int answer = JOptionPane.showConfirmDialog(	null,
-									"Der Schütze ist in dieser Disziplin bereits einmal gestartet ohne den Wettkampf abzuschließen. Soll der Wettkampf fortgesetzt werden?",
+									"Der SchÃ¼tze ist in dieser Disziplin bereits einmal gestartet ohne den Wettkampf abzuschlieï¿½en. Soll der Wettkampf fortgesetzt werden?",
 									"Information",
 									JOptionPane.YES_NO_OPTION);
 							if (answer == JOptionPane.NO_OPTION) {

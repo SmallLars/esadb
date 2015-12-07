@@ -166,7 +166,7 @@ public class HitCreate extends JPanel implements MouseWheelListener, KeyListener
 		component_W.getDocument().addDocumentListener(this);
 		component_W.getDocument().putProperty("FIELD", component_W);
 		
-		JLabel label_2 = new JLabel("\u00B0");
+		JLabel label_2 = new JLabel("Â°");
 		label_2.setBounds(234, 51, 26, 16);
 		panel.add(label_2);
 		component_W.addFocusListener(this);
@@ -398,7 +398,7 @@ public class HitCreate extends JPanel implements MouseWheelListener, KeyListener
 		double d;
 		try {
 			d = format.parse(component_V.getText()).doubleValue();
-			//Prüfen, ob eine Änderung des Radius notwendig ist:
+			//Prï¿½fen, ob eine ï¿½nderung des Radius notwendig ist:
 			double d2 = typ.getValuebyRadius(format.parse(component_R.getText()).doubleValue() * 100);
 			if (Math.abs(d - d2) < 0.01) return;			
 		} catch (ParseException e) {

@@ -59,7 +59,7 @@ public class Settings extends JDialog {
 		buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		getContentPane().add(buttonPane, BorderLayout.SOUTH);
 
-		JButton closeButton = new JButton("Schließen");
+		JButton closeButton = new JButton("SchlieÃŸen");
 		closeButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {close();}
@@ -70,7 +70,7 @@ public class Settings extends JDialog {
 
 	private void close() {
 		JOptionPane.showMessageDialog(	this,
-										"Um die Änderung zu übernehmen ist ein Neustart des Programms erforderlich.",
+										"Um die Ã„nderung zu Ã¼bernehmen ist ein Neustart des Programms erforderlich.",
 										"Neustart erforderlich",
 										JOptionPane.INFORMATION_MESSAGE);
 

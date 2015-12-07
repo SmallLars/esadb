@@ -89,26 +89,26 @@ public class SettingsTargets extends JPanel implements ActionListener, ChangeLis
 		text_name = addJTextField(this, X[0], Y[0] + 0 * Y[1], 170, "Name");
 		text_number = addJTextField(this, X[0] + 190, Y[0] + 0 * Y[1], 80, "Kennnummer");
 
-		spinner_size = addJSpinner(this, X[0], Y[0] + 1 * Y[1], "Kartongröße", "mm");
+		spinner_size = addJSpinner(this, X[0], Y[0] + 1 * Y[1], "KartongrÃ¶ÃŸe", "mm");
 		spinner_feed = addJSpinner(this, X[0] + X[1], Y[0] + 1 * Y[1], "Bandvorschub", "");
 
-		spinner_dia_outside = addJSpinner(this, X[0], Y[0] + 2 * Y[1], "Ø Aussen", "mm");
+		spinner_dia_outside = addJSpinner(this, X[0], Y[0] + 2 * Y[1], "Ã˜ Aussen", "mm");
 		spinner_ring_width = addJSpinner(this, X[0] + X[1], Y[0] + 2 * Y[1], "Ringbreite", "mm");
 
-		spinner_dia_black = addJSpinner(this, X[0], Y[0] + 3 * Y[1], "Ø Spiegel", "mm");
-		spinner_dia_inner_ten = addJSpinner(this, X[0] + X[1], Y[0] + 3 * Y[1], "Ø Innenzehn", "mm");
+		spinner_dia_black = addJSpinner(this, X[0], Y[0] + 3 * Y[1], "Ã˜ Spiegel", "mm");
+		spinner_dia_inner_ten = addJSpinner(this, X[0] + X[1], Y[0] + 3 * Y[1], "Ã˜ Innenzehn", "mm");
 		
 		spinner_ring_min = addJSpinner(this, X[0], Y[0] + 4 * Y[1], "Kleinster Ring", "");
-		spinner_ring_max = addJSpinner(this, X[0] + X[1], Y[0] + 4 * Y[1], "Größter Ring", "");
+		spinner_ring_max = addJSpinner(this, X[0] + X[1], Y[0] + 4 * Y[1], "GrÃ¶ÃŸter Ring", "");
 
-		spinner_num_max = addJSpinner(this, X[0], Y[0] + 5 * Y[1], "Größte Ringzahl", "");
-		comboBox_ring_angle = addJComboBox(this, X[0] + X[1], Y[0] + 5 * Y[1], "Winkel Ringzahlen", "°", TargetAngle.values());
+		spinner_num_max = addJSpinner(this, X[0], Y[0] + 5 * Y[1], "GrÃ¶ÃŸte Ringzahl", "");
+		comboBox_ring_angle = addJComboBox(this, X[0] + X[1], Y[0] + 5 * Y[1], "Winkel Ringzahlen", "Â°", TargetAngle.values());
 		((JLabel) comboBox_ring_angle.getRenderer()).setHorizontalAlignment(JLabel.RIGHT);
 
 		comboBox_typ = addJComboBox(this, X[0], Y[0] + 6 * Y[1], "Scheibenart", "", TargetType.values());
-		comboBox_style = addJComboBox(this, X[0] + X[1], Y[0] + 6 * Y[1], "Ausgefüllter Ring", "", TargetFill.values());
+		comboBox_style = addJComboBox(this, X[0] + X[1], Y[0] + 6 * Y[1], "AusgefÃ¼llter Ring", "", TargetFill.values());
 	
-		spinner_vorhaltediameter = addJSpinner(this, X[0], Y[0] + 7 * Y[1], "Ø Vorhaltespiegel", "mm");
+		spinner_vorhaltediameter = addJSpinner(this, X[0], Y[0] + 7 * Y[1], "Ã˜ Vorhaltespiegel", "mm");
 		spinner_vorhalteabstand =  addJSpinner(this, X[0] + X[1], Y[0] + 7 * Y[1], "Vorhalteabstand", "mm");
 		
 		updateDisplay();

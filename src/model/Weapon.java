@@ -45,15 +45,15 @@ public class Weapon implements Serializable {
 			writer.println("\">KennNummer\"");                                         // Kennnummer der Waffe nach DSB oder DJV
 			writer.println(String.format("\"%02d\"", kennnummer));
 
-			writer.println("\">AnzeigeGeschossRadius\"");                              // Radius in 1/100 mm für die Darstellung auf der Scheibe
+			writer.println("\">AnzeigeGeschossRadius\"");                              // Radius in 1/100 mm fÃ¼r die Darstellung auf der Scheibe
 			writer.println(String.format("\"%d\"", getRadius()));                      // Ist in der Disziplin beim Punkt Wertungsradius -1 eingetragen, so
 			                                                                           // wird dieser Wert als Wertungsradius benutzt.
 
 			writer.println("\">GeschossDurchmesser\"");                                // Geschoss-Durchmesser in Millimeter.
-			writer.println(String.format("\"%s\"", getDurchmesser(Unit.MM)));       // Informativer Wert
+			writer.println(String.format("\"%s\"", getDurchmesser(Unit.MM)));          // Informativer Wert
 
 			writer.println("\">KaliberDurchmesser\"");                                 // Angabe des Geschoss-Durchmessers in Kaliberwerten.
-			writer.println(String.format("\"%s\"", getDurchmesser(Unit.INCH)));     // Informativer Wert
+			writer.println(String.format("\"%s\"", getDurchmesser(Unit.INCH)));        // Informativer Wert
 
 			writer.println("\">Mikofoneinstellung\"");                                 // Einstellung der Mikrofonempfindlichkeit, die gesetzt wird,
 			writer.println(String.format("\"%d\"", mikofoneinstellung));               // wenn der Autosensor aktiviert ist (Kapitel 2, Punkt 2 c)

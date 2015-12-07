@@ -86,7 +86,7 @@ public class SettingsLines extends JPanel {
 		this.add(spinner);
 		spinner.setEditor(new JSpinner.DefaultEditor(spinner));
 		
-		JButton btnEinfgen = new JButton("Einfügen");
+		JButton btnEinfgen = new JButton("EinfÃ¼gen");
 		btnEinfgen.setBounds(133, 54, 91, 23);
 		this.add(btnEinfgen);
 		btnEinfgen.addActionListener(new ActionListener() {
@@ -105,7 +105,7 @@ public class SettingsLines extends JPanel {
 			}
 		});
 
-		JButton btnLschen = new JButton("Löschen");
+		JButton btnLschen = new JButton("LÃ¶schen");
 		btnLschen.setBounds(133, 116, 91, 23);
 		this.add(btnLschen);
 

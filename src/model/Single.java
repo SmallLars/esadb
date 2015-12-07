@@ -69,7 +69,7 @@ public class Single extends Start implements Printable {
 		return schuetze;
 	}
 
-	// Rückgabe > 0 falls Treffernummer korrigiert wurde. Dann ist Rückgabe alte Treffernummer. Update der Linie erforderlich.
+	// RÃ¼ckgabe > 0 falls Treffernummer korrigiert wurde. Dann ist RÃ¼ckgabe alte Treffernummer. Update der Linie erforderlich.
 	public int addTreffer(Hit t) {
 		int next = getNextNum(t.isProbe());
 		if (t.getNummer() == next) {
@@ -184,7 +184,7 @@ public class Single extends Start implements Printable {
 		c = (int) (e.getResult(false) * 10) - (int) (getResult(false) * 10);
 		if (c != 0) return c;
 		
-		// 2. Serien rückwärts vergleichen
+		// 2. Serien rÃ¼ckwÃ¤rts vergleichen
 		for (int i = disziplin.getSerienAnzahl() - 1; i >=0; i--) {
 			c = (int) (e.getSerie(false, i) * 10) - (int) (getSerie(false, i) * 10);
 			if (c != 0) return c;
@@ -192,13 +192,13 @@ public class Single extends Start implements Printable {
 
 		int[] count = e.getNumberCount(false);
 		int[] mycount = getNumberCount(false);
-		// 3. Höchste Zahl der 10er, dann 9er, .... dann 1er
+		// 3. HÃ¶chste Zahl der 10er, dann 9er, .... dann 1er
 		for (int i = 10; i >=0; i--) {
 			c = count[i] - mycount[i];
 			if (c != 0) return c;
 		}
 
-		// 4. Höchste Zahl der InnenZehner (5 mm durchmesser)
+		// 4. HÃ¶chste Zahl der InnenZehner (5 mm durchmesser)
 		return count[11] - mycount[11];
 	}
 
@@ -214,7 +214,7 @@ public class Single extends Start implements Printable {
 		g2.setFont(new Font("Consolas", Font.PLAIN, 48));
 		final int lineHeight = g2.getFontMetrics().getHeight();
 
-		// Überschriften
+		// Ãœberschriften
 		g2.drawString("Linie " + linie, 0, lineHeight);
 		drawStringCenter(g2, Controller.getFileName(), 1000, lineHeight);
 		SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
@@ -241,23 +241,23 @@ public class Single extends Start implements Printable {
 		}
 		g2.translate(0, scheibenSize + 1.5 * lineHeight);
 
-		// Überschrift falls Probe und Match
+		// Ãœberschrift falls Probe und Match
 		if (print == BOTH) {
 			drawHeadline(g2, lineHeight, "Probe:");
 		}
 
-		// Probeschüsse
+		// ProbeschÃ¼sse
 		if (print != MATCH) {
 			drawValues(g2, lineHeight, true);
 			drawNumberCountTable(g2, lineHeight, true);
 		}
 
-		// Überschrift falls Probe und Match
+		// Ãœberschrift falls Probe und Match
 		if (print == BOTH) {
 			drawHeadline(g2, lineHeight, "Match:");
 		}
 
-		// Wertungsschüsse
+		// WertungsschÃ¼sse
 		if (print != PROBE) {
 			drawValues(g2, lineHeight,false);
 			drawNumberCountTable(g2, lineHeight, false);
@@ -297,7 +297,7 @@ public class Single extends Start implements Printable {
 				if (wert >= 0) {
 					drawStringRight(g, "" + String.format(format, wert), 450 + (t % 10) * 150, 0);
 				}
-				// Falls der Nächste nicht existiert -> Abbruch
+				// Falls der NÃ¤chste nicht existiert -> Abbruch
 				if (getValue(probe, i * disziplin.getSerienlaenge() + t + 1) == -1) {
 					run = false;
 				}

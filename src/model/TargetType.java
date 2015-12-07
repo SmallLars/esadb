@@ -2,12 +2,12 @@ package model;
 
 public enum TargetType {
 	RING(0, "Ringscheibe"),
-    Klapp(1, "Trefferzonenscheibe mit Klappscheibensteuerung"),
-    JAGD(2, "Trefferzonenscheibe / Jagdscheibe"),
-    WEIﬂ(3, "Ringscheibe mit weiﬂem Zehner und schwarzer Schrift"),
-    PA25PC(4, "Ringscheibe mit PA25PC - Modul"),
-    INVERS(5, "Inverse Ringscheibe"),
-    DOPPELSAU(6, "Trefferzonenscheibe mit Doppelsau");
+	Klapp(1, "Trefferzonenscheibe mit Klappscheibensteuerung"),
+	JAGD(2, "Trefferzonenscheibe / Jagdscheibe"),
+	WEI√ü(3, "Ringscheibe mit wei√üem Zehner und schwarzer Schrift"),
+	PA25PC(4, "Ringscheibe mit PA25PC - Modul"),
+	INVERS(5, "Inverse Ringscheibe"),
+	DOPPELSAU(6, "Trefferzonenscheibe mit Doppelsau");
 
 	private int value;
 	private String name;

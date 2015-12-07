@@ -95,7 +95,7 @@ public class HitAdd extends JDialog implements ComponentListener, ListSelectionL
 		table_1.getSelectionModel().addListSelectionListener(this);
 		scrollPane_1.setViewportView(table_1);
 
-		cancelButton = new JButton("Schlieﬂen");
+		cancelButton = new JButton("Schlie√üen");
 		cancelButton.setBounds(599, 439, 100, 23);
 		cancelButton.setActionCommand("CANCEL");
 		cancelButton.addActionListener(this);

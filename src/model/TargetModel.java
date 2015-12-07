@@ -26,7 +26,7 @@ public class TargetModel implements Serializable {
 	
 	private int winkel;
 	private int art;
-	private int style;           // 0 => Zehn und Innenzehn: Ringe       1=> Innezehn ausgefüllt    2=>     Zehn ausgefüllt, Innenzehn irrelevant 
+	private int style;           // 0 => Zehn und Innenzehn: Ringe       1=> Innezehn ausgefÃ¼llt    2=>     Zehn ausgefÃ¼llt, Innenzehn irrelevant 
 	private int vorhaltedia;
 	private int vorhalteabstand;
 
@@ -144,7 +144,7 @@ public class TargetModel implements Serializable {
 			writer.println(String.format("\"%d\"", art));
 			                                                                   // 1 => Trefferzonenscheibe mit Klappscheibensteuerung
 			                                                                   // 2 => Trefferzonenscheibe / Jagdscheibe
-			                                                                   // 3 => Ringscheibe mit weißem Zehner und schwarzer Schrift
+			                                                                   // 3 => Ringscheibe mit weiÃŸem Zehner und schwarzer Schrift
 			                                                                   // 4 => Ringscheibe mit PA25PC - Modul
 			                                                                   // 5 => Inverse Ringscheibe
 			                                                                   // 6 => Trefferzonenscheibe mit Doppelsau
@@ -159,15 +159,15 @@ public class TargetModel implements Serializable {
 
 			writer.println("\">ZehnerRadius\"");                               // Radius des 10. Rings in 1/100 mm
 			writer.println(String.format("\"%d\"", getRingRadius(10)));
-			writer.println("\">ZehnerRingStyle\"");                            // Gibt die Optik des Zehnerrings vor, 0=ausgefüllt, 1=Ring
+			writer.println("\">ZehnerRingStyle\"");                            // Gibt die Optik des Zehnerrings vor, 0=ausgefÃ¼llt, 1=Ring
 			writer.println(style >= 2 ? "\"0\"": "\"1\"");
 
 			writer.println("\">InnenZehnerRadius\"");                          // Radius des Innenzehners in 1/100mm
 			writer.println(String.format("\"%d\"", dia_innenzehn / 2));
-			writer.println("\">InnenZehnerRingStyle\"");                       // Gibt die Optik des Innenzehnerrings vor, 0=ausgefüllt, 1=Ring
+			writer.println("\">InnenZehnerRingStyle\"");                       // Gibt die Optik des Innenzehnerrings vor, 0=ausgefÃ¼llt, 1=Ring
 			writer.println(style >= 1 ? "\"0\"": "\"1\"");
 
-			writer.println("\">InnenKreuzRadius\"");                           // Länge der Kreuzschenkel, zwei mal ergibt Kreuzlinien, 0=keins
+			writer.println("\">InnenKreuzRadius\"");                           // LÃ¤nge der Kreuzschenkel, zwei mal ergibt Kreuzlinien, 0=keins
 			writer.println("\"0\"");
 			writer.println("\">InnenKreuzWinkel\"");                           // Gibt an um wieviel Grad das Kreuz gedreht ist
 			writer.println("\"0\"");
@@ -182,7 +182,7 @@ public class TargetModel implements Serializable {
 
 			writer.println("\">RingMin\"");                                    // Nummer des kleinsten dargestellten Rings
 			writer.println(String.format("\"%d\"", min_ring));
-			writer.println("\">RingMax\"");                                    // Nummer des größten dargestellten Rings
+			writer.println("\">RingMax\"");                                    // Nummer des grÃ¶ÃŸten dargestellten Rings
 			writer.println(String.format("\"%d\"", max_number));
 
 			writer.println("\">RingAnzahl\"");                                 // Anzahl der abgebildeten Ringe
@@ -193,13 +193,13 @@ public class TargetModel implements Serializable {
 
 			writer.println("\">KartonBreite\"");                               // Breite des Scheibenkartons
 			writer.println(String.format("\"%d\"", karton));
-			writer.println("\">KartonHoehe\"");                                // Höhe des Scheibenkartons
+			writer.println("\">KartonHoehe\"");                                // HÃ¶he des Scheibenkartons
 			writer.println(String.format("\"%d\"", karton));
 
-			writer.println("\">Probe\"");                                      // Anzahl der Probeschüsse eines Durchgangs, bei -1 keine Probe,
+			writer.println("\">Probe\"");                                      // Anzahl der ProbeschÃ¼sse eines Durchgangs, bei -1 keine Probe,
 			writer.println("\"-1\"");                                          // bei 0 unbegrenzte Probe, an sonsten nach eingestellter Zahl
 
-			writer.println("\">BandVorschub\"");                               // Gibt an wie lange der Motor für den Bandvorschub läuft
+			writer.println("\">BandVorschub\"");                               // Gibt an wie lange der Motor fÃ¼r den Bandvorschub lÃ¤uft
 			writer.println(String.format("\"%d\"", bandvorschub));
 
 			writer.println("\">DateiName\"");                                  // Gibt den Namen der Datei an, unter der sie im Verzeichnis

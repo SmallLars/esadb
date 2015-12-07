@@ -61,7 +61,7 @@ public class SettingsModel implements Serializable {
 		scheiben.add(new TargetModel("Gewehr 100m",          "0.4.3.04",  55000,       5,  20000, 50000,     2500,  2500,   1, 10, 9));
 		scheiben.add(new TargetModel("Gewehr 300m",          "0.4.3.05", 130000,       0,  60000, 100000,       0,  5000,   1, 10, 9,      1,  0,    0));
 		scheiben.add(new TargetModel("Muskete",              "0.4.3.06",  55000,       5,  40000, 80000,     4000,  4000,   1, 10, 8));
-		scheiben.add(new TargetModel("Pistole - Pr‰zision",  "0.4.3.04",  55000,       5,  20000, 50000,     5000,  2500,   1, 10, 9,      0,  4,    0));
+		scheiben.add(new TargetModel("Pistole - Pr√§zision",  "0.4.3.04",  55000,       5,  20000, 50000,     5000,  2500,   1, 10, 9,      0,  4,    0));
 		scheiben.add(new TargetModel("Pistole 10m",          "0.4.3.20",  17000,       3,   5950, 15550,      500,   800,   1, 10, 8));
 		scheiben.add(new TargetModel("Pistole - Duell",      "0.4.3.22",  55000,       5,  50000, 50000,     5000,  4000,   5, 10, 9,      0,  4,    0));
 		scheiben.add(new TargetModel("Laufende Scheibe 10m", "0.4.3.40",  17000,       2,   3050,  5050,       50,   250,   1, 10, 9,      1,  0,    1,  3100,   7000));
@@ -71,8 +71,8 @@ public class SettingsModel implements Serializable {
 		waffen.add(new Weapon( 1, "Luftdruck",                  4500, Unit.MM,   1));
 		waffen.add(new Weapon( 2, "Zimmerstutzen",              4650, Unit.MM,   1));
 		waffen.add(new Weapon( 3, "Kleinkaliber",               5600, Unit.MM,   2));
-		waffen.add(new Weapon( 4, "Groﬂkalibergewehr (<=8mm)",  8000, Unit.MM,   5));
-		waffen.add(new Weapon( 5, "Groﬂkalibergewehr (>8mm)",  10000, Unit.MM,   6));
+		waffen.add(new Weapon( 4, "Gro√ükalibergewehr (<=8mm)",  8000, Unit.MM,   5));
+		waffen.add(new Weapon( 5, "Gro√ükalibergewehr (>8mm)",  10000, Unit.MM,   6));
 		waffen.add(new Weapon( 6, "Kaliber .30",                 300, Unit.INCH, 6));
 		waffen.add(new Weapon( 7, "Kaliber .32",                 320, Unit.INCH, 6));
 		waffen.add(new Weapon( 8, "Kaliber .357",                357, Unit.INCH, 6));

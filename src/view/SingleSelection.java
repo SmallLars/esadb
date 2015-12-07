@@ -131,7 +131,7 @@ public class SingleSelection extends JDialog implements ActionListener {
 		if (arg0.getActionCommand().equals("OK")) {
 			if (!chckbxProbe.isSelected() && !chckbxMatch.isSelected()) {
 				JOptionPane.showMessageDialog(	this,
-												"Probe und/oder Match muss ausgew‰hlt werden.",
+												"Probe und/oder Match muss ausgew√§hlt werden.",
 												"Fehler",
 												JOptionPane.WARNING_MESSAGE);
 				return;

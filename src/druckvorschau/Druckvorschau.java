@@ -69,7 +69,7 @@ public class Druckvorschau extends JDialog implements ActionListener {
 		lblTest.setBounds(10, 11, 224, 14);
 		panel.add(lblTest);
 		
-		JButton btnndern = new JButton("Ändern");
+		JButton btnndern = new JButton("Ã„ndern");
 		btnndern.setBounds(10, 38, 91, 23);
 		btnndern.setActionCommand("CHANGE");
 		btnndern.addActionListener(this);

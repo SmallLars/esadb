@@ -45,7 +45,7 @@ public class Rule  implements Serializable {
 		int zehnerRadius = scheibe.getRingRadius(10);
 		int geschossRadius = waffe.getRadius();
 
-		// Berechnung für < 1
+		// Berechnung fÃ¼r < 1
 		if (radius > aussenRadius + geschossRadius) {
 			return 0f;
 		}
@@ -57,7 +57,7 @@ public class Rule  implements Serializable {
 			return 10f + v;
 		}
 
-		// Berechnung für >=1 && < 10,0
+		// Berechnung fÃ¼r >=1 && < 10,0
 		float v = (int) (((aussenRadius - radius + geschossRadius) * 90) / (aussenRadius - zehnerRadius)) / 10f;
 		return 1f + v;
 	}

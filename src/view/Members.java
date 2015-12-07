@@ -50,7 +50,7 @@ public class Members extends JDialog implements ComponentListener, ActionListene
 	private JButton cancelButton;
 
 	public Members(Frame parent, Controller controller) {
-		super(parent, "Sch¸tzen");
+		super(parent, "Sch√ºtzen");
 
 		this.controller = controller;
 		schuetzen = KampfDB.getAllSchuetzen();
@@ -106,7 +106,7 @@ public class Members extends JDialog implements ComponentListener, ActionListene
 		comboBox.addActionListener(this);
 		getContentPane().add(comboBox);
 
-		cancelButton = new JButton("Schlieﬂen");
+		cancelButton = new JButton("Schlie√üen");
 		cancelButton.setBounds(660, 439, 100, 23);
 		cancelButton.setActionCommand("CANCEL");
 		cancelButton.addActionListener(this);

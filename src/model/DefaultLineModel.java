@@ -172,7 +172,7 @@ public class DefaultLineModel implements LineModel, LineReader, ActionListener {
 		StyleConstants.setForeground(style, Color.decode("0x0050A0"));
 
 		if (einzel == null) {
-			controller.println(this + ": Schuﬂ von freier Linie erhalten. Zuordnung nicht mˆglich.", style);
+			controller.println(this + ": Schu√ü von freier Linie erhalten. Zuordnung nicht m√∂glich.", style);
 			return false;
 		}
 

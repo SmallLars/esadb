@@ -2,6 +2,7 @@ package controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
@@ -50,7 +51,7 @@ public class KampfDB {
 					Discipline d = new Discipline(row, regel);
 					set.add(d);
 				} else {
-				  System.out.println("Keine Waffengattung für " + (String) row.get("Bezeichnung") + " definiert. Disziplin wird ignoriert.");
+				  System.out.println("Keine Waffengattung fÃ¼r " + (String) row.get("Bezeichnung") + " definiert. Disziplin wird ignoriert.");
 				}
 			}
 			db.close();
@@ -96,6 +97,7 @@ public class KampfDB {
 		DatabaseBuilder dbb = new DatabaseBuilder();
 		dbb.setReadOnly(true);
 		dbb.setFile(new File(filename));
+		dbb.setCharset(Charset.forName("ISO-8859-1"));
 		return dbb.open();
 	}
 }

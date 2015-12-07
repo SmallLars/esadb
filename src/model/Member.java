@@ -10,21 +10,21 @@ public class Member implements Serializable, Comparable<Member> {
 	private static final long serialVersionUID = 1L;
 
 	public int wettkampfID;			// Identifikationsnummer des Wettkampf
-	public String passnummer;		// Passnumer des Schützen
-	public String nachname;			// Nachname des Schützen
-	public String vorname;			// Vorname des Schützen
+	public String passnummer;		// Passnumer des SchÃ¼tzen
+	public String nachname;			// Nachname des SchÃ¼tzen
+	public String vorname;			// Vorname des SchÃ¼tzen
 	public String titelname;		// Bezeichnung in der Titelleiste
-	public Date geburtsdatum;		// Geburtsdatum des Schützen
-	public String geschlecht;		// -1 für männlich, 0 für weiblich
-	public short startnummer;		// Startnummer des Schützen
+	public Date geburtsdatum;		// Geburtsdatum des SchÃ¼tzen
+	public String geschlecht;		// -1 fÃ¼r mÃ¤nnlich, 0 fÃ¼r weiblich
+	public short startnummer;		// Startnummer des SchÃ¼tzen
 	public int vereinsnummer;		// Identifikationsnummer des Vereins
 
 	public Member() {
 		wettkampfID = 0;
 		passnummer = "0000000-0000";
-		nachname = "Demoschütz";
+		nachname = "Demoschï¿½tz";
 		vorname = "Hugo";
-		titelname = "Demoschütz, Hugo";
+		titelname = "DemoschÃ¼tz, Hugo";
 		Calendar cal = Calendar.getInstance();
 		cal.set(2000, Calendar.JANUARY, 1); 
 		geburtsdatum = cal.getTime();

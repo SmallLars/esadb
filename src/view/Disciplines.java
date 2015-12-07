@@ -62,7 +62,7 @@ public class Disciplines extends JDialog implements ActionListener {
 		lblSchusszahl.setBounds(10, 86, 422, 14);
 		contentPanel.add(lblSchusszahl);
 		
-		lblSerienlaenge = new JLabel("Serienl‰nge");
+		lblSerienlaenge = new JLabel("Serienl√§nge");
 		lblSerienlaenge.setBounds(10, 111, 422, 14);
 		contentPanel.add(lblSerienlaenge);
 		
@@ -84,7 +84,7 @@ public class Disciplines extends JDialog implements ActionListener {
 		buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		getContentPane().add(buttonPane, BorderLayout.SOUTH);
 
-		JButton cancelButton = new JButton("Schlieﬂen");
+		JButton cancelButton = new JButton("Schlie√üen");
 		cancelButton.setActionCommand("CANCEL");
 		cancelButton.addActionListener(this);
 		buttonPane.add(cancelButton);
@@ -101,22 +101,22 @@ public class Disciplines extends JDialog implements ActionListener {
 				lblName.setText(d.toString());
 				lblWertung.setText(d.getWertung() == 0 ? "Ringwertung" : "Zehntelwertung");
 				if (d.getProbezeit() > 0) {
-					lblZeit.setText(String.format("Zeit f¸r Probe: %d Minuten, Zeit f¸r Wertung: %d Minuten.", d.getProbezeit(), d.getSchiesszeit()));
+					lblZeit.setText(String.format("Zeit f√ºr Probe: %d Minuten, Zeit f√ºr Wertung: %d Minuten.", d.getProbezeit(), d.getSchiesszeit()));
 				} else {
-					lblZeit.setText(String.format("Zeit f¸r den Wettkampf: %d Minuten.", d.getSchiesszeit()));
+					lblZeit.setText(String.format("Zeit f√ºr den Wettkampf: %d Minuten.", d.getSchiesszeit()));
 				}
 				String anzahl = "";
 				if (d.getProbezeit() >= 0) {
 					if (d.getProbeschuesse() == 0) anzahl = "Probe: beliebig, ";
-					else anzahl = String.format("Probe: %d Schuﬂ, ", d.getProbeschuesse());
+					else anzahl = String.format("Probe: %d Schu√ü, ", d.getProbeschuesse());
 				}
 				if (d.getStellungsanzahl() == 1) {
-					anzahl = anzahl.concat(String.format("Wertung: %d Schuﬂ.", d.getSchusszahl()));
+					anzahl = anzahl.concat(String.format("Wertung: %d Schu√ü.", d.getSchusszahl()));
 				} else {
-					anzahl = anzahl.concat(String.format("Wertung: %d Mal %d Schuﬂ.", d.getStellungsanzahl(), d.getSchusszahl() / d.getStellungsanzahl()));
+					anzahl = anzahl.concat(String.format("Wertung: %d Mal %d Schu√ü.", d.getStellungsanzahl(), d.getSchusszahl() / d.getStellungsanzahl()));
 				}
 				lblSchusszahl.setText(anzahl);
-				lblSerienlaenge.setText(String.format("Serienl‰nge: %d.", d.getSerienlaenge()));
+				lblSerienlaenge.setText(String.format("Serienl√§nge: %d.", d.getSerienlaenge()));
 				lblWaffengattung.setText("Regel: " + d.getRegel());
 				break;
 			case "CANCEL":
