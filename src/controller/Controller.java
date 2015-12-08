@@ -1,10 +1,14 @@
 package controller;
 
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontFormatException;
+import java.awt.GraphicsEnvironment;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintStream;
 import java.io.OutputStream;
 import java.net.URL;
@@ -14,6 +18,7 @@ import java.util.List;
 import java.util.Vector;
 
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 
@@ -95,6 +100,60 @@ public class Controller {
 		} else {
 			model = new Model(config);
 		}
+
+		ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+		InputStream is = classloader.getResourceAsStream("arial.ttf");
+		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+		try {
+			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, is));
+		} catch (FontFormatException | IOException e) {
+			e.printStackTrace();
+		}
+
+		Font b12 = new Font("Arial", Font.BOLD, 12);
+		Font p10 = new Font("Arial", Font.PLAIN, 10);
+		Font p12 = new Font("Arial", Font.PLAIN, 12);
+
+		UIManager.put("Label.font", b12);
+		UIManager.put("ComboBox.font", b12);
+		UIManager.put("Table.font", p12);
+		UIManager.put("InternalFrame.titleFont", b12);
+		UIManager.put("Button.font", b12);
+		UIManager.put("MenuItem.acceleratorFont", p10);
+		UIManager.put("Spinner.font", b12);
+		UIManager.put("TableHeader.font", p12);
+		UIManager.put("TextPane.font", p12);
+		UIManager.put("PasswordField.font", p12);
+		UIManager.put("ColorChooser.font", p12);
+		UIManager.put("ScrollPane.font", p12);
+		UIManager.put("Menu.acceleratorFont", p10);
+		UIManager.put("RadioButton.font", b12);
+		UIManager.put("Menu.font", b12);
+		UIManager.put("Viewport.font", p12);
+		UIManager.put("CheckBoxMenuItem.font", b12);
+		UIManager.put("DesktopIcon.font", b12);
+		UIManager.put("TextArea.font", p12);
+		UIManager.put("ToolBar.font", b12);
+		UIManager.put("Tree.font", p12);
+		UIManager.put("ToggleButton.font", b12);
+		UIManager.put("EditorPane.font", p12);
+		UIManager.put("List.font", b12);
+		UIManager.put("CheckBox.font", b12);
+		UIManager.put("MenuBar.font", b12);
+		UIManager.put("OptionPane.font", p12);
+		UIManager.put("Panel.font", p12);
+		UIManager.put("ProgressBar.font", b12);
+		UIManager.put("TabbedPane.font", b12);
+		UIManager.put("Slider.font", b12);
+		UIManager.put("TextField.font", p12);
+		UIManager.put("ToolTip.font", p12);
+		UIManager.put("FormattedTextField.font", p12);
+		UIManager.put("TitledBorder.font", b12);
+		UIManager.put("MenuItem.font", b12);
+		UIManager.put("RadioButtonMenuItem.acceleratorFont", p10);
+		UIManager.put("RadioButtonMenuItem.font", b12);
+		UIManager.put("PopupMenu.font", b12);
+		UIManager.put("CheckBoxMenuItem.acceleratorFont", p10);
 
 		fileChecker = new FileChecker(config.getLinienCount());
 		gui = new GUI(this, config.getLinienCount());
