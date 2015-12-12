@@ -101,8 +101,9 @@ public class Controller {
 			model = new Model(config);
 		}
 
+		// http://all-fonts.com/about-fonts/download-arial-font/
 		ClassLoader classloader = Thread.currentThread().getContextClassLoader();
-		InputStream is = classloader.getResourceAsStream("arial.ttf");
+		InputStream is = classloader.getResourceAsStream("Vera-Bold.ttf");
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		try {
 			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, is));
@@ -110,9 +111,10 @@ public class Controller {
 			e.printStackTrace();
 		}
 
-		Font b12 = new Font("Arial", Font.BOLD, 12);
-		Font p10 = new Font("Arial", Font.PLAIN, 10);
-		Font p12 = new Font("Arial", Font.PLAIN, 12);
+		String fontString = "Bitstream Vera Sans";
+		Font b12 = new Font(fontString, Font.BOLD, 11);
+		Font p10 = new Font(fontString, Font.PLAIN, 9);
+		Font p12 = new Font(fontString, Font.PLAIN, 11);
 
 		UIManager.put("Label.font", b12);
 		UIManager.put("ComboBox.font", b12);

@@ -94,13 +94,13 @@ public class Druckvorschau extends JDialog implements ActionListener {
 		panel.add(slider);
 		
 		JButton btnDrucken = new JButton("Drucken");
-		btnDrucken.setBounds(625, 25, 91, 23);
+		btnDrucken.setBounds(611, 25, 105, 23);
 		btnDrucken.setActionCommand("PRINT");
 		btnDrucken.addActionListener(this);
 		panel.add(btnDrucken);
 		
 		JButton btnAbbrechen = new JButton("Abbrechen");
-		btnAbbrechen.setBounds(737, 25, 100, 23);
+		btnAbbrechen.setBounds(737, 25, 105, 23);
 		btnAbbrechen.setActionCommand("CANCEL");
 		btnAbbrechen.addActionListener(this);
 		panel.add(btnAbbrechen);

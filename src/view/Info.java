@@ -33,7 +33,7 @@ public class Info extends JDialog implements ActionListener {
 		setModal(true);
 		setModalityType(ModalityType.APPLICATION_MODAL);
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-		setSize(300, 175);
+		setSize(305, 175);
 		setLocationRelativeTo(parent);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setLayout(null);
