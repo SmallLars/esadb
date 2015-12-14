@@ -113,7 +113,7 @@ public class Target extends JPanel implements LineListener {
 		g1.setColor(Color.BLACK);
 
 		if (number > 0) {
-			g1.setFont(new Font("Arial", Font.BOLD, 128));
+			g1.setFont(new Font("Bitstream Vera Sans", Font.BOLD, 128));
 			g1.drawString("" + number, 25, 25 + g1.getFontMetrics().getAscent());
 		}
 		
@@ -134,7 +134,7 @@ public class Target extends JPanel implements LineListener {
 
 		for (int i = target.getValue(TargetValue.RING_MIN); i <= target.getValue(TargetValue.RING_MAX); i++) {
 			r = target.getRingRadius(i);
-		    g2.setColor(r > target.getSpiegelRadius() ? Color.BLACK : Color.WHITE);
+		    g2.setColor(r < target.getSpiegelRadius() ? Color.WHITE : Color.BLACK);
 		    if (i == 10 && target.getValue(TargetValue.STYLE_TEN) > 1) {
 		    	g2.fillOval(mitte - r, mitte - r, 2 * r, 2 * r);
 		    } else {
@@ -152,7 +152,7 @@ public class Target extends JPanel implements LineListener {
 		    }
 		}
 
-		g2.setFont(new Font("Arial", Font.BOLD, target.getFontSize()));
+		g2.setFont(new Font("Bitstream Vera Sans", Font.BOLD, target.getFontSize()));
 		if (target.getValue(TargetValue.NUM_ANGLE) == 0) {
 			int dy = g2.getFontMetrics().getAscent() / 2 - 2;
 			for (int i = target.getValue(TargetValue.RING_MIN); target.drawNumber(i); i++) {

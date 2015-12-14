@@ -52,23 +52,40 @@ public class TargetModel implements Serializable {
 		return kennnummer;
 	}
 
-	public void setValue(TargetValue type, int value) {
+	public boolean setValue(TargetValue type, int value) {
 		switch (type) {
 			case SIZE:                   karton = value; break;
 			case FEED:             bandvorschub = value; break;
-			case DIA_BLACK:         dia_spiegel = value; break;
-			case DIA_OUTSIDE:        dia_aussen = value; break;
-			case DIA_INNER_TEN:   dia_innenzehn = value; break;
-			case RING_WIDTH:         ringbreite = value; break;
-			case RING_MIN:             min_ring = value; break;
-			case RING_MAX:             max_ring = value; break;
-			case NUM_MAX:            max_number = value; break;
+			case DIA_BLACK:
+				if (value > dia_aussen) return false;
+				dia_spiegel = value; break;
+			case DIA_OUTSIDE:
+				if (value < dia_innenzehn + 2 * (max_ring - min_ring) * ringbreite) return false;
+				dia_aussen = value; break;
+			case DIA_INNER_TEN:
+				if (dia_aussen < value + 2 * (max_ring - min_ring) * ringbreite) return false;
+				dia_innenzehn = value; break;
+			case RING_WIDTH:
+				if (dia_aussen < dia_innenzehn + 2 * (max_ring - min_ring) * value) return false;
+				ringbreite = value; break;
+			case RING_MIN:
+				if (value >= max_ring || value > max_number) return false;
+				if (dia_aussen < dia_innenzehn + 2 * (max_ring - value) * ringbreite) return false;
+				min_ring = value; break;
+			case RING_MAX:
+				if (value <= min_ring || value <= max_number) return false;
+				if (dia_aussen < dia_innenzehn + 2 * (value - min_ring) * ringbreite) return false;
+				max_ring = value; break;
+			case NUM_MAX:
+				if (value >= max_ring || value < min_ring) return false;
+				max_number = value; break;
 			case NUM_ANGLE:              winkel = value; break;
 			case TYPE:                      art = value; break;
 			case STYLE_TEN:               style = value; break;
 			case SUSP_DIA:          vorhaltedia = value; break;
 			case SUSP_DISTANCE: vorhalteabstand = value; break;
 		}
+		return true;
 	}
 
 	public int getValue(TargetValue type) {
@@ -157,8 +174,8 @@ public class TargetModel implements Serializable {
 			writer.println("\">SpiegelRadius\"");                              // Radius des Spiegels in 1/100 mm
 			writer.println(String.format("\"%d\"", dia_spiegel / 2));			
 
-			writer.println("\">ZehnerRadius\"");                               // Radius des 10. Rings in 1/100 mm
-			writer.println(String.format("\"%d\"", getRingRadius(10)));
+			writer.println("\">ZehnerRadius\"");                               // Radius des kleinsten Rings in 1/100 mm
+			writer.println(String.format("\"%d\"", getRingRadius(max_number)));
 			writer.println("\">ZehnerRingStyle\"");                            // Gibt die Optik des Zehnerrings vor, 0=ausgefüllt, 1=Ring
 			writer.println(style >= 2 ? "\"0\"": "\"1\"");
 

@@ -86,8 +86,8 @@ public class SettingsTargets extends JPanel implements ActionListener, ChangeLis
 		final int X[] = {420, 160};
 		final int Y[] = {70, 45};
 		
-		text_name = addJTextField(this, X[0], Y[0] + 0 * Y[1], 170, "Name");
-		text_number = addJTextField(this, X[0] + 190, Y[0] + 0 * Y[1], 80, "Kennnummer");
+		text_name = addJTextField(this, X[0], Y[0] + 0 * Y[1], 160, "Name");
+		text_number = addJTextField(this, X[0] + 180, Y[0] + 0 * Y[1], 90, "Kennnummer");
 
 		spinner_size = addJSpinner(this, X[0], Y[0] + 1 * Y[1], "Kartongröße", "mm");
 		spinner_feed = addJSpinner(this, X[0] + X[1], Y[0] + 1 * Y[1], "Bandvorschub", "");
@@ -144,13 +144,13 @@ public class SettingsTargets extends JPanel implements ActionListener, ChangeLis
 		target.setNumber(text_number.getText());
 		target.setValue(TargetValue.SIZE, (int) ((double) spinner_size.getValue() * 100));
 		target.setValue(TargetValue.FEED, (int) spinner_feed.getValue());
-		target.setValue(TargetValue.DIA_OUTSIDE, (int) ((double) spinner_dia_outside.getValue() * 100));
-		target.setValue(TargetValue.RING_WIDTH, (int) ((double) spinner_ring_width.getValue() * 100));
-		target.setValue(TargetValue.DIA_BLACK, (int) ((double) spinner_dia_black.getValue() * 100));
-		target.setValue(TargetValue.DIA_INNER_TEN, (int) ((double) spinner_dia_inner_ten.getValue() * 100));
-		target.setValue(TargetValue.RING_MIN, (int) spinner_ring_min.getValue());
-		target.setValue(TargetValue.RING_MAX, (int) spinner_ring_max.getValue());
-		target.setValue(TargetValue.NUM_MAX, (int) spinner_num_max.getValue());
+		if (!target.setValue(TargetValue.DIA_OUTSIDE, (int) ((double) spinner_dia_outside.getValue() * 100))) updateDisplay();
+		if (!target.setValue(TargetValue.RING_WIDTH, (int) ((double) spinner_ring_width.getValue() * 100))) updateDisplay();
+		if (!target.setValue(TargetValue.DIA_BLACK, (int) ((double) spinner_dia_black.getValue() * 100))) updateDisplay();
+		if (!target.setValue(TargetValue.DIA_INNER_TEN, (int) ((double) spinner_dia_inner_ten.getValue() * 100))) updateDisplay();
+		if (!target.setValue(TargetValue.RING_MIN, (int) spinner_ring_min.getValue())) updateDisplay();
+		if (!target.setValue(TargetValue.RING_MAX, (int) spinner_ring_max.getValue())) updateDisplay();
+		if (!target.setValue(TargetValue.NUM_MAX, (int) spinner_num_max.getValue())) updateDisplay();
 		target.setValue(TargetValue.NUM_ANGLE, comboBox_ring_angle.getSelectedIndex());
 		target.setValue(TargetValue.TYPE, comboBox_typ.getSelectedIndex());
 		target.setValue(TargetValue.STYLE_TEN, comboBox_style.getSelectedIndex());
@@ -239,7 +239,7 @@ public class SettingsTargets extends JPanel implements ActionListener, ChangeLis
 		JLabel label;
 		
 		label = new JLabel(caption);
-		label.setBounds(component.getX(), component.getY() - 20, component.getWidth() + 30, 20);
+		label.setBounds(component.getX(), component.getY() - 18, component.getWidth() + 30, 20);
 		parent.add(label);
 
 		if (unit.isEmpty()) return;
