@@ -53,39 +53,106 @@ public class TargetModel implements Serializable {
 	}
 
 	public boolean setValue(TargetValue type, int value) {
+		boolean update = false;
 		switch (type) {
 			case SIZE:                   karton = value; break;
 			case FEED:             bandvorschub = value; break;
 			case DIA_BLACK:
-				if (value > dia_aussen) return false;
-				dia_spiegel = value; break;
+				if (value > dia_aussen) {
+					dia_aussen = value;
+					update = true;
+				}
+				dia_spiegel = value;
+				break;
 			case DIA_OUTSIDE:
-				if (value < dia_innenzehn + 2 * (max_ring - min_ring) * ringbreite) return false;
-				dia_aussen = value; break;
+				if (value < dia_spiegel) {
+					dia_spiegel = value;
+					update = true;
+				}
+				if (value < dia_innenzehn + 2 * (max_ring - min_ring) * ringbreite) {
+					update = true;
+					if (max_ring - min_ring > 1) max_ring --;
+					else break;
+					if (max_number >= max_ring) max_number--;
+				}
+				dia_aussen = value;
+				break;
 			case DIA_INNER_TEN:
-				if (dia_aussen < value + 2 * (max_ring - min_ring) * ringbreite) return false;
-				dia_innenzehn = value; break;
+				if (dia_aussen < value + 2 * (max_ring - min_ring) * ringbreite) {
+					update = true;
+					if (max_ring - min_ring > 1) max_ring --;
+					else break;
+					if (max_number >= max_ring) max_number--;
+				}
+				dia_innenzehn = value;
+				break;
 			case RING_WIDTH:
-				if (dia_aussen < dia_innenzehn + 2 * (max_ring - min_ring) * value) return false;
-				ringbreite = value; break;
+				if (dia_aussen < dia_innenzehn + 2 * (max_ring - min_ring) * value) {
+					update = true;
+					if (max_ring - min_ring > 1) max_ring --;
+					else break;
+					if (max_number >= max_ring) max_number--;
+				}
+				ringbreite = value;
+				break;
 			case RING_MIN:
-				if (value >= max_ring || value > max_number) return false;
-				if (dia_aussen < dia_innenzehn + 2 * (max_ring - value) * ringbreite) return false;
-				min_ring = value; break;
+				if (value < 0) {
+					update = true;
+					break;
+				}
+				if (value >= max_ring) {
+					max_ring++;
+					update = true;
+				}
+				if (value > max_number) {
+					max_number++;
+					update = true;
+				}
+				if (dia_aussen < dia_innenzehn + 2 * (max_ring - value) * ringbreite) {
+					max_ring--;
+					if (max_number >= max_ring) max_number--;
+					update = true;
+				}
+				min_ring = value;
+				break;
 			case RING_MAX:
-				if (value <= min_ring || value <= max_number) return false;
-				if (dia_aussen < dia_innenzehn + 2 * (value - min_ring) * ringbreite) return false;
-				max_ring = value; break;
+				if (value < 1) {
+					update = true;
+					break;
+				}
+				if (value <= min_ring && min_ring > 0) {
+					min_ring--;
+					update = true;
+				}
+				if (value <= max_number && max_number > 0) {
+					max_number--;
+					update = true;
+				}
+				if (dia_aussen < dia_innenzehn + 2 * (value - min_ring) * ringbreite) {
+					min_ring++;
+					if (max_number < min_ring) max_number++;
+					update = true;
+				}
+				max_ring = value;
+				break;
 			case NUM_MAX:
-				if (value >= max_ring || value < min_ring) return false;
-				max_number = value; break;
+				if (value >= max_ring)  {
+					update = true;
+					break;
+				}
+				if (value < min_ring) {
+					update = true;
+					break;
+				}
+				max_number = value;
+				break;
 			case NUM_ANGLE:              winkel = value; break;
 			case TYPE:                      art = value; break;
 			case STYLE_TEN:               style = value; break;
 			case SUSP_DIA:          vorhaltedia = value; break;
 			case SUSP_DISTANCE: vorhalteabstand = value; break;
 		}
-		return true;
+		return update;
 	}
 
 	public int getValue(TargetValue type) {

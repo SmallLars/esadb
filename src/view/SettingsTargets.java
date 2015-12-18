@@ -34,7 +34,7 @@ import javax.swing.DefaultComboBoxModel;
 @SuppressWarnings("serial")
 public class SettingsTargets extends JPanel implements ActionListener, ChangeListener {
 
-	private boolean doUpdate = false;;
+	private boolean doUpdate = false;
 
 	private JComboBox<TargetModel> comboBox;
 	private Target scheibe;
@@ -116,6 +116,8 @@ public class SettingsTargets extends JPanel implements ActionListener, ChangeLis
 	}
 
 	private void updateDisplay() {
+		doUpdate = false;
+
 		TargetModel target = (TargetModel) comboBox.getSelectedItem();
 		scheibe.setTarget(target);
 		text_name.setText(target.toString());
@@ -134,54 +136,55 @@ public class SettingsTargets extends JPanel implements ActionListener, ChangeLis
 		comboBox_style.setSelectedIndex(target.getValue(TargetValue.STYLE_TEN));
 		spinner_vorhaltediameter.setValue(target.getValue(TargetValue.SUSP_DIA) / 100.);
 		spinner_vorhalteabstand.setValue(target.getValue(TargetValue.SUSP_DISTANCE) / 100.);
-	}
 
-	private void updateModel() {
-		if (!doUpdate) return;
-
-		TargetModel target = (TargetModel) comboBox.getSelectedItem();
-		target.setName(text_name.getText());
-		target.setNumber(text_number.getText());
-		target.setValue(TargetValue.SIZE, (int) ((double) spinner_size.getValue() * 100));
-		target.setValue(TargetValue.FEED, (int) spinner_feed.getValue());
-		if (!target.setValue(TargetValue.DIA_OUTSIDE, (int) ((double) spinner_dia_outside.getValue() * 100))) updateDisplay();
-		if (!target.setValue(TargetValue.RING_WIDTH, (int) ((double) spinner_ring_width.getValue() * 100))) updateDisplay();
-		if (!target.setValue(TargetValue.DIA_BLACK, (int) ((double) spinner_dia_black.getValue() * 100))) updateDisplay();
-		if (!target.setValue(TargetValue.DIA_INNER_TEN, (int) ((double) spinner_dia_inner_ten.getValue() * 100))) updateDisplay();
-		if (!target.setValue(TargetValue.RING_MIN, (int) spinner_ring_min.getValue())) updateDisplay();
-		if (!target.setValue(TargetValue.RING_MAX, (int) spinner_ring_max.getValue())) updateDisplay();
-		if (!target.setValue(TargetValue.NUM_MAX, (int) spinner_num_max.getValue())) updateDisplay();
-		target.setValue(TargetValue.NUM_ANGLE, comboBox_ring_angle.getSelectedIndex());
-		target.setValue(TargetValue.TYPE, comboBox_typ.getSelectedIndex());
-		target.setValue(TargetValue.STYLE_TEN, comboBox_style.getSelectedIndex());
-		target.setValue(TargetValue.SUSP_DIA, (int) ((double) spinner_vorhaltediameter.getValue() * 100));
-		target.setValue(TargetValue.SUSP_DISTANCE, (int) ((double) spinner_vorhalteabstand.getValue() * 100));		
-		scheibe.setTarget(target);
+		doUpdate = true;
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
+		if (!doUpdate) return;
+
+		TargetModel target = (TargetModel) comboBox.getSelectedItem();
 		switch (arg0.getActionCommand()) {
-			case "TYP":
-				doUpdate = false;
-				updateDisplay();
-				doUpdate = true;
-				break;
-			case "VALUE":
-				updateModel();
-				break;
+			case "TYP":               updateDisplay();                                                                break;
+			case "Name":              target.setName(text_name.getText());                                            break;
+			case "Kennnummer":        target.setNumber(text_number.getText());                                        break;
+			case "Winkel Ringzahlen": target.setValue(TargetValue.NUM_ANGLE, comboBox_ring_angle.getSelectedIndex()); break;
+			case "Scheibenart":       target.setValue(TargetValue.TYPE, comboBox_typ.getSelectedIndex());             break;
+			case "Ausgefüllter Ring": target.setValue(TargetValue.STYLE_TEN, comboBox_style.getSelectedIndex());      break;
 		}
+		scheibe.setTarget(target);
 	}
 
 	@Override
 	public void stateChanged(ChangeEvent arg0) {
-		updateModel();
+		if (!doUpdate) return;
+
+		boolean updateNeeded = false;
+		TargetModel target = (TargetModel) comboBox.getSelectedItem();
+		switch (((JSpinner) arg0.getSource()).getName()) {
+			case "Kartongröße":       updateNeeded = target.setValue(TargetValue.SIZE,          (int) ((double) spinner_size.getValue()             * 100)); break;
+			case "Bandvorschub":      updateNeeded = target.setValue(TargetValue.FEED,          (int)           spinner_feed.getValue());                    break;
+			case "Ø Aussen":          updateNeeded = target.setValue(TargetValue.DIA_OUTSIDE,   (int) ((double) spinner_dia_outside.getValue()      * 100)); break;
+			case "Ringbreite":        updateNeeded = target.setValue(TargetValue.RING_WIDTH,    (int) ((double) spinner_ring_width.getValue()       * 100)); break;
+			case "Ø Spiegel":         updateNeeded = target.setValue(TargetValue.DIA_BLACK,     (int) ((double) spinner_dia_black.getValue()        * 100)); break;
+			case "Ø Innenzehn":       updateNeeded = target.setValue(TargetValue.DIA_INNER_TEN, (int) ((double) spinner_dia_inner_ten.getValue()    * 100)); break;
+			case "Kleinster Ring":    updateNeeded = target.setValue(TargetValue.RING_MIN,      (int)           spinner_ring_min.getValue());                break;
+			case "Größter Ring":      updateNeeded = target.setValue(TargetValue.RING_MAX,      (int)           spinner_ring_max.getValue());                break;
+			case "Größte Ringzahl":   updateNeeded = target.setValue(TargetValue.NUM_MAX,       (int)           spinner_num_max.getValue());                 break;
+			case "Ø Vorhaltespiegel": updateNeeded = target.setValue(TargetValue.SUSP_DIA,      (int) ((double) spinner_vorhaltediameter.getValue() * 100)); break;
+			case "Vorhalteabstand":   updateNeeded = target.setValue(TargetValue.SUSP_DISTANCE, (int) ((double) spinner_vorhalteabstand.getValue()  * 100)); break;
+		}
+		if (updateNeeded) updateDisplay();
+		scheibe.setTarget(target);
 	}
 
 	private JTextField addJTextField(JPanel parent, int x, int y, int width, String caption) {
 		JTextField textField = new JTextField();
 		textField.setBounds(x, y, width, 20);
 		textField.setColumns(10);
+		textField.setActionCommand(caption);
+		textField.addActionListener(this);
 		parent.add(textField);
 		addCaption(textField, parent, caption, "");
 		return textField;
@@ -211,6 +214,7 @@ public class SettingsTargets extends JPanel implements ActionListener, ChangeLis
 				if (o != null) s.setValue(o);
 			}
 		});
+		spinner.setName(caption);
 		spinner.addChangeListener(this);
 		parent.add(spinner);
 		addCaption(spinner, parent, caption, unit);
@@ -228,7 +232,7 @@ public class SettingsTargets extends JPanel implements ActionListener, ChangeLis
 		};
 		comboBox.setModel(new DefaultComboBoxModel<Object>(content));
 		comboBox.setBounds(x, y, 110, 20);
-		comboBox.setActionCommand("VALUE");
+		comboBox.setActionCommand(caption);
 		comboBox.addActionListener(this);
 		parent.add(comboBox);
 		addCaption(comboBox, parent, caption, unit);

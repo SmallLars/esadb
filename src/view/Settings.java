@@ -51,6 +51,9 @@ public class Settings extends JDialog {
 		
 		JPanel oho2 = new SettingsTargets(config);
 		tabbedPane.addTab("Scheiben", oho2);
+
+		JPanel oho3 = new SettingsWeapons(config);
+		tabbedPane.addTab("Waffen", oho3);
 		
 		contentPanel.add(tabbedPane);
 

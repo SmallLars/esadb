@@ -135,7 +135,7 @@ public class Target extends JPanel implements LineListener {
 		for (int i = target.getValue(TargetValue.RING_MIN); i <= target.getValue(TargetValue.RING_MAX); i++) {
 			r = target.getRingRadius(i);
 		    g2.setColor(r < target.getSpiegelRadius() ? Color.WHITE : Color.BLACK);
-		    if (i == 10 && target.getValue(TargetValue.STYLE_TEN) > 1) {
+		    if (i == target.getValue(TargetValue.RING_MAX) && target.getValue(TargetValue.STYLE_TEN) > 1) {
 		    	g2.fillOval(mitte - r, mitte - r, 2 * r, 2 * r);
 		    } else {
 		    	g2.drawOval(mitte - r, mitte - r, r * 2, r * 2);

@@ -23,6 +23,14 @@ public class Weapon implements Serializable {
 		this.mikofoneinstellung = mikofoneinstellung;
 	}
 
+	public int getNumber() {
+		return kennnummer;
+	}
+
+	public Unit getUnit() {
+		return einheit;
+	}
+
 	public int getRadius() {
 		switch (einheit) {
 			case MM:
