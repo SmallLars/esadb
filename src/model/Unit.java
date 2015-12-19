@@ -2,7 +2,7 @@ package model;
 
 public enum Unit {
 	MM("mm"),
-	INCH("Inch");
+	INCH("inch");
 
 	private String name;
 

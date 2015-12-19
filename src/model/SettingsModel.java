@@ -68,19 +68,19 @@ public class SettingsModel implements Serializable {
 		scheiben.add(new TargetModel("Laufende Scheibe 50m", "0.4.3.41",  70000,       0,      2, 36600,     3000,  1700,   1, 10, 9,      1,  5,    0));
 
 		waffen = new Vector<Weapon>();
-		waffen.add(new Weapon( 1, "Luftdruck",                  4500, Unit.MM,   1));
-		waffen.add(new Weapon( 2, "Zimmerstutzen",              4650, Unit.MM,   1));
-		waffen.add(new Weapon( 3, "Kleinkaliber",               5600, Unit.MM,   2));
-		waffen.add(new Weapon( 4, "Großkalibergewehr (<=8mm)",  8000, Unit.MM,   5));
-		waffen.add(new Weapon( 5, "Großkalibergewehr (>8mm)",  10000, Unit.MM,   6));
-		waffen.add(new Weapon( 6, "Kaliber .30",                 300, Unit.INCH, 6));
-		waffen.add(new Weapon( 7, "Kaliber .32",                 320, Unit.INCH, 6));
-		waffen.add(new Weapon( 8, "Kaliber .357",                357, Unit.INCH, 6));
-		waffen.add(new Weapon( 9, "Kaliber .38",                 380, Unit.INCH, 6));
-		waffen.add(new Weapon(10, "Kaliber 10mm",              10000, Unit.MM,   6));
-		waffen.add(new Weapon(11, "Kaliber .44",                 440, Unit.INCH, 6));
-		waffen.add(new Weapon(12, "Kaliber .45",                 450, Unit.INCH, 6));
-		waffen.add(new Weapon(13, "Vorderlader",               14000, Unit.MM,   6));
+		waffen.add(new Weapon("Luftdruck",                 "01",  4500, Unit.MM,   1));
+		waffen.add(new Weapon("Zimmerstutzen",             "02",  4650, Unit.MM,   1));
+		waffen.add(new Weapon("Kleinkaliber",              "03",  5600, Unit.MM,   2));
+		waffen.add(new Weapon("Großkalibergewehr (<=8mm)", "04",  8000, Unit.MM,   5));
+		waffen.add(new Weapon("Großkalibergewehr (>8mm)",  "05", 10000, Unit.MM,   6));
+		waffen.add(new Weapon("Kaliber .30",               "06",   300, Unit.INCH, 6));
+		waffen.add(new Weapon("Kaliber .32",               "07",   320, Unit.INCH, 6));
+		waffen.add(new Weapon("Kaliber .357",              "08",   357, Unit.INCH, 6));
+		waffen.add(new Weapon("Kaliber .38",               "09",   380, Unit.INCH, 6));
+		waffen.add(new Weapon("Kaliber 10mm",              "10", 10000, Unit.MM,   6));
+		waffen.add(new Weapon("Kaliber .44",               "11",   440, Unit.INCH, 6));
+		waffen.add(new Weapon("Kaliber .45",               "12",   450, Unit.INCH, 6));
+		waffen.add(new Weapon("Vorderlader",               "13", 14000, Unit.MM,   6));
 
 		regeln = new Vector<Rule>();
 		regeln.add(new Rule("Luftgewehr",        "1.10", scheiben.get(0), waffen.get(0)));

@@ -40,7 +40,7 @@ public class Target extends JPanel implements LineListener {
 	public Target() {
 		this(	new Rule(	"Kleinkaliber 50m",  "1.40",
 							new TargetModel("Gewehr 50m", "0.4.3.03", 55000, 5, 11240, 15440, 500, 800, 1, 10, 8),
-							new Weapon( 3, "Kleinkaliber", 5600, Unit.MM, 2)
+							new Weapon("Kleinkaliber",  "03", 5600, Unit.MM, 2)
 				),
 				1
 		);

@@ -5,6 +5,7 @@ import java.util.List;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
+import model.Unit;
 import model.Weapon;
 
 
@@ -18,10 +19,10 @@ public class WeaponTableModel implements TableModel {
 	@Override
 	public Class<?> getColumnClass(int col) {
 		switch (col) {
-			case 0:
-				return Integer.class;
 			case 2:
 				return Double.class;
+			case 4:
+				return Integer.class;
 			default:
 				return String.class;
 		}
@@ -34,7 +35,7 @@ public class WeaponTableModel implements TableModel {
 
 	@Override
 	public String getColumnName(int arg0) {
-		String[] columnNames = {"Kennummer", "Bezeichnung", "Durchmesser", "Einheit", "Mikrofoneinstellung"};
+		String[] columnNames = {"Kennummer", "Bezeichnung", "Ø", "Einheit", "Mikrofon"};
 		return columnNames[arg0];
 	}
 
@@ -48,12 +49,12 @@ public class WeaponTableModel implements TableModel {
 		switch (col) {
 			case 0:
 				return weapons.get(row).getNumber();
-			case 1:
-				return weapons.get(row).toString();
 			case 2:
-				return weapons.get(row).getRadius() * 2 / 1000.;
+				return weapons.get(row).getDiameter() / 1000.;
 			case 3:
 				return weapons.get(row).getUnit();
+			case 4:
+				return weapons.get(row).getMikro();
 			default:
 				return weapons.get(row).toString();
 		}
@@ -61,8 +62,7 @@ public class WeaponTableModel implements TableModel {
 
 	@Override
 	public boolean isCellEditable(int rowIndex, int columnIndex) {
-		if (columnIndex == 2 || columnIndex == 3) return true;
-		return false;
+		return true;
 	}
 
 	@Override
@@ -73,11 +73,21 @@ public class WeaponTableModel implements TableModel {
 	@Override
 	public void removeTableModelListener(TableModelListener arg0) {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
-	public void setValueAt(Object arg0, int arg1, int arg2) {
-		// TODO Auto-generated method stub
+	public void setValueAt(Object value, int row, int col) {
+		switch (col) {
+			case 0:
+				weapons.get(row).setNumber((String) value); break;
+			case 2:
+				weapons.get(row).setDiameter((int) (((Double) value) * 1000)); break;
+			case 3:
+				weapons.get(row).setUnit((Unit) value); break;
+			case 4:
+				weapons.get(row).setMikro((int) value); break;
+			default:
+				weapons.get(row).setName((String) value); break;
+		}
 	}
 }

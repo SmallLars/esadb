@@ -42,8 +42,12 @@ public class WeaponTableEditor extends AbstractCellEditor implements TableCellEd
 
 	@Override
 	public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int rowIndex, int vColIndex) {
-		if (vColIndex == 2) ((JSpinner) component).setValue(value);
-		if (vColIndex == 3) ((JComboBox<?>) component).setSelectedItem(value);
+		if (component instanceof JSpinner) {
+			((JSpinner) component).setValue(value);
+		}
+		if (component instanceof JComboBox) {
+			((JComboBox<?>) component).setSelectedItem(value);
+		}
 		return component;
 	}
 

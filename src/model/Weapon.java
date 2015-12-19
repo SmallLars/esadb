@@ -9,62 +9,95 @@ import java.util.Locale;
 public class Weapon implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	private final int kennnummer;
-	private final String bezeichnung;
-	private final int durchmesser;
-	private final Unit einheit;
-	private final int mikofoneinstellung;
+	private String name;
+	private String number;
+	private int diameter;
+	private Unit unit;
+	private int micro;
 	
-	public Weapon(int kennnummer, String bezeichnung, int durchmesser, Unit einheit, int mikofoneinstellung) {
-		this.kennnummer = kennnummer;
-		this.bezeichnung = bezeichnung;
-		this.durchmesser = durchmesser;
-		this.einheit = einheit;
-		this.mikofoneinstellung = mikofoneinstellung;
+	public Weapon(String name, String number, int diameter, Unit unit, int micro) {
+		this.number = number;
+		this.name = name;
+		this.diameter = diameter;
+		this.unit = unit;
+		this.micro = micro;
 	}
 
-	public int getNumber() {
-		return kennnummer;
+	@Override
+	public String toString() {
+		return name;
+	}
+
+	public String getNumber() {
+		return number;
+	}
+
+	public int getDiameter() {
+		return diameter;
 	}
 
 	public Unit getUnit() {
-		return einheit;
+		return unit;
+	}
+
+	public int getMikro() {
+		return micro;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setNumber(String number) {
+		this.number = number;
+	}
+
+	public void setDiameter(int dia) {
+		this.diameter = dia;
+	}
+
+	public void setUnit(Unit unit) {
+		this.unit = unit;
+	}
+
+	public void setMikro(int micro) {
+		this.micro = micro;
 	}
 
 	public int getRadius() {
-		switch (einheit) {
+		switch (unit) {
 			case MM:
-				return durchmesser / 20;
+				return diameter / 20;
 			case INCH:
-				return (int) (durchmesser * 1.27);
+				return (int) (diameter * 1.27);
 			default:
 				return 0;
 		}
 	}
 
 	public String toFile() {
-		String fileName = String.format("0_hw_%02d.def", kennnummer);
+		String fileName = String.format("0_hw_%02d.def", number);
 		try {
 			PrintWriter writer = new PrintWriter(fileName);
 
 			writer.println("\">Bezeichnung\"");                                        // Bezeichnung oder Name der Waffe
-			writer.println(String.format("\"%s\"", bezeichnung));
+			writer.println(String.format("\"%s\"", name));
 
 			writer.println("\">KennNummer\"");                                         // Kennnummer der Waffe nach DSB oder DJV
-			writer.println(String.format("\"%02d\"", kennnummer));
+			writer.println(String.format("\"%s\"", number));
 
 			writer.println("\">AnzeigeGeschossRadius\"");                              // Radius in 1/100 mm für die Darstellung auf der Scheibe
 			writer.println(String.format("\"%d\"", getRadius()));                      // Ist in der Disziplin beim Punkt Wertungsradius -1 eingetragen, so
 			                                                                           // wird dieser Wert als Wertungsradius benutzt.
 
 			writer.println("\">GeschossDurchmesser\"");                                // Geschoss-Durchmesser in Millimeter.
-			writer.println(String.format("\"%s\"", getDurchmesser(Unit.MM)));          // Informativer Wert
+			writer.println(String.format("\"%s\"", getDiamter(Unit.MM)));          // Informativer Wert
 
 			writer.println("\">KaliberDurchmesser\"");                                 // Angabe des Geschoss-Durchmessers in Kaliberwerten.
-			writer.println(String.format("\"%s\"", getDurchmesser(Unit.INCH)));        // Informativer Wert
+			writer.println(String.format("\"%s\"", getDiamter(Unit.INCH)));        // Informativer Wert
 
 			writer.println("\">Mikofoneinstellung\"");                                 // Einstellung der Mikrofonempfindlichkeit, die gesetzt wird,
-			writer.println(String.format("\"%d\"", mikofoneinstellung));               // wenn der Autosensor aktiviert ist (Kapitel 2, Punkt 2 c)
+			writer.println(String.format("\"%d\"", micro));               // wenn der Autosensor aktiviert ist (Kapitel 2, Punkt 2 c)
 
 			writer.println("\">DateiName\"");                                          // Gibt den Namen der Datei an, unter der sie im Verzeichnis
 			writer.println(String.format("\"%s\"", fileName));                         // C:\Programme\ESA2002 abgespeichert wird.
@@ -76,26 +109,21 @@ public class Weapon implements Serializable {
 		return fileName;
 	}
 
-	@Override
-	public String toString() {
-		return bezeichnung;
-	}
-
-	private String getDurchmesser(Unit einheit) {
+	private String getDiamter(Unit einheit) {
 		NumberFormat format = NumberFormat.getInstance(Locale.ENGLISH);
 		format.setGroupingUsed(false);
 		format.setMinimumFractionDigits(1);
 		format.setMaximumFractionDigits(3);
 		
-		if (this.einheit == einheit) {
-			return format.format(durchmesser / 1000.0);
+		if (this.unit == einheit) {
+			return format.format(diameter / 1000.0);
 		}
 
 		switch (einheit) {
 			case MM:
-				return format.format(durchmesser * 0.0254);
+				return format.format(diameter * 0.0254);
 			case INCH:
-				return format.format(durchmesser / 25400.0);
+				return format.format(diameter / 25400.0);
 			default:
 				return "0.0";
 		}
