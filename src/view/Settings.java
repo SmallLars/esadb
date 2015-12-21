@@ -1,7 +1,5 @@
 package view;
 
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,17 +9,14 @@ import java.awt.event.WindowEvent;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 
 import model.SettingsModel;
 
 import javax.swing.JTabbedPane;
 
+
 @SuppressWarnings("serial")
 public class Settings extends JDialog {
-
-	private final JPanel contentPanel = new JPanel();
 
 	public Settings(Frame parent, SettingsModel config) {
 		super(parent, "Einstellungen");
@@ -37,38 +32,33 @@ public class Settings extends JDialog {
 			public void windowClosing(WindowEvent arg0) {close();}
 		});
 
-		getContentPane().setLayout(new BorderLayout());
-		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-		getContentPane().add(contentPanel, BorderLayout.CENTER);
-		contentPanel.setLayout(null);
-
+		getContentPane().setLayout(null);
 
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setBounds(10, 10, 740, 445);
+		tabbedPane.addTab("Linien", new SettingsLines(config));
+		tabbedPane.addTab("Regeln", new SettingsRules(config));
+		tabbedPane.addTab("Scheiben", new SettingsTargets(config));
+		tabbedPane.addTab("Waffen", new SettingsWeapons(config));
+		getContentPane().add(tabbedPane);
 
-		JPanel oho1 = new SettingsLines(config);
-		tabbedPane.addTab("Linien", oho1);
-		
-		JPanel oho2 = new SettingsTargets(config);
-		tabbedPane.addTab("Scheiben", oho2);
+		JButton abortButton = new JButton("Abbrechen");
+		abortButton.setBounds(10, 467, 200, 23);
+		abortButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {close();}
+		});
+		getContentPane().add(abortButton);
 
-		JPanel oho3 = new SettingsWeapons(config);
-		tabbedPane.addTab("Waffen", oho3);
-		
-		contentPanel.add(tabbedPane);
-
-		
-		JPanel buttonPane = new JPanel();
-		buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
-		getContentPane().add(buttonPane, BorderLayout.SOUTH);
-
-		JButton closeButton = new JButton("Schließen");
+		JButton closeButton = new JButton("Speichern & Schließen");
+		closeButton.setBounds(550, 467, 200, 23);
 		closeButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {close();}
 		});
-		buttonPane.add(closeButton);
-		getRootPane().setDefaultButton(closeButton);
+		getContentPane().add(closeButton);
+
+		getRootPane().setDefaultButton(abortButton);
 	}
 
 	private void close() {

@@ -9,27 +9,27 @@ import org.apache.commons.lang.Validate;
 public class Rule  implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	private final String bezeichnung;
-	private final String regelnummer;
+	private final String name;
+	private final String number;
 	private TargetModel scheibe;
 	private Weapon waffe;
 	
 	public Rule(String bezeichnung, String regelnummer, TargetModel scheibe, Weapon waffe) {
 		Validate.notNull(scheibe, "scheibe can't be null");
 		Validate.notNull(waffe, "waffe can't be null");
-		this.bezeichnung = bezeichnung;
-		this.regelnummer = regelnummer;
+		this.name = bezeichnung;
+		this.number = regelnummer;
 		this.scheibe = scheibe;
 		this.waffe = waffe;
 	}
 
 	@Override
 	public String toString() {
-		return bezeichnung;
+		return name;
 	}
 
 	public String getRegelnummer() {
-		return regelnummer;
+		return number;
 	}
 
 	public TargetModel getScheibe() {
@@ -81,17 +81,17 @@ public class Rule  implements Serializable {
 		String file_scheibe = scheibe.toFile();
 		String file_waffe = waffe.toFile();
 
-		String fileName = String.format("0_hd_%s.def", regelnummer.replace('.', '-'));
+		String fileName = String.format("0_hd_%s.def", number.replace('.', '-'));
 		try {
 			PrintWriter writer = new PrintWriter(fileName);
 			writer.println("\">Bezeichnung\"");
-			writer.println(String.format("\"%s\"", bezeichnung));
+			writer.println(String.format("\"%s\"", name));
 
 			writer.println("\">KennNummer\"");
 			writer.println("\"0\"");
 
 			writer.println("\">RegelNummer\"");
-			writer.println(String.format("\"DSB %s\"", regelnummer));
+			writer.println(String.format("\"DSB %s\"", number));
 
 			writer.println("\">WertungsRadius\"");
 			writer.println(String.format("\"%d\"", waffe.getRadius()));

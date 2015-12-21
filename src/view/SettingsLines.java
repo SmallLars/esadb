@@ -24,7 +24,7 @@ public class SettingsLines extends JPanel {
 	 * Create the panel.
 	 */
 	public SettingsLines(SettingsModel config) {
-		this.setSize(234, 150);
+		this.setSize(735,  420);
 		this.setLayout(null);
 		
 		JScrollPane scrollPane = new JScrollPane();
@@ -82,12 +82,12 @@ public class SettingsLines extends JPanel {
 				listener.remove(l);
 			}
 		});
-		spinner.setBounds(133, 20, 91, 23);
+		spinner.setBounds(133, 21, 91, 23);
 		this.add(spinner);
 		spinner.setEditor(new JSpinner.DefaultEditor(spinner));
 		
 		JButton btnEinfgen = new JButton("Einfügen");
-		btnEinfgen.setBounds(133, 54, 91, 23);
+		btnEinfgen.setBounds(133, 55, 91, 20);
 		this.add(btnEinfgen);
 		btnEinfgen.addActionListener(new ActionListener() {
 			@Override
@@ -106,7 +106,7 @@ public class SettingsLines extends JPanel {
 		});
 
 		JButton btnLschen = new JButton("Löschen");
-		btnLschen.setBounds(133, 116, 91, 23);
+		btnLschen.setBounds(133, 118, 91, 20);
 		this.add(btnLschen);
 
 		btnLschen.addActionListener(new ActionListener() {
