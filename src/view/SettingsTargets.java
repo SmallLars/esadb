@@ -62,7 +62,7 @@ public class SettingsTargets extends JPanel implements ActionListener, ChangeLis
 		this.setSize(735,  420);
 		this.setLayout(null);
 
-		scheibe = new Target(config.getStandardRegel().getScheibe());
+		scheibe = new Target(config.getStandardRule().getScheibe());
 		scheibe.setBorder(new LineBorder(new Color(0, 0, 0)));
 		scheibe.setBounds(15, 15, 390, 390);
 		this.add(scheibe);
@@ -73,7 +73,7 @@ public class SettingsTargets extends JPanel implements ActionListener, ChangeLis
 
 		comboBox = new JComboBox<TargetModel>(config.getScheiben());
 		//comboBox = new JComboBox<TargetModel>();
-		comboBox.setSelectedItem(config.getStandardRegel().getScheibe());
+		comboBox.setSelectedItem(config.getStandardRule().getScheibe());
 		comboBox.setBounds(480, 15, 180, 20);
 		comboBox.setActionCommand("TYP");
 		comboBox.addActionListener(this);

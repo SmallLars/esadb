@@ -12,11 +12,11 @@ import javax.swing.table.TableCellEditor;
 
 
 @SuppressWarnings("serial")
-public class WeaponTableEditor extends AbstractCellEditor implements TableCellEditor {
+public class TableEditor extends AbstractCellEditor implements TableCellEditor {
 
 	JComponent component = null;
 
-	public WeaponTableEditor(JComponent component) {
+	public TableEditor(JComponent component) {
 		super();
 
 		if (component instanceof JSpinner) {

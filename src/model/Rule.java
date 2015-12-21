@@ -1,26 +1,28 @@
 package model;
 
+
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.Serializable;
 
-import org.apache.commons.lang.Validate;
 
 public class Rule  implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	private final String name;
-	private final String number;
-	private TargetModel scheibe;
-	private Weapon waffe;
+	private String name;
+	private String number;
+	private TargetModel target;
+	private Weapon weapon;
+
+	public Rule(String regelnummer) {
+		this("", regelnummer, (TargetModel) null, (Weapon) null);
+	}
 	
-	public Rule(String bezeichnung, String regelnummer, TargetModel scheibe, Weapon waffe) {
-		Validate.notNull(scheibe, "scheibe can't be null");
-		Validate.notNull(waffe, "waffe can't be null");
-		this.name = bezeichnung;
+	public Rule(String name, String regelnummer, TargetModel target, Weapon weapon) {
+		this.name = name;
 		this.number = regelnummer;
-		this.scheibe = scheibe;
-		this.waffe = waffe;
+		this.target = target;
+		this.weapon = weapon;
 	}
 
 	@Override
@@ -33,17 +35,29 @@ public class Rule  implements Serializable {
 	}
 
 	public TargetModel getScheibe() {
-		return scheibe;
+		return target;
 	}
 
 	public Weapon getWaffe() {
-		return waffe;
+		return weapon;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setScheibe(TargetModel target) {
+		this.target = target;
+	}
+
+	public void setWaffe(Weapon weapon) {
+		this.weapon = weapon;
 	}
 
 	public float getValuebyRadius(double radius) {
-		int aussenRadius = scheibe.getAussenRadius();
-		int zehnerRadius = scheibe.getRingRadius(10);
-		int geschossRadius = waffe.getRadius();
+		int aussenRadius = target.getAussenRadius();
+		int zehnerRadius = target.getRingRadius(10);
+		int geschossRadius = weapon.getRadius();
 
 		// Berechnung für < 1
 		if (radius > aussenRadius + geschossRadius) {
@@ -63,23 +77,23 @@ public class Rule  implements Serializable {
 	}
 
 	public double getRadiusByValue(double value) {
-		int zehnerRadius = scheibe.getRingRadius(10);
-		int geschossRadius = waffe.getRadius();
+		int zehnerRadius = target.getRingRadius(10);
+		int geschossRadius = weapon.getRadius();
 		
 		if (value < 10) {
-			return Math.round(scheibe.getAussenRadius() + geschossRadius - (value - 1) * scheibe.getValue(TargetValue.RING_WIDTH));
+			return Math.round(target.getAussenRadius() + geschossRadius - (value - 1) * target.getValue(TargetValue.RING_WIDTH));
 		}
 		
 		return Math.round(zehnerRadius + geschossRadius - (value - 10) * (zehnerRadius + geschossRadius));
 	}
 
 	public boolean isInnenZehn(double radius) {
-		return radius <= scheibe.getInnenZehnRadius() + waffe.getRadius();
+		return radius <= target.getInnenZehnRadius() + weapon.getRadius();
 	}
 
 	public void toFile() {
-		String file_scheibe = scheibe.toFile();
-		String file_waffe = waffe.toFile();
+		String file_scheibe = target.toFile();
+		String file_waffe = weapon.toFile();
 
 		String fileName = String.format("0_hd_%s.def", number.replace('.', '-'));
 		try {
@@ -94,13 +108,13 @@ public class Rule  implements Serializable {
 			writer.println(String.format("\"DSB %s\"", number));
 
 			writer.println("\">WertungsRadius\"");
-			writer.println(String.format("\"%d\"", waffe.getRadius()));
+			writer.println(String.format("\"%d\"", weapon.getRadius()));
 
 			writer.println("\">MaximalDurchmesser\"");
-			writer.println(String.format("\"%d\"", waffe.getRadius() * 2));
+			writer.println(String.format("\"%d\"", weapon.getRadius() * 2));
 
 			writer.println("\">MinimalDurchmesser\"");
-			writer.println(String.format("\"%d\"", waffe.getRadius() * 2));
+			writer.println(String.format("\"%d\"", weapon.getRadius() * 2));
 
 			writer.println("\">Schusszahl\"");
 			writer.println("\"40\"");

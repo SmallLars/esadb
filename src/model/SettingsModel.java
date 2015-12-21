@@ -1,5 +1,6 @@
 package model;
 
+
 import java.awt.Rectangle;
 import java.awt.print.PageFormat;
 import java.awt.print.Paper;
@@ -11,7 +12,9 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.Vector;
 
@@ -23,7 +26,7 @@ public class SettingsModel implements Serializable {
 
 	private Rectangle mainWindow;
 
-	private Set<Integer> linien;
+	private Set<Integer> lines;
 
 	private double pageWidht;
 	private double pageHeight;
@@ -33,16 +36,15 @@ public class SettingsModel implements Serializable {
 	private double pageImageableHeight;
 	private int pageOrientation;
 
-	private List<TargetModel> scheiben;
-	private List<Weapon> waffen;
-	private List<Rule> regeln;
-	
-	private Rule standardRegel;	
+	private List<TargetModel> targets;
+	private List<Weapon> weapons;
+	private Map<String, Rule> rules;
+	private Rule standardRule;	
 
 	private SettingsModel() {
 		mainWindow = new Rectangle(1, 1, 1022, 580);
 
-		linien = new TreeSet<Integer>();
+		lines = new TreeSet<Integer>();
 		
 		pageWidht =           21.0 * mmToDots;
 		pageHeight =          29.7 * mmToDots;
@@ -52,43 +54,42 @@ public class SettingsModel implements Serializable {
 		pageImageableHeight = 27.7 * mmToDots;
 		pageOrientation = PageFormat.PORTRAIT;
 
-		scheiben = new Vector<TargetModel>();
-		//                           |                      |           |       |Band-   |      Durchmesser       |Ring- | Ring  |  Nummer  |   |     |  Vorhalte-   |
-		//                           |Bezeichnung           | Kennummer | Karton|vorschub|Spiegel|Aussen|Innenzehn|breite|Min|Max|Max|Wimkel|Art|Style|Durchm|Abstand|
-		scheiben.add(new TargetModel("Gewehr 10m",           "0.4.3.01",  17000,       2,   3050,  4550,        0,   250,   1, 10, 8,      0,  0,    2));
-		scheiben.add(new TargetModel("Gewehr 15m",           "0.4.3.02",  17000,       3,   4050,  8550,        0,   450,   1, 10, 9));
-		scheiben.add(new TargetModel("Gewehr 50m",           "0.4.3.03",  55000,       5,  11240, 15440,      500,   800,   1, 10, 8));
-		scheiben.add(new TargetModel("Gewehr 100m",          "0.4.3.04",  55000,       5,  20000, 50000,     2500,  2500,   1, 10, 9));
-		scheiben.add(new TargetModel("Gewehr 300m",          "0.4.3.05", 130000,       0,  60000, 100000,       0,  5000,   1, 10, 9,      1,  0,    0));
-		scheiben.add(new TargetModel("Muskete",              "0.4.3.06",  55000,       5,  40000, 80000,     4000,  4000,   1, 10, 8));
-		scheiben.add(new TargetModel("Pistole - Präzision",  "0.4.3.04",  55000,       5,  20000, 50000,     5000,  2500,   1, 10, 9,      0,  4,    0));
-		scheiben.add(new TargetModel("Pistole 10m",          "0.4.3.20",  17000,       3,   5950, 15550,      500,   800,   1, 10, 8));
-		scheiben.add(new TargetModel("Pistole - Duell",      "0.4.3.22",  55000,       5,  50000, 50000,     5000,  4000,   5, 10, 9,      0,  4,    0));
-		scheiben.add(new TargetModel("Laufende Scheibe 10m", "0.4.3.40",  17000,       2,   3050,  5050,       50,   250,   1, 10, 9,      1,  0,    1,  3100,   7000));
-		scheiben.add(new TargetModel("Laufende Scheibe 50m", "0.4.3.41",  70000,       0,      2, 36600,     3000,  1700,   1, 10, 9,      1,  5,    0));
+		targets = new Vector<TargetModel>();
+		//                         |                      |           |       |Band-   |      Durchmesser       |Ring- | Ring  |  Nummer  |   |     |  Vorhalte-   |
+		//                         |Bezeichnung           | Kennummer | Karton|vorschub|Spiegel|Aussen|Innenzehn|breite|Min|Max|Max|Wimkel|Art|Style|Durchm|Abstand|
+		targets.add(new TargetModel("Gewehr 10m",           "0.4.3.01",  17000,       2,   3050,  4550,        0,   250,   1, 10, 8,      0,  0,    2));
+		targets.add(new TargetModel("Gewehr 15m",           "0.4.3.02",  17000,       3,   4050,  8550,        0,   450,   1, 10, 9));
+		targets.add(new TargetModel("Gewehr 50m",           "0.4.3.03",  55000,       5,  11240, 15440,      500,   800,   1, 10, 8));
+		targets.add(new TargetModel("Gewehr 100m",          "0.4.3.04",  55000,       5,  20000, 50000,     2500,  2500,   1, 10, 9));
+		targets.add(new TargetModel("Gewehr 300m",          "0.4.3.05", 130000,       0,  60000, 100000,       0,  5000,   1, 10, 9,      1,  0,    0));
+		targets.add(new TargetModel("Muskete",              "0.4.3.06",  55000,       5,  40000, 80000,     4000,  4000,   1, 10, 8));
+		targets.add(new TargetModel("Pistole - Präzision",  "0.4.3.04",  55000,       5,  20000, 50000,     5000,  2500,   1, 10, 9,      0,  4,    0));
+		targets.add(new TargetModel("Pistole 10m",          "0.4.3.20",  17000,       3,   5950, 15550,      500,   800,   1, 10, 8));
+		targets.add(new TargetModel("Pistole - Duell",      "0.4.3.22",  55000,       5,  50000, 50000,     5000,  4000,   5, 10, 9,      0,  4,    0));
+		targets.add(new TargetModel("Laufende Scheibe 10m", "0.4.3.40",  17000,       2,   3050,  5050,       50,   250,   1, 10, 9,      1,  0,    1,  3100,   7000));
+		targets.add(new TargetModel("Laufende Scheibe 50m", "0.4.3.41",  70000,       0,      2, 36600,     3000,  1700,   1, 10, 9,      1,  5,    0));
 
-		waffen = new Vector<Weapon>();
-		waffen.add(new Weapon("Luftdruck",                 "01",  4500, Unit.MM,   1));
-		waffen.add(new Weapon("Zimmerstutzen",             "02",  4650, Unit.MM,   1));
-		waffen.add(new Weapon("Kleinkaliber",              "03",  5600, Unit.MM,   2));
-		waffen.add(new Weapon("Großkalibergewehr (<=8mm)", "04",  8000, Unit.MM,   5));
-		waffen.add(new Weapon("Großkalibergewehr (>8mm)",  "05", 10000, Unit.MM,   6));
-		waffen.add(new Weapon("Kaliber .30",               "06",   300, Unit.INCH, 6));
-		waffen.add(new Weapon("Kaliber .32",               "07",   320, Unit.INCH, 6));
-		waffen.add(new Weapon("Kaliber .357",              "08",   357, Unit.INCH, 6));
-		waffen.add(new Weapon("Kaliber .38",               "09",   380, Unit.INCH, 6));
-		waffen.add(new Weapon("Kaliber 10mm",              "10", 10000, Unit.MM,   6));
-		waffen.add(new Weapon("Kaliber .44",               "11",   440, Unit.INCH, 6));
-		waffen.add(new Weapon("Kaliber .45",               "12",   450, Unit.INCH, 6));
-		waffen.add(new Weapon("Vorderlader",               "13", 14000, Unit.MM,   6));
+		weapons = new Vector<Weapon>();
+		weapons.add(new Weapon("Luftdruck",                 "01",  4500, Unit.MM,   1));
+		weapons.add(new Weapon("Zimmerstutzen",             "02",  4650, Unit.MM,   1));
+		weapons.add(new Weapon("Kleinkaliber",              "03",  5600, Unit.MM,   2));
+		weapons.add(new Weapon("Großkalibergewehr (<=8mm)", "04",  8000, Unit.MM,   5));
+		weapons.add(new Weapon("Großkalibergewehr (>8mm)",  "05", 10000, Unit.MM,   6));
+		weapons.add(new Weapon("Kaliber .30",               "06",   300, Unit.INCH, 6));
+		weapons.add(new Weapon("Kaliber .32",               "07",   320, Unit.INCH, 6));
+		weapons.add(new Weapon("Kaliber .357",              "08",   357, Unit.INCH, 6));
+		weapons.add(new Weapon("Kaliber .38",               "09",   380, Unit.INCH, 6));
+		weapons.add(new Weapon("Kaliber 10mm",              "10", 10000, Unit.MM,   6));
+		weapons.add(new Weapon("Kaliber .44",               "11",   440, Unit.INCH, 6));
+		weapons.add(new Weapon("Kaliber .45",               "12",   450, Unit.INCH, 6));
+		weapons.add(new Weapon("Vorderlader",               "13", 14000, Unit.MM,   6));
 
-		regeln = new Vector<Rule>();
-		regeln.add(new Rule("Luftgewehr",        "1.10", scheiben.get(0), waffen.get(0)));
-		regeln.add(new Rule("Kleinkaliber 100m", "1.35", scheiben.get(3), waffen.get(2)));
-		regeln.add(new Rule("Kleinkaliber 50m",  "1.40", scheiben.get(2), waffen.get(2)));
-		regeln.add(new Rule("Luftpistole",       "2.10", scheiben.get(7), waffen.get(0)));
-		
-		standardRegel = regeln.get(2);
+		rules = new TreeMap<String, Rule>();
+		rules.put("1.10", new Rule("Luftgewehr",        "1.10", targets.get(0), weapons.get(0)));
+		rules.put("1.35", new Rule("Kleinkaliber 100m", "1.35", targets.get(3), weapons.get(2)));
+		rules.put("1.40", new Rule("Kleinkaliber 50m",  "1.40", targets.get(2), weapons.get(2)));
+		rules.put("2.10", new Rule("Luftpistole",       "2.10", targets.get(7), weapons.get(0)));
+		standardRule = rules.get("1.40");
 
 		save();
 	}
@@ -103,21 +104,21 @@ public class SettingsModel implements Serializable {
 	}
 
 	public Vector<Integer> getLinien() {
-		return new Vector<Integer>(linien);
+		return new Vector<Integer>(lines);
 	}
 
 	public int getLinienCount() {
-		return linien.size();
+		return lines.size();
 	}
 
 	public boolean addLinie(Integer l) {
-		boolean b = linien.add(l);
+		boolean b = lines.add(l);
 		save();
 		return b;
 	}
 
 	public boolean removeLinie(Integer l) {
-		boolean b = linien.remove(l);
+		boolean b = lines.remove(l);
 		save();
 		return b;
 	}
@@ -143,27 +144,28 @@ public class SettingsModel implements Serializable {
 		save();
 	}
 
-	public Rule getRegelTypByNumber(String s) {
-		for (Rule rt : regeln) {
-			if (rt.getRegelnummer().equals(s)) return rt;
-		}
-		return standardRegel;
-	}
-
-	public Rule getStandardRegel() {
-		return standardRegel;
-	}
-
 	public Weapon[] getWaffen() {
-		return waffen.toArray(new Weapon[0]);
+		return weapons.toArray(new Weapon[0]);
 	}
 
 	public TargetModel[] getScheiben() {
-		return scheiben.toArray(new TargetModel[0]);
+		return targets.toArray(new TargetModel[0]);
 	}
 
-	public Rule[] getRegeln() {
-		return regeln.toArray(new Rule[0]);
+	public Rule[] getRules() {
+		return rules.values().toArray(new Rule[0]);
+	}
+
+	public Rule getRule(String ruleNumber) {
+		if (!rules.containsKey(ruleNumber)) {
+			rules.put(ruleNumber, new Rule("Standardregel",  ruleNumber, standardRule.getScheibe(), standardRule.getWaffe()));
+		}
+
+		return rules.get(ruleNumber);
+	}
+
+	public Rule getStandardRule() {
+		return standardRule;
 	}
 
 	private boolean save() {

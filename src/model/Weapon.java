@@ -76,7 +76,7 @@ public class Weapon implements Serializable {
 	}
 
 	public String toFile() {
-		String fileName = String.format("0_hw_%02d.def", number);
+		String fileName = String.format("0_hw_%s.def", number);
 		try {
 			PrintWriter writer = new PrintWriter(fileName);
 

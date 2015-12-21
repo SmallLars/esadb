@@ -16,9 +16,9 @@ public class Discipline implements Serializable, Comparable<Discipline> {
 	private int probeschuesse;		// Anzahl der Probesch�sse (-1 = beliebig viele)
 	private int probezeit;			// Zeit für Probeschüsse (-1 = ist in der Matchzeit enthalten)
 	private int serienlaenge;		// Gibt die Länge der Serien an
-	private Rule regel;
+	private String ruleNumber;
 
-	public Discipline(Row disziplin, Rule regel) {
+	public Discipline(Row disziplin, String ruleNumber) {
 		id = (int) disziplin.get("DisziplinID");
 		name = (String) disziplin.get("Bezeichnung");
 		wertung = (byte) disziplin.get("Wertung");
@@ -28,7 +28,7 @@ public class Discipline implements Serializable, Comparable<Discipline> {
 		probeschuesse = (short) disziplin.get("Probeschuesse");
 		probezeit = (short) disziplin.get("Probezeit");
 		serienlaenge = (short) disziplin.get("Serienlaenge");
-		this.regel = regel;
+		this.ruleNumber = ruleNumber;
 	}
 
 	public int getId() {
@@ -67,8 +67,8 @@ public class Discipline implements Serializable, Comparable<Discipline> {
 		return getSchusszahl() / serienlaenge;
 	}
 
-	public Rule getRegel() {
-		return regel;
+	public String getRuleNumber() {
+		return ruleNumber;
 	}
 
 	@Override

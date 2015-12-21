@@ -1,5 +1,6 @@
 package controller;
 
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -43,12 +44,20 @@ public class KampfDB {
 
 		try {
 			Database db = getDB("data.mdb");
+
+			// Create or update all rules first
+			for (Row row : db.getTable("Waffe")) {
+				Rule rule = config.getRule((String) row.get("WaffengattungNr"));
+				rule.setName((String) row.get("Beschreibung"));
+			}
+
+			// With known rules create disciplines
 			for (Row row : db.getTable("Disziplin")) {
 				Map<String, Integer> m = Collections.singletonMap("DisziplinID", (int) row.get("DisziplinID"));
 				Row r = CursorBuilder.findRow(db.getTable("DisziplinWaffe"), m);
 				if (r != null) {
-					Rule regel = config.getRegelTypByNumber((String) r.get("WaffengattungNr"));
-					Discipline d = new Discipline(row, regel);
+					String number = (String) r.get("WaffengattungNr");
+					Discipline d = new Discipline(row, number);
 					set.add(d);
 				} else {
 				  System.out.println("Keine Waffengattung für " + (String) row.get("Bezeichnung") + " definiert. Disziplin wird ignoriert.");

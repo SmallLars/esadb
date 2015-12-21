@@ -55,7 +55,7 @@ public class DefaultLineModel implements LineModel, LineReader, ActionListener {
 	
 	public Single configure(Member schuetze, Discipline disziplin) {
 		if (einzel == null || einzel.getSchuetze() != schuetze || einzel.getDisziplin() != disziplin) {
-			disziplin.getRegel().toFile();
+			controller.getConfig().getRule(disziplin.getRuleNumber()).toFile();
 
 			Single incomplete = controller.findIncomplete(schuetze, disziplin);
 			Single new_event = new Single(nummer, disziplin, schuetze);

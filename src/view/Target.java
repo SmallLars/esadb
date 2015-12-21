@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 
 import org.apache.commons.lang.Validate;
 
+import controller.Controller;
 import model.DefaultLineModel;
 import model.TargetValue;
 import model.Unit;
@@ -69,7 +70,7 @@ public class Target extends JPanel implements LineListener {
 		Validate.notNull(single, "single can't be null");
 		init();
 		this.single = single;
-		setRule(single.getDisziplin().getRegel());
+		setRule(Controller.getRule(single.getDisziplin().getRuleNumber()));
 	}
 	
 	private void init() {
@@ -219,8 +220,11 @@ public class Target extends JPanel implements LineListener {
 	public void lineChanged(LineModel lm, int type) {
 		if (type == DefaultLineModel.RESULT_CHANGED) {
 			single = lm.getResult();
-			target = single.getDisziplin().getRegel().getScheibe();
-			weapon = single.getDisziplin().getRegel().getWaffe();
+			if (single == null) {
+				setRule(Controller.getStandardRule());
+			} else {
+				setRule(Controller.getRule(single.getDisziplin().getRuleNumber()));
+			}
 			repaint();
 		}
 	}

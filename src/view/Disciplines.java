@@ -117,7 +117,7 @@ public class Disciplines extends JDialog implements ActionListener {
 				}
 				lblSchusszahl.setText(anzahl);
 				lblSerienlaenge.setText(String.format("Serienlänge: %d.", d.getSerienlaenge()));
-				lblWaffengattung.setText("Regel: " + d.getRegel());
+				lblWaffengattung.setText("Regel: " + d.getRuleNumber());
 				break;
 			case "CANCEL":
 				setVisible(false);

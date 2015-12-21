@@ -22,6 +22,7 @@ import javax.swing.UIManager;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 
+import model.Rule;
 import model.SettingsModel;
 import model.Discipline;
 import model.Single;
@@ -39,7 +40,7 @@ import view.GUI;
 public class Controller {
 	private OutputStream errorLog = null;
 
-	private SettingsModel config;
+	static private SettingsModel config;
 	private List<ModelChangeListener> modelChangeListener;
 	
 	static private File file;
@@ -51,6 +52,14 @@ public class Controller {
 	
 	public static String getFileName() {
 		return file.getName();
+	}
+
+	public static Rule getStandardRule() {
+		return config.getStandardRule();
+	}
+
+	public static Rule getRule(String ruleNumber) {
+		return config.getRule(ruleNumber);
 	}
 
 	public Controller() {
