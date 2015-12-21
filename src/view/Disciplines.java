@@ -18,6 +18,8 @@ import model.Discipline;
 
 import javax.swing.JLabel;
 
+import controller.Controller;
+
 
 @SuppressWarnings("serial")
 public class Disciplines extends JDialog implements ActionListener {
@@ -117,7 +119,7 @@ public class Disciplines extends JDialog implements ActionListener {
 				}
 				lblSchusszahl.setText(anzahl);
 				lblSerienlaenge.setText(String.format("Serienlänge: %d.", d.getSerienlaenge()));
-				lblWaffengattung.setText("Regel: " + d.getRuleNumber());
+				lblWaffengattung.setText("Regel: " + d.getRuleNumber() + " (" + Controller.getRule(d.getRuleNumber()) + ")");
 				break;
 			case "CANCEL":
 				setVisible(false);
