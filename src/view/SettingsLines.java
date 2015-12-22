@@ -32,7 +32,7 @@ public class SettingsLines extends JPanel {
 		this.add(scrollPane);
 
 		DefaultListModel<Integer> listModel = new DefaultListModel<Integer>();
-		for (int i : config.getLinien()) listModel.addElement(i);
+		for (int i : config.getLines()) listModel.addElement(i);
 		JList<Integer> list = new JList<Integer>(listModel);
 		scrollPane.setViewportView(list);
 		list.setLayoutOrientation(JList.VERTICAL);
@@ -50,12 +50,12 @@ public class SettingsLines extends JPanel {
 
 			@Override
 			public Object getNextValue() {
-				for (int i = value + 1; true; i++) if (!config.getLinien().contains(i)) return i;
+				for (int i = value + 1; true; i++) if (!config.getLines().contains(i)) return i;
 			}
 
 			@Override
 			public Object getPreviousValue() {
-				for (int i = value - 1; i > 0; i--) if (!config.getLinien().contains(i)) return i;
+				for (int i = value - 1; i > 0; i--) if (!config.getLines().contains(i)) return i;
 				return value;
 			}
 
@@ -63,7 +63,7 @@ public class SettingsLines extends JPanel {
 			public Object getValue() {
 				if (value == -1) {
 					for (int i = 1; true; i++) {
-						if (!config.getLinien().contains(i)) {
+						if (!config.getLines().contains(i)) {
 							value = i;
 							break;
 						}
@@ -93,7 +93,7 @@ public class SettingsLines extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				int toAdd = (int) spinner.getValue();
-				config.addLinie(toAdd);
+				config.addLine(toAdd);
 				spinner.setValue(spinner.getNextValue());
 				for (int i = 0; i < listModel.getSize(); i++) {
 					if (listModel.get(i) > toAdd) {

@@ -44,8 +44,8 @@ public class SettingsRules extends JPanel {
 			{setHorizontalAlignment(SwingConstants.RIGHT);}
 		});
 
-		table.getColumnModel().getColumn(2).setCellEditor(new TableEditor(new JComboBox<TargetModel>(config.getScheiben())));
-		table.getColumnModel().getColumn(3).setCellEditor(new TableEditor(new JComboBox<Weapon>(config.getWaffen())));
+		table.getColumnModel().getColumn(2).setCellEditor(new TableEditor(new JComboBox<TargetModel>(config.getTargets())));
+		table.getColumnModel().getColumn(3).setCellEditor(new TableEditor(new JComboBox<Weapon>(config.getWeapons())));
 
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);

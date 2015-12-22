@@ -32,10 +32,10 @@ public class DefaultLineModel implements LineModel, LineReader, ActionListener {
 
 	private int state;
 
-	public DefaultLineModel(int nummer) {
+	public DefaultLineModel(int nummer, Controller controller) {
 		this.nummer = nummer;
 
-		controller = Controller.get();
+		this.controller = controller;
 		einzel = null;
 		listener = new Vector<LineListener>();
 

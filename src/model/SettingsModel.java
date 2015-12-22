@@ -37,7 +37,7 @@ public class SettingsModel implements Serializable {
 	private int pageOrientation;
 
 	private List<TargetModel> targets;
-	private List<Weapon> weapons;
+	private Set<Weapon> weapons;
 	private Map<String, Rule> rules;
 	private Rule standardRule;	
 
@@ -69,7 +69,7 @@ public class SettingsModel implements Serializable {
 		targets.add(new TargetModel("Laufende Scheibe 10m", "0.4.3.40",  17000,       2,   3050,  5050,       50,   250,   1, 10, 9,      1,  0,    1,  3100,   7000));
 		targets.add(new TargetModel("Laufende Scheibe 50m", "0.4.3.41",  70000,       0,      2, 36600,     3000,  1700,   1, 10, 9,      1,  5,    0));
 
-		weapons = new Vector<Weapon>();
+		weapons = new TreeSet<Weapon>();
 		weapons.add(new Weapon("Luftdruck",                 "01",  4500, Unit.MM,   1));
 		weapons.add(new Weapon("Zimmerstutzen",             "02",  4650, Unit.MM,   1));
 		weapons.add(new Weapon("Kleinkaliber",              "03",  5600, Unit.MM,   2));
@@ -85,10 +85,10 @@ public class SettingsModel implements Serializable {
 		weapons.add(new Weapon("Vorderlader",               "13", 14000, Unit.MM,   6));
 
 		rules = new TreeMap<String, Rule>();
-		rules.put("1.10", new Rule("Luftgewehr",        "1.10", targets.get(0), weapons.get(0)));
-		rules.put("1.35", new Rule("Kleinkaliber 100m", "1.35", targets.get(3), weapons.get(2)));
-		rules.put("1.40", new Rule("Kleinkaliber 50m",  "1.40", targets.get(2), weapons.get(2)));
-		rules.put("2.10", new Rule("Luftpistole",       "2.10", targets.get(7), weapons.get(0)));
+		rules.put("1.10", new Rule("Luftgewehr",        "1.10", targets.get(0), weapons.toArray(new Weapon[0])[0]));
+		rules.put("1.35", new Rule("Kleinkaliber 100m", "1.35", targets.get(3), weapons.toArray(new Weapon[0])[2]));
+		rules.put("1.40", new Rule("Kleinkaliber 50m",  "1.40", targets.get(2), weapons.toArray(new Weapon[0])[2]));
+		rules.put("2.10", new Rule("Luftpistole",       "2.10", targets.get(7), weapons.toArray(new Weapon[0])[0]));
 		standardRule = rules.get("1.40");
 
 		save();
@@ -100,26 +100,23 @@ public class SettingsModel implements Serializable {
 
 	public void setMainWindowBounds(Rectangle mainWindow) {
 		this.mainWindow = mainWindow;
-		save();
 	}
 
-	public Vector<Integer> getLinien() {
+	public Vector<Integer> getLines() {
 		return new Vector<Integer>(lines);
 	}
 
-	public int getLinienCount() {
+	public int getLineCount() {
 		return lines.size();
 	}
 
-	public boolean addLinie(Integer l) {
+	public boolean addLine(Integer l) {
 		boolean b = lines.add(l);
-		save();
 		return b;
 	}
 
 	public boolean removeLinie(Integer l) {
 		boolean b = lines.remove(l);
-		save();
 		return b;
 	}
 
@@ -141,15 +138,46 @@ public class SettingsModel implements Serializable {
 		pageImageableWidth = pf.getPaper().getImageableWidth();
 		pageImageableHeight = pf.getPaper().getImageableHeight();
 		pageOrientation = pf.getOrientation();
-		save();
 	}
 
-	public Weapon[] getWaffen() {
+	public void newWeapon() {
+		Weapon w = new Weapon(	"Neue Waffe", "01",
+								standardRule.getWaffe().getDiameter(),
+								standardRule.getWaffe().getUnit(),
+								standardRule.getWaffe().getMikro()
+		);
+		for (int n = 1; true; n++) {
+			w.setNumber(String.format("%02d", n));
+			if (!weapons.contains(w)) {
+				weapons.add(w);
+				return;
+			}
+		}
+
+	}
+
+	public Weapon[] getWeapons() {
 		return weapons.toArray(new Weapon[0]);
 	}
 
-	public TargetModel[] getScheiben() {
+	public boolean removeWeapon(Weapon w) {
+		for (Rule r : rules.values()) {
+			if (w.compareTo(r.getWaffe()) == 0) return false;
+		}
+		weapons.remove(w);
+		return true;
+	}
+
+	public void newTarget() {
+		//return targets.add(t);
+	}
+
+	public TargetModel[] getTargets() {
 		return targets.toArray(new TargetModel[0]);
+	}
+
+	public boolean removeTarget(TargetModel t) {
+		return targets.remove(t);
 	}
 
 	public Rule[] getRules() {
@@ -168,7 +196,7 @@ public class SettingsModel implements Serializable {
 		return standardRule;
 	}
 
-	private boolean save() {
+	public boolean save() {
 		boolean succeed = false;
 		ObjectOutputStream oos = null;
 		FileOutputStream fos = null;

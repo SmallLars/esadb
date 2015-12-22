@@ -1,7 +1,9 @@
 package view;
 
 import java.util.List;
+import java.util.Vector;
 
+import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
@@ -11,9 +13,18 @@ import model.Weapon;
 
 public class WeaponTableModel implements TableModel {
 	List<Weapon> weapons;
+	List<TableModelListener> tml;
 
 	public WeaponTableModel(List<Weapon> weapons) {
+		tml = new Vector<TableModelListener>();
+		setWeapons(weapons);
+	}
+
+	public void setWeapons(List<Weapon> weapons) {
 		this.weapons = weapons;
+		for (TableModelListener ml : tml) {
+			ml.tableChanged(new TableModelEvent(this));
+		}
 	}
 
 	@Override
@@ -56,23 +67,24 @@ public class WeaponTableModel implements TableModel {
 			case 4:
 				return weapons.get(row).getMikro();
 			default:
-				return weapons.get(row).toString();
+				return weapons.get(row);
 		}
 	}
 
 	@Override
 	public boolean isCellEditable(int rowIndex, int columnIndex) {
+		if (columnIndex == 0) return false;
 		return true;
 	}
 
 	@Override
-	public void addTableModelListener(TableModelListener arg0) {
-		// TODO Auto-generated method stub
+	public void addTableModelListener(TableModelListener tml) {
+		this.tml.add(tml);
 	}
 
 	@Override
-	public void removeTableModelListener(TableModelListener arg0) {
-		// TODO Auto-generated method stub
+	public void removeTableModelListener(TableModelListener tml) {
+		this.tml.remove(tml);
 	}
 
 	@Override

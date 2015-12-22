@@ -1,5 +1,6 @@
 package view;
 
+
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,6 +14,8 @@ import javax.swing.JOptionPane;
 import model.SettingsModel;
 
 import javax.swing.JTabbedPane;
+
+import controller.Controller;
 
 
 @SuppressWarnings("serial")
@@ -29,7 +32,9 @@ public class Settings extends JDialog {
 		setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
 		addWindowListener(new WindowAdapter() {
 			@Override
-			public void windowClosing(WindowEvent arg0) {close();}
+			public void windowClosing(WindowEvent arg0) {
+				close(false);
+			}
 		});
 
 		getContentPane().setLayout(null);
@@ -46,7 +51,9 @@ public class Settings extends JDialog {
 		abortButton.setBounds(10, 467, 200, 23);
 		abortButton.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent arg0) {close();}
+			public void actionPerformed(ActionEvent arg0) {
+				close(false);
+			}
 		});
 		getContentPane().add(abortButton);
 
@@ -54,14 +61,21 @@ public class Settings extends JDialog {
 		closeButton.setBounds(550, 467, 200, 23);
 		closeButton.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent arg0) {close();}
+			public void actionPerformed(ActionEvent arg0) {
+				close(true);
+			}
 		});
 		getContentPane().add(closeButton);
 
 		getRootPane().setDefaultButton(abortButton);
 	}
 
-	private void close() {
+	private void close(boolean save) {
+		if (save) {
+			Controller.get().saveConfig();
+		} else {
+			Controller.get().reloadConfig();
+		}
 		JOptionPane.showMessageDialog(	this,
 										"Um die Änderung zu übernehmen ist ein Neustart des Programms erforderlich.",
 										"Neustart erforderlich",

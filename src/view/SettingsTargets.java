@@ -71,7 +71,7 @@ public class SettingsTargets extends JPanel implements ActionListener, ChangeLis
 		button_minus.setBounds(420, 15, 45, 20);
 		add(button_minus);
 
-		comboBox = new JComboBox<TargetModel>(config.getScheiben());
+		comboBox = new JComboBox<TargetModel>(config.getTargets());
 		//comboBox = new JComboBox<TargetModel>();
 		comboBox.setSelectedItem(config.getStandardRule().getScheibe());
 		comboBox.setBounds(480, 15, 180, 20);

@@ -77,6 +77,14 @@ public class Controller {
 		return config;
 	}
 
+	public void reloadConfig() {
+		config = SettingsModel.load();
+	}
+
+	public void saveConfig() {
+		config.save();
+	}
+
 	public File getFile() {
 		return file;
 	}
@@ -187,7 +195,7 @@ public class Controller {
 
 		config = SettingsModel.load();
 
-		fileChecker = new FileChecker(config.getLinienCount());
+		fileChecker = new FileChecker(config.getLineCount());
 
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		file = new File(sdf.format(new Date()) + ".esa");
@@ -197,7 +205,7 @@ public class Controller {
 			model = new Model(config);
 		}
 
-		gui = new GUI(this, config.getLinienCount());
+		gui = new GUI(this, config.getLineCount());
 	}
 
 	private void initConsole() {

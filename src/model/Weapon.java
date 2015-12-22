@@ -1,12 +1,14 @@
 package model;
 
+
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.Serializable;
 import java.text.NumberFormat;
 import java.util.Locale;
 
-public class Weapon implements Serializable {
+
+public class Weapon implements Serializable, Comparable<Weapon> {
 	private static final long serialVersionUID = 1L;
 
 	private String name;
@@ -26,6 +28,11 @@ public class Weapon implements Serializable {
 	@Override
 	public String toString() {
 		return name;
+	}
+
+	@Override
+	public int compareTo(Weapon w) {
+		return w.number.compareTo(number) * -1;
 	}
 
 	public String getNumber() {

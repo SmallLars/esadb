@@ -241,8 +241,8 @@ public class GUI extends JFrame implements ActionListener {
 		scrollScheiben.setViewportView(scheibenBox);
 
 		int i = 0;
-		for (int l : config.getLinien()) {
-			LineModel linie = new DefaultLineModel(l);
+		for (int l : config.getLines()) {
+			LineModel linie = new DefaultLineModel(l, controller);
 			linie.setStatus(Status.INIT);
 			controller.add(linie);
 
@@ -255,7 +255,7 @@ public class GUI extends JFrame implements ActionListener {
 
 			i++;
 		}
-		scheibenBox.setPreferredSize(new Dimension(250, config.getLinienCount() * 250));
+		scheibenBox.setPreferredSize(new Dimension(250, config.getLineCount() * 250));
 
 		JScrollPane scrollKonsole = new JScrollPane();
 		scrollKonsole.setBounds(0, 281, 746, 249);
@@ -282,7 +282,7 @@ public class GUI extends JFrame implements ActionListener {
 				if ((getExtendedState() & JFrame.MAXIMIZED_BOTH) == 0) {
 					config.setMainWindowBounds(getBounds());
 				}
-				scheibenBox.setPreferredSize(new Dimension(contentPane.getWidth() - 764, config.getLinienCount() * (contentPane.getWidth() - 764)));
+				scheibenBox.setPreferredSize(new Dimension(contentPane.getWidth() - 764, config.getLineCount() * (contentPane.getWidth() - 764)));
 				scrollScheiben.setSize(contentPane.getWidth() - 746, contentPane.getHeight() - 32);
 				scrollScheiben.revalidate();
 				scrollKonsole.setSize(746, contentPane.getHeight() - 281);
