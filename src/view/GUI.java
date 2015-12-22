@@ -28,6 +28,7 @@ import javax.swing.JMenu;
 
 import model.DefaultLineModel;
 import model.LineModel;
+import model.SettingsModel;
 import model.Single;
 import model.Status;
 import controller.Controller;
@@ -71,7 +72,7 @@ public class GUI extends JFrame implements ActionListener {
 	private JFileChooser fc;
 
 	public GUI(Controller controller, int linienCount) {
-		super("ESADB - Datenbank für ESA 2002 - " + controller.getFile().getName());
+		super("ESADB - Datenbank für ESA 2002 - " + controller.getFileName());
 		setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/esadb.png")));
 		addWindowListener(new WindowAdapter() {
 			@Override
@@ -82,9 +83,10 @@ public class GUI extends JFrame implements ActionListener {
 		this.controller = controller;
 		scheiben = new Target[linienCount];
 		linien = new Line[linienCount];
+		SettingsModel config = controller.getConfig();
 
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		setBounds(controller.getConfig().getMainWindowBounds());
+		setBounds(config.getMainWindowBounds());
 
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
@@ -239,21 +241,21 @@ public class GUI extends JFrame implements ActionListener {
 		scrollScheiben.setViewportView(scheibenBox);
 
 		int i = 0;
-		for (int l : controller.getConfig().getLinien()) {
-			LineModel linie = new DefaultLineModel(l, controller);
+		for (int l : config.getLinien()) {
+			LineModel linie = new DefaultLineModel(l);
 			linie.setStatus(Status.INIT);
 			controller.add(linie);
 
 			linien[i] = new Line(linie);
 			linienBox.add(linien[i]);
 
-			scheiben[i] = new Target(controller.getConfig().getStandardRule(), l);
+			scheiben[i] = new Target(config.getStandardRule(), l);
 			scheibenBox.add(scheiben[i]);
 			linie.addLineListener(scheiben[i]);
 
 			i++;
 		}
-		scheibenBox.setPreferredSize(new Dimension(250, controller.getConfig().getLinienCount() * 250));
+		scheibenBox.setPreferredSize(new Dimension(250, config.getLinienCount() * 250));
 
 		JScrollPane scrollKonsole = new JScrollPane();
 		scrollKonsole.setBounds(0, 281, 746, 249);
@@ -271,16 +273,16 @@ public class GUI extends JFrame implements ActionListener {
 			@Override
 			public void componentMoved(ComponentEvent arg0) {
 				if ((getExtendedState() & JFrame.MAXIMIZED_BOTH) == 0) {
-					controller.getConfig().setMainWindowBounds(getBounds());
+					config.setMainWindowBounds(getBounds());
 				}
 			}
 
 			@Override
 			public void componentResized(ComponentEvent arg0) {
 				if ((getExtendedState() & JFrame.MAXIMIZED_BOTH) == 0) {
-					controller.getConfig().setMainWindowBounds(getBounds());
+					config.setMainWindowBounds(getBounds());
 				}
-				scheibenBox.setPreferredSize(new Dimension(contentPane.getWidth() - 764, controller.getConfig().getLinienCount() * (contentPane.getWidth() - 764)));
+				scheibenBox.setPreferredSize(new Dimension(contentPane.getWidth() - 764, config.getLinienCount() * (contentPane.getWidth() - 764)));
 				scrollScheiben.setSize(contentPane.getWidth() - 746, contentPane.getHeight() - 32);
 				scrollScheiben.revalidate();
 				scrollKonsole.setSize(746, contentPane.getHeight() - 281);
@@ -317,7 +319,7 @@ public class GUI extends JFrame implements ActionListener {
 					File file = checkPath(fc.getSelectedFile());
 					if (file == null) return;
 					controller.neu(file);
-					setTitle("ESADB - Datenbank für ESA 2002 - " + controller.getFile().getName());
+					setTitle("ESADB - Datenbank für ESA 2002 - " + controller.getFileName());
 					println("Neu: " + file.getPath() + ".", style);
 				}
 				break;
@@ -334,7 +336,7 @@ public class GUI extends JFrame implements ActionListener {
 					File file = fc.getSelectedFile();
 					if (file.exists()) {
 						controller.load(file);
-						setTitle("ESADB - Datenbank f�r ESA 2002 - " + controller.getFile().getName());
+						setTitle("ESADB - Datenbank f�r ESA 2002 - " + controller.getFileName());
 						println("�ffnen: " + file.getPath() + ".", style);
 					} else {
 						JOptionPane.showMessageDialog(	this,
@@ -350,7 +352,7 @@ public class GUI extends JFrame implements ActionListener {
 					File file = checkPath(fc.getSelectedFile());
 					if (file == null) return;
 					controller.save(file);
-					setTitle("ESADB - Datenbank für ESA 2002 - " + controller.getFile().getName());
+					setTitle("ESADB - Datenbank für ESA 2002 - " + controller.getFileName());
 					println("Speichern: " + file.getPath() + ".", style);
 				}
 				break;
@@ -373,18 +375,18 @@ public class GUI extends JFrame implements ActionListener {
 				controller.getConfig().setPageFormat(dv.showDialog());
 				break;
 			case "SINGLEPREVIEW":
-				SingleSelection einzel = new SingleSelection(this, controller);
+				SingleSelection einzel = new SingleSelection(this);
 				Single ez = einzel.showDialog();
 				if (ez == null) return;
 				dv = new Druckvorschau(this, ez, controller.getConfig().getPageFormat());
 				controller.getConfig().setPageFormat(dv.showDialog());
 				break;
 			case "SINGLEEDIT":
-				SingleEdit ee = new SingleEdit(this, controller);
+				SingleEdit ee = new SingleEdit(this);
 				ee.setVisible(true);
 				break;
 			case "TREFFERADD":
-				HitAdd ta = new HitAdd(this, controller);
+				HitAdd ta = new HitAdd(this);
 				ta.setVisible(true);
 				break;
 			case "PREFERENCES":
@@ -399,7 +401,7 @@ public class GUI extends JFrame implements ActionListener {
 				disziplin.setVisible(true);
 				break;
 			case "SCHUETZEN":
-				Members schuetze = new Members(this, controller);
+				Members schuetze = new Members(this);
 				schuetze.setVisible(true);
 				break;
 			case "INFO":

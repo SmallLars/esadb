@@ -38,12 +38,12 @@ public class SingleSelection extends JDialog implements ActionListener {
 	private JCheckBox chckbxProbe;
 	private JCheckBox chckbxMatch;
 
-	public SingleSelection(Frame parent, Controller controller) {
+	public SingleSelection(Frame parent) {
 		super(parent, "Ergebnisauswahl");
 		setResizable(false);
 
 		ergebnisse = new Vector<Single>();
-		for (Start s : controller.getModel().getErgebnisse()) {
+		for (Start s : Controller.get().getModel().getErgebnisse()) {
 			if (s instanceof Single) ergebnisse.add((Single) s);
 		}
 

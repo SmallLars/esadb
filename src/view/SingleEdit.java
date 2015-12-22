@@ -63,10 +63,10 @@ public class SingleEdit extends JDialog implements ComponentListener, ActionList
 	
 	private JButton cancelButton;
 
-	public SingleEdit(Frame parent, Controller controller) {
+	public SingleEdit(Frame parent) {
 		super(parent, "Ergebnisse bearbeiten");
 
-		this.controller = controller;
+		this.controller = Controller.get();
 		ergebnisse = new Vector<Single>();
 		for (Start s : controller.getModel().getErgebnisse()) {
 			if (s instanceof Single) ergebnisse.add((Single) s);

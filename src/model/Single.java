@@ -216,7 +216,7 @@ public class Single extends Start implements Printable {
 
 		// Überschriften
 		g2.drawString("Linie " + linie, 0, lineHeight);
-		drawStringCenter(g2, Controller.getFileName(), 1000, lineHeight);
+		drawStringCenter(g2, Controller.get().getFileName(), 1000, lineHeight);
 		SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
 		drawStringRight(g2, sdf.format(datum), 2000, lineHeight);
 		g2.translate(0, lineHeight);

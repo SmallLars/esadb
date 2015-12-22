@@ -32,11 +32,12 @@ public class DefaultLineModel implements LineModel, LineReader, ActionListener {
 
 	private int state;
 
-	public DefaultLineModel(int nummer, Controller controller) {
+	public DefaultLineModel(int nummer) {
 		this.nummer = nummer;
-		this.controller = controller;
-		this.einzel = null;
-		this.listener = new Vector<LineListener>();
+
+		controller = Controller.get();
+		einzel = null;
+		listener = new Vector<LineListener>();
 
 		state = 0;
 	}
@@ -55,7 +56,7 @@ public class DefaultLineModel implements LineModel, LineReader, ActionListener {
 	
 	public Single configure(Member schuetze, Discipline disziplin) {
 		if (einzel == null || einzel.getSchuetze() != schuetze || einzel.getDisziplin() != disziplin) {
-			controller.getConfig().getRule(disziplin.getRuleNumber()).toFile();
+			controller.getRule(disziplin.getRuleNumber()).toFile();
 
 			Single incomplete = controller.findIncomplete(schuetze, disziplin);
 			Single new_event = new Single(nummer, disziplin, schuetze);

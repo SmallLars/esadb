@@ -44,10 +44,10 @@ public class HitAdd extends JDialog implements ComponentListener, ListSelectionL
 	
 	private JButton cancelButton;
 
-	public HitAdd(Frame parent, Controller controller) {
+	public HitAdd(Frame parent) {
 		super(parent, "Treffer eingeben");
 
-		this.controller = controller;
+		controller = Controller.get();
 
 		setModal(true);
 		setModalityType(ModalityType.APPLICATION_MODAL);
@@ -58,18 +58,18 @@ public class HitAdd extends JDialog implements ComponentListener, ListSelectionL
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		getContentPane().setLayout(null);
 
-		comboBox = new JComboBox<Rule>(controller.getConfig().getRules());
-		comboBox.setSelectedItem(controller.getConfig().getStandardRule());
+		comboBox = new JComboBox<Rule>(controller.getRules());
+		comboBox.setSelectedItem(controller.getStandardRule());
 		comboBox.setBounds(411, 15, 200, 25);
 		comboBox.setActionCommand("TYP");
 		comboBox.addActionListener(this);
 		getContentPane().add(comboBox);
 
-		scheibe = new Target(controller.getConfig().getStandardRule());
+		scheibe = new Target(controller.getStandardRule());
 		scheibe.setBounds(324, 52, 375, 375);
 		getContentPane().add(scheibe);
 
-		treffer = new HitCreate(scheibe, controller.getConfig().getStandardRule());
+		treffer = new HitCreate(scheibe, controller.getStandardRule());
 		treffer.setSize(300, 200);
 		treffer.setLocation(12, 10);
 		getContentPane().add(treffer);

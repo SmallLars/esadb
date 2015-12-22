@@ -49,10 +49,10 @@ public class Members extends JDialog implements ComponentListener, ActionListene
 
 	private JButton cancelButton;
 
-	public Members(Frame parent, Controller controller) {
+	public Members(Frame parent) {
 		super(parent, "Schützen");
 
-		this.controller = controller;
+		this.controller = Controller.get();
 		schuetzen = KampfDB.getAllSchuetzen();
 
 		setModal(true);
@@ -71,7 +71,7 @@ public class Members extends JDialog implements ComponentListener, ActionListene
 		tmodel = new MemberTableModel(schuetzen);
 		sorter = new TableRowSorter<MemberTableModel>(tmodel);
 		sorter.setSortsOnUpdates(true);
-		sorter.setRowFilter(new MemberRowFilter(controller, true, null));
+		sorter.setRowFilter(new MemberRowFilter(true, null));
 		table = new JTable(tmodel);
 		table.setRowSorter(sorter);
 		scrollPane.setViewportView(table);
@@ -89,7 +89,7 @@ public class Members extends JDialog implements ComponentListener, ActionListene
 		tmodel_1 = new MemberTableModel(schuetzen);
 		sorter_1 = new TableRowSorter<MemberTableModel>(tmodel_1);
 		sorter_1.setSortsOnUpdates(true);
-		sorter_1.setRowFilter(new MemberRowFilter(controller, false, null));
+		sorter_1.setRowFilter(new MemberRowFilter(false, null));
 		table_1 = new JTable(tmodel_1);
 		table_1.setRowSorter(sorter_1);
 		scrollPane_1.setViewportView(table_1);
@@ -139,8 +139,8 @@ public class Members extends JDialog implements ComponentListener, ActionListene
 				scrollPane_1.repaint();
 				break;
 			case "FILTER":
-				sorter.setRowFilter(new MemberRowFilter(controller, true, (Club) comboBox.getSelectedItem()));
-				sorter_1.setRowFilter(new MemberRowFilter(controller, false, (Club) comboBox.getSelectedItem()));
+				sorter.setRowFilter(new MemberRowFilter(true, (Club) comboBox.getSelectedItem()));
+				sorter_1.setRowFilter(new MemberRowFilter(false, (Club) comboBox.getSelectedItem()));
 				break;
 			case "CANCEL":
 				setVisible(false);

@@ -70,7 +70,7 @@ public class Target extends JPanel implements LineListener {
 		Validate.notNull(single, "single can't be null");
 		init();
 		this.single = single;
-		setRule(Controller.getRule(single.getDisziplin().getRuleNumber()));
+		setRule(Controller.get().getRule(single.getDisziplin().getRuleNumber()));
 	}
 	
 	private void init() {
@@ -221,9 +221,9 @@ public class Target extends JPanel implements LineListener {
 		if (type == DefaultLineModel.RESULT_CHANGED) {
 			single = lm.getResult();
 			if (single == null) {
-				setRule(Controller.getStandardRule());
+				setRule(Controller.get().getStandardRule());
 			} else {
-				setRule(Controller.getRule(single.getDisziplin().getRuleNumber()));
+				setRule(Controller.get().getRule(single.getDisziplin().getRuleNumber()));
 			}
 			repaint();
 		}

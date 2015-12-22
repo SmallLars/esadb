@@ -12,8 +12,8 @@ public class MemberRowFilter extends RowFilter<MemberTableModel, Integer> {
 	private Club verein;
 	private boolean active;
 
-	public MemberRowFilter(Controller controller, boolean active, Club verein) {
-		this.controller = controller;
+	public MemberRowFilter(boolean active, Club verein) {
+		this.controller = Controller.get();
 		this.active = active;
 		this.verein = verein;
 	}

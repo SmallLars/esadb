@@ -10,11 +10,11 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.Vector;
 
-import model.SettingsModel;
 import model.Discipline;
 import model.Rule;
 import model.Member;
 import model.Club;
+import model.SettingsModel;
 
 import com.healthmarketscience.jackcess.CursorBuilder;
 import com.healthmarketscience.jackcess.Database;
