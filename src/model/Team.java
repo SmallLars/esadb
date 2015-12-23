@@ -3,7 +3,7 @@ package model;
 import java.awt.Graphics;
 
 public class Team extends Start {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
 
 	@Override
 	public int compareTo(Start o) {

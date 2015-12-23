@@ -1,5 +1,6 @@
 package view;
 
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseWheelEvent;
@@ -18,23 +19,32 @@ import model.TargetValue;
 import javax.swing.border.LineBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.event.TableModelListener;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Toolkit;
 
+import javax.swing.InputVerifier;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.DefaultComboBoxModel;
 
+import controller.Controller;
+
 
 @SuppressWarnings("serial")
-public class SettingsTargets extends JPanel implements ActionListener, ChangeListener {
+public class SettingsTargets extends JPanel implements DocumentListener, ActionListener, ChangeListener {
 
 	private boolean doUpdate = false;
+	private TableModelListener tml;
 
 	private JComboBox<TargetModel> comboBox;
 	private Target scheibe;
@@ -55,10 +65,9 @@ public class SettingsTargets extends JPanel implements ActionListener, ChangeLis
 	private JSpinner spinner_vorhaltediameter;
 	private JSpinner spinner_vorhalteabstand;
 
-	/**
-	 * Create the panel.
-	 */
-	public SettingsTargets(SettingsModel config) {
+	public SettingsTargets(SettingsModel config, TableModelListener tml) {
+		this.tml = tml;
+
 		this.setSize(735,  420);
 		this.setLayout(null);
 
@@ -69,10 +78,11 @@ public class SettingsTargets extends JPanel implements ActionListener, ChangeLis
 
 		JButton button_minus = new JButton("-");
 		button_minus.setBounds(420, 15, 45, 20);
+		button_minus.setActionCommand("-");
+		button_minus.addActionListener(this);
 		add(button_minus);
 
 		comboBox = new JComboBox<TargetModel>(config.getTargets());
-		//comboBox = new JComboBox<TargetModel>();
 		comboBox.setSelectedItem(config.getStandardRule().getScheibe());
 		comboBox.setBounds(480, 15, 180, 20);
 		comboBox.setActionCommand("TYP");
@@ -81,13 +91,52 @@ public class SettingsTargets extends JPanel implements ActionListener, ChangeLis
 		
 		JButton button_plus = new JButton("+");
 		button_plus.setBounds(675, 15, 45, 20);
+		button_plus.setActionCommand("+");
+		button_plus.addActionListener(this);
 		add(button_plus);
 		
 		final int X[] = {420, 160};
 		final int Y[] = {70, 45};
 		
 		text_name = addJTextField(this, X[0], Y[0] + 0 * Y[1], 160, "Name");
+		text_name.getDocument().addDocumentListener(this);
+		
 		text_number = addJTextField(this, X[0] + 180, Y[0] + 0 * Y[1], 90, "Kennnummer");
+		text_number.setActionCommand("Kennnummer");
+		text_number.addActionListener(this);
+		text_number.setInputVerifier(new InputVerifier() {
+			@Override
+			public boolean verify(JComponent arg0) {
+				if (!text_number.getText().matches("^[0-9]+(\\.[0-9]+)*$")) {
+					Toolkit.getDefaultToolkit().beep();
+					JOptionPane.showMessageDialog(
+						null,
+						"Die Kennnummer darf nur aus Punkten und Zahlen bestehen\nund muss mit einer mit einer Zahl beginnen und enden.",
+						"Ungültige Eingabe",
+						JOptionPane.WARNING_MESSAGE
+					);
+					return false;
+				}
+
+				for (int i = 0; i < comboBox.getItemCount(); i++) {
+					if (comboBox.getSelectedItem() == comboBox.getItemAt(i)) continue;
+					if (comboBox.getItemAt(i).getNumber().equals(text_number.getText())) {
+						Toolkit.getDefaultToolkit().beep();
+						JOptionPane.showMessageDialog(
+							null,
+							"Zwei Scheiben mit der gleichen Kennnummer sind nicht möglich.",
+							"Ungültige Eingabe",
+							JOptionPane.WARNING_MESSAGE
+						);
+						return false;
+					}
+				}
+
+				TargetModel target = (TargetModel) comboBox.getSelectedItem();
+				target.setNumber(text_number.getText());
+				return true;
+			}
+		});
 
 		spinner_size = addJSpinner(this, X[0], Y[0] + 1 * Y[1], "Kartongröße", "mm");
 		spinner_feed = addJSpinner(this, X[0] + X[1], Y[0] + 1 * Y[1], "Bandvorschub", "");
@@ -139,30 +188,70 @@ public class SettingsTargets extends JPanel implements ActionListener, ChangeLis
 
 		doUpdate = true;
 	}
-	
+
 	@Override
-	public void actionPerformed(ActionEvent arg0) {
+	public void changedUpdate(DocumentEvent e) {updateText();}
+
+	@Override
+	public void insertUpdate(DocumentEvent e) {updateText();}
+
+	@Override
+	public void removeUpdate(DocumentEvent e) {updateText();}
+
+	private void updateText() {
 		if (!doUpdate) return;
 
 		TargetModel target = (TargetModel) comboBox.getSelectedItem();
-		switch (arg0.getActionCommand()) {
-			case "TYP":               updateDisplay();                                                                break;
-			case "Name":              target.setName(text_name.getText());                                            break;
-			case "Kennnummer":        target.setNumber(text_number.getText());                                        break;
-			case "Winkel Ringzahlen": target.setValue(TargetValue.NUM_ANGLE, comboBox_ring_angle.getSelectedIndex()); break;
-			case "Scheibenart":       target.setValue(TargetValue.TYPE, comboBox_typ.getSelectedIndex());             break;
-			case "Ausgefüllter Ring": target.setValue(TargetValue.STYLE_TEN, comboBox_style.getSelectedIndex());      break;
+		target.setName(text_name.getText());
+		comboBox.repaint();
+	}
+	
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		TargetModel t;
+		switch (e.getActionCommand()) {
+			case "-":
+				t = (TargetModel) comboBox.getSelectedItem();
+				if (!Controller.get().getConfig().removeTarget(t)) {
+					JOptionPane.showMessageDialog(
+						this,
+						"Die Scheibe kann nicht gelöscht werden, da sie\nnoch mindestens einer Regel zugeordnet ist.",
+						"Löschen nicht möglich",
+						JOptionPane.INFORMATION_MESSAGE
+					);
+				} else {
+					comboBox.removeItem(comboBox.getSelectedItem());
+					tml.tableChanged(null);
+				}
+				break;
+			case "+":
+				t = Controller.get().getConfig().newTarget();
+				comboBox.addItem(t);
+				comboBox.setSelectedItem(t);
+				tml.tableChanged(null);
+				break;
 		}
-		scheibe.setTarget(target);
+
+		if (!doUpdate) return;
+
+		t = (TargetModel) comboBox.getSelectedItem();
+		switch (e.getActionCommand()) {
+			case "TYP":               updateDisplay();                                                           break;
+			case "Kennnummer":        text_number.getInputVerifier().verify(text_number);                        break;
+			case "Winkel Ringzahlen": t.setValue(TargetValue.NUM_ANGLE, comboBox_ring_angle.getSelectedIndex()); break;
+			case "Scheibenart":       t.setValue(TargetValue.TYPE, comboBox_typ.getSelectedIndex());             break;
+			case "Ausgefüllter Ring": t.setValue(TargetValue.STYLE_TEN, comboBox_style.getSelectedIndex());      break;
+		}
+		scheibe.setTarget(t);
 	}
 
 	@Override
-	public void stateChanged(ChangeEvent arg0) {
+	public void stateChanged(ChangeEvent e) {
 		if (!doUpdate) return;
 
 		boolean updateNeeded = false;
 		TargetModel target = (TargetModel) comboBox.getSelectedItem();
-		switch (((JSpinner) arg0.getSource()).getName()) {
+		switch (((JSpinner) e.getSource()).getName()) {
 			case "Kartongröße":       updateNeeded = target.setValue(TargetValue.SIZE,          (int) ((double) spinner_size.getValue()             * 100)); break;
 			case "Bandvorschub":      updateNeeded = target.setValue(TargetValue.FEED,          (int)           spinner_feed.getValue());                    break;
 			case "Ø Aussen":          updateNeeded = target.setValue(TargetValue.DIA_OUTSIDE,   (int) ((double) spinner_dia_outside.getValue()      * 100)); break;
@@ -183,8 +272,6 @@ public class SettingsTargets extends JPanel implements ActionListener, ChangeLis
 		JTextField textField = new JTextField();
 		textField.setBounds(x, y, width, 20);
 		textField.setColumns(10);
-		textField.setActionCommand(caption);
-		textField.addActionListener(this);
 		parent.add(textField);
 		addCaption(textField, parent, caption, "");
 		return textField;

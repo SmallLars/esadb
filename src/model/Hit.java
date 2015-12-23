@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 
 
 public class Hit implements Serializable, Comparable<Hit> {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
 
 	private int linie;
 	private boolean probe;

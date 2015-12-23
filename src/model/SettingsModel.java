@@ -11,7 +11,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -20,7 +19,7 @@ import java.util.Vector;
 
 
 public class SettingsModel implements Serializable {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
 	private static final File file = new File("settings.esc");
 	private static final double mmToDots = 72 / 2.54;
 
@@ -36,7 +35,7 @@ public class SettingsModel implements Serializable {
 	private double pageImageableHeight;
 	private int pageOrientation;
 
-	private List<TargetModel> targets;
+	private Set<TargetModel> targets;
 	private Set<Weapon> weapons;
 	private Map<String, Rule> rules;
 	private Rule standardRule;	
@@ -54,7 +53,7 @@ public class SettingsModel implements Serializable {
 		pageImageableHeight = 27.7 * mmToDots;
 		pageOrientation = PageFormat.PORTRAIT;
 
-		targets = new Vector<TargetModel>();
+		targets = new TreeSet<TargetModel>();
 		//                         |                      |           |       |Band-   |      Durchmesser       |Ring- | Ring  |  Nummer  |   |     |  Vorhalte-   |
 		//                         |Bezeichnung           | Kennummer | Karton|vorschub|Spiegel|Aussen|Innenzehn|breite|Min|Max|Max|Wimkel|Art|Style|Durchm|Abstand|
 		targets.add(new TargetModel("Gewehr 10m",           "0.4.3.01",  17000,       2,   3050,  4550,        0,   250,   1, 10, 8,      0,  0,    2));
@@ -85,10 +84,10 @@ public class SettingsModel implements Serializable {
 		weapons.add(new Weapon("Vorderlader",               "13", 14000, Unit.MM,   6));
 
 		rules = new TreeMap<String, Rule>();
-		rules.put("1.10", new Rule("Luftgewehr",        "1.10", targets.get(0), weapons.toArray(new Weapon[0])[0]));
-		rules.put("1.35", new Rule("Kleinkaliber 100m", "1.35", targets.get(3), weapons.toArray(new Weapon[0])[2]));
-		rules.put("1.40", new Rule("Kleinkaliber 50m",  "1.40", targets.get(2), weapons.toArray(new Weapon[0])[2]));
-		rules.put("2.10", new Rule("Luftpistole",       "2.10", targets.get(7), weapons.toArray(new Weapon[0])[0]));
+		rules.put("1.10", new Rule("Luftgewehr",        "1.10", targets.toArray(new TargetModel[0])[0], weapons.toArray(new Weapon[0])[0]));
+		rules.put("1.35", new Rule("Kleinkaliber 100m", "1.35", targets.toArray(new TargetModel[0])[3], weapons.toArray(new Weapon[0])[2]));
+		rules.put("1.40", new Rule("Kleinkaliber 50m",  "1.40", targets.toArray(new TargetModel[0])[2], weapons.toArray(new Weapon[0])[2]));
+		rules.put("2.10", new Rule("Luftpistole",       "2.10", targets.toArray(new TargetModel[0])[7], weapons.toArray(new Weapon[0])[0]));
 		standardRule = rules.get("1.40");
 
 		save();
@@ -100,6 +99,7 @@ public class SettingsModel implements Serializable {
 
 	public void setMainWindowBounds(Rectangle mainWindow) {
 		this.mainWindow = mainWindow;
+		save();
 	}
 
 	public Vector<Integer> getLines() {
@@ -138,9 +138,10 @@ public class SettingsModel implements Serializable {
 		pageImageableWidth = pf.getPaper().getImageableWidth();
 		pageImageableHeight = pf.getPaper().getImageableHeight();
 		pageOrientation = pf.getOrientation();
+		save();
 	}
 
-	public void newWeapon() {
+	public Weapon newWeapon() {
 		Weapon w = new Weapon(	"Neue Waffe", "01",
 								standardRule.getWaffe().getDiameter(),
 								standardRule.getWaffe().getUnit(),
@@ -150,7 +151,7 @@ public class SettingsModel implements Serializable {
 			w.setNumber(String.format("%02d", n));
 			if (!weapons.contains(w)) {
 				weapons.add(w);
-				return;
+				return w;
 			}
 		}
 
@@ -164,12 +165,21 @@ public class SettingsModel implements Serializable {
 		for (Rule r : rules.values()) {
 			if (w.compareTo(r.getWaffe()) == 0) return false;
 		}
-		weapons.remove(w);
-		return true;
+		return weapons.remove(w);
 	}
 
-	public void newTarget() {
-		//return targets.add(t);
+	public TargetModel newTarget() {
+		TargetModel tm = new TargetModel(standardRule.getScheibe());
+		tm.setName("Neue Scheibe");
+		
+		String number = tm.getNumber().substring(0, tm.getNumber().lastIndexOf(".") + 1);
+		for (int n = 1; true; n++) {
+			tm.setNumber(number + String.format("%02d", n));
+			if (!targets.contains(tm)) {
+				targets.add(tm);
+				return tm;
+			}
+		}
 	}
 
 	public TargetModel[] getTargets() {
@@ -177,6 +187,9 @@ public class SettingsModel implements Serializable {
 	}
 
 	public boolean removeTarget(TargetModel t) {
+		for (Rule r : rules.values()) {
+			if (t.compareTo(r.getScheibe()) == 0) return false;
+		}
 		return targets.remove(t);
 	}
 
@@ -194,6 +207,13 @@ public class SettingsModel implements Serializable {
 
 	public Rule getStandardRule() {
 		return standardRule;
+	}
+
+	public void removeRule(String ruleNumber) {
+		rules.remove(ruleNumber);
+		if (ruleNumber.equals(standardRule.getRegelnummer())) {
+			standardRule = rules.values().toArray(new Rule[0])[0];
+		}
 	}
 
 	public boolean save() {

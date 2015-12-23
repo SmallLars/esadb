@@ -1,5 +1,6 @@
 package view;
 
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Vector;
@@ -17,12 +18,10 @@ import javax.swing.event.ChangeListener;
 
 import model.SettingsModel;
 
+
 @SuppressWarnings("serial")
 public class SettingsLines extends JPanel {
 
-	/**
-	 * Create the panel.
-	 */
 	public SettingsLines(SettingsModel config) {
 		this.setSize(735,  420);
 		this.setLayout(null);

@@ -26,7 +26,7 @@ import view.Target;
 
 
 public class Single extends Start implements Printable {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
 	
 	public static final int PROBE = 0;
 	public static final int MATCH = 1;

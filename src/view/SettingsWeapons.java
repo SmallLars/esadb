@@ -21,6 +21,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableCellRenderer;
 
 import controller.Controller;
@@ -31,11 +32,12 @@ public class SettingsWeapons extends JPanel implements ActionListener {
 	private JTable table;
 	private WeaponTableModel wtm;
 
-	public SettingsWeapons(SettingsModel config) {
+	public SettingsWeapons(SettingsModel config, TableModelListener tml) {
 		this.setSize(735, 420);
 		this.setLayout(null);
 		
 		wtm = new WeaponTableModel(Arrays.asList(config.getWeapons()));
+		wtm.addTableModelListener(tml);
 		table = new JTable(wtm);
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.setRowHeight(20);

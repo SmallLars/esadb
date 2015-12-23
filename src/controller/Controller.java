@@ -40,6 +40,7 @@ import view.GUI;
 
 public class Controller {
 	private static Controller controller = null;
+	private static GUI gui = null;
 
 	private SimpleAttributeSet redStyle;
 	private OutputStream errorLog = null;
@@ -50,10 +51,12 @@ public class Controller {
 	private FileChecker fileChecker;
 	private File file;
 	private Model model;
-	private GUI gui = null;
 
 	public static Controller get() {
-		if (controller == null) controller = new Controller();
+		if (controller == null) {
+			controller = new Controller();
+			gui = new GUI();
+		}
 		return controller;
 	}
 
@@ -100,10 +103,14 @@ public class Controller {
 		modelChanged();
 	}
 
-	public void load(File file) {
+	public boolean load(File file) {
+		Model model = Model.load(file);
+		if (model == null) return false;
+
 		this.file = file;
-		model = Model.load(file);
+		this.model = model;
 		modelChanged();
+		return true;
 	}
 
 	public void save() {
@@ -204,8 +211,6 @@ public class Controller {
 		} else {
 			model = new Model(config);
 		}
-
-		gui = new GUI(this, config.getLineCount());
 	}
 
 	private void initConsole() {

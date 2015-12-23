@@ -5,7 +5,7 @@ import java.io.Serializable;
 
 
 public abstract class Start implements Serializable, Comparable<Start> {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
 
 	public abstract Discipline getDisziplin();
 

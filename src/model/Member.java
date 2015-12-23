@@ -7,7 +7,7 @@ import com.healthmarketscience.jackcess.Row;
 
 
 public class Member implements Serializable, Comparable<Member> {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
 
 	public int wettkampfID;			// Identifikationsnummer des Wettkampf
 	public String passnummer;		// Passnumer des Schützen

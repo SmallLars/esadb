@@ -9,7 +9,7 @@ import java.util.Locale;
 import org.apache.commons.lang.Validate;
 
 
-public class TargetModel implements Serializable {
+public class TargetModel implements Serializable, Comparable<TargetModel> {
 	private static final long serialVersionUID = 1L;
 
 	private String bezeichnung;
@@ -38,6 +38,24 @@ public class TargetModel implements Serializable {
 		for (int i = 0; i < 14; i++) {
 			setValue(TargetValue.values()[i], i < values.length ? values[i] : 0);
 		}
+	}
+
+	public TargetModel(TargetModel tm) {
+		bezeichnung = tm.bezeichnung;
+		kennnummer = tm.kennnummer;
+		for (TargetValue tv : TargetValue.values()) {
+			setValue(tv, tm.getValue(tv));
+		}
+	}
+
+	@Override
+	public String toString() {
+		return bezeichnung;
+	}
+
+	@Override
+	public int compareTo(TargetModel t) {
+		return t.kennnummer.compareTo(kennnummer) * -1;
 	}
 
 	public void setName(String name) {
@@ -294,10 +312,5 @@ public class TargetModel implements Serializable {
 			e.printStackTrace();
 		}
 		return fileName;
-	}
-
-	@Override
-	public String toString() {
-		return bezeichnung;
 	}
 }

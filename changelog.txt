@@ -1,0 +1,12 @@
+1.0.0
+ - Veröffentlichung
+
+1.0.1
+ - Problem behoben, bei dem Ergebnisse durch Toggel von "Sperren" verloren gehen.
+
+1.0.2
+ - Problem behoben, bei dem Ergebnisse durch Mehrfachbelegung von Linien verloren gehen.
+
+2.0.0
+ - Waffe, Scheiben und Regeln können nun individuell angepasst werden.
+ - Das .esa Dateiformat ist nicht kompatibel mit Verwsion 1.x.

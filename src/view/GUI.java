@@ -45,7 +45,7 @@ import javax.swing.ScrollPaneConstants;
 
 
 @SuppressWarnings("serial")
-public class GUI extends JFrame implements ActionListener {
+public class GUI extends JFrame implements ActionListener, ComponentListener {
 	private Controller controller;
 
 	private JMenuItem mntmNeu;
@@ -71,8 +71,12 @@ public class GUI extends JFrame implements ActionListener {
 	private Line linien[];
 	private JFileChooser fc;
 
-	public GUI(Controller controller, int linienCount) {
-		super("ESADB - Datenbank für ESA 2002 - " + controller.getFileName());
+	private Box scheibenBox;
+	private JScrollPane scrollScheiben;
+	private JScrollPane scrollKonsole;
+
+	public GUI() {
+		super("ESADB - Datenbank für ESA 2002 - " + Controller.get().getFileName());
 		setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/esadb.png")));
 		addWindowListener(new WindowAdapter() {
 			@Override
@@ -80,9 +84,9 @@ public class GUI extends JFrame implements ActionListener {
 		});
 		setMinimumSize(new Dimension(1022, 580));
 
-		this.controller = controller;
-		scheiben = new Target[linienCount];
-		linien = new Line[linienCount];
+		controller = Controller.get();
+		scheiben = new Target[controller.getConfig().getLineCount()];
+		linien = new Line[controller.getConfig().getLineCount()];
 		SettingsModel config = controller.getConfig();
 
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -231,13 +235,13 @@ public class GUI extends JFrame implements ActionListener {
 		Box linienBox = Box.createVerticalBox();
 		scrollLinien.setViewportView(linienBox);
 
-		JScrollPane scrollScheiben = new JScrollPane();
+		scrollScheiben = new JScrollPane();
 		scrollScheiben.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		scrollScheiben.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		scrollScheiben.setBounds(746, 32, 268, 498);
 		contentPane.add(scrollScheiben);
 		
-		Box scheibenBox = Box.createVerticalBox();
+		scheibenBox = Box.createVerticalBox();
 		scrollScheiben.setViewportView(scheibenBox);
 
 		int i = 0;
@@ -257,7 +261,7 @@ public class GUI extends JFrame implements ActionListener {
 		}
 		scheibenBox.setPreferredSize(new Dimension(250, config.getLineCount() * 250));
 
-		JScrollPane scrollKonsole = new JScrollPane();
+		scrollKonsole = new JScrollPane();
 		scrollKonsole.setBounds(0, 281, 746, 249);
 		contentPane.add(scrollKonsole);
 
@@ -266,34 +270,8 @@ public class GUI extends JFrame implements ActionListener {
 		konsole.setFont(new Font("Consolas", Font.PLAIN, 12));
 		scrollKonsole.setViewportView(konsole);
 
-		addComponentListener(new ComponentListener() {
-			@Override
-			public void componentHidden(ComponentEvent arg0) {}
+		addComponentListener(this);
 
-			@Override
-			public void componentMoved(ComponentEvent arg0) {
-				if ((getExtendedState() & JFrame.MAXIMIZED_BOTH) == 0) {
-					config.setMainWindowBounds(getBounds());
-				}
-			}
-
-			@Override
-			public void componentResized(ComponentEvent arg0) {
-				if ((getExtendedState() & JFrame.MAXIMIZED_BOTH) == 0) {
-					config.setMainWindowBounds(getBounds());
-				}
-				scheibenBox.setPreferredSize(new Dimension(contentPane.getWidth() - 764, config.getLineCount() * (contentPane.getWidth() - 764)));
-				scrollScheiben.setSize(contentPane.getWidth() - 746, contentPane.getHeight() - 32);
-				scrollScheiben.revalidate();
-				scrollKonsole.setSize(746, contentPane.getHeight() - 281);
-				scrollKonsole.revalidate();
-			}
-
-			@Override
-			public void componentShown(ComponentEvent arg0) {}
-			
-		});
-		
 		setVisible(true);
 	}
 
@@ -335,14 +313,24 @@ public class GUI extends JFrame implements ActionListener {
 				if (returnVal == JFileChooser.APPROVE_OPTION) {
 					File file = fc.getSelectedFile();
 					if (file.exists()) {
-						controller.load(file);
-						setTitle("ESADB - Datenbank f�r ESA 2002 - " + controller.getFileName());
-						println("�ffnen: " + file.getPath() + ".", style);
+						if (controller.load(file)) {
+							setTitle("ESADB - Datenbank für ESA 2002 - " + controller.getFileName());
+							println("Öffnen: " + file.getPath() + ".", style);
+						} else {
+							JOptionPane.showMessageDialog(
+								this,
+								"Die gewählte Datei stammt von einer alten\nVersion und kann nicht geöffnet werden.",
+								"Fehler",
+								JOptionPane.WARNING_MESSAGE
+							);
+						}
 					} else {
-						JOptionPane.showMessageDialog(	this,
-														"Die gewählte Datei existiert nicht.",
-														"Fehler",
-														JOptionPane.WARNING_MESSAGE);
+						JOptionPane.showMessageDialog(
+							this,
+							"Die gewählte Datei existiert nicht.",
+							"Fehler",
+							JOptionPane.WARNING_MESSAGE
+						);
 					}
 				}
 				break;
@@ -467,4 +455,31 @@ public class GUI extends JFrame implements ActionListener {
 		}
 		return file;
 	}
+
+	@Override
+	public void componentHidden(ComponentEvent arg0) {}
+
+	@Override
+	public void componentMoved(ComponentEvent arg0) {
+		if ((getExtendedState() & JFrame.MAXIMIZED_BOTH) == 0) {
+			SettingsModel config = Controller.get().getConfig();
+			config.setMainWindowBounds(getBounds());
+		}
+	}
+
+	@Override
+	public void componentResized(ComponentEvent arg0) {
+		SettingsModel config = Controller.get().getConfig();
+		if ((getExtendedState() & JFrame.MAXIMIZED_BOTH) == 0) {
+			config.setMainWindowBounds(getBounds());
+		}
+		scheibenBox.setPreferredSize(new Dimension(contentPane.getWidth() - 764, config.getLineCount() * (contentPane.getWidth() - 764)));
+		scrollScheiben.setSize(contentPane.getWidth() - 746, contentPane.getHeight() - 32);
+		scrollScheiben.revalidate();
+		scrollKonsole.setSize(746, contentPane.getHeight() - 281);
+		scrollKonsole.revalidate();
+	}
+
+	@Override
+	public void componentShown(ComponentEvent arg0) {}
 }

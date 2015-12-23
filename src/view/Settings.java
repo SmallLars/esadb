@@ -41,10 +41,14 @@ public class Settings extends JDialog {
 
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setBounds(10, 10, 740, 445);
-		tabbedPane.addTab("Linien", new SettingsLines(config));
-		tabbedPane.addTab("Regeln", new SettingsRules(config));
-		tabbedPane.addTab("Scheiben", new SettingsTargets(config));
-		tabbedPane.addTab("Waffen", new SettingsWeapons(config));
+		SettingsLines lines = new SettingsLines(config);
+		SettingsRules rules = new SettingsRules(config);
+		SettingsTargets targets = new SettingsTargets(config, rules);
+		SettingsWeapons weapons = new SettingsWeapons(config, rules);
+		tabbedPane.addTab("Linien", lines);
+		tabbedPane.addTab("Regeln", rules);
+		tabbedPane.addTab("Scheiben", targets);
+		tabbedPane.addTab("Waffen", weapons);
 		getContentPane().add(tabbedPane);
 
 		JButton abortButton = new JButton("Abbrechen");

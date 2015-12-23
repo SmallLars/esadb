@@ -1,5 +1,6 @@
 package model;
 
+
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -10,6 +11,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InvalidClassException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
@@ -26,7 +28,7 @@ import controller.KampfDB;
 
 
 public class Model implements Serializable, Printable {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
 
 	private Set<Member> schuetzen;
 	private Set<Discipline> disziplinen;
@@ -144,12 +146,13 @@ public class Model implements Serializable, Printable {
 		try {
 			fis = new FileInputStream(file);
 			ois = new ObjectInputStream(fis);
-			Object obj = ois.readObject();
+			Object obj = ois.readObject();// hier
 			if (obj instanceof Model) {
 				model = (Model) obj;
 			}
 			if (model != null) Files.write(Paths.get("Kampf.mdb"), model.file);
 		}
+		catch (InvalidClassException e) {}
 		catch (IOException | ClassNotFoundException e) {
 			e.printStackTrace();
 		}

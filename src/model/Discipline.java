@@ -5,7 +5,7 @@ import com.healthmarketscience.jackcess.Row;
 
 
 public class Discipline implements Serializable, Comparable<Discipline> {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
 
 	private int id;
 	private String name;			// Bezeichnung der Disziplin
