@@ -12,7 +12,7 @@ public enum TargetValue {
 	NUM_MAX,
 	NUM_ANGLE,
 	TYPE,
-	STYLE_TEN,
+	FILL,
 	SUSP_DIA,
 	SUSP_DISTANCE
 }

@@ -59,9 +59,9 @@ public class SettingsTargets extends JPanel implements DocumentListener, ActionL
 	private JSpinner spinner_ring_min;
 	private JSpinner spinner_ring_max;
 	private JSpinner spinner_num_max;
-	private JComboBox<Object> comboBox_ring_angle;
-	private JComboBox<Object> comboBox_typ;
-	private JComboBox<Object> comboBox_style;
+	private JComboBox<TargetAngle> comboBox_ring_angle;
+	private JComboBox<TargetType> comboBox_typ;
+	private JComboBox<TargetFill> comboBox_fill;
 	private JSpinner spinner_vorhaltediameter;
 	private JSpinner spinner_vorhalteabstand;
 
@@ -155,7 +155,7 @@ public class SettingsTargets extends JPanel implements DocumentListener, ActionL
 		((JLabel) comboBox_ring_angle.getRenderer()).setHorizontalAlignment(JLabel.RIGHT);
 
 		comboBox_typ = addJComboBox(this, X[0], Y[0] + 6 * Y[1], "Scheibenart", "", TargetType.values());
-		comboBox_style = addJComboBox(this, X[0] + X[1], Y[0] + 6 * Y[1], "Ausgefüllter Ring", "", TargetFill.values());
+		comboBox_fill = addJComboBox(this, X[0] + X[1], Y[0] + 6 * Y[1], "Ausgefüllter Ring", "", TargetFill.values());
 	
 		spinner_vorhaltediameter = addJSpinner(this, X[0], Y[0] + 7 * Y[1], "Ø Vorhaltespiegel", "mm");
 		spinner_vorhalteabstand =  addJSpinner(this, X[0] + X[1], Y[0] + 7 * Y[1], "Vorhalteabstand", "mm");
@@ -182,7 +182,7 @@ public class SettingsTargets extends JPanel implements DocumentListener, ActionL
 		spinner_num_max.setValue(target.getValue(TargetValue.NUM_MAX));
 		comboBox_ring_angle.setSelectedIndex(target.getValue(TargetValue.NUM_ANGLE));
 		comboBox_typ.setSelectedIndex(target.getValue(TargetValue.TYPE));
-		comboBox_style.setSelectedIndex(target.getValue(TargetValue.STYLE_TEN));
+		comboBox_fill.setSelectedIndex(target.getValue(TargetValue.FILL));
 		spinner_vorhaltediameter.setValue(target.getValue(TargetValue.SUSP_DIA) / 100.);
 		spinner_vorhalteabstand.setValue(target.getValue(TargetValue.SUSP_DISTANCE) / 100.);
 
@@ -234,14 +234,30 @@ public class SettingsTargets extends JPanel implements DocumentListener, ActionL
 
 		if (!doUpdate) return;
 
+		int value;
+		boolean updateNeeded = false;
 		t = (TargetModel) comboBox.getSelectedItem();
 		switch (e.getActionCommand()) {
-			case "TYP":               updateDisplay();                                                           break;
-			case "Kennnummer":        text_number.getInputVerifier().verify(text_number);                        break;
-			case "Winkel Ringzahlen": t.setValue(TargetValue.NUM_ANGLE, comboBox_ring_angle.getSelectedIndex()); break;
-			case "Scheibenart":       t.setValue(TargetValue.TYPE, comboBox_typ.getSelectedIndex());             break;
-			case "Ausgefüllter Ring": t.setValue(TargetValue.STYLE_TEN, comboBox_style.getSelectedIndex());      break;
+			case "TYP":
+				updateDisplay();
+				break;
+			case "Kennnummer":
+				text_number.getInputVerifier().verify(text_number);
+				break;
+			case "Winkel Ringzahlen":
+				value = ((TargetAngle) comboBox_ring_angle.getSelectedItem()).getValue();
+				updateNeeded = t.setValue(TargetValue.NUM_ANGLE, value);
+				break;
+			case "Scheibenart":
+				value = ((TargetType) comboBox_typ.getSelectedItem()).getValue();
+				updateNeeded = t.setValue(TargetValue.TYPE, value);
+				break;
+			case "Ausgefüllter Ring":
+				value = ((TargetFill) comboBox_fill.getSelectedItem()).getValue();
+				updateNeeded = t.setValue(TargetValue.FILL, value);
+				break;
 		}
+		if (updateNeeded) updateDisplay();
 		scheibe.setTarget(t);
 	}
 
@@ -308,8 +324,8 @@ public class SettingsTargets extends JPanel implements DocumentListener, ActionL
 		return spinner;
 	}
 
-	private JComboBox<Object> addJComboBox(JPanel parent, int x, int y, String caption, String unit, Object content[]) {
-		JComboBox<Object> comboBox = new JComboBox<Object>() {
+	private <T> JComboBox<T> addJComboBox(JPanel parent, int x, int y, String caption, String unit, T[] content) {
+		JComboBox<T> comboBox = new JComboBox<T>() {
 			@Override
 			public Dimension getSize() {
 				Dimension dim = super.getSize();
@@ -317,7 +333,7 @@ public class SettingsTargets extends JPanel implements DocumentListener, ActionL
 				return dim;
 			}
 		};
-		comboBox.setModel(new DefaultComboBoxModel<Object>(content));
+		comboBox.setModel(new DefaultComboBoxModel<T>(content));
 		comboBox.setBounds(x, y, 110, 20);
 		comboBox.setActionCommand(caption);
 		comboBox.addActionListener(this);

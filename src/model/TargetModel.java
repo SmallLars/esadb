@@ -26,7 +26,7 @@ public class TargetModel implements Serializable, Comparable<TargetModel> {
 	
 	private int winkel;
 	private int art;
-	private int style;           // 0 => Zehn und Innenzehn: Ringe       1=> Innezehn ausgefüllt    2=>     Zehn ausgefüllt, Innenzehn irrelevant 
+	private int fill;           // 0 => Zehn und Innenzehn: Ringe       1=> Innezehn ausgefüllt    2=>     Zehn ausgefüllt, Innenzehn irrelevant 
 	private int vorhaltedia;
 	private int vorhalteabstand;
 
@@ -102,6 +102,10 @@ public class TargetModel implements Serializable, Comparable<TargetModel> {
 					else break;
 					if (max_number >= max_ring) max_number--;
 				}
+				if (value > 0 && fill == 2) {
+					fill = 1;
+					update = true;
+				}
 				dia_innenzehn = value;
 				break;
 			case RING_WIDTH:
@@ -166,7 +170,13 @@ public class TargetModel implements Serializable, Comparable<TargetModel> {
 				break;
 			case NUM_ANGLE:              winkel = value; break;
 			case TYPE:                      art = value; break;
-			case STYLE_TEN:               style = value; break;
+			case FILL:
+				if (value == 2 && dia_innenzehn > 0) {
+					dia_innenzehn = 0;
+					update = true;
+				}
+				fill = value;
+				break;
 			case SUSP_DIA:          vorhaltedia = value; break;
 			case SUSP_DISTANCE: vorhalteabstand = value; break;
 		}
@@ -186,7 +196,7 @@ public class TargetModel implements Serializable, Comparable<TargetModel> {
 			case NUM_MAX:       return max_number;
 			case NUM_ANGLE:     return winkel;
 			case TYPE:          return art;
-			case STYLE_TEN:     return style;
+			case FILL:     return fill;
 			case SUSP_DIA:      return vorhaltedia;
 			case SUSP_DISTANCE: return vorhalteabstand;
 			default: return 0;
@@ -262,12 +272,12 @@ public class TargetModel implements Serializable, Comparable<TargetModel> {
 			writer.println("\">ZehnerRadius\"");                               // Radius des kleinsten Rings in 1/100 mm
 			writer.println(String.format("\"%d\"", getRingRadius(max_number)));
 			writer.println("\">ZehnerRingStyle\"");                            // Gibt die Optik des Zehnerrings vor, 0=ausgefüllt, 1=Ring
-			writer.println(style >= 2 ? "\"0\"": "\"1\"");
+			writer.println(fill >= 2 ? "\"0\"": "\"1\"");
 
 			writer.println("\">InnenZehnerRadius\"");                          // Radius des Innenzehners in 1/100mm
 			writer.println(String.format("\"%d\"", dia_innenzehn / 2));
 			writer.println("\">InnenZehnerRingStyle\"");                       // Gibt die Optik des Innenzehnerrings vor, 0=ausgefüllt, 1=Ring
-			writer.println(style >= 1 ? "\"0\"": "\"1\"");
+			writer.println(fill >= 1 ? "\"0\"": "\"1\"");
 
 			writer.println("\">InnenKreuzRadius\"");                           // Länge der Kreuzschenkel, zwei mal ergibt Kreuzlinien, 0=keins
 			writer.println("\"0\"");

@@ -54,40 +54,51 @@ public class Rule  implements Serializable {
 		this.weapon = weapon;
 	}
 
-	public float getValuebyRadius(double radius) {
+	public double getValuebyRadius(double radius) {
 		int aussenRadius = target.getAussenRadius();
-		int zehnerRadius = target.getRingRadius(10);
+		int minRing = target.getValue(TargetValue.RING_MIN);
+		int maxRing = target.getValue(TargetValue.RING_MAX);
+		int zehnerRadius = target.getRingRadius(maxRing);
 		int geschossRadius = weapon.getRadius();
 
-		// Berechnung für < 1
+		// Berechnung für < MIN_RING
 		if (radius > aussenRadius + geschossRadius) {
 			return 0f;
 		}
 		
-		// Berechnung >= 10,0
-		if (radius <= zehnerRadius + geschossRadius) {
-			float v = (int) (10 - radius * 10 / (zehnerRadius + geschossRadius)) / 10f;
-			if (v > 0.9) return 10.9f;
-			return 10f + v;
+		// Berechnung >= MAX_RING
+		int range = zehnerRadius + geschossRadius;
+		if (radius <= range) {
+			double value = (int) (10 - radius * 10 / range) / 10.;
+			if (value > 0.9) value = 0.9;
+			return maxRing + value;
 		}
 
-		// Berechnung für >=1 && < 10,0
-		float v = (int) (((aussenRadius - radius + geschossRadius) * 90) / (aussenRadius - zehnerRadius)) / 10f;
-		return 1f + v;
+		// Berechnung für >= MIN_RING && < MAX_RING
+		double value = (int) (((aussenRadius - radius + geschossRadius) * (maxRing - minRing) * 10) / (aussenRadius - zehnerRadius)) / 10.;
+		return minRing + value;
 	}
 
 	public double getRadiusByValue(double value) {
-		int zehnerRadius = target.getRingRadius(10);
+		int minRing = target.getValue(TargetValue.RING_MIN);
+		int maxRing = target.getValue(TargetValue.RING_MAX);
+		int zehnerRadius = target.getRingRadius(maxRing);
 		int geschossRadius = weapon.getRadius();
 		
-		if (value < 10) {
-			return Math.round(target.getAussenRadius() + geschossRadius - (value - 1) * target.getValue(TargetValue.RING_WIDTH));
+		if (value < maxRing) {
+			if (value == 0) minRing = 1;
+			return Math.round(target.getAussenRadius() + geschossRadius - (value - minRing) * target.getValue(TargetValue.RING_WIDTH));
 		}
 		
-		return Math.round(zehnerRadius + geschossRadius - (value - 10) * (zehnerRadius + geschossRadius));
+		return Math.round(zehnerRadius + geschossRadius - (value - maxRing) * (zehnerRadius + geschossRadius));
 	}
 
 	public boolean isInnenZehn(double radius) {
+		if (target.getInnenZehnRadius() == 0) {
+			int maxRing = target.getValue(TargetValue.RING_MAX);
+			return radius <= getRadiusByValue(maxRing + 0.2);
+		}
+
 		return radius <= target.getInnenZehnRadius() + weapon.getRadius();
 	}
 

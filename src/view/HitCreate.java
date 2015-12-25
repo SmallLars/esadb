@@ -30,6 +30,7 @@ import javax.swing.event.DocumentListener;
 
 import model.Rule;
 import model.Hit;
+import model.TargetValue;
 
 
 @SuppressWarnings("serial")
@@ -63,7 +64,7 @@ public class HitCreate extends JPanel implements MouseWheelListener, KeyListener
 		add(lblWert);
 
 		component_V = new JFormattedTextField(getFormat(2, 1));
-		component_V.setText("10,9");
+		component_V.setText(typ.getScheibe().getValue(TargetValue.RING_MAX) + ",9");
 		component_V.setBounds(60, 24, 64, 20);
 		component_V.addMouseWheelListener(this);
 		component_V.addKeyListener(this);
@@ -293,13 +294,15 @@ public class HitCreate extends JPanel implements MouseWheelListener, KeyListener
 		}
 
 		if (textField == component_V) {
+			int minRing = typ.getScheibe().getValue(TargetValue.RING_MIN);
+			int maxRing = typ.getScheibe().getValue(TargetValue.RING_MAX);
 			if (d != 0) {
-				if (d < 1) {
-					textField.setText("1");
+				if (d < minRing) {
+					textField.setText("" + minRing);
 					return;
 				}
-				if (d > 10.9) {
-					textField.setText("10,9");
+				if (d > maxRing + 0.9) {
+					textField.setText(maxRing + ",9");
 					return;
 				}
 			}
@@ -342,9 +345,11 @@ public class HitCreate extends JPanel implements MouseWheelListener, KeyListener
 		}
 		
 		if (textField == component_V) {
+			int minRing = typ.getScheibe().getValue(TargetValue.RING_MIN);
+			int maxRing = typ.getScheibe().getValue(TargetValue.RING_MAX);
 			d += 0.1 * amount;
-			if (d < 1) d = amount < 0 ? 0.0 : 1.0;
-			if (d > 10.9) d = 10.9;
+			if (d < minRing) d = amount < 0 ? 0.0 : minRing;
+			if (d > maxRing + 0.9) d = maxRing + 0.9;
 			textField.setText(String.format("%.1f", d));
 			return;
 		}
