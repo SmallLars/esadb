@@ -270,7 +270,7 @@ public class TargetModel implements Serializable, Comparable<TargetModel> {
 			writer.println(String.format("\"%d\"", dia_spiegel / 2));			
 
 			writer.println("\">ZehnerRadius\"");                               // Radius des kleinsten Rings in 1/100 mm
-			writer.println(String.format("\"%d\"", getRingRadius(max_number)));
+			writer.println(String.format("\"%d\"", getRingRadius(max_ring)));
 			writer.println("\">ZehnerRingStyle\"");                            // Gibt die Optik des Zehnerrings vor, 0=ausgefüllt, 1=Ring
 			writer.println(fill >= 2 ? "\"0\"": "\"1\"");
 

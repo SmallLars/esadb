@@ -1,6 +1,8 @@
 package view;
 
 
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Arrays;
@@ -13,19 +15,18 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableCellRenderer;
 
 import controller.Controller;
 import model.Rule;
+import model.SettingsChangeListener;
 import model.SettingsModel;
 import model.TargetModel;
 import model.Weapon;
 
 
 @SuppressWarnings("serial")
-public class SettingsRules extends JPanel implements ActionListener, TableModelListener {
+public class SettingsRules extends JPanel implements ActionListener, SettingsChangeListener {
 	private JTable table;
 	private RuleTableModel rtm;
 
@@ -48,8 +49,16 @@ public class SettingsRules extends JPanel implements ActionListener, TableModelL
 		table.getColumnModel().getColumn(2).setPreferredWidth(180);
 		table.getColumnModel().getColumn(3).setPreferredWidth(220);
 
-		table.getColumnModel().getColumn(0).setCellRenderer(new DefaultTableCellRenderer() {
-			{setHorizontalAlignment(SwingConstants.RIGHT);}
+		table.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
+			@Override
+		    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+	        	setHorizontalAlignment(column == 0 ? SwingConstants.RIGHT : SwingConstants.LEFT);
+	        	
+	        	boolean isStandard = Controller.get().getStandardRule() == table.getValueAt(row, 1);
+	        	setBackground(isStandard ? Color.decode("0x9ffff9") : null);
+
+		        return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+		    }
 		});
 
 		JComboBox<TargetModel> targets = new JComboBox<TargetModel>(config.getTargets());
@@ -66,21 +75,38 @@ public class SettingsRules extends JPanel implements ActionListener, TableModelL
 
 		JButton button_minus = new JButton("-");
 		button_minus.setBounds(15, 385, 45, 20);
+		button_minus.setActionCommand("-");
 		button_minus.addActionListener(this);
 		add(button_minus);
+
+		JButton button_plus = new JButton("Standardregel");
+		button_plus.setBounds(570, 385, 150, 20);
+		button_plus.setActionCommand("DEFAULT");
+		button_plus.addActionListener(this);
+		add(button_plus);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		int index = table.getSelectedRow(); 
+		int index = table.getSelectedRow();
 		if (index < 0) return;
-		
-		Controller.get().getConfig().removeRule((String) table.getValueAt(index, 0));
-		rtm.removeRule(index);
+
+		SettingsModel config = Controller.get().getConfig();
+
+		switch (e.getActionCommand()) {
+			case "-":
+				config.removeRule((String) table.getValueAt(index, 0));
+				rtm.removeRule(index);
+				break;
+			case "DEFAULT":
+				config.setStandardRule((Rule) table.getValueAt(index, 1));
+				table.repaint();
+				break;
+		}
 	}
 
 	@Override
-	public void tableChanged(TableModelEvent e) {
+	public void settingsChanged() {
 		JComboBox<TargetModel> targets = new JComboBox<TargetModel>(Controller.get().getConfig().getTargets());
 		table.getColumnModel().getColumn(2).setCellEditor(new TableEditor(targets));
 		JComboBox<Weapon> weapons = new JComboBox<Weapon>(Controller.get().getConfig().getWeapons());

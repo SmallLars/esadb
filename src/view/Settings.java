@@ -41,11 +41,11 @@ public class Settings extends JDialog {
 
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setBounds(10, 10, 740, 445);
-		SettingsLines lines = new SettingsLines(config);
+		SettingsGeneral general = new SettingsGeneral(config);
 		SettingsRules rules = new SettingsRules(config);
 		SettingsTargets targets = new SettingsTargets(config, rules);
 		SettingsWeapons weapons = new SettingsWeapons(config, rules);
-		tabbedPane.addTab("Linien", lines);
+		tabbedPane.addTab("Allgemein", general);
 		tabbedPane.addTab("Regeln", rules);
 		tabbedPane.addTab("Scheiben", targets);
 		tabbedPane.addTab("Waffen", weapons);
@@ -77,13 +77,15 @@ public class Settings extends JDialog {
 	private void close(boolean save) {
 		if (save) {
 			Controller.get().saveConfig();
+			JOptionPane.showMessageDialog(
+				this,
+				"Um die Änderung zu übernehmen ist ein Neustart des Programms erforderlich.",
+				"Neustart erforderlich",
+				JOptionPane.INFORMATION_MESSAGE
+			);
 		} else {
 			Controller.get().reloadConfig();
 		}
-		JOptionPane.showMessageDialog(	this,
-										"Um die Änderung zu übernehmen ist ein Neustart des Programms erforderlich.",
-										"Neustart erforderlich",
-										JOptionPane.INFORMATION_MESSAGE);
 
 		dispose();
 	}

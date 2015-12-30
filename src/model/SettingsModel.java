@@ -62,9 +62,9 @@ public class SettingsModel implements Serializable {
 		targets.add(new TargetModel("Gewehr 100m",          "0.4.3.04",  55000,       5,  20000, 50000,     2500,  2500,   1, 10, 9));
 		targets.add(new TargetModel("Gewehr 300m",          "0.4.3.05", 130000,       0,  60000, 100000,       0,  5000,   1, 10, 9,      1,  0,    0));
 		targets.add(new TargetModel("Muskete",              "0.4.3.06",  55000,       5,  40000, 80000,     4000,  4000,   1, 10, 8));
-		targets.add(new TargetModel("Pistole - Präzision",  "0.4.3.04",  55000,       5,  20000, 50000,     5000,  2500,   1, 10, 9,      0,  4,    0));
 		targets.add(new TargetModel("Pistole 10m",          "0.4.3.20",  17000,       3,   5950, 15550,      500,   800,   1, 10, 8));
 		targets.add(new TargetModel("Pistole - Duell",      "0.4.3.22",  55000,       5,  50000, 50000,     5000,  4000,   5, 10, 9,      0,  4,    0));
+		targets.add(new TargetModel("Pistole - Präzision",  "0.4.3.24",  55000,       5,  20000, 50000,     2500,  2500,   1, 10, 9,      0,  4,    0));
 		targets.add(new TargetModel("Laufende Scheibe 10m", "0.4.3.40",  17000,       2,   3050,  5050,       50,   250,   1, 10, 9,      1,  0,    1,  3100,   7000));
 		targets.add(new TargetModel("Laufende Scheibe 50m", "0.4.3.41",  70000,       0,      2, 36600,     3000,  1700,   1, 10, 9,      1,  5,    0));
 
@@ -87,7 +87,7 @@ public class SettingsModel implements Serializable {
 		rules.put("1.10", new Rule("Luftgewehr",        "1.10", targets.toArray(new TargetModel[0])[0], weapons.toArray(new Weapon[0])[0]));
 		rules.put("1.35", new Rule("Kleinkaliber 100m", "1.35", targets.toArray(new TargetModel[0])[3], weapons.toArray(new Weapon[0])[2]));
 		rules.put("1.40", new Rule("Kleinkaliber 50m",  "1.40", targets.toArray(new TargetModel[0])[2], weapons.toArray(new Weapon[0])[2]));
-		rules.put("2.10", new Rule("Luftpistole",       "2.10", targets.toArray(new TargetModel[0])[7], weapons.toArray(new Weapon[0])[0]));
+		rules.put("2.10", new Rule("Luftpistole",       "2.10", targets.toArray(new TargetModel[0])[6], weapons.toArray(new Weapon[0])[0]));
 		standardRule = rules.get("1.40");
 
 		save();
@@ -200,6 +200,7 @@ public class SettingsModel implements Serializable {
 	public Rule getRule(String ruleNumber) {
 		if (!rules.containsKey(ruleNumber)) {
 			rules.put(ruleNumber, new Rule("Standardregel",  ruleNumber, standardRule.getScheibe(), standardRule.getWaffe()));
+			if (rules.size() == 1) standardRule = rules.get(ruleNumber);
 		}
 
 		return rules.get(ruleNumber);
@@ -209,10 +210,16 @@ public class SettingsModel implements Serializable {
 		return standardRule;
 	}
 
+	public void setStandardRule(Rule rule) {
+		standardRule = rule;
+	}
+
 	public void removeRule(String ruleNumber) {
 		rules.remove(ruleNumber);
 		if (ruleNumber.equals(standardRule.getRegelnummer())) {
-			standardRule = rules.values().toArray(new Rule[0])[0];
+			if (rules.size() > 0) {
+				standardRule = rules.values().toArray(new Rule[0])[0];
+			}
 		}
 	}
 

@@ -9,6 +9,7 @@ import java.awt.event.MouseWheelListener;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 
+import model.SettingsChangeListener;
 import model.SettingsModel;
 import model.TargetAngle;
 import model.TargetFill;
@@ -21,7 +22,6 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.event.TableModelListener;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -44,7 +44,7 @@ import controller.Controller;
 public class SettingsTargets extends JPanel implements DocumentListener, ActionListener, ChangeListener {
 
 	private boolean doUpdate = false;
-	private TableModelListener tml;
+	private SettingsChangeListener scl;
 
 	private JComboBox<TargetModel> comboBox;
 	private Target scheibe;
@@ -65,8 +65,8 @@ public class SettingsTargets extends JPanel implements DocumentListener, ActionL
 	private JSpinner spinner_vorhaltediameter;
 	private JSpinner spinner_vorhalteabstand;
 
-	public SettingsTargets(SettingsModel config, TableModelListener tml) {
-		this.tml = tml;
+	public SettingsTargets(SettingsModel config, SettingsChangeListener scl) {
+		this.scl = scl;
 
 		this.setSize(735,  420);
 		this.setLayout(null);
@@ -221,14 +221,14 @@ public class SettingsTargets extends JPanel implements DocumentListener, ActionL
 					);
 				} else {
 					comboBox.removeItem(comboBox.getSelectedItem());
-					tml.tableChanged(null);
+					scl.settingsChanged();
 				}
 				break;
 			case "+":
 				t = Controller.get().getConfig().newTarget();
 				comboBox.addItem(t);
 				comboBox.setSelectedItem(t);
-				tml.tableChanged(null);
+				scl.settingsChanged();
 				break;
 		}
 

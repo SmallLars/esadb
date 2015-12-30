@@ -32,12 +32,14 @@ public class RuleTableModel implements TableModel {
 	@Override
 	public Class<?> getColumnClass(int col) {
 		switch (col) {
+			case 0:
+				return String.class;
 			case 2:
 				return TargetModel.class;
 			case 3:
 				return Weapon.class;
 			default:
-				return String.class;
+				return Rule.class;
 		}
 	}
 
@@ -67,7 +69,7 @@ public class RuleTableModel implements TableModel {
 			case 3:
 				return rules.get(row).getWaffe();
 			default:
-				return rules.get(row).toString();
+				return rules.get(row);
 		}
 	}
 

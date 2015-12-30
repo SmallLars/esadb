@@ -7,6 +7,8 @@ Eine Alternative zu HAWEV 2002.
 
 [Version 1.0.2](https://github.com/SmallLars/esadb/raw/1.0.2/pub/esadb.jar)
 
+[Version 2.0.0](https://github.com/SmallLars/esadb/raw/2.0.0/pub/esadb.jar)
+
 ## Installation
 
 ### Vorraussetzungen:
@@ -33,7 +35,7 @@ zu erstellen, in den dann die esadb.jar kopiert wird.
 Danach sind folgende Schritte empfohlen:
 
 1. esadb.jar per Doppelklick starten
-2. Unter "Datei -> Einstellungen... -> Linien" die gewünschten Linien einfügen
+2. Unter "Datei -> Einstellungen... -> Allgemein" die gewünschten Linien einfügen
 3. esadb beenden
 4. Eine Verknüpfung zu esadb.jar auf dem Desktop anlegen
 5. Eine Verknüpfung zu Stammdaten.mdb auf dem Desktop anlegen

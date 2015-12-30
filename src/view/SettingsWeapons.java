@@ -7,6 +7,7 @@ import java.util.Arrays;
 
 import javax.swing.JPanel;
 
+import model.SettingsChangeListener;
 import model.SettingsModel;
 import model.Unit;
 import model.Weapon;
@@ -21,6 +22,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
+import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableCellRenderer;
 
@@ -28,16 +30,21 @@ import controller.Controller;
 
 
 @SuppressWarnings("serial")
-public class SettingsWeapons extends JPanel implements ActionListener {
+public class SettingsWeapons extends JPanel implements ActionListener, TableModelListener {
+
+	private SettingsChangeListener scl;
+
 	private JTable table;
 	private WeaponTableModel wtm;
 
-	public SettingsWeapons(SettingsModel config, TableModelListener tml) {
+	public SettingsWeapons(SettingsModel config, SettingsChangeListener scl) {
+		this.scl = scl;
+
 		this.setSize(735, 420);
 		this.setLayout(null);
 		
 		wtm = new WeaponTableModel(Arrays.asList(config.getWeapons()));
-		wtm.addTableModelListener(tml);
+		wtm.addTableModelListener(this);
 		table = new JTable(wtm);
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.setRowHeight(20);
@@ -112,5 +119,10 @@ public class SettingsWeapons extends JPanel implements ActionListener {
 				break;
 		}
 		wtm.setWeapons(Arrays.asList(Controller.get().getConfig().getWeapons()));
+	}
+
+	@Override
+	public void tableChanged(TableModelEvent e) {
+		scl.settingsChanged();
 	}
 }

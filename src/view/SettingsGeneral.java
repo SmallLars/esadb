@@ -18,26 +18,29 @@ import javax.swing.event.ChangeListener;
 
 import model.SettingsModel;
 
+import javax.swing.JLabel;
+import javax.swing.JSeparator;
+import javax.swing.SwingConstants;
+
+import controller.Controller;
+
 
 @SuppressWarnings("serial")
-public class SettingsLines extends JPanel {
+public class SettingsGeneral extends JPanel implements ActionListener {
+	JSpinner spinner;
+	DefaultListModel<Integer> listModel;
+	JList<Integer> list;
 
-	public SettingsLines(SettingsModel config) {
+	public SettingsGeneral(SettingsModel config) {
 		this.setSize(735,  420);
 		this.setLayout(null);
-		
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(14, 21, 100, 118);
-		this.add(scrollPane);
 
-		DefaultListModel<Integer> listModel = new DefaultListModel<Integer>();
-		for (int i : config.getLines()) listModel.addElement(i);
-		JList<Integer> list = new JList<Integer>(listModel);
-		scrollPane.setViewportView(list);
-		list.setLayoutOrientation(JList.VERTICAL);
-		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		
-		JSpinner spinner = new JSpinner(new SpinnerModel() {
+		JLabel lblLinien = new JLabel("Linien");
+		lblLinien.setFont(lblLinien.getFont().deriveFont(18f));
+		lblLinien.setBounds(15, 11, 78, 20);
+		add(lblLinien);
+
+		spinner = new JSpinner(new SpinnerModel() {
 			Vector<ChangeListener> listener = new Vector<ChangeListener>();
 			int value = -1;
 
@@ -81,18 +84,45 @@ public class SettingsLines extends JPanel {
 				listener.remove(l);
 			}
 		});
-		spinner.setBounds(133, 21, 91, 23);
+		spinner.setBounds(15, 42, 91, 23);
 		this.add(spinner);
 		spinner.setEditor(new JSpinner.DefaultEditor(spinner));
 		
 		JButton btnEinfgen = new JButton("Einfügen");
-		btnEinfgen.setBounds(133, 55, 91, 20);
+		btnEinfgen.setBounds(15, 81, 91, 20);
+		btnEinfgen.setActionCommand("add");
+		btnEinfgen.addActionListener(this);
 		this.add(btnEinfgen);
-		btnEinfgen.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
+
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(15, 117, 91, 251);
+		this.add(scrollPane);
+
+		listModel = new DefaultListModel<Integer>();
+		for (int i : config.getLines()) listModel.addElement(i);
+		list = new JList<Integer>(listModel);
+		scrollPane.setViewportView(list);
+		list.setLayoutOrientation(JList.VERTICAL);
+		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+		JButton btnLschen = new JButton("Löschen");
+		btnLschen.setBounds(15, 384, 91, 20);
+		btnLschen.setActionCommand("delete");
+		btnLschen.addActionListener(this);
+		this.add(btnLschen);
+
+		JSeparator separator = new JSeparator();
+		separator.setOrientation(SwingConstants.VERTICAL);
+		separator.setBounds(121, 11, 2, 398);
+		add(separator);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		switch (e.getActionCommand()) {
+			case "add":
 				int toAdd = (int) spinner.getValue();
-				config.addLine(toAdd);
+				Controller.get().getConfig().addLine(toAdd);
 				spinner.setValue(spinner.getNextValue());
 				for (int i = 0; i < listModel.getSize(); i++) {
 					if (listModel.get(i) > toAdd) {
@@ -101,22 +131,21 @@ public class SettingsLines extends JPanel {
 					}
 				}
 				listModel.addElement(toAdd);
-			}
-		});
-
-		JButton btnLschen = new JButton("Löschen");
-		btnLschen.setBounds(133, 118, 91, 20);
-		this.add(btnLschen);
-
-		btnLschen.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
+				break;
+			case "delete":
+				int index = list.getSelectedIndex();
+		
 				Integer l = list.getSelectedValue();
 				if (l == null) return;
-				config.removeLinie(l);
+				Controller.get().getConfig().removeLinie(l);
 				listModel.removeElement(l);
-			}
-		});
+		
+				if (index < listModel.getSize()) {
+					list.setSelectedIndex(index);
+				} else if (listModel.getSize() > 0) {
+					list.setSelectedIndex(listModel.getSize() - 1);
+				}
+				break;
+		}
 	}
-
 }

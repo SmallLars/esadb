@@ -73,7 +73,7 @@ public class Line extends JPanel implements LineListener {
 						Single e = linie.configure(s, d);
 						if (e != null) {
 							int answer = JOptionPane.showConfirmDialog(	null,
-									"Der Schütze ist in dieser Disziplin bereits einmal gestartet ohne den Wettkampf abzuschlie�en. Soll der Wettkampf fortgesetzt werden?",
+									"Der Schütze ist in dieser Disziplin bereits einmal gestartet ohne den Wettkampf abzuschließen. Soll der Wettkampf fortgesetzt werden?",
 									"Information",
 									JOptionPane.YES_NO_OPTION);
 							if (answer == JOptionPane.NO_OPTION) {
