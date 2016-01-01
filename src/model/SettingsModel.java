@@ -25,6 +25,9 @@ public class SettingsModel implements Serializable {
 
 	private Rectangle mainWindow;
 
+	private String path;
+	private String filename;
+
 	private Set<Integer> lines;
 
 	private double pageWidht;
@@ -42,6 +45,9 @@ public class SettingsModel implements Serializable {
 
 	private SettingsModel() {
 		mainWindow = new Rectangle(1, 1, 1022, 580);
+
+		path = (new File("")).getAbsolutePath();
+		filename = "yyyy-MM-dd";
 
 		lines = new TreeSet<Integer>();
 		
@@ -100,6 +106,22 @@ public class SettingsModel implements Serializable {
 	public void setMainWindowBounds(Rectangle mainWindow) {
 		this.mainWindow = mainWindow;
 		save();
+	}
+
+	public String getPath() {
+		return path;
+	}
+
+	public void setPath(String path) {
+		this.path = path;
+	}
+
+	public String getFilename() {
+		return filename;
+	}
+
+	public void setFilename(String filename) {
+		this.filename = filename;
 	}
 
 	public Vector<Integer> getLines() {

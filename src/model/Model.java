@@ -120,6 +120,8 @@ public class Model implements Serializable, Printable {
 	}
 
 	public boolean save(File file) {
+		file.getParentFile().mkdirs();
+
 		boolean succeed = false;
 		ObjectOutputStream oos = null;
 		FileOutputStream fos = null;

@@ -79,14 +79,22 @@ public class Settings extends JDialog {
 			Controller.get().saveConfig();
 			JOptionPane.showMessageDialog(
 				this,
-				"Um die Änderung zu übernehmen ist ein Neustart des Programms erforderlich.",
+				"Um eine Änderung an den Linien zu übernehmen\nist ein Neustart des Programms erforderlich.",
 				"Neustart erforderlich",
 				JOptionPane.INFORMATION_MESSAGE
 			);
+			dispose();
 		} else {
-			Controller.get().reloadConfig();
+			int n = JOptionPane.showConfirmDialog(
+				this,
+				"Sollen alle Änderungen verworfen werden?",
+				"Änderungen verwerfen?",
+				JOptionPane.YES_NO_OPTION
+			);
+			if (n == JOptionPane.OK_OPTION) {
+				Controller.get().reloadConfig();
+				dispose();
+			}
 		}
-
-		dispose();
 	}
 }

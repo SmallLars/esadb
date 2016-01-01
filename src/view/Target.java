@@ -145,7 +145,7 @@ public class Target extends JPanel implements LineListener {
 
 		if (target.getInnenZehnRadius() > 0) {
 			r = target.getInnenZehnRadius();
-		    g2.setColor(Color.WHITE);
+			g2.setColor(r < target.getSpiegelRadius() ? Color.WHITE : Color.BLACK);
 		    if (target.getValue(TargetValue.FILL) > 0) {
 		    	g2.fillOval(mitte - r, mitte - r, 2 * r, 2 * r);
 		    } else {

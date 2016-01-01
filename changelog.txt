@@ -10,3 +10,6 @@
 2.0.0
  - Waffe, Scheiben und Regeln können nun individuell angepasst werden.
  - Das .esa Dateiformat ist nicht kompatibel mit Verwsion 1.x.
+
+2.0.1
+ - In den Einstellungen können nun Standardpfad und Dateiname angepasst werden.

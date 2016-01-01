@@ -5,9 +5,9 @@ Eine Alternative zu HAWEV 2002.
 
 ## Download
 
-[Version 1.0.2](https://github.com/SmallLars/esadb/raw/1.0.2/pub/esadb.jar)
+[Version 1.0.2](https://github.com/SmallLars/esadb/raw/v1/pub/esadb.jar)
 
-[Version 2.0.0](https://github.com/SmallLars/esadb/raw/2.0.0/pub/esadb.jar)
+[Version 2.0.1](https://github.com/SmallLars/esadb/raw/v2/pub/esadb.jar)
 
 ## Installation
 
