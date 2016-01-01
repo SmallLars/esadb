@@ -124,18 +124,23 @@ public class Target extends JPanel implements LineListener {
 
 		int r;
 		int mitte = target.getRingRadius(target.getValue(TargetValue.RING_MIN)) + target.getValue(TargetValue.RING_WIDTH);
+		Color black = target.getValue(TargetValue.TYPE) == 5 ? Color.WHITE : Color.BLACK;
+		Color white = target.getValue(TargetValue.TYPE) == 5 ? Color.BLACK : Color.WHITE;
 
 		Graphics2D g2 = (Graphics2D) g.create();
 		g2.scale(new Double(getWidth()) / new Double(2 * mitte), new Double(getHeight()) / new Double(2 * mitte));
 
-		g2.setColor(Color.BLACK);
+		g2.setColor(white);
+		r =  target.getAussenRadius();
+		g2.fillOval(mitte - r, mitte - r, 2 * r, 2 * r);
 
+		g2.setColor(black);
 		r =  target.getSpiegelRadius();
 	    g2.fillOval(mitte - r, mitte - r, 2 * r, 2 * r);
 
 		for (int i = target.getValue(TargetValue.RING_MIN); i <= target.getValue(TargetValue.RING_MAX); i++) {
 			r = target.getRingRadius(i);
-		    g2.setColor(r < target.getSpiegelRadius() ? Color.WHITE : Color.BLACK);
+		    g2.setColor(r < target.getSpiegelRadius() ? white : black);
 		    if (i == target.getValue(TargetValue.RING_MAX) && target.getValue(TargetValue.FILL) > 1) {
 		    	g2.fillOval(mitte - r, mitte - r, 2 * r, 2 * r);
 		    } else {
@@ -145,7 +150,7 @@ public class Target extends JPanel implements LineListener {
 
 		if (target.getInnenZehnRadius() > 0) {
 			r = target.getInnenZehnRadius();
-			g2.setColor(r < target.getSpiegelRadius() ? Color.WHITE : Color.BLACK);
+			g2.setColor(r < target.getSpiegelRadius() ? white : black);
 		    if (target.getValue(TargetValue.FILL) > 0) {
 		    	g2.fillOval(mitte - r, mitte - r, 2 * r, 2 * r);
 		    } else {
@@ -158,7 +163,7 @@ public class Target extends JPanel implements LineListener {
 			int dy = g2.getFontMetrics().getAscent() / 2 - 2;
 			for (int i = target.getValue(TargetValue.RING_MIN); target.drawNumber(i); i++) {
 				int dx = (int) (g2.getFontMetrics().getStringBounds("" + i, g2).getWidth() / -2) + 2;
-				g2.setColor(target.blackNumber(i) ? Color.BLACK : Color.WHITE);
+				g2.setColor(target.blackNumber(i) ? black : white);
 				String s = "" + i;
 				r = target.getNumberRadius(i);
 				g2.drawString(s, mitte - r + dx, mitte + dy);	// Links
@@ -173,7 +178,7 @@ public class Target extends JPanel implements LineListener {
 				int dy = gn.getFontMetrics().getAscent() / 2 - 2;
 				for (int i = target.getValue(TargetValue.RING_MIN); target.drawNumber(i); i++) {
 					int dx = (int) (gn.getFontMetrics().getStringBounds("" + i, gn).getWidth() / -2) + 2;
-					gn.setColor(target.blackNumber(i) ? Color.BLACK : Color.WHITE);
+					gn.setColor(target.blackNumber(i) ? black : white);
 					gn.drawString("" + i, mitte + dx, mitte - target.getNumberRadius(i) + dy);
 				}
 			}
