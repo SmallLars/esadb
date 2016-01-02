@@ -30,6 +30,8 @@ public class TargetModel implements Serializable, Comparable<TargetModel> {
 	private int vorhaltedia;
 	private int vorhalteabstand;
 
+	private String image;
+
 	public TargetModel(String bezeichnung, String kennnummer, int... values) {
 		Validate.isTrue(values.length >= 9, "need 9 or more values in array");
 		
@@ -38,6 +40,7 @@ public class TargetModel implements Serializable, Comparable<TargetModel> {
 		for (int i = 0; i < 14; i++) {
 			setValue(TargetValue.values()[i], i < values.length ? values[i] : 0);
 		}
+		this.image = "";
 	}
 
 	public TargetModel(TargetModel tm) {
@@ -46,6 +49,7 @@ public class TargetModel implements Serializable, Comparable<TargetModel> {
 		for (TargetValue tv : TargetValue.values()) {
 			setValue(tv, tm.getValue(tv));
 		}
+		this.image = "";
 	}
 
 	@Override
@@ -56,6 +60,14 @@ public class TargetModel implements Serializable, Comparable<TargetModel> {
 	@Override
 	public int compareTo(TargetModel t) {
 		return t.kennnummer.compareTo(kennnummer) * -1;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (o instanceof TargetModel) {
+			return kennnummer.equals(((TargetModel) o).kennnummer);
+		}
+		return false;
 	}
 
 	public void setName(String name) {
@@ -70,25 +82,21 @@ public class TargetModel implements Serializable, Comparable<TargetModel> {
 		return kennnummer;
 	}
 
-	public boolean setValue(TargetValue type, int value) {
-		boolean update = false;
+	public void setValue(TargetValue type, int value) {
 		switch (type) {
 			case SIZE:                   karton = value; break;
 			case FEED:             bandvorschub = value; break;
 			case DIA_BLACK:
 				if (value > dia_aussen) {
 					dia_aussen = value;
-					update = true;
 				}
 				dia_spiegel = value;
 				break;
 			case DIA_OUTSIDE:
 				if (value < dia_spiegel) {
 					dia_spiegel = value;
-					update = true;
 				}
 				if (value < dia_innenzehn + 2 * (max_ring - min_ring) * ringbreite) {
-					update = true;
 					if (max_ring - min_ring > 1) max_ring --;
 					else break;
 					if (max_number >= max_ring) max_number--;
@@ -97,20 +105,17 @@ public class TargetModel implements Serializable, Comparable<TargetModel> {
 				break;
 			case DIA_INNER_TEN:
 				if (dia_aussen < value + 2 * (max_ring - min_ring) * ringbreite) {
-					update = true;
 					if (max_ring - min_ring > 1) max_ring --;
 					else break;
 					if (max_number >= max_ring) max_number--;
 				}
 				if (value > 0 && fill == 2) {
 					fill = 1;
-					update = true;
 				}
 				dia_innenzehn = value;
 				break;
 			case RING_WIDTH:
 				if (dia_aussen < dia_innenzehn + 2 * (max_ring - min_ring) * value) {
-					update = true;
 					if (max_ring - min_ring > 1) max_ring --;
 					else break;
 					if (max_number >= max_ring) max_number--;
@@ -119,51 +124,41 @@ public class TargetModel implements Serializable, Comparable<TargetModel> {
 				break;
 			case RING_MIN:
 				if (value < 0) {
-					update = true;
 					break;
 				}
 				if (value >= max_ring) {
 					max_ring++;
-					update = true;
 				}
 				if (value > max_number) {
 					max_number++;
-					update = true;
 				}
 				if (dia_aussen < dia_innenzehn + 2 * (max_ring - value) * ringbreite) {
 					max_ring--;
 					if (max_number >= max_ring) max_number--;
-					update = true;
 				}
 				min_ring = value;
 				break;
 			case RING_MAX:
 				if (value < 1) {
-					update = true;
 					break;
 				}
 				if (value <= min_ring && min_ring > 0) {
 					min_ring--;
-					update = true;
 				}
 				if (value <= max_number && max_number > 0) {
 					max_number--;
-					update = true;
 				}
 				if (dia_aussen < dia_innenzehn + 2 * (value - min_ring) * ringbreite) {
 					min_ring++;
 					if (max_number < min_ring) max_number++;
-					update = true;
 				}
 				max_ring = value;
 				break;
 			case NUM_MAX:
 				if (value >= max_ring)  {
-					update = true;
 					break;
 				}
 				if (value < min_ring) {
-					update = true;
 					break;
 				}
 				max_number = value;
@@ -173,14 +168,12 @@ public class TargetModel implements Serializable, Comparable<TargetModel> {
 			case FILL:
 				if (value == 2 && dia_innenzehn > 0) {
 					dia_innenzehn = 0;
-					update = true;
 				}
 				fill = value;
 				break;
 			case SUSP_DIA:          vorhaltedia = value; break;
 			case SUSP_DISTANCE: vorhalteabstand = value; break;
 		}
-		return update;
 	}
 
 	public int getValue(TargetValue type) {
@@ -201,6 +194,22 @@ public class TargetModel implements Serializable, Comparable<TargetModel> {
 			case SUSP_DISTANCE: return vorhalteabstand;
 			default: return 0;
 		}
+	}
+
+	public void setImage(String image) {
+		this.image = image;
+	}
+
+	public String getImage() {
+		return this.image;
+	}
+
+	public boolean isRingTarget() {
+		return art != 2;
+	}
+
+	public boolean isDeerTarget() {
+		return art == 2;
 	}
 
 	public int getRingRadius(int i) {

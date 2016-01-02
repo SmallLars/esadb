@@ -1,10 +1,15 @@
 package view;
 
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 import org.apache.commons.lang.Validate;
@@ -130,56 +135,67 @@ public class Target extends JPanel implements LineListener {
 		Graphics2D g2 = (Graphics2D) g.create();
 		g2.scale(new Double(getWidth()) / new Double(2 * mitte), new Double(getHeight()) / new Double(2 * mitte));
 
-		g2.setColor(white);
-		r =  target.getAussenRadius();
-		g2.fillOval(mitte - r, mitte - r, 2 * r, 2 * r);
-
-		g2.setColor(black);
-		r =  target.getSpiegelRadius();
-	    g2.fillOval(mitte - r, mitte - r, 2 * r, 2 * r);
-
-		for (int i = target.getValue(TargetValue.RING_MIN); i <= target.getValue(TargetValue.RING_MAX); i++) {
-			r = target.getRingRadius(i);
-		    g2.setColor(r < target.getSpiegelRadius() ? white : black);
-		    if (i == target.getValue(TargetValue.RING_MAX) && target.getValue(TargetValue.FILL) > 1) {
-		    	g2.fillOval(mitte - r, mitte - r, 2 * r, 2 * r);
-		    } else {
-		    	g2.drawOval(mitte - r, mitte - r, r * 2, r * 2);
-		    }
-		}
-
-		if (target.getInnenZehnRadius() > 0) {
-			r = target.getInnenZehnRadius();
-			g2.setColor(r < target.getSpiegelRadius() ? white : black);
-		    if (target.getValue(TargetValue.FILL) > 0) {
-		    	g2.fillOval(mitte - r, mitte - r, 2 * r, 2 * r);
-		    } else {
-		    	g2.drawOval(mitte - r, mitte - r, 2 * r, 2 * r);
-		    }
-		}
-
-		g2.setFont(new Font("Bitstream Vera Sans", Font.BOLD, target.getFontSize()));
-		if (target.getValue(TargetValue.NUM_ANGLE) == 0) {
-			int dy = g2.getFontMetrics().getAscent() / 2 - 2;
-			for (int i = target.getValue(TargetValue.RING_MIN); target.drawNumber(i); i++) {
-				int dx = (int) (g2.getFontMetrics().getStringBounds("" + i, g2).getWidth() / -2) + 2;
-				g2.setColor(target.blackNumber(i) ? black : white);
-				String s = "" + i;
-				r = target.getNumberRadius(i);
-				g2.drawString(s, mitte - r + dx, mitte + dy);	// Links
-				g2.drawString(s, mitte + dx, mitte - r + dy);	// Oben
-				g2.drawString(s, mitte + r + dx , mitte + dy);	// Rechts
-				g2.drawString(s, mitte + dx, mitte + r + dy);	// Unten
+		if (target.isDeerTarget()) {
+			try {
+				BufferedImage bi = ImageIO.read(new File(target.getImage()));
+				g2.drawImage(bi, 0, 0, mitte * 2, mitte * 2, null);
+			} catch (IOException e) {
+				g1.setFont(new Font("Bitstream Vera Sans", Font.BOLD, 64));
+				g1.drawString("Bilddatei konnte", 32, 876);
+				g1.drawString("nicht gefunden werden.", 32, 960);
 			}
 		} else {
-			for (int w = 0; w < 4; w++) {
-				Graphics2D gn = (Graphics2D) g2.create();
-				gn.rotate(Math.PI / 4 + Math.PI / 2 * w, mitte, mitte);
-				int dy = gn.getFontMetrics().getAscent() / 2 - 2;
+			g2.setColor(white);
+			r =  target.getAussenRadius();
+			g2.fillOval(mitte - r, mitte - r, 2 * r, 2 * r);
+	
+			g2.setColor(black);
+			r =  target.getSpiegelRadius();
+		    g2.fillOval(mitte - r, mitte - r, 2 * r, 2 * r);
+	
+			for (int i = target.getValue(TargetValue.RING_MIN); i <= target.getValue(TargetValue.RING_MAX); i++) {
+				r = target.getRingRadius(i);
+			    g2.setColor(r < target.getSpiegelRadius() ? white : black);
+			    if (i == target.getValue(TargetValue.RING_MAX) && target.getValue(TargetValue.FILL) > 1) {
+			    	g2.fillOval(mitte - r, mitte - r, 2 * r, 2 * r);
+			    } else {
+			    	g2.drawOval(mitte - r, mitte - r, r * 2, r * 2);
+			    }
+			}
+	
+			if (target.getInnenZehnRadius() > 0) {
+				r = target.getInnenZehnRadius();
+				g2.setColor(r < target.getSpiegelRadius() ? white : black);
+			    if (target.getValue(TargetValue.FILL) > 0) {
+			    	g2.fillOval(mitte - r, mitte - r, 2 * r, 2 * r);
+			    } else {
+			    	g2.drawOval(mitte - r, mitte - r, 2 * r, 2 * r);
+			    }
+			}
+	
+			g2.setFont(new Font("Bitstream Vera Sans", Font.BOLD, target.getFontSize()));
+			if (target.getValue(TargetValue.NUM_ANGLE) == 0) {
+				int dy = g2.getFontMetrics().getAscent() / 2 - 2;
 				for (int i = target.getValue(TargetValue.RING_MIN); target.drawNumber(i); i++) {
-					int dx = (int) (gn.getFontMetrics().getStringBounds("" + i, gn).getWidth() / -2) + 2;
-					gn.setColor(target.blackNumber(i) ? black : white);
-					gn.drawString("" + i, mitte + dx, mitte - target.getNumberRadius(i) + dy);
+					int dx = (int) (g2.getFontMetrics().getStringBounds("" + i, g2).getWidth() / -2) + 2;
+					g2.setColor(target.blackNumber(i) ? black : white);
+					String s = "" + i;
+					r = target.getNumberRadius(i);
+					g2.drawString(s, mitte - r + dx, mitte + dy);	// Links
+					g2.drawString(s, mitte + dx, mitte - r + dy);	// Oben
+					g2.drawString(s, mitte + r + dx , mitte + dy);	// Rechts
+					g2.drawString(s, mitte + dx, mitte + r + dy);	// Unten
+				}
+			} else {
+				for (int w = 0; w < 4; w++) {
+					Graphics2D gn = (Graphics2D) g2.create();
+					gn.rotate(Math.PI / 4 + Math.PI / 2 * w, mitte, mitte);
+					int dy = gn.getFontMetrics().getAscent() / 2 - 2;
+					for (int i = target.getValue(TargetValue.RING_MIN); target.drawNumber(i); i++) {
+						int dx = (int) (gn.getFontMetrics().getStringBounds("" + i, gn).getWidth() / -2) + 2;
+						gn.setColor(target.blackNumber(i) ? black : white);
+						gn.drawString("" + i, mitte + dx, mitte - target.getNumberRadius(i) + dy);
+					}
 				}
 			}
 		}

@@ -35,6 +35,14 @@ public class Weapon implements Serializable, Comparable<Weapon> {
 		return w.number.compareTo(number) * -1;
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (o instanceof Weapon) {
+			return number.equals(((Weapon) o).number);
+		}
+		return false;
+	}
+
 	public String getNumber() {
 		return number;
 	}

@@ -221,7 +221,27 @@ public class SettingsModel implements Serializable {
 
 	public Rule getRule(String ruleNumber) {
 		if (!rules.containsKey(ruleNumber)) {
-			rules.put(ruleNumber, new Rule("Standardregel",  ruleNumber, standardRule.getScheibe(), standardRule.getWaffe()));
+			TargetModel tm = standardRule.getScheibe();
+			if (targets.contains(tm)) {
+				for (TargetModel t : targets) if (t.equals(tm)) {
+					tm = t;
+					break;
+				}
+			} else {
+				targets.add(tm);
+			}
+
+			Weapon we = standardRule.getWaffe();
+			if (weapons.contains(we)) {
+				for (Weapon w : weapons) if (w.equals(we)) {
+					we = w;
+					break;
+				}
+			} else {
+				weapons.add(we);
+			}
+
+			rules.put(ruleNumber, new Rule("Standardregel",  ruleNumber, tm, we));
 			if (rules.size() == 1) standardRule = rules.get(ruleNumber);
 		}
 
