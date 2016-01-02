@@ -160,11 +160,9 @@ public class SettingsRingTargets extends JPanel implements ActionListener, Chang
 
 		comboBox_typ = addJComboBox(this, X[0], Y[0] + 6 * Y[1], "Scheibenart", "", new TargetType[] {
 			TargetType.RING,
-			TargetType.KLAPP,
 			TargetType.WEIß,
 			TargetType.PA25PC,
-			TargetType.INVERS,
-			TargetType.DOPPELSAU
+			TargetType.INVERS
 		});
 		comboBox_fill = addJComboBox(this, X[0] + X[1], Y[0] + 6 * Y[1], "Ausgefüllter Ring", "", TargetFill.values());
 	
@@ -191,9 +189,9 @@ public class SettingsRingTargets extends JPanel implements ActionListener, Chang
 		spinner_ring_min.setValue(target.getValue(TargetValue.RING_MIN));
 		spinner_ring_max.setValue(target.getValue(TargetValue.RING_MAX));
 		spinner_num_max.setValue(target.getValue(TargetValue.NUM_MAX));
-		comboBox_ring_angle.setSelectedIndex(target.getValue(TargetValue.NUM_ANGLE));
-		comboBox_typ.setSelectedIndex(target.getValue(TargetValue.TYPE));
-		comboBox_fill.setSelectedIndex(target.getValue(TargetValue.FILL));
+		comboBox_ring_angle.setSelectedItem(target.getValue(TargetValue.NUM_ANGLE));
+		comboBox_typ.setSelectedItem(target.getValue(TargetValue.TYPE));
+		comboBox_fill.setSelectedItem(target.getValue(TargetValue.FILL));
 		spinner_vorhaltediameter.setValue(target.getValue(TargetValue.SUSP_DIA) / 100.);
 		spinner_vorhalteabstand.setValue(target.getValue(TargetValue.SUSP_DISTANCE) / 100.);
 

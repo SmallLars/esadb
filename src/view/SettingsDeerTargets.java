@@ -13,8 +13,6 @@ import javax.swing.JPanel;
 
 import model.SettingsChangeListener;
 import model.SettingsModel;
-import model.TargetAngle;
-import model.TargetFill;
 import model.TargetModel;
 import model.TargetType;
 import model.TargetValue;
@@ -50,20 +48,14 @@ public class SettingsDeerTargets extends JPanel implements ActionListener, Chang
 	private Target scheibe;
 	private JTextField text_name;
 	private JTextField text_number;
-	private JSpinner spinner_size;
-	private JSpinner spinner_feed;
-	private JSpinner spinner_dia_outside;
-	private JSpinner spinner_ring_width;
-	private JSpinner spinner_dia_black;
-	private JSpinner spinner_dia_inner_ten;
-	private JSpinner spinner_ring_min;
-	private JSpinner spinner_ring_max;
-	private JSpinner spinner_num_max;
-	private JComboBox<TargetAngle> comboBox_ring_angle;
+	private JSpinner spinner_size_x;
+	private JSpinner spinner_size_y;
+	private JSpinner spinner_zoom_x;
+	private JSpinner spinner_zoom_y;
 	private JComboBox<TargetType> comboBox_typ;
-	private JComboBox<TargetFill> comboBox_fill;
-	private JSpinner spinner_vorhaltediameter;
-	private JSpinner spinner_vorhalteabstand;
+	private JSpinner spinner_zoom_lvl;
+	private JSpinner spinner_offset_x;
+	private JSpinner spinner_offset_y;
 
 	public SettingsDeerTargets(SettingsModel config, SettingsChangeListener scl) {
 		this.scl = scl;
@@ -142,34 +134,21 @@ public class SettingsDeerTargets extends JPanel implements ActionListener, Chang
 			}
 		});
 
-		spinner_size = addJSpinner(this, X[0], Y[0] + 1 * Y[1], "Kartongröße", "mm");
-		spinner_feed = addJSpinner(this, X[0] + X[1], Y[0] + 1 * Y[1], "Bandvorschub", "");
+		spinner_size_x = addJSpinner(this, X[0], Y[0] + 2 * Y[1], "Kartonbreite", "mm");
+		spinner_size_y = addJSpinner(this, X[0] + X[1], Y[0] + 2 * Y[1], "Kartonhöhe", "mm");
 
-		spinner_dia_outside = addJSpinner(this, X[0], Y[0] + 2 * Y[1], "Ø Aussen", "mm");
-		spinner_ring_width = addJSpinner(this, X[0] + X[1], Y[0] + 2 * Y[1], "Ringbreite", "mm");
+		spinner_zoom_x = addJSpinner(this, X[0], Y[0] + 3 * Y[1], "Zoomzentrum X", "mm");
+		spinner_zoom_y = addJSpinner(this, X[0] + X[1], Y[0] + 3 * Y[1], "Zoomzentrum Y", "mm");
 
-		spinner_dia_black = addJSpinner(this, X[0], Y[0] + 3 * Y[1], "Ø Spiegel", "mm");
-		spinner_dia_inner_ten = addJSpinner(this, X[0] + X[1], Y[0] + 3 * Y[1], "Ø Innenzehn", "mm");
-		
-		spinner_ring_min = addJSpinner(this, X[0], Y[0] + 4 * Y[1], "Kleinster Ring", "");
-		spinner_ring_max = addJSpinner(this, X[0] + X[1], Y[0] + 4 * Y[1], "Größter Ring", "");
-
-		spinner_num_max = addJSpinner(this, X[0], Y[0] + 5 * Y[1], "Größte Ringzahl", "");
-		comboBox_ring_angle = addJComboBox(this, X[0] + X[1], Y[0] + 5 * Y[1], "Winkel Ringzahlen", "°", TargetAngle.values());
-		((JLabel) comboBox_ring_angle.getRenderer()).setHorizontalAlignment(JLabel.RIGHT);
-
-		comboBox_typ = addJComboBox(this, X[0], Y[0] + 6 * Y[1], "Scheibenart", "", new TargetType[] {
-			TargetType.RING,
-			TargetType.KLAPP,
-			TargetType.WEIß,
-			TargetType.PA25PC,
-			TargetType.INVERS,
-			TargetType.DOPPELSAU
-		});
-		comboBox_fill = addJComboBox(this, X[0] + X[1], Y[0] + 6 * Y[1], "Ausgefüllter Ring", "", TargetFill.values());
+		comboBox_typ = addJComboBox(this, X[0], Y[0] + 4 * Y[1], "Scheibenart", "", new TargetType[] {
+				TargetType.KLAPP,
+				TargetType.JAGD,
+				TargetType.DOPPELSAU
+			});
+		spinner_zoom_lvl = addJSpinner(this, X[0] + X[1], Y[0] + 4 * Y[1], "Zoomlevels", "");
 	
-		spinner_vorhaltediameter = addJSpinner(this, X[0], Y[0] + 7 * Y[1], "Ø Vorhaltespiegel", "mm");
-		spinner_vorhalteabstand =  addJSpinner(this, X[0] + X[1], Y[0] + 7 * Y[1], "Vorhalteabstand", "mm");
+		spinner_offset_x = addJSpinner(this, X[0], Y[0] + 5 * Y[1], "Offset X", "mm");
+		spinner_offset_y =  addJSpinner(this, X[0] + X[1], Y[0] + 5 * Y[1], "Offset Y", "mm");
 		
 		updateDisplay();
 		scheibe.setTarget(getSelectedTargetModel());
@@ -182,20 +161,14 @@ public class SettingsDeerTargets extends JPanel implements ActionListener, Chang
 		TargetModel target = getSelectedTargetModel();
 		text_name.setText(target.toString());
 		text_number.setText(target.getNumber());			
-		spinner_size.setValue(target.getValue(TargetValue.SIZE) / 100.);
-		spinner_feed.setValue(target.getValue(TargetValue.FEED));
-		spinner_dia_outside.setValue(target.getValue(TargetValue.DIA_OUTSIDE) / 100.);
-		spinner_ring_width.setValue(target.getValue(TargetValue.RING_WIDTH) / 100.);
-		spinner_dia_black.setValue(target.getValue(TargetValue.DIA_BLACK) / 100.);
-		spinner_dia_inner_ten.setValue(target.getValue(TargetValue.DIA_INNER_TEN) / 100.);
-		spinner_ring_min.setValue(target.getValue(TargetValue.RING_MIN));
-		spinner_ring_max.setValue(target.getValue(TargetValue.RING_MAX));
-		spinner_num_max.setValue(target.getValue(TargetValue.NUM_MAX));
-		comboBox_ring_angle.setSelectedIndex(target.getValue(TargetValue.NUM_ANGLE));
-		comboBox_typ.setSelectedIndex(target.getValue(TargetValue.TYPE));
-		comboBox_fill.setSelectedIndex(target.getValue(TargetValue.FILL));
-		spinner_vorhaltediameter.setValue(target.getValue(TargetValue.SUSP_DIA) / 100.);
-		spinner_vorhalteabstand.setValue(target.getValue(TargetValue.SUSP_DISTANCE) / 100.);
+		spinner_size_x.setValue(target.getValue(TargetValue.SIZE_HEIGHT) / 100.);
+		spinner_size_y.setValue(target.getValue(TargetValue.SIZE_WIDTH) / 100.);
+		spinner_zoom_x.setValue(target.getValue(TargetValue.ZOOM_CENTER_X) / 100.);
+		spinner_zoom_y.setValue(target.getValue(TargetValue.ZOOM_CENTER_Y) / 100.);
+		comboBox_typ.setSelectedItem(target.getValue(TargetValue.TYPE));
+		spinner_zoom_lvl.setValue(target.getValue(TargetValue.ZOOM_LEVELS));
+		spinner_offset_x.setValue(target.getValue(TargetValue.OFFSET_X) / 100.);
+		spinner_offset_y.setValue(target.getValue(TargetValue.OFFSET_Y) / 100.);
 
 		doUpdate = true;
 	}
@@ -246,17 +219,9 @@ public class SettingsDeerTargets extends JPanel implements ActionListener, Chang
 					t.setNumber(text_number.getText());
 				}
 				break;
-			case "Winkel Ringzahlen":
-				value = ((TargetAngle) comboBox_ring_angle.getSelectedItem()).getValue();
-				t.setValue(TargetValue.NUM_ANGLE, value);
-				break;
 			case "Scheibenart":
 				value = ((TargetType) comboBox_typ.getSelectedItem()).getValue();
 				t.setValue(TargetValue.TYPE, value);
-				break;
-			case "Ausgefüllter Ring":
-				value = ((TargetFill) comboBox_fill.getSelectedItem()).getValue();
-				t.setValue(TargetValue.FILL, value);
 				break;
 		}
 		updateDisplay();
@@ -286,17 +251,13 @@ public class SettingsDeerTargets extends JPanel implements ActionListener, Chang
 
 		TargetModel target = getSelectedTargetModel();
 		switch (((JSpinner) e.getSource()).getName()) {
-			case "Kartongröße":       target.setValue(TargetValue.SIZE,          (int) ((double) spinner_size.getValue()             * 100)); break;
-			case "Bandvorschub":      target.setValue(TargetValue.FEED,          (int)           spinner_feed.getValue());                    break;
-			case "Ø Aussen":          target.setValue(TargetValue.DIA_OUTSIDE,   (int) ((double) spinner_dia_outside.getValue()      * 100)); break;
-			case "Ringbreite":        target.setValue(TargetValue.RING_WIDTH,    (int) ((double) spinner_ring_width.getValue()       * 100)); break;
-			case "Ø Spiegel":         target.setValue(TargetValue.DIA_BLACK,     (int) ((double) spinner_dia_black.getValue()        * 100)); break;
-			case "Ø Innenzehn":       target.setValue(TargetValue.DIA_INNER_TEN, (int) ((double) spinner_dia_inner_ten.getValue()    * 100)); break;
-			case "Kleinster Ring":    target.setValue(TargetValue.RING_MIN,      (int)           spinner_ring_min.getValue());                break;
-			case "Größter Ring":      target.setValue(TargetValue.RING_MAX,      (int)           spinner_ring_max.getValue());                break;
-			case "Größte Ringzahl":   target.setValue(TargetValue.NUM_MAX,       (int)           spinner_num_max.getValue());                 break;
-			case "Ø Vorhaltespiegel": target.setValue(TargetValue.SUSP_DIA,      (int) ((double) spinner_vorhaltediameter.getValue() * 100)); break;
-			case "Vorhalteabstand":   target.setValue(TargetValue.SUSP_DISTANCE, (int) ((double) spinner_vorhalteabstand.getValue()  * 100)); break;
+			case "Kartonbreite":  target.setValue(TargetValue.SIZE_WIDTH,    (int) ((double) spinner_size_x.getValue()   * 100)); break;
+			case "Kartonhöhe":    target.setValue(TargetValue.SIZE_HEIGHT,   (int) ((double) spinner_size_y.getValue()   * 100)); break;
+			case "Zoomzentrum X": target.setValue(TargetValue.ZOOM_CENTER_X, (int) ((double) spinner_zoom_x.getValue()   * 100)); break;
+			case "Zoomzentrum Y": target.setValue(TargetValue.ZOOM_CENTER_Y, (int) ((double) spinner_zoom_y.getValue()   * 100)); break;
+			case "Zoomlevels":    target.setValue(TargetValue.ZOOM_LEVELS,   (int)           spinner_zoom_lvl.getValue()       ); break;
+			case "Offset X":      target.setValue(TargetValue.OFFSET_X,      (int) ((double) spinner_offset_x.getValue() * 100)); break;
+			case "Offset Y":      target.setValue(TargetValue.OFFSET_Y,      (int) ((double) spinner_offset_y.getValue() * 100)); break;
 		}
 
 		updateDisplay();

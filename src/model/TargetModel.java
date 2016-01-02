@@ -14,7 +14,8 @@ public class TargetModel implements Serializable, Comparable<TargetModel> {
 
 	private String bezeichnung;
 	private String kennnummer;
-	private int karton;
+	private int size_width;
+	private int size_height;
 	private int bandvorschub;
 	private int dia_spiegel;
 	private int dia_aussen;
@@ -31,25 +32,30 @@ public class TargetModel implements Serializable, Comparable<TargetModel> {
 	private int vorhalteabstand;
 
 	private String image;
+	private int zoom_center_x;
+	private int zoom_center_y;
+	private int zoom_levels;
+	private int offset_x;
+	private int offset_y;
 
 	public TargetModel(String bezeichnung, String kennnummer, int... values) {
 		Validate.isTrue(values.length >= 9, "need 9 or more values in array");
 		
 		this.bezeichnung = bezeichnung;
 		this.kennnummer = kennnummer;
-		for (int i = 0; i < 14; i++) {
+		this.image = "";
+		for (int i = 0; i < 21; i++) {
 			setValue(TargetValue.values()[i], i < values.length ? values[i] : 0);
 		}
-		this.image = "";
 	}
 
 	public TargetModel(TargetModel tm) {
 		bezeichnung = tm.bezeichnung;
 		kennnummer = tm.kennnummer;
+		image = tm.image;
 		for (TargetValue tv : TargetValue.values()) {
 			setValue(tv, tm.getValue(tv));
 		}
-		this.image = "";
 	}
 
 	@Override
@@ -84,8 +90,13 @@ public class TargetModel implements Serializable, Comparable<TargetModel> {
 
 	public void setValue(TargetValue type, int value) {
 		switch (type) {
-			case SIZE:                   karton = value; break;
-			case FEED:             bandvorschub = value; break;
+			case SIZE:
+				size_width = value;
+				size_height = value;
+				break;
+			case FEED:
+				bandvorschub = value;
+				break;
 			case DIA_BLACK:
 				if (value > dia_aussen) {
 					dia_aussen = value;
@@ -163,22 +174,51 @@ public class TargetModel implements Serializable, Comparable<TargetModel> {
 				}
 				max_number = value;
 				break;
-			case NUM_ANGLE:              winkel = value; break;
-			case TYPE:                      art = value; break;
+			case NUM_ANGLE:
+				winkel = value;
+				break;
+			case TYPE:
+				art = value;
+				break;
 			case FILL:
 				if (value == 2 && dia_innenzehn > 0) {
 					dia_innenzehn = 0;
 				}
 				fill = value;
 				break;
-			case SUSP_DIA:          vorhaltedia = value; break;
-			case SUSP_DISTANCE: vorhalteabstand = value; break;
+			case SUSP_DIA:
+				vorhaltedia = value;
+				break;
+			case SUSP_DISTANCE:
+				vorhalteabstand = value;
+				break;
+			case SIZE_WIDTH:
+				size_width = value;
+				break;
+			case SIZE_HEIGHT:
+				size_height = value;
+				break;
+			case ZOOM_CENTER_X:
+				zoom_center_x = value;
+				break;
+			case ZOOM_CENTER_Y:
+				zoom_center_y = value;
+				break;
+			case ZOOM_LEVELS:
+				zoom_levels = value;
+				break;
+			case OFFSET_X:
+				offset_x = value;
+				break;
+			case OFFSET_Y:
+				offset_y = value;
+				break;
 		}
 	}
 
 	public int getValue(TargetValue type) {
 		switch (type) {
-			case SIZE:          return karton;
+			case SIZE:          return size_width;
 			case FEED:          return bandvorschub;
 			case DIA_BLACK:     return dia_spiegel;
 			case DIA_OUTSIDE:   return dia_aussen;
@@ -189,9 +229,16 @@ public class TargetModel implements Serializable, Comparable<TargetModel> {
 			case NUM_MAX:       return max_number;
 			case NUM_ANGLE:     return winkel;
 			case TYPE:          return art;
-			case FILL:     return fill;
+			case FILL:          return fill;
 			case SUSP_DIA:      return vorhaltedia;
 			case SUSP_DISTANCE: return vorhalteabstand;
+			case SIZE_WIDTH:    return size_width;
+			case SIZE_HEIGHT:   return size_height;
+			case ZOOM_CENTER_X: return zoom_center_x;
+			case ZOOM_CENTER_Y: return zoom_center_y;
+			case ZOOM_LEVELS:   return zoom_levels;
+			case OFFSET_X:      return offset_x;
+			case OFFSET_Y:      return offset_y;
 			default: return 0;
 		}
 	}
@@ -205,11 +252,11 @@ public class TargetModel implements Serializable, Comparable<TargetModel> {
 	}
 
 	public boolean isRingTarget() {
-		return art != 2;
+		return art == 0 || art == 3 || art == 4 || art == 5;
 	}
 
 	public boolean isDeerTarget() {
-		return art == 2;
+		return art == 1 || art == 2 || art == 6;
 	}
 
 	public int getRingRadius(int i) {
@@ -258,73 +305,99 @@ public class TargetModel implements Serializable, Comparable<TargetModel> {
 		try {
 			PrintWriter writer = new PrintWriter(fileName);
 
-			writer.println("\">Bezeichnung\"");                                // Name der Scheibe der bei der Programmauswahl angezeigt wird
+			writer.println("\">Bezeichnung\"");                                    // Name der Scheibe der bei der Programmauswahl angezeigt wird
 			writer.println(String.format("\"%s\"", bezeichnung));
 
-			writer.println("\">ScheibenArt\"");                                // Systeminterne Scheibenbezeichnung
+			writer.println("\">ScheibenArt\"");                                    // Systeminterne Scheibenbezeichnung
 			writer.println(String.format("\"%d\"", art));
-			                                                                   // 1 => Trefferzonenscheibe mit Klappscheibensteuerung
-			                                                                   // 2 => Trefferzonenscheibe / Jagdscheibe
-			                                                                   // 3 => Ringscheibe mit weißem Zehner und schwarzer Schrift
-			                                                                   // 4 => Ringscheibe mit PA25PC - Modul
-			                                                                   // 5 => Inverse Ringscheibe
-			                                                                   // 6 => Trefferzonenscheibe mit Doppelsau
+			                                                                       // 1 => Trefferzonenscheibe mit Klappscheibensteuerung
+			                                                                       // 2 => Trefferzonenscheibe / Jagdscheibe
+			                                                                       // 3 => Ringscheibe mit weißem Zehner und schwarzer Schrift
+			                                                                       // 4 => Ringscheibe mit PA25PC - Modul
+			                                                                       // 5 => Inverse Ringscheibe
+			                                                                       // 6 => Trefferzonenscheibe mit Doppelsau
 
-			writer.println("\">KennNummer\"");                                 // Kennnr. der Scheibe nach DSB/DJV nur Informativ
+			writer.println("\">KennNummer\"");                                     // Kennnr. der Scheibe nach DSB/DJV nur Informativ
 			writer.println(String.format("\"DSB %s\"", kennnummer));
 
-			writer.println("\">AussenRadius\"");                               // Radius des 1. Rings in 1/100 mm
-			writer.println(String.format("\"%d\"", dia_aussen / 2));
-			writer.println("\">SpiegelRadius\"");                              // Radius des Spiegels in 1/100 mm
-			writer.println(String.format("\"%d\"", dia_spiegel / 2));			
+			if (isRingTarget()) {
+				writer.println("\">AussenRadius\"");                               // Radius des 1. Rings in 1/100 mm
+				writer.println(String.format("\"%d\"", dia_aussen / 2));
+				writer.println("\">SpiegelRadius\"");                              // Radius des Spiegels in 1/100 mm
+				writer.println(String.format("\"%d\"", dia_spiegel / 2));			
+	
+				writer.println("\">ZehnerRadius\"");                               // Radius des kleinsten Rings in 1/100 mm
+				writer.println(String.format("\"%d\"", getRingRadius(max_ring)));
+				writer.println("\">ZehnerRingStyle\"");                            // Gibt die Optik des Zehnerrings vor, 0=ausgefüllt, 1=Ring
+				writer.println(fill >= 2 ? "\"0\"": "\"1\"");
+	
+				writer.println("\">InnenZehnerRadius\"");                          // Radius des Innenzehners in 1/100mm
+				writer.println(String.format("\"%d\"", dia_innenzehn / 2));
+				writer.println("\">InnenZehnerRingStyle\"");                       // Gibt die Optik des Innenzehnerrings vor, 0=ausgefüllt, 1=Ring
+				writer.println(fill >= 1 ? "\"0\"": "\"1\"");
+	
+				writer.println("\">InnenKreuzRadius\"");                           // Länge der Kreuzschenkel, zwei mal ergibt Kreuzlinien, 0=keins
+				writer.println("\"0\"");
+				writer.println("\">InnenKreuzWinkel\"");                           // Gibt an um wieviel Grad das Kreuz gedreht ist
+				writer.println("\"0\"");
+	
+				writer.println("\">VorhalteSpiegelRadius\"");                      // Gibt an ob Vorhaltespiegel dargestellt werden, 0=keinen
+				writer.println(String.format("\"%d\"", vorhaltedia / 2));
+				writer.println("\">VorhalteAbstand\"");                            // Abstand der Vorhaltespiegel zur Scheibenmitte
+				writer.println(String.format("\"%d\"", vorhalteabstand));
+	
+				writer.println("\">Ringbreite\"");                                 // Breite eines Ringes in 1/100mm
+				writer.println(String.format("\"%d\"", ringbreite));
+	
+				writer.println("\">RingMin\"");                                    // Nummer des kleinsten dargestellten Rings
+				writer.println(String.format("\"%d\"", min_ring));
+				writer.println("\">RingMax\"");                                    // Nummer des größten dargestellten Rings
+				writer.println(String.format("\"%d\"", max_number));
+	
+				writer.println("\">RingAnzahl\"");                                 // Anzahl der abgebildeten Ringe
+				writer.println(String.format("\"%d\"", max_ring));
+	
+				writer.println("\">RingNummerWinkel\"");                           // Anordnungswinkel der Beschriftungszahlen
+				writer.println(String.format("\"%d\"", winkel * 45));
+	
+				writer.println("\">KartonBreite\"");                               // Breite des Scheibenkartons
+				writer.println(String.format("\"%d\"", size_width));
+				writer.println("\">KartonHoehe\"");                                // Höhe des Scheibenkartons
+				writer.println(String.format("\"%d\"", size_height));
+	
+				writer.println("\">Probe\"");                                      // Anzahl der Probeschüsse eines Durchgangs, bei -1 keine Probe,
+				writer.println("\"-1\"");                                          // bei 0 unbegrenzte Probe, an sonsten nach eingestellter Zahl
+	
+				writer.println("\">BandVorschub\"");                               // Gibt an wie lange der Motor für den Bandvorschub läuft
+				writer.println(String.format("\"%d\"", bandvorschub));
+			}
 
-			writer.println("\">ZehnerRadius\"");                               // Radius des kleinsten Rings in 1/100 mm
-			writer.println(String.format("\"%d\"", getRingRadius(max_ring)));
-			writer.println("\">ZehnerRingStyle\"");                            // Gibt die Optik des Zehnerrings vor, 0=ausgefüllt, 1=Ring
-			writer.println(fill >= 2 ? "\"0\"": "\"1\"");
+			if (isDeerTarget()) {
+				writer.println("\">Kartonbreite\"");                               // Bezeichnet die tatsächliche Breite des Zielbildes in 100tel mm
+				writer.println(String.format("\"%d\"", size_width));
+				writer.println("\">Kartonhöhe\"");                                 // Bezeichnet die tatsächliche Höhe des Zielbildes in 100tel mm
+				writer.println(String.format("\"%d\"", size_height));
 
-			writer.println("\">InnenZehnerRadius\"");                          // Radius des Innenzehners in 1/100mm
-			writer.println(String.format("\"%d\"", dia_innenzehn / 2));
-			writer.println("\">InnenZehnerRingStyle\"");                       // Gibt die Optik des Innenzehnerrings vor, 0=ausgefüllt, 1=Ring
-			writer.println(fill >= 1 ? "\"0\"": "\"1\"");
+				writer.println("\">ZoomzentrumX\"");                               // Verschiebt die Treffermitte der Scheibe auf dem Anzeigebildschirm in 100tel mm nach rechts
+				writer.println(String.format("\"%d\"", zoom_center_x));            // und links. Wenn ein Schuß auf der Scheibe 10 cm zu weit links angezeigt wurde, kann hier,
+				                                                                   // durch Eingabe des Werts 10000 eine Korrektur vorgenommen werden.
+				writer.println("\">ZoomzentrumY\"");                               // Verschiebt die Treffermitte der Scheibe auf dem Anzeigebildschirm in 100tel mm nach oben
+				writer.println(String.format("\"%d\"", zoom_center_y));            // und unten. Wenn ein Schuß auf der Scheibe 10 cm zu weit oben angezeigt wurde, kann hier,
+				                                                                   // durch Eingabe des Werts 10000 eine Korrektur vorgenommen werden.
 
-			writer.println("\">InnenKreuzRadius\"");                           // Länge der Kreuzschenkel, zwei mal ergibt Kreuzlinien, 0=keins
-			writer.println("\"0\"");
-			writer.println("\">InnenKreuzWinkel\"");                           // Gibt an um wieviel Grad das Kreuz gedreht ist
-			writer.println("\"0\"");
+				writer.println("\">Zoomlevels\"");                                 // Bezeichnet die Anzahl der Zoomstufen, die durchlaufen werden.
+				writer.println(String.format("\"%d\"", zoom_levels));
+	
+				writer.println("\">OffsetX\"");                                    // Verschiebt die Darstellung der Scheibe auf dem Anzeigebildschirm zur tatsächlichen
+				writer.println(String.format("\"%d\"", offset_x));                 // Messmitte der Anlage nach rechts und links. Dies ist nur von Nöten, wenn der Mittelpunkt
+				                                                                   // der Scheibe am Ziel, nicht auch der Messmittelpunkt der Messelektronik ist.
+				writer.println("\">OffsetY\"");                                    // Verschiebt die Darstellung der Scheibe auf dem Anzeigebildschirm zur tatsächlichen
+				writer.println(String.format("\"%d\"", offset_y));                 // Messmitte der Anlage nach oben und unten. Dies ist nur von Nöten, wenn der Mittelpunkt
+				                                                                   // der Scheibe am Ziel, nicht auch der Messmittelpunkt der Messelektronik ist.
+			}
 
-			writer.println("\">VorhalteSpiegelRadius\"");                      // Gibt an ob Vorhaltespiegel dargestellt werden, 0=keinen
-			writer.println(String.format("\"%d\"", vorhaltedia / 2));
-			writer.println("\">VorhalteAbstand\"");                            // Abstand der Vorhaltespiegel zur Scheibenmitte
-			writer.println(String.format("\"%d\"", vorhalteabstand));
-
-			writer.println("\">Ringbreite\"");                                 // Breite eines Ringes in 1/100mm
-			writer.println(String.format("\"%d\"", ringbreite));
-
-			writer.println("\">RingMin\"");                                    // Nummer des kleinsten dargestellten Rings
-			writer.println(String.format("\"%d\"", min_ring));
-			writer.println("\">RingMax\"");                                    // Nummer des größten dargestellten Rings
-			writer.println(String.format("\"%d\"", max_number));
-
-			writer.println("\">RingAnzahl\"");                                 // Anzahl der abgebildeten Ringe
-			writer.println(String.format("\"%d\"", max_ring));
-
-			writer.println("\">RingNummerWinkel\"");                           // Anordnungswinkel der Beschriftungszahlen
-			writer.println(String.format("\"%d\"", winkel * 45));
-
-			writer.println("\">KartonBreite\"");                               // Breite des Scheibenkartons
-			writer.println(String.format("\"%d\"", karton));
-			writer.println("\">KartonHoehe\"");                                // Höhe des Scheibenkartons
-			writer.println(String.format("\"%d\"", karton));
-
-			writer.println("\">Probe\"");                                      // Anzahl der Probeschüsse eines Durchgangs, bei -1 keine Probe,
-			writer.println("\"-1\"");                                          // bei 0 unbegrenzte Probe, an sonsten nach eingestellter Zahl
-
-			writer.println("\">BandVorschub\"");                               // Gibt an wie lange der Motor für den Bandvorschub läuft
-			writer.println(String.format("\"%d\"", bandvorschub));
-
-			writer.println("\">DateiName\"");                                  // Gibt den Namen der Datei an, unter der sie im Verzeichnis
-			writer.println(String.format("\"%s\"", fileName));                 // C:\Programme\ESA2002 abgespeichert wird.
+			writer.println("\">DateiName\"");                                      // Gibt den Namen der Datei an, unter der sie im Verzeichnis
+			writer.println(String.format("\"%s\"", fileName));                     // C:\Programme\ESA2002 abgespeichert wird.
 
 			writer.close();
 		} catch (FileNotFoundException e) {
