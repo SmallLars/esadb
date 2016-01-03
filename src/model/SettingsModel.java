@@ -60,19 +60,19 @@ public class SettingsModel implements Serializable {
 		pageOrientation = PageFormat.PORTRAIT;
 
 		targets = new TreeSet<TargetModel>();
-		//                         |                      |           |       |Band-   |      Durchmesser       |Ring- | Ring  |  Nummer  |   |     |  Vorhalte-   |
-		//                         |Bezeichnung           | Kennummer | Karton|vorschub|Spiegel|Aussen|Innenzehn|breite|Min|Max|Max|Wimkel|Art|Style|Durchm|Abstand|
-		targets.add(new TargetModel("Gewehr 10m",           "0.4.3.01",  17000,       2,   3050,  4550,        0,   250,   1, 10, 8,      0,  0,    2));
-		targets.add(new TargetModel("Gewehr 15m",           "0.4.3.02",  17000,       3,   4050,  8550,        0,   450,   1, 10, 9));
-		targets.add(new TargetModel("Gewehr 50m",           "0.4.3.03",  55000,       5,  11240, 15440,      500,   800,   1, 10, 8));
-		targets.add(new TargetModel("Gewehr 100m",          "0.4.3.04",  55000,       5,  20000, 50000,     2500,  2500,   1, 10, 9));
-		targets.add(new TargetModel("Gewehr 300m",          "0.4.3.05", 130000,       0,  60000, 100000,       0,  5000,   1, 10, 9,      1,  0,    0));
-		targets.add(new TargetModel("Muskete",              "0.4.3.06",  55000,       5,  40000, 80000,     4000,  4000,   1, 10, 8));
-		targets.add(new TargetModel("Pistole 10m",          "0.4.3.20",  17000,       3,   5950, 15550,      500,   800,   1, 10, 8));
-		targets.add(new TargetModel("Pistole - Duell",      "0.4.3.22",  55000,       5,  50000, 50000,     5000,  4000,   5, 10, 9,      0,  4,    0));
-		targets.add(new TargetModel("Pistole - Präzision",  "0.4.3.24",  55000,       5,  20000, 50000,     2500,  2500,   1, 10, 9,      0,  4,    0));
-		targets.add(new TargetModel("Laufende Scheibe 10m", "0.4.3.40",  17000,       2,   3050,  5050,       50,   250,   1, 10, 9,      1,  0,    1,  3100,   7000));
-		targets.add(new TargetModel("Laufende Scheibe 50m", "0.4.3.41",  70000,       0,      2, 36600,     3000,  1700,   1, 10, 9,      1,  5,    0));
+		//                         |                      |           |    Karton-    |Band-   |      Durchmesser       |Ring- | Ring  |  Nummer  |   |     |  Vorhalte-   |
+		//                         |Bezeichnung           | Kennummer | breite | höhe |vorschub|Spiegel|Aussen|Innenzehn|breite|Min|Max|Max|Wimkel|Art|Style|Durchm|Abstand|
+		targets.add(new TargetModel("Gewehr 10m",           "0.4.3.01",  17000,  17000,       2,   3050,  4550,        0,   250,  1, 10, 8,      0,  0,    2));
+		targets.add(new TargetModel("Gewehr 15m",           "0.4.3.02",  17000,  17000,       3,   4050,  8550,        0,   450,  1, 10, 9));
+		targets.add(new TargetModel("Gewehr 50m",           "0.4.3.03",  55000,  55000,       5,  11240, 15440,      500,   800,  1, 10, 8));
+		targets.add(new TargetModel("Gewehr 100m",          "0.4.3.04",  55000,  55000,       5,  20000, 50000,     2500,  2500,  1, 10, 9));
+		targets.add(new TargetModel("Gewehr 300m",          "0.4.3.05", 130000, 130000,       0,  60000, 100000,       0,  5000,  1, 10, 9,      1,  0,    0));
+		targets.add(new TargetModel("Muskete",              "0.4.3.06",  55000,  55000,       5,  40000, 80000,     4000,  4000,  1, 10, 8));
+		targets.add(new TargetModel("Pistole 10m",          "0.4.3.20",  17000,  17000,       3,   5950, 15550,      500,   800,  1, 10, 8));
+		targets.add(new TargetModel("Pistole - Duell",      "0.4.3.22",  55000,  55000,       5,  50000, 50000,     5000,  4000,  5, 10, 9,      0,  4,    0));
+		targets.add(new TargetModel("Pistole - Präzision",  "0.4.3.24",  55000,  55000,       5,  20000, 50000,     2500,  2500,  1, 10, 9,      0,  4,    0));
+		targets.add(new TargetModel("Laufende Scheibe 10m", "0.4.3.40",  17000,  17000,       2,   3050,  5050,       50,   250,  1, 10, 9,      1,  0,    1,  3100,   7000));
+		targets.add(new TargetModel("Laufende Scheibe 50m", "0.4.3.41",  70000,  70000,       0,      2, 36600,     3000,  1700,  1, 10, 9,      1,  5,    0));
 
 		weapons = new TreeSet<Weapon>();
 		weapons.add(new Weapon("Luftdruck",                 "01",  4500, Unit.MM,   1));

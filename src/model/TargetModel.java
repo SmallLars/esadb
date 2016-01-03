@@ -1,12 +1,13 @@
 package model;
 
+
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.Serializable;
 import java.text.NumberFormat;
+import java.util.EnumMap;
 import java.util.Locale;
-
-import org.apache.commons.lang.Validate;
+import java.util.Map;
 
 
 public class TargetModel implements Serializable, Comparable<TargetModel> {
@@ -14,38 +15,26 @@ public class TargetModel implements Serializable, Comparable<TargetModel> {
 
 	private String bezeichnung;
 	private String kennnummer;
-	private int size_width;
-	private int size_height;
-	private int bandvorschub;
-	private int dia_spiegel;
-	private int dia_aussen;
-	private int dia_innenzehn;
-	private int ringbreite;
-	private int min_ring;
-	private int max_ring;
-	private int max_number;
-	
-	private int winkel;
-	private int art;
-	private int fill;           // 0 => Zehn und Innenzehn: Ringe       1=> Innezehn ausgefüllt    2=>     Zehn ausgefüllt, Innenzehn irrelevant 
-	private int vorhaltedia;
-	private int vorhalteabstand;
-
 	private String image;
-	private int zoom_center_x;
-	private int zoom_center_y;
-	private int zoom_levels;
-	private int offset_x;
-	private int offset_y;
+	private Map<TargetValue, Integer> values;
+
+	public TargetModel() {
+		bezeichnung = "Neue Scheibe";
+		kennnummer = "0.4.3.00";
+		image = "bock.png";
+
+		values = new EnumMap<TargetValue, Integer>(TargetValue.class);
+		for (TargetValue tv : TargetValue.values()) values.put(tv, tv.getStandardValue());
+	}
 
 	public TargetModel(String bezeichnung, String kennnummer, int... values) {
-		Validate.isTrue(values.length >= 9, "need 9 or more values in array");
+		this();
 		
 		this.bezeichnung = bezeichnung;
 		this.kennnummer = kennnummer;
-		this.image = "";
-		for (int i = 0; i < 21; i++) {
-			setValue(TargetValue.values()[i], i < values.length ? values[i] : 0);
+
+		for (int i = 0; i < values.length; i++) {
+			setValue(TargetValue.values()[i], values[i]);
 		}
 	}
 
@@ -53,8 +42,10 @@ public class TargetModel implements Serializable, Comparable<TargetModel> {
 		bezeichnung = tm.bezeichnung;
 		kennnummer = tm.kennnummer;
 		image = tm.image;
+
+		values = new EnumMap<TargetValue, Integer>(TargetValue.class);
 		for (TargetValue tv : TargetValue.values()) {
-			setValue(tv, tm.getValue(tv));
+			values.put(tv, tm.getValue(tv));
 		}
 	}
 
@@ -88,161 +79,6 @@ public class TargetModel implements Serializable, Comparable<TargetModel> {
 		return kennnummer;
 	}
 
-	public void setValue(TargetValue type, int value) {
-		switch (type) {
-			case SIZE:
-				size_width = value;
-				size_height = value;
-				break;
-			case FEED:
-				bandvorschub = value;
-				break;
-			case DIA_BLACK:
-				if (value > dia_aussen) {
-					dia_aussen = value;
-				}
-				dia_spiegel = value;
-				break;
-			case DIA_OUTSIDE:
-				if (value < dia_spiegel) {
-					dia_spiegel = value;
-				}
-				if (value < dia_innenzehn + 2 * (max_ring - min_ring) * ringbreite) {
-					if (max_ring - min_ring > 1) max_ring --;
-					else break;
-					if (max_number >= max_ring) max_number--;
-				}
-				dia_aussen = value;
-				break;
-			case DIA_INNER_TEN:
-				if (dia_aussen < value + 2 * (max_ring - min_ring) * ringbreite) {
-					if (max_ring - min_ring > 1) max_ring --;
-					else break;
-					if (max_number >= max_ring) max_number--;
-				}
-				if (value > 0 && fill == 2) {
-					fill = 1;
-				}
-				dia_innenzehn = value;
-				break;
-			case RING_WIDTH:
-				if (dia_aussen < dia_innenzehn + 2 * (max_ring - min_ring) * value) {
-					if (max_ring - min_ring > 1) max_ring --;
-					else break;
-					if (max_number >= max_ring) max_number--;
-				}
-				ringbreite = value;
-				break;
-			case RING_MIN:
-				if (value < 0) {
-					break;
-				}
-				if (value >= max_ring) {
-					max_ring++;
-				}
-				if (value > max_number) {
-					max_number++;
-				}
-				if (dia_aussen < dia_innenzehn + 2 * (max_ring - value) * ringbreite) {
-					max_ring--;
-					if (max_number >= max_ring) max_number--;
-				}
-				min_ring = value;
-				break;
-			case RING_MAX:
-				if (value < 1) {
-					break;
-				}
-				if (value <= min_ring && min_ring > 0) {
-					min_ring--;
-				}
-				if (value <= max_number && max_number > 0) {
-					max_number--;
-				}
-				if (dia_aussen < dia_innenzehn + 2 * (value - min_ring) * ringbreite) {
-					min_ring++;
-					if (max_number < min_ring) max_number++;
-				}
-				max_ring = value;
-				break;
-			case NUM_MAX:
-				if (value >= max_ring)  {
-					break;
-				}
-				if (value < min_ring) {
-					break;
-				}
-				max_number = value;
-				break;
-			case NUM_ANGLE:
-				winkel = value;
-				break;
-			case TYPE:
-				art = value;
-				break;
-			case FILL:
-				if (value == 2 && dia_innenzehn > 0) {
-					dia_innenzehn = 0;
-				}
-				fill = value;
-				break;
-			case SUSP_DIA:
-				vorhaltedia = value;
-				break;
-			case SUSP_DISTANCE:
-				vorhalteabstand = value;
-				break;
-			case SIZE_WIDTH:
-				size_width = value;
-				break;
-			case SIZE_HEIGHT:
-				size_height = value;
-				break;
-			case ZOOM_CENTER_X:
-				zoom_center_x = value;
-				break;
-			case ZOOM_CENTER_Y:
-				zoom_center_y = value;
-				break;
-			case ZOOM_LEVELS:
-				zoom_levels = value;
-				break;
-			case OFFSET_X:
-				offset_x = value;
-				break;
-			case OFFSET_Y:
-				offset_y = value;
-				break;
-		}
-	}
-
-	public int getValue(TargetValue type) {
-		switch (type) {
-			case SIZE:          return size_width;
-			case FEED:          return bandvorschub;
-			case DIA_BLACK:     return dia_spiegel;
-			case DIA_OUTSIDE:   return dia_aussen;
-			case DIA_INNER_TEN: return dia_innenzehn;
-			case RING_WIDTH:    return ringbreite;
-			case RING_MIN:      return min_ring;
-			case RING_MAX:      return max_ring;
-			case NUM_MAX:       return max_number;
-			case NUM_ANGLE:     return winkel;
-			case TYPE:          return art;
-			case FILL:          return fill;
-			case SUSP_DIA:      return vorhaltedia;
-			case SUSP_DISTANCE: return vorhalteabstand;
-			case SIZE_WIDTH:    return size_width;
-			case SIZE_HEIGHT:   return size_height;
-			case ZOOM_CENTER_X: return zoom_center_x;
-			case ZOOM_CENTER_Y: return zoom_center_y;
-			case ZOOM_LEVELS:   return zoom_levels;
-			case OFFSET_X:      return offset_x;
-			case OFFSET_Y:      return offset_y;
-			default: return 0;
-		}
-	}
-
 	public void setImage(String image) {
 		this.image = image;
 	}
@@ -251,50 +87,168 @@ public class TargetModel implements Serializable, Comparable<TargetModel> {
 		return this.image;
 	}
 
+	public void setValue(TargetValue type, int value) {
+		int dia_outside = values.get(TargetValue.DIA_OUTSIDE);
+		int ring_width = values.get(TargetValue.RING_WIDTH);
+		int dia_black = values.get(TargetValue.DIA_BLACK);
+		int dia_inner_ten = values.get(TargetValue.DIA_INNER_TEN);
+		int ring_min = values.get(TargetValue.RING_MIN);
+		int ring_max = values.get(TargetValue.RING_MAX);
+		int num_max = values.get(TargetValue.NUM_MAX);
+		int fill = values.get(TargetValue.FILL);
+
+		switch (type) {
+			case DIA_BLACK:
+				if (value > dia_outside) {
+					values.put(TargetValue.DIA_OUTSIDE, value);
+				}
+				break;
+			case DIA_OUTSIDE:
+				if (value < dia_inner_ten + 2 * (ring_max - ring_min) * ring_width) {
+					if (ring_max - ring_min < 2) return;
+
+					values.put(TargetValue.RING_MAX, --ring_max);
+					if (num_max >= ring_max) {
+						values.put(TargetValue.NUM_MAX, --num_max);
+					}
+				}
+				if (value < dia_black) {
+					values.put(TargetValue.DIA_BLACK, value);
+				}
+				break;
+			case DIA_INNER_TEN:
+				if (dia_outside < value + 2 * (ring_max - ring_min) * ring_width) {
+					if (ring_max - ring_min < 2) return;
+
+					values.put(TargetValue.RING_MAX, --ring_max);
+					if (num_max >= ring_max) {
+						values.put(TargetValue.NUM_MAX, --num_max);
+					}
+				}
+				if (value > 0 && fill == 2) {
+					values.put(TargetValue.FILL, 1);
+				}
+				break;
+			case RING_WIDTH:
+				if (dia_outside < dia_inner_ten + 2 * (ring_max - ring_min) * value) {
+					if (ring_max - ring_min < 2) return;
+
+					values.put(TargetValue.RING_MAX, --ring_max);
+					if (num_max >= ring_max) {
+						values.put(TargetValue.NUM_MAX, --num_max);
+					}
+				}
+				break;
+			case RING_MIN:
+				if (value >= ring_max) {
+					values.put(TargetValue.RING_MAX, ++ring_max);
+				}
+				if (value > num_max) {
+					values.put(TargetValue.NUM_MAX, ++num_max);
+				}
+				if (dia_outside < dia_inner_ten + 2 * (ring_max - value) * ring_width) {
+					values.put(TargetValue.RING_MAX, --ring_max);
+					if (num_max >= ring_max) {
+						values.put(TargetValue.NUM_MAX, --num_max);
+					}
+				}
+				break;
+			case RING_MAX:
+				if (value < 1) return;
+
+				if (value <= ring_min && ring_min > 0) {
+					values.put(TargetValue.RING_MIN, --ring_min);
+				}
+				if (value <= num_max && num_max > 0) {
+					values.put(TargetValue.NUM_MAX, --num_max);
+				}
+				if (dia_outside < dia_inner_ten + 2 * (value - ring_min) * ring_width) {
+					values.put(TargetValue.RING_MIN, ++ring_min);
+					if (num_max < ring_min) {
+						values.put(TargetValue.NUM_MAX, ++num_max);
+					}
+				}
+				break;
+			case NUM_MAX:
+				if (value >= ring_max) return;
+				if (value < ring_min) return;
+
+				break;
+			case FILL:
+				if (value == 2 && dia_inner_ten > 0) {
+					values.put(TargetValue.DIA_INNER_TEN, 0);
+				}
+				break;
+			default:
+		}
+		values.put(type, value);
+	}
+
+	public int getValue(TargetValue type) {
+		return values.get(type);
+	}
+
 	public boolean isRingTarget() {
+		int art = values.get(TargetValue.TYPE);
 		return art == 0 || art == 3 || art == 4 || art == 5;
 	}
 
 	public boolean isDeerTarget() {
+		int art = values.get(TargetValue.TYPE);
 		return art == 1 || art == 2 || art == 6;
 	}
 
 	public int getRingRadius(int i) {
-		if (i < 0 || i > max_ring) return 0;
+		int dia_outside = values.get(TargetValue.DIA_OUTSIDE);
+		int ring_width = values.get(TargetValue.RING_WIDTH);
+		int ring_min = values.get(TargetValue.RING_MIN);
+		int ring_max = values.get(TargetValue.RING_MAX);
+
+		if (i < 0 || i > ring_max) return 0;
 	
-		return (dia_aussen / 2) - (i - min_ring) * ringbreite;
+		return (dia_outside / 2) - (i - ring_min) * ring_width;
 	}
 
 	public int getAussenRadius() {
-		return dia_aussen / 2;
+		int dia_outside = values.get(TargetValue.DIA_OUTSIDE);
+		return dia_outside / 2;
 	}
 	
 	public int getSpiegelRadius() {
-		return dia_spiegel / 2;
+		int dia_black = values.get(TargetValue.DIA_BLACK);
+		return dia_black / 2;
 	}
 
 	public int getInnenZehnRadius() {
-		return dia_innenzehn / 2;
+		int dia_inner_ten = values.get(TargetValue.DIA_INNER_TEN);
+		return dia_inner_ten / 2;
 	}
 	
 	public int getFontSize() {
-		return (ringbreite) * 9 / 16;
+		int ring_width = values.get(TargetValue.RING_WIDTH);
+		return (ring_width) * 9 / 16;
 	}
 
 	public boolean drawRing(int i) {
-		return i >= min_ring && i <= max_ring;
+		int ring_min = values.get(TargetValue.RING_MIN);
+		int ring_max = values.get(TargetValue.RING_MAX);
+		return i >= ring_min && i <= ring_max;
 	}
 	
 	public boolean drawNumber(int i) {
-		return i >= min_ring && i <= max_number;
+		int ring_min = values.get(TargetValue.RING_MIN);
+		int num_max = values.get(TargetValue.NUM_MAX);
+		return i >= ring_min && i <= num_max;
 	}
 
 	public int getNumberRadius(int i) {
-		return (getRingRadius(i) - ringbreite * 3 / 8);
+		int ring_width = values.get(TargetValue.RING_WIDTH);
+		return (getRingRadius(i) - ring_width * 3 / 8);
 	}
 
 	public boolean blackNumber(int i) {
-		return getNumberRadius(i) > (dia_spiegel / 2);
+		int dia_black = values.get(TargetValue.DIA_BLACK);
+		return getNumberRadius(i) > (dia_black / 2);
 	}
 
 	public String toFile() {
@@ -305,99 +259,147 @@ public class TargetModel implements Serializable, Comparable<TargetModel> {
 		try {
 			PrintWriter writer = new PrintWriter(fileName);
 
-			writer.println("\">Bezeichnung\"");                                    // Name der Scheibe der bei der Programmauswahl angezeigt wird
+			// Name der Scheibe der bei der Programmauswahl angezeigt wird
+			writer.println("\">Bezeichnung\"");
 			writer.println(String.format("\"%s\"", bezeichnung));
 
-			writer.println("\">ScheibenArt\"");                                    // Systeminterne Scheibenbezeichnung
-			writer.println(String.format("\"%d\"", art));
-			                                                                       // 1 => Trefferzonenscheibe mit Klappscheibensteuerung
-			                                                                       // 2 => Trefferzonenscheibe / Jagdscheibe
-			                                                                       // 3 => Ringscheibe mit weißem Zehner und schwarzer Schrift
-			                                                                       // 4 => Ringscheibe mit PA25PC - Modul
-			                                                                       // 5 => Inverse Ringscheibe
-			                                                                       // 6 => Trefferzonenscheibe mit Doppelsau
+			// Systeminterne Scheibenbezeichnung
+			// 1 => Trefferzonenscheibe mit Klappscheibensteuerung
+			// 2 => Trefferzonenscheibe / Jagdscheibe
+			// 3 => Ringscheibe mit weißem Zehner und schwarzer Schrift
+			// 4 => Ringscheibe mit PA25PC - Modul
+			// 5 => Inverse Ringscheibe
+			// 6 => Trefferzonenscheibe mit Doppelsau
+			writer.println("\">ScheibenArt\"");
+			writer.println(String.format("\"%d\"", values.get(TargetValue.TYPE)));
 
-			writer.println("\">KennNummer\"");                                     // Kennnr. der Scheibe nach DSB/DJV nur Informativ
+			// Kennnr. der Scheibe nach DSB/DJV nur Informativ
+			writer.println("\">KennNummer\"");
 			writer.println(String.format("\"DSB %s\"", kennnummer));
 
 			if (isRingTarget()) {
-				writer.println("\">AussenRadius\"");                               // Radius des 1. Rings in 1/100 mm
-				writer.println(String.format("\"%d\"", dia_aussen / 2));
-				writer.println("\">SpiegelRadius\"");                              // Radius des Spiegels in 1/100 mm
-				writer.println(String.format("\"%d\"", dia_spiegel / 2));			
-	
-				writer.println("\">ZehnerRadius\"");                               // Radius des kleinsten Rings in 1/100 mm
-				writer.println(String.format("\"%d\"", getRingRadius(max_ring)));
-				writer.println("\">ZehnerRingStyle\"");                            // Gibt die Optik des Zehnerrings vor, 0=ausgefüllt, 1=Ring
-				writer.println(fill >= 2 ? "\"0\"": "\"1\"");
-	
-				writer.println("\">InnenZehnerRadius\"");                          // Radius des Innenzehners in 1/100mm
-				writer.println(String.format("\"%d\"", dia_innenzehn / 2));
-				writer.println("\">InnenZehnerRingStyle\"");                       // Gibt die Optik des Innenzehnerrings vor, 0=ausgefüllt, 1=Ring
-				writer.println(fill >= 1 ? "\"0\"": "\"1\"");
-	
-				writer.println("\">InnenKreuzRadius\"");                           // Länge der Kreuzschenkel, zwei mal ergibt Kreuzlinien, 0=keins
+				// Radius des 1. Rings in 1/100 mm
+				writer.println("\">AussenRadius\"");
+				writer.println(String.format("\"%d\"", values.get(TargetValue.DIA_OUTSIDE) / 2));
+
+				// Radius des Spiegels in 1/100 mm
+				writer.println("\">SpiegelRadius\"");
+				writer.println(String.format("\"%d\"", values.get(TargetValue.DIA_BLACK) / 2));			
+
+				// Radius des kleinsten Rings in 1/100 mm
+				writer.println("\">ZehnerRadius\"");
+				writer.println(String.format("\"%d\"", getRingRadius(values.get(TargetValue.RING_MAX))));
+
+				// Gibt die Optik des Zehnerrings vor, 0=ausgefüllt, 1=Ring
+				writer.println("\">ZehnerRingStyle\"");
+				writer.println(values.get(TargetValue.FILL) >= 2 ? "\"0\"": "\"1\"");
+
+				// Radius des Innenzehners in 1/100mm
+				writer.println("\">InnenZehnerRadius\"");
+				writer.println(String.format("\"%d\"", values.get(TargetValue.DIA_INNER_TEN) / 2));
+
+				// Gibt die Optik des Innenzehnerrings vor, 0=ausgefüllt, 1=Ring
+				writer.println("\">InnenZehnerRingStyle\"");
+				writer.println(values.get(TargetValue.FILL) >= 1 ? "\"0\"": "\"1\"");
+
+				// Länge der Kreuzschenkel, zwei mal ergibt Kreuzlinien, 0=keins
+				writer.println("\">InnenKreuzRadius\"");
 				writer.println("\"0\"");
-				writer.println("\">InnenKreuzWinkel\"");                           // Gibt an um wieviel Grad das Kreuz gedreht ist
+
+				// Gibt an um wieviel Grad das Kreuz gedreht ist
+				writer.println("\">InnenKreuzWinkel\"");
 				writer.println("\"0\"");
+
+				// Gibt an ob Vorhaltespiegel dargestellt werden, 0=keinen
+				writer.println("\">VorhalteSpiegelRadius\"");
+				writer.println(String.format("\"%d\"", values.get(TargetValue.SUSP_DIA) / 2));
+
+				// Abstand der Vorhaltespiegel zur Scheibenmitte
+				writer.println("\">VorhalteAbstand\"");
+				writer.println(String.format("\"%d\"", values.get(TargetValue.SUSP_DISTANCE)));
+
+				// Breite eines Ringes in 1/100mm
+				writer.println("\">Ringbreite\"");
+				writer.println(String.format("\"%d\"", values.get(TargetValue.RING_WIDTH)));
 	
-				writer.println("\">VorhalteSpiegelRadius\"");                      // Gibt an ob Vorhaltespiegel dargestellt werden, 0=keinen
-				writer.println(String.format("\"%d\"", vorhaltedia / 2));
-				writer.println("\">VorhalteAbstand\"");                            // Abstand der Vorhaltespiegel zur Scheibenmitte
-				writer.println(String.format("\"%d\"", vorhalteabstand));
-	
-				writer.println("\">Ringbreite\"");                                 // Breite eines Ringes in 1/100mm
-				writer.println(String.format("\"%d\"", ringbreite));
-	
-				writer.println("\">RingMin\"");                                    // Nummer des kleinsten dargestellten Rings
-				writer.println(String.format("\"%d\"", min_ring));
-				writer.println("\">RingMax\"");                                    // Nummer des größten dargestellten Rings
-				writer.println(String.format("\"%d\"", max_number));
-	
-				writer.println("\">RingAnzahl\"");                                 // Anzahl der abgebildeten Ringe
-				writer.println(String.format("\"%d\"", max_ring));
-	
-				writer.println("\">RingNummerWinkel\"");                           // Anordnungswinkel der Beschriftungszahlen
-				writer.println(String.format("\"%d\"", winkel * 45));
-	
-				writer.println("\">KartonBreite\"");                               // Breite des Scheibenkartons
-				writer.println(String.format("\"%d\"", size_width));
-				writer.println("\">KartonHoehe\"");                                // Höhe des Scheibenkartons
-				writer.println(String.format("\"%d\"", size_height));
-	
-				writer.println("\">Probe\"");                                      // Anzahl der Probeschüsse eines Durchgangs, bei -1 keine Probe,
-				writer.println("\"-1\"");                                          // bei 0 unbegrenzte Probe, an sonsten nach eingestellter Zahl
-	
-				writer.println("\">BandVorschub\"");                               // Gibt an wie lange der Motor für den Bandvorschub läuft
-				writer.println(String.format("\"%d\"", bandvorschub));
+				// Nummer des kleinsten dargestellten Rings
+				writer.println("\">RingMin\"");
+				writer.println(String.format("\"%d\"", values.get(TargetValue.RING_MIN)));
+
+				// Nummer des größten dargestellten Rings
+				writer.println("\">RingMax\"");
+				writer.println(String.format("\"%d\"", values.get(TargetValue.NUM_MAX)));
+
+				// Anzahl der abgebildeten Ringe
+				writer.println("\">RingAnzahl\"");
+				writer.println(String.format("\"%d\"", values.get(TargetValue.RING_MAX)));
+
+				// Anordnungswinkel der Beschriftungszahlen
+				writer.println("\">RingNummerWinkel\"");
+				writer.println(String.format("\"%d\"", values.get(TargetValue.NUM_ANGLE) * 45));
+
+				// Breite des Scheibenkartons
+				writer.println("\">KartonBreite\"");
+				writer.println(String.format("\"%d\"", values.get(TargetValue.SIZE_WIDTH)));
+
+				// Höhe des Scheibenkartons
+				writer.println("\">KartonHoehe\"");
+				writer.println(String.format("\"%d\"", values.get(TargetValue.SIZE_HEIGHT)));
+
+				// Anzahl der Probeschüsse eines Durchgangs, bei -1 keine Probe,
+				// bei 0 unbegrenzte Probe, an sonsten nach eingestellter Zahl
+				writer.println("\">Probe\"");
+				writer.println("\"-1\"");
+
+				// Gibt an wie lange der Motor für den Bandvorschub läuft
+				writer.println("\">BandVorschub\"");
+				writer.println(String.format("\"%d\"", values.get(TargetValue.FEED)));
 			}
 
 			if (isDeerTarget()) {
-				writer.println("\">Kartonbreite\"");                               // Bezeichnet die tatsächliche Breite des Zielbildes in 100tel mm
-				writer.println(String.format("\"%d\"", size_width));
-				writer.println("\">Kartonhöhe\"");                                 // Bezeichnet die tatsächliche Höhe des Zielbildes in 100tel mm
-				writer.println(String.format("\"%d\"", size_height));
+				writer.println("\">Zielbild\"");
+				writer.println(String.format("\"%s\"", this.image));
 
-				writer.println("\">ZoomzentrumX\"");                               // Verschiebt die Treffermitte der Scheibe auf dem Anzeigebildschirm in 100tel mm nach rechts
-				writer.println(String.format("\"%d\"", zoom_center_x));            // und links. Wenn ein Schuß auf der Scheibe 10 cm zu weit links angezeigt wurde, kann hier,
-				                                                                   // durch Eingabe des Werts 10000 eine Korrektur vorgenommen werden.
-				writer.println("\">ZoomzentrumY\"");                               // Verschiebt die Treffermitte der Scheibe auf dem Anzeigebildschirm in 100tel mm nach oben
-				writer.println(String.format("\"%d\"", zoom_center_y));            // und unten. Wenn ein Schuß auf der Scheibe 10 cm zu weit oben angezeigt wurde, kann hier,
-				                                                                   // durch Eingabe des Werts 10000 eine Korrektur vorgenommen werden.
+				// Bezeichnet die tatsächliche Breite des Zielbildes in 100tel mm
+				writer.println("\">Kartonbreite\"");
+				writer.println(String.format("\"%d\"", values.get(TargetValue.SIZE_WIDTH)));
 
-				writer.println("\">Zoomlevels\"");                                 // Bezeichnet die Anzahl der Zoomstufen, die durchlaufen werden.
-				writer.println(String.format("\"%d\"", zoom_levels));
-	
-				writer.println("\">OffsetX\"");                                    // Verschiebt die Darstellung der Scheibe auf dem Anzeigebildschirm zur tatsächlichen
-				writer.println(String.format("\"%d\"", offset_x));                 // Messmitte der Anlage nach rechts und links. Dies ist nur von Nöten, wenn der Mittelpunkt
-				                                                                   // der Scheibe am Ziel, nicht auch der Messmittelpunkt der Messelektronik ist.
-				writer.println("\">OffsetY\"");                                    // Verschiebt die Darstellung der Scheibe auf dem Anzeigebildschirm zur tatsächlichen
-				writer.println(String.format("\"%d\"", offset_y));                 // Messmitte der Anlage nach oben und unten. Dies ist nur von Nöten, wenn der Mittelpunkt
-				                                                                   // der Scheibe am Ziel, nicht auch der Messmittelpunkt der Messelektronik ist.
+				// Bezeichnet die tatsächliche Höhe des Zielbildes in 100tel mm
+				writer.println("\">Kartonhöhe\"");
+				writer.println(String.format("\"%d\"", values.get(TargetValue.SIZE_HEIGHT)));
+
+				// Verschiebt die Treffermitte der Scheibe auf dem Anzeigebildschirm in 100tel mm nach rechts
+				// und links. Wenn ein Schuß auf der Scheibe 10 cm zu weit links angezeigt wurde, kann hier,
+				// durch Eingabe des Werts 10000 eine Korrektur vorgenommen werden.
+				writer.println("\">ZoomzentrumX\"");
+				writer.println(String.format("\"%d\"", values.get(TargetValue.ZOOM_CENTER_X)));
+
+				// Verschiebt die Treffermitte der Scheibe auf dem Anzeigebildschirm in 100tel mm nach oben
+				// und unten. Wenn ein Schuß auf der Scheibe 10 cm zu weit oben angezeigt wurde, kann hier,
+				// durch Eingabe des Werts 10000 eine Korrektur vorgenommen werden.
+				writer.println("\">ZoomzentrumY\"");
+				writer.println(String.format("\"%d\"", values.get(TargetValue.ZOOM_CENTER_Y)));
+
+				// Bezeichnet die Anzahl der Zoomstufen, die durchlaufen werden.
+				writer.println("\">Zoomlevels\"");
+				writer.println(String.format("\"%d\"", values.get(TargetValue.ZOOM_LEVELS)));
+
+				// Verschiebt die Darstellung der Scheibe auf dem Anzeigebildschirm zur tatsächlichen
+				// Messmitte der Anlage nach rechts und links. Dies ist nur von Nöten, wenn der Mittelpunkt
+				// der Scheibe am Ziel, nicht auch der Messmittelpunkt der Messelektronik ist.
+				writer.println("\">OffsetX\"");
+				writer.println(String.format("\"%d\"", values.get(TargetValue.OFFSET_X)));
+
+				// Verschiebt die Darstellung der Scheibe auf dem Anzeigebildschirm zur tatsächlichen
+				// Messmitte der Anlage nach oben und unten. Dies ist nur von Nöten, wenn der Mittelpunkt
+				// der Scheibe am Ziel, nicht auch der Messmittelpunkt der Messelektronik ist.
+				writer.println("\">OffsetY\"");
+				writer.println(String.format("\"%d\"", values.get(TargetValue.OFFSET_Y)));
 			}
 
-			writer.println("\">DateiName\"");                                      // Gibt den Namen der Datei an, unter der sie im Verzeichnis
-			writer.println(String.format("\"%s\"", fileName));                     // C:\Programme\ESA2002 abgespeichert wird.
+			// Gibt den Namen der Datei an, unter der sie im Verzeichnis C:\Programme\ESA2002 abgespeichert wird.
+			writer.println("\">DateiName\"");
+			writer.println(String.format("\"%s\"", fileName));
 
 			writer.close();
 		} catch (FileNotFoundException e) {

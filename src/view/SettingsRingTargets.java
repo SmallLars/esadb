@@ -180,7 +180,7 @@ public class SettingsRingTargets extends JPanel implements ActionListener, Chang
 		TargetModel target = getSelectedTargetModel();
 		text_name.setText(target.toString());
 		text_number.setText(target.getNumber());			
-		spinner_size.setValue(target.getValue(TargetValue.SIZE) / 100.);
+		spinner_size.setValue(target.getValue(TargetValue.SIZE_WIDTH) / 100.);
 		spinner_feed.setValue(target.getValue(TargetValue.FEED));
 		spinner_dia_outside.setValue(target.getValue(TargetValue.DIA_OUTSIDE) / 100.);
 		spinner_ring_width.setValue(target.getValue(TargetValue.RING_WIDTH) / 100.);
@@ -284,7 +284,8 @@ public class SettingsRingTargets extends JPanel implements ActionListener, Chang
 
 		TargetModel target = getSelectedTargetModel();
 		switch (((JSpinner) e.getSource()).getName()) {
-			case "Kartongröße":       target.setValue(TargetValue.SIZE,          (int) ((double) spinner_size.getValue()             * 100)); break;
+			case "Kartongröße":       target.setValue(TargetValue.SIZE_WIDTH,    (int) ((double) spinner_size.getValue()             * 100));
+									  target.setValue(TargetValue.SIZE_HEIGHT,   (int) ((double) spinner_size.getValue()             * 100)); break;
 			case "Bandvorschub":      target.setValue(TargetValue.FEED,          (int)           spinner_feed.getValue());                    break;
 			case "Ø Aussen":          target.setValue(TargetValue.DIA_OUTSIDE,   (int) ((double) spinner_dia_outside.getValue()      * 100)); break;
 			case "Ringbreite":        target.setValue(TargetValue.RING_WIDTH,    (int) ((double) spinner_ring_width.getValue()       * 100)); break;

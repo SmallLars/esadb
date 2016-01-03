@@ -139,7 +139,7 @@ public class SettingsGeneral extends JPanel implements ActionListener, DocumentL
 		add(pathField);
 		
 		JButton button = new JButton("...");
-		button.setBounds(398, 59, 32, 21);
+		button.setBounds(398, 60, 32, 20);
 		button.setActionCommand("PATH");
 		button.addActionListener(this);
 		add(button);

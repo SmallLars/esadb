@@ -118,33 +118,33 @@ public class Target extends JPanel implements LineListener {
 		g1.scale(new Double(getWidth()) / 1000, new Double(getHeight()) / 1000);
 		g1.setColor(Color.BLACK);
 
-		if (number > 0) {
-			g1.setFont(new Font("Bitstream Vera Sans", Font.BOLD, 128));
-			g1.drawString("" + number, 25, 25 + g1.getFontMetrics().getAscent());
-		}
-		
-		if (showProbe()) {
-			g1.fillPolygon(new int[] {700, 975, 975}, new int[] {25, 25, 300}, 3);
-		}
-
-		int r;
-		int mitte = target.getRingRadius(target.getValue(TargetValue.RING_MIN)) + target.getValue(TargetValue.RING_WIDTH);
-		Color black = target.getValue(TargetValue.TYPE) == 5 ? Color.WHITE : Color.BLACK;
-		Color white = target.getValue(TargetValue.TYPE) == 5 ? Color.BLACK : Color.WHITE;
-
 		Graphics2D g2 = (Graphics2D) g.create();
-		g2.scale(new Double(getWidth()) / new Double(2 * mitte), new Double(getHeight()) / new Double(2 * mitte));
+		int mitte;
 
 		if (target.isDeerTarget()) {
+			int width = target.getValue(TargetValue.SIZE_WIDTH);
+			int height = target.getValue(TargetValue.SIZE_HEIGHT);
+			mitte = Math.max(width, height) / 2;
+			g2.scale(new Double(getWidth()) / new Double(2 * mitte), new Double(getHeight()) / new Double(2 * mitte));
+
 			try {
 				BufferedImage bi = ImageIO.read(new File(target.getImage()));
-				g2.drawImage(bi, 0, 0, mitte * 2, mitte * 2, null);
+				int dx = width > height ? 0 : (height - width) / 2;
+				int dy = height > width ? 0 : (width - height) / 2;
+				g2.drawImage(bi, dx, dy, target.getValue(TargetValue.SIZE_WIDTH), target.getValue(TargetValue.SIZE_HEIGHT), null);
 			} catch (IOException e) {
 				g1.setFont(new Font("Bitstream Vera Sans", Font.BOLD, 64));
 				g1.drawString("Bilddatei konnte", 32, 876);
 				g1.drawString("nicht gefunden werden.", 32, 960);
 			}
 		} else {
+			int r;
+			mitte = target.getRingRadius(target.getValue(TargetValue.RING_MIN)) + target.getValue(TargetValue.RING_WIDTH);
+			g2.scale(new Double(getWidth()) / new Double(2 * mitte), new Double(getHeight()) / new Double(2 * mitte));
+
+			Color black = target.getValue(TargetValue.TYPE) == 5 ? Color.WHITE : Color.BLACK;
+			Color white = target.getValue(TargetValue.TYPE) == 5 ? Color.BLACK : Color.WHITE;
+			
 			g2.setColor(white);
 			r =  target.getAussenRadius();
 			g2.fillOval(mitte - r, mitte - r, 2 * r, 2 * r);
@@ -200,6 +200,17 @@ public class Target extends JPanel implements LineListener {
 			}
 		}
 
+		// Standnummer und Probeecke zeichen
+		if (number > 0) {
+			g1.setFont(new Font("Bitstream Vera Sans", Font.BOLD, 128));
+			g1.drawString("" + number, 25, 25 + g1.getFontMetrics().getAscent());
+		}
+
+		if (showProbe()) {
+			g1.fillPolygon(new int[] {700, 975, 975}, new int[] {25, 25, 300}, 3);
+		}
+
+		// Einen oder mehrere Treffer zeichnen
 		for (int i = 1; single != null; i++) {
 			Hit t = single.getTreffer(showProbe(), i);
 			if (t == null) break;

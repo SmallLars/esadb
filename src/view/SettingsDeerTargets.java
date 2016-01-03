@@ -20,20 +20,26 @@ import model.TargetValue;
 import javax.swing.border.LineBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.filechooser.FileFilter;
 
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.io.File;
 
 import javax.swing.InputVerifier;
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.SwingConstants;
 
 import controller.Controller;
 
@@ -48,6 +54,7 @@ public class SettingsDeerTargets extends JPanel implements ActionListener, Chang
 	private Target scheibe;
 	private JTextField text_name;
 	private JTextField text_number;
+	private JTextField text_image;
 	private JSpinner spinner_size_x;
 	private JSpinner spinner_size_y;
 	private JSpinner spinner_zoom_x;
@@ -134,6 +141,14 @@ public class SettingsDeerTargets extends JPanel implements ActionListener, Chang
 			}
 		});
 
+		text_image = addJTextField(this, X[0], Y[0] + 1 * Y[1], 228, "Bilddatei");
+		text_image.setEditable(false);
+		JButton button = new JButton("...");
+		button.setBounds(X[0] + 238, Y[0] + 1 * Y[1], 32, 20);
+		button.setActionCommand("Bilddatei");
+		button.addActionListener(this);
+		add(button);
+
 		spinner_size_x = addJSpinner(this, X[0], Y[0] + 2 * Y[1], "Kartonbreite", "mm");
 		spinner_size_y = addJSpinner(this, X[0] + X[1], Y[0] + 2 * Y[1], "Kartonhöhe", "mm");
 
@@ -149,6 +164,19 @@ public class SettingsDeerTargets extends JPanel implements ActionListener, Chang
 	
 		spinner_offset_x = addJSpinner(this, X[0], Y[0] + 5 * Y[1], "Offset X", "mm");
 		spinner_offset_y =  addJSpinner(this, X[0] + X[1], Y[0] + 5 * Y[1], "Offset Y", "mm");
+
+		addColor(this, 420, 331,  1, "0xFF0000");
+		addColor(this, 420, 351,  2, "0x008080");
+		addColor(this, 420, 371,  3, "0x0000FF");
+		addColor(this, 420, 391,  4, "0x008000");
+		addColor(this, 522, 331,  5, "0xFFFF00");
+		addColor(this, 522, 351,  6, "0x808000");
+		addColor(this, 522, 371,  7, "0x800000");
+		addColor(this, 522, 391,  8, "0xFF00FF");
+		addColor(this, 624, 331,  9, "0x00FFFF");
+		addColor(this, 624, 351, 10, "0x00FF00");
+		addColor(this, 624, 371, 11, "0x000080");
+		addColor(this, 624, 391, 12, "0x800080");
 		
 		updateDisplay();
 		scheibe.setTarget(getSelectedTargetModel());
@@ -160,9 +188,10 @@ public class SettingsDeerTargets extends JPanel implements ActionListener, Chang
 
 		TargetModel target = getSelectedTargetModel();
 		text_name.setText(target.toString());
-		text_number.setText(target.getNumber());			
-		spinner_size_x.setValue(target.getValue(TargetValue.SIZE_HEIGHT) / 100.);
-		spinner_size_y.setValue(target.getValue(TargetValue.SIZE_WIDTH) / 100.);
+		text_number.setText(target.getNumber());
+		text_image.setText(target.getImage());
+		spinner_size_x.setValue(target.getValue(TargetValue.SIZE_WIDTH) / 100.);
+		spinner_size_y.setValue(target.getValue(TargetValue.SIZE_HEIGHT) / 100.);
 		spinner_zoom_x.setValue(target.getValue(TargetValue.ZOOM_CENTER_X) / 100.);
 		spinner_zoom_y.setValue(target.getValue(TargetValue.ZOOM_CENTER_Y) / 100.);
 		comboBox_typ.setSelectedItem(target.getValue(TargetValue.TYPE));
@@ -219,6 +248,34 @@ public class SettingsDeerTargets extends JPanel implements ActionListener, Chang
 					t.setNumber(text_number.getText());
 				}
 				break;
+			case "Bilddatei":
+				JFileChooser fc = new JFileChooser((new File("")).getAbsolutePath());
+				fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+				disableNav(fc);
+				fc.setFileFilter(new FileFilter() {
+					@Override
+					public boolean accept(File file) {
+						if (file.isDirectory()) return false;
+
+						if (file.getName().endsWith("bmp")) return true;
+						
+						//if (file.getName().endsWith("jpg")) return true;
+						// wird zwar angezeigt aber farben für ringwerte sind nicht mehr korrekt
+						
+						return false;
+					}
+
+					@Override
+					public String getDescription() {
+						return "Bilddateien im Programmverzeichnis";
+					}
+				});
+				if (fc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+					String path = fc.getSelectedFile().getName();
+					text_image.setText(path);
+					t.setImage(path);
+				}
+				break;
 			case "Scheibenart":
 				value = ((TargetType) comboBox_typ.getSelectedItem()).getValue();
 				t.setValue(TargetValue.TYPE, value);
@@ -272,6 +329,7 @@ public class SettingsDeerTargets extends JPanel implements ActionListener, Chang
 
 	private TargetModel createTarget() {
 		TargetModel tm = Controller.get().getConfig().newTarget();
+		tm.setValue(TargetValue.TYPE, 2);
 		comboBox.addItem(tm);
 		comboBox.setSelectedItem(tm);
 		scl.settingsChanged();
@@ -348,5 +406,31 @@ public class SettingsDeerTargets extends JPanel implements ActionListener, Chang
 		label = new JLabel(unit);
 		label.setBounds(component.getX() + component.getWidth() + 6, component.getY(), 24, component.getHeight());
 		parent.add(label);
+	}
+
+	private void addColor(JComponent component, int x, int y, int value, String color_string) {
+		Color color = Color.decode(color_string);
+		JLabel label = new JLabel(value + ": " + color_string + " ");
+		label.setHorizontalAlignment(SwingConstants.RIGHT);
+		label.setOpaque(true);
+		label.setBackground(color);
+		label.setForeground(new Color(255 - color.getRed(), 255 - color.getGreen(), 255 - color.getBlue()));
+		label.setBounds(x, y, 96, 14);
+		component.add(label);
+	}
+
+	private void disableNav(Container c) {
+		for (Component x : c.getComponents()) {
+			if (x instanceof JComboBox) {
+				((JComboBox<?>) x).setEnabled(false);
+			} else if (x instanceof JButton) {
+				String text = ((JButton)x).getText();
+				if (text == null || text.isEmpty()) {
+					((JButton)x).setEnabled(false);
+				}
+		    } else if (x instanceof Container) {
+		    	disableNav((Container)x);
+		    }
+		}
 	}
 }
