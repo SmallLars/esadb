@@ -128,7 +128,9 @@ public class Target extends JPanel implements LineListener {
 			g2.scale(new Double(getWidth()) / new Double(2 * mitte), new Double(getHeight()) / new Double(2 * mitte));
 
 			try {
-				BufferedImage bi = ImageIO.read(new File(target.getImage()));
+				String image = target.getImage();
+				if (target.getValue(TargetValue.IMAGE) == 0) image = "HZ_" + image;
+				BufferedImage bi = ImageIO.read(new File(image));
 				int dx = width > height ? 0 : (height - width) / 2;
 				int dy = height > width ? 0 : (width - height) / 2;
 				g2.drawImage(bi, dx, dy, target.getValue(TargetValue.SIZE_WIDTH), target.getValue(TargetValue.SIZE_HEIGHT), null);
@@ -242,10 +244,18 @@ public class Target extends JPanel implements LineListener {
 		int r = weapon.getRadius();
 		int nx = (int) (t.getX());
 		int ny = (int) (t.getY());
+		
+		int ox = 0;
+		int oy = 0;
+		if (target.isDeerTarget()) {
+			ox = target.getValue(TargetValue.OFFSET_X);
+			oy = target.getValue(TargetValue.OFFSET_Y);
+		}
+
 		g.setColor(Color.GREEN);
-		g.fillOval(mitte + nx - r, mitte - ny - r, 2 * r, 2 * r);
+		g.fillOval(mitte + nx + ox - r, mitte - ny - oy - r, 2 * r, 2 * r);
 		g.setColor(Color.BLUE);
-		g.drawOval(mitte + nx - r, mitte - ny - r, 2 * r, 2 * r);
+		g.drawOval(mitte + nx + ox - r, mitte - ny - oy - r, 2 * r, 2 * r);
 	}
 
 	@Override

@@ -20,7 +20,8 @@ public enum TargetValue {
 	ZOOM_CENTER_Y(0),
 	ZOOM_LEVELS(5),
 	OFFSET_X(0),
-	OFFSET_Y(0);
+	OFFSET_Y(0),
+	IMAGE(0);
 
 	private int value;
 

@@ -20,4 +20,11 @@ public enum TargetAngle {
 	public String toString() {
 		return name;
 	}
+
+	public static TargetAngle getByValue(int value) {
+		for (TargetAngle t : TargetAngle.values()) {
+			if (value == t.getValue()) return t;
+		}
+		return null;
+	}
 }

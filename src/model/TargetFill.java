@@ -21,4 +21,11 @@ public enum TargetFill {
 	public String toString() {
 		return name;
 	}
+
+	public static TargetFill getByValue(int value) {
+		for (TargetFill t : TargetFill.values()) {
+			if (value == t.getValue()) return t;
+		}
+		return null;
+	}
 }

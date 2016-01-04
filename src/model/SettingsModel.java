@@ -73,6 +73,9 @@ public class SettingsModel implements Serializable {
 		targets.add(new TargetModel("Pistole - Präzision",  "0.4.3.24",  55000,  55000,       5,  20000, 50000,     2500,  2500,  1, 10, 9,      0,  4,    0));
 		targets.add(new TargetModel("Laufende Scheibe 10m", "0.4.3.40",  17000,  17000,       2,   3050,  5050,       50,   250,  1, 10, 9,      1,  0,    1,  3100,   7000));
 		targets.add(new TargetModel("Laufende Scheibe 50m", "0.4.3.41",  70000,  70000,       0,      2, 36600,     3000,  1700,  1, 10, 9,      1,  5,    0));
+		targets.add(new TargetModel("Wildscheibe Bock",    "0.4.3.90",  "Bock.bmp"));
+		targets.add(new TargetModel("Wildscheibe Fuchs",   "0.4.3.91",  "Fuchs.bmp"));
+		targets.add(new TargetModel("Wildscheibe Keiler",  "0.4.3.92",  "Keiler.bmp"));
 
 		weapons = new TreeSet<Weapon>();
 		weapons.add(new Weapon("Luftdruck",                 "01",  4500, Unit.MM,   1));
@@ -190,9 +193,9 @@ public class SettingsModel implements Serializable {
 		return weapons.remove(w);
 	}
 
-	public TargetModel newTarget() {
-		TargetModel tm = new TargetModel(standardRule.getScheibe());
-		tm.setName("Neue Scheibe");
+	public TargetModel newTarget(int type) {
+		TargetModel tm = new TargetModel();
+		tm.setValue(TargetValue.TYPE, type);
 		
 		String number = tm.getNumber().substring(0, tm.getNumber().lastIndexOf(".") + 1);
 		for (int n = 1; true; n++) {
@@ -202,6 +205,26 @@ public class SettingsModel implements Serializable {
 				return tm;
 			}
 		}
+	}
+
+	public boolean validTargetNumber(TargetModel tm, String number) {
+		for (TargetModel t : targets) {
+			if (tm == t) continue;
+
+			if (number.equals(t.getNumber())) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public boolean changeTargetNumber(TargetModel tm, String number) {
+		if (!validTargetNumber(tm, number)) return false;
+			
+		targets.remove(tm);
+		tm.setNumber(number);
+		targets.add(tm);
+		return true;
 	}
 
 	public TargetModel[] getTargets() {

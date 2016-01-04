@@ -25,4 +25,11 @@ public enum TargetType {
 	public String toString() {
 		return name;
 	}
+
+	public static TargetType getByValue(int value) {
+		for (TargetType t : TargetType.values()) {
+			if (value == t.getValue()) return t;
+		}
+		return null;
+	}
 }

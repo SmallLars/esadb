@@ -237,7 +237,7 @@ public class Controller {
 	}
 
 	private void initFiles() {
-		final String[] files = {"esadb.ico", "data.mdb", "Stammdaten.mdb"};
+		final String[] files = {"esadb.ico", "data.mdb", "Stammdaten.mdb", "HZ_7775", "Bock.bmp", "HZ_Bock.bmp", "Fuchs.bmp", "HZ_Fuchs.bmp", "Keiler.bmp", "HZ_Keiler.bmp"};
 		for (String s : files) {
 			File file = new File(s);
 			if (!file.exists() || s.equals("Stammdaten.mdb")) {

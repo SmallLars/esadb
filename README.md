@@ -7,7 +7,7 @@ Eine Alternative zu HAWEV 2002.
 
 [Version 1.0.2](https://github.com/SmallLars/esadb/raw/v1/pub/esadb.jar)
 
-[Version 2.0.1](https://github.com/SmallLars/esadb/raw/v2/pub/esadb.jar)
+[Version 2.0.2](https://github.com/SmallLars/esadb/raw/v2/pub/esadb.jar)
 
 ## Installation
 
@@ -37,15 +37,18 @@ Danach sind folgende Schritte empfohlen:
 1. esadb.jar per Doppelklick starten
 2. Unter "Datei -> Einstellungen... -> Allgemein" die gewünschten Linien einfügen
 3. esadb beenden
-4. Eine Verknüpfung zu esadb.jar auf dem Desktop anlegen
-5. Eine Verknüpfung zu Stammdaten.mdb auf dem Desktop anlegen
-6. Vereine, Schützen und Disziplinen in den Stammdaten hinterlegen
+4. Für die Nutzung der Wildscheiben müssen die Dateien HZ_7775 und *.bmp auf die Linien in das Installationsverzeichnis von ESA 2002 kopiert werden.
+5. Eine Verknüpfung zu esadb.jar auf dem Desktop anlegen
+6. Eine Verknüpfung zu Stammdaten.mdb auf dem Desktop anlegen
+7. Vereine, Schützen und Disziplinen in den Stammdaten hinterlegen
 
 ## Screenshots:
 
 ![Hautprogramm](https://github.com/SmallLars/esadb/raw/master/pub/main.png)
 
-![Scheibeneditor](https://github.com/SmallLars/esadb/raw/master/pub/target.png)
+![Scheibeneditor](https://github.com/SmallLars/esadb/raw/master/pub/ringtarget.png)
+
+![Scheibeneditor](https://github.com/SmallLars/esadb/raw/master/pub/deertarget.png)
 
 ![Treffereditor](https://github.com/SmallLars/esadb/raw/master/pub/hits.png)
 

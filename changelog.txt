@@ -14,3 +14,6 @@
 2.0.1
  - In den Einstellungen können nun Standardpfad und Dateiname angepasst werden.
  - Einige Feinheiten bei der Scheibenanzeige wurden verbessert.
+
+2.0.2
+ - Unterstützung für Wildscheiben wurde ergänzt.

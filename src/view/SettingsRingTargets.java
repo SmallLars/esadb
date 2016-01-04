@@ -113,7 +113,9 @@ public class SettingsRingTargets extends JPanel implements ActionListener, Chang
 		text_number.setInputVerifier(new InputVerifier() {
 			@Override
 			public boolean verify(JComponent arg0) {
-				if (!text_number.getText().matches("^[0-9]+(\\.[0-9]+)*$")) {
+				String number = text_number.getText();
+
+				if (!number.matches("^[0-9]+(\\.[0-9]+)*$")) {
 					Toolkit.getDefaultToolkit().beep();
 					JOptionPane.showMessageDialog(
 						null,
@@ -124,18 +126,15 @@ public class SettingsRingTargets extends JPanel implements ActionListener, Chang
 					return false;
 				}
 
-				for (int i = 0; i < comboBox.getItemCount(); i++) {
-					if (comboBox.getSelectedItem() == comboBox.getItemAt(i)) continue;
-					if (comboBox.getItemAt(i).getNumber().equals(text_number.getText())) {
-						Toolkit.getDefaultToolkit().beep();
-						JOptionPane.showMessageDialog(
-							null,
-							"Zwei Scheiben mit der gleichen Kennnummer sind nicht möglich.",
-							"Ungültige Eingabe",
-							JOptionPane.WARNING_MESSAGE
-						);
-						return false;
-					}
+				if (!Controller.get().getConfig().validTargetNumber((TargetModel) comboBox.getSelectedItem(), number)) {
+					Toolkit.getDefaultToolkit().beep();
+					JOptionPane.showMessageDialog(
+						null,
+						"Zwei Scheiben mit der gleichen Kennnummer sind nicht möglich.",
+						"Ungültige Eingabe",
+						JOptionPane.WARNING_MESSAGE
+					);
+					return false;
 				}
 
 				return true;
@@ -189,9 +188,9 @@ public class SettingsRingTargets extends JPanel implements ActionListener, Chang
 		spinner_ring_min.setValue(target.getValue(TargetValue.RING_MIN));
 		spinner_ring_max.setValue(target.getValue(TargetValue.RING_MAX));
 		spinner_num_max.setValue(target.getValue(TargetValue.NUM_MAX));
-		comboBox_ring_angle.setSelectedItem(target.getValue(TargetValue.NUM_ANGLE));
-		comboBox_typ.setSelectedItem(target.getValue(TargetValue.TYPE));
-		comboBox_fill.setSelectedItem(target.getValue(TargetValue.FILL));
+		comboBox_ring_angle.setSelectedItem(TargetAngle.getByValue(target.getValue(TargetValue.NUM_ANGLE)));
+		comboBox_typ.setSelectedItem(TargetType.getByValue(target.getValue(TargetValue.TYPE)));
+		comboBox_fill.setSelectedItem(TargetFill.getByValue(target.getValue(TargetValue.FILL)));
 		spinner_vorhaltediameter.setValue(target.getValue(TargetValue.SUSP_DIA) / 100.);
 		spinner_vorhalteabstand.setValue(target.getValue(TargetValue.SUSP_DISTANCE) / 100.);
 
@@ -240,9 +239,7 @@ public class SettingsRingTargets extends JPanel implements ActionListener, Chang
 				comboBox.repaint();
 				break;
 			case "Kennnummer":
-				if (text_number.getInputVerifier().verify(text_number)) {
-					t.setNumber(text_number.getText());
-				}
+				Controller.get().getConfig().changeTargetNumber(t, text_number.getText());
 				break;
 			case "Winkel Ringzahlen":
 				value = ((TargetAngle) comboBox_ring_angle.getSelectedItem()).getValue();
@@ -273,9 +270,7 @@ public class SettingsRingTargets extends JPanel implements ActionListener, Chang
 		target.setName(text_name.getText());
 		comboBox.repaint();
 
-		if (text_number.getInputVerifier().verify(text_number)) {
-			target.setNumber(text_number.getText());
-		}
+		Controller.get().getConfig().changeTargetNumber(target, text_number.getText());
 	}
 
 	@Override
@@ -309,7 +304,7 @@ public class SettingsRingTargets extends JPanel implements ActionListener, Chang
 	}
 
 	private TargetModel createTarget() {
-		TargetModel tm = Controller.get().getConfig().newTarget();
+		TargetModel tm = Controller.get().getConfig().newTarget(TargetType.RING.getValue());
 		comboBox.addItem(tm);
 		comboBox.setSelectedItem(tm);
 		scl.settingsChanged();

@@ -42,6 +42,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.SwingConstants;
 
 import controller.Controller;
+import javax.swing.JToggleButton;
 
 
 @SuppressWarnings("serial")
@@ -54,6 +55,7 @@ public class SettingsDeerTargets extends JPanel implements ActionListener, Chang
 	private Target scheibe;
 	private JTextField text_name;
 	private JTextField text_number;
+	private JToggleButton tgl_anzeige;
 	private JTextField text_image;
 	private JSpinner spinner_size_x;
 	private JSpinner spinner_size_y;
@@ -112,7 +114,9 @@ public class SettingsDeerTargets extends JPanel implements ActionListener, Chang
 		text_number.setInputVerifier(new InputVerifier() {
 			@Override
 			public boolean verify(JComponent arg0) {
-				if (!text_number.getText().matches("^[0-9]+(\\.[0-9]+)*$")) {
+				String number = text_number.getText();
+
+				if (!number.matches("^[0-9]+(\\.[0-9]+)*$")) {
 					Toolkit.getDefaultToolkit().beep();
 					JOptionPane.showMessageDialog(
 						null,
@@ -123,25 +127,29 @@ public class SettingsDeerTargets extends JPanel implements ActionListener, Chang
 					return false;
 				}
 
-				for (int i = 0; i < comboBox.getItemCount(); i++) {
-					if (comboBox.getSelectedItem() == comboBox.getItemAt(i)) continue;
-					if (comboBox.getItemAt(i).getNumber().equals(text_number.getText())) {
-						Toolkit.getDefaultToolkit().beep();
-						JOptionPane.showMessageDialog(
-							null,
-							"Zwei Scheiben mit der gleichen Kennnummer sind nicht möglich.",
-							"Ungültige Eingabe",
-							JOptionPane.WARNING_MESSAGE
-						);
-						return false;
-					}
+				if (!Controller.get().getConfig().validTargetNumber((TargetModel) comboBox.getSelectedItem(), number)) {
+					Toolkit.getDefaultToolkit().beep();
+					JOptionPane.showMessageDialog(
+						null,
+						"Zwei Scheiben mit der gleichen Kennnummer sind nicht möglich.",
+						"Ungültige Eingabe",
+						JOptionPane.WARNING_MESSAGE
+					);
+					return false;
 				}
 
 				return true;
 			}
 		});
 
-		text_image = addJTextField(this, X[0], Y[0] + 1 * Y[1], 228, "Bilddatei");
+		tgl_anzeige = new JToggleButton("Wertung");
+		tgl_anzeige.setBounds(X[0], Y[0] + 1 * Y[1], 90, 20);
+		addCaption(tgl_anzeige, this, "Anzeige", "");
+		tgl_anzeige.setActionCommand("Anzeige");
+		tgl_anzeige.addActionListener(this);
+		add(tgl_anzeige);
+
+		text_image = addJTextField(this, X[0] + 110, Y[0] + 1 * Y[1], 118, "Bilddatei");
 		text_image.setEditable(false);
 		JButton button = new JButton("...");
 		button.setBounds(X[0] + 238, Y[0] + 1 * Y[1], 32, 20);
@@ -180,6 +188,7 @@ public class SettingsDeerTargets extends JPanel implements ActionListener, Chang
 		
 		updateDisplay();
 		scheibe.setTarget(getSelectedTargetModel());
+
 		doUpdate = true;
 	}
 
@@ -189,12 +198,13 @@ public class SettingsDeerTargets extends JPanel implements ActionListener, Chang
 		TargetModel target = getSelectedTargetModel();
 		text_name.setText(target.toString());
 		text_number.setText(target.getNumber());
+		tgl_anzeige.setSelected(target.getValue(TargetValue.IMAGE) == 0 ? true : false);
 		text_image.setText(target.getImage());
 		spinner_size_x.setValue(target.getValue(TargetValue.SIZE_WIDTH) / 100.);
 		spinner_size_y.setValue(target.getValue(TargetValue.SIZE_HEIGHT) / 100.);
 		spinner_zoom_x.setValue(target.getValue(TargetValue.ZOOM_CENTER_X) / 100.);
 		spinner_zoom_y.setValue(target.getValue(TargetValue.ZOOM_CENTER_Y) / 100.);
-		comboBox_typ.setSelectedItem(target.getValue(TargetValue.TYPE));
+		comboBox_typ.setSelectedItem(TargetType.getByValue(target.getValue(TargetValue.TYPE)));
 		spinner_zoom_lvl.setValue(target.getValue(TargetValue.ZOOM_LEVELS));
 		spinner_offset_x.setValue(target.getValue(TargetValue.OFFSET_X) / 100.);
 		spinner_offset_y.setValue(target.getValue(TargetValue.OFFSET_Y) / 100.);
@@ -244,8 +254,15 @@ public class SettingsDeerTargets extends JPanel implements ActionListener, Chang
 				comboBox.repaint();
 				break;
 			case "Kennnummer":
-				if (text_number.getInputVerifier().verify(text_number)) {
-					t.setNumber(text_number.getText());
+				Controller.get().getConfig().changeTargetNumber(t, text_number.getText());
+				break;
+			case "Anzeige":
+				if (tgl_anzeige.isSelected()) {
+					tgl_anzeige.setText("Wertung");
+					t.setValue(TargetValue.IMAGE, 0);
+				} else {
+					tgl_anzeige.setText("Ziel");
+					t.setValue(TargetValue.IMAGE, 1);
 				}
 				break;
 			case "Bilddatei":
@@ -297,9 +314,7 @@ public class SettingsDeerTargets extends JPanel implements ActionListener, Chang
 		target.setName(text_name.getText());
 		comboBox.repaint();
 
-		if (text_number.getInputVerifier().verify(text_number)) {
-			target.setNumber(text_number.getText());
-		}
+		Controller.get().getConfig().changeTargetNumber(target, text_number.getText());
 	}
 
 	@Override
@@ -328,8 +343,7 @@ public class SettingsDeerTargets extends JPanel implements ActionListener, Chang
 	}
 
 	private TargetModel createTarget() {
-		TargetModel tm = Controller.get().getConfig().newTarget();
-		tm.setValue(TargetValue.TYPE, 2);
+		TargetModel tm = Controller.get().getConfig().newTarget(TargetType.JAGD.getValue());
 		comboBox.addItem(tm);
 		comboBox.setSelectedItem(tm);
 		scl.settingsChanged();
@@ -414,7 +428,17 @@ public class SettingsDeerTargets extends JPanel implements ActionListener, Chang
 		label.setHorizontalAlignment(SwingConstants.RIGHT);
 		label.setOpaque(true);
 		label.setBackground(color);
-		label.setForeground(new Color(255 - color.getRed(), 255 - color.getGreen(), 255 - color.getBlue()));
+
+		// Invert
+		// label.setForeground(new Color(255 - color.getRed(), 255 - color.getGreen(), 255 - color.getBlue()));
+
+		// 50%
+		//label.setForeground(Integer.decode(color_string) > 0xFFFFFF / 2 ? Color.BLACK : Color.WHITE);
+		
+		// YIO
+		int yiq = (color.getRed() * 299 + color.getGreen() * 587 + color.getBlue() * 114) / 1000;
+		label.setForeground(yiq >= 128 ? Color.BLACK : Color.WHITE);
+
 		label.setBounds(x, y, 96, 14);
 		component.add(label);
 	}

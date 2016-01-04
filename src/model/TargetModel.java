@@ -34,8 +34,17 @@ public class TargetModel implements Serializable, Comparable<TargetModel> {
 		this.kennnummer = kennnummer;
 
 		for (int i = 0; i < values.length; i++) {
-			setValue(TargetValue.values()[i], values[i]);
+			this.values.put(TargetValue.values()[i], values[i]);
 		}
+	}
+
+	public TargetModel(String bezeichnung, String kennnummer, String image) {
+		this();
+
+		this.bezeichnung = bezeichnung;
+		this.kennnummer = kennnummer;
+		this.image = image;
+		this.values.put(TargetValue.TYPE, TargetType.JAGD.getValue());
 	}
 
 	public TargetModel(TargetModel tm) {
@@ -71,7 +80,7 @@ public class TargetModel implements Serializable, Comparable<TargetModel> {
 		this.bezeichnung = name;
 	}
 
-	public void setNumber(String number) {
+	protected void setNumber(String number) {
 		this.kennnummer = number;
 	}
 
