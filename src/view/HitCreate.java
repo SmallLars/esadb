@@ -64,7 +64,12 @@ public class HitCreate extends JPanel implements MouseWheelListener, KeyListener
 		add(lblWert);
 
 		component_V = new JFormattedTextField(getFormat(2, 1));
-		component_V.setText(typ.getScheibe().getValue(TargetValue.RING_MAX) + ",9");
+		if (typ.getScheibe().isRingTarget()) {
+			component_V.setText(typ.getScheibe().getValue(TargetValue.RING_MAX) + ",9");
+		}
+		if (typ.getScheibe().isDeerTarget()) {
+			component_V.setText("12,0");
+		}
 		component_V.setBounds(60, 24, 64, 20);
 		component_V.addMouseWheelListener(this);
 		component_V.addKeyListener(this);
@@ -198,6 +203,12 @@ public class HitCreate extends JPanel implements MouseWheelListener, KeyListener
 		doUpdate = false;
 		updateVwithR();
 		updateLwithRandW();
+		if (typ.getScheibe().isDeerTarget()) {
+			try {
+				double d = format.parse(component_V.getText()).doubleValue();
+				component_V.setText(String.format("%.1f", (double) ((int) d)));
+			} catch (ParseException e) {}
+		}
 		doUpdate = true;
 	}
 
@@ -345,12 +356,22 @@ public class HitCreate extends JPanel implements MouseWheelListener, KeyListener
 		}
 		
 		if (textField == component_V) {
-			int minRing = typ.getScheibe().getValue(TargetValue.RING_MIN);
-			int maxRing = typ.getScheibe().getValue(TargetValue.RING_MAX);
-			d += 0.1 * amount;
-			if (d < minRing) d = amount < 0 ? 0.0 : minRing;
-			if (d > maxRing + 0.9) d = maxRing + 0.9;
+			if (typ.getScheibe().isRingTarget()) {
+				int minRing = typ.getScheibe().getValue(TargetValue.RING_MIN);
+				int maxRing = typ.getScheibe().getValue(TargetValue.RING_MAX);
+				d += 0.1 * amount;
+				if (d < minRing) d = amount < 0 ? 0.0 : minRing;
+				if (d > maxRing + 0.9) d = maxRing + 0.9;
+			}
+
+			if (typ.getScheibe().isDeerTarget()) {
+				d += amount;
+				if (d < 0) d = 0.;
+				if (d > 12) d = 12.;
+			}
+
 			textField.setText(String.format("%.1f", d));
+
 			return;
 		}
 
@@ -400,10 +421,12 @@ public class HitCreate extends JPanel implements MouseWheelListener, KeyListener
 	}
 
 	private void updateRwithV() {
+		if (typ.getScheibe().isDeerTarget()) return;
+
 		double d;
 		try {
 			d = format.parse(component_V.getText()).doubleValue();
-			//Pr�fen, ob eine �nderung des Radius notwendig ist:
+			//Prüfen, ob eine Änderung des Radius notwendig ist:
 			double d2 = typ.getValuebyRadius(format.parse(component_R.getText()).doubleValue() * 100);
 			if (Math.abs(d - d2) < 0.01) return;			
 		} catch (ParseException e) {
@@ -447,6 +470,8 @@ public class HitCreate extends JPanel implements MouseWheelListener, KeyListener
 	}
 
 	private void updateVwithR() {
+		if (typ.getScheibe().isDeerTarget()) return;
+
 		double d;
 		try {
 			d = format.parse(component_R.getText()).doubleValue();
