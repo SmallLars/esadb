@@ -43,7 +43,7 @@ public class SettingsModel implements Serializable {
 	private int pageOrientation;
 
 	private int year;
-	private List<AgeGroup> groups;
+	private List<Group> groups;
 
 	private Set<TargetModel> targets;
 	private Set<Weapon> weapons;
@@ -70,24 +70,23 @@ public class SettingsModel implements Serializable {
 		cal.setTime(new Date());
 		year = cal.get(Calendar.YEAR);
 
-		groups = new ArrayList<AgeGroup>();
-		groups.add(new AgeGroup("Schüler B",          year - 12, year,      true));
-		groups.add(new AgeGroup("Schüler B",          year - 12, year,      false));
-		groups.add(new AgeGroup("Schüler A",          year - 14, year - 13, true));
-		groups.add(new AgeGroup("Schüler A",          year - 14, year - 13, false));
-		groups.add(new AgeGroup("Jugend",             year - 16, year - 15, true));
-		groups.add(new AgeGroup("Jugend",             year - 16, year - 15, false));
-		groups.add(new AgeGroup("Junioren B",         year - 18, year - 17, true));
-		groups.add(new AgeGroup("Junioren B",         year - 18, year - 17, false));
-		groups.add(new AgeGroup("Junioren A",         year - 20, year - 19, true));
-		groups.add(new AgeGroup("Junioren A",         year - 20, year - 19, false));
-		groups.add(new AgeGroup("Herren",             year - 45, year - 21, true));
-		groups.add(new AgeGroup("Damen",              year - 45, year - 21, false));
-		groups.add(new AgeGroup("Altersklasse",       year - 55, year - 46, true));
-		groups.add(new AgeGroup("Damen Altersklasse", year - 55, year - 46, false));
-		groups.add(new AgeGroup("Senioren",           year - 99, year - 56, true));
-		groups.add(new AgeGroup("Seniorinnen",        year - 99, year - 56, false));
-		groups.sort(null);
+		groups = new ArrayList<Group>();
+		groups.add(new Group("Schüler B",          year - 12, year,      true));
+		groups.add(new Group("Schüler B",          year - 12, year,      false));
+		groups.add(new Group("Schüler A",          year - 14, year - 13, true));
+		groups.add(new Group("Schüler A",          year - 14, year - 13, false));
+		groups.add(new Group("Jugend",             year - 16, year - 15, true));
+		groups.add(new Group("Jugend",             year - 16, year - 15, false));
+		groups.add(new Group("Junioren B",         year - 18, year - 17, true));
+		groups.add(new Group("Junioren B",         year - 18, year - 17, false));
+		groups.add(new Group("Junioren A",         year - 20, year - 19, true));
+		groups.add(new Group("Junioren A",         year - 20, year - 19, false));
+		groups.add(new Group("Herren",             year - 45, year - 21, true));
+		groups.add(new Group("Damen",              year - 45, year - 21, false));
+		groups.add(new Group("Altersklasse",       year - 55, year - 46, true));
+		groups.add(new Group("Damen Altersklasse", year - 55, year - 46, false));
+		groups.add(new Group("Senioren",           year - 99, year - 56, true));
+		groups.add(new Group("Seniorinnen",        year - 99, year - 56, false));
 
 		targets = new TreeSet<TargetModel>();
 		//                         |                      |           |    Karton-    |Band-   |      Durchmesser       |Ring- | Ring  |  Nummer  |   |     |  Vorhalte-   |
@@ -196,8 +195,18 @@ public class SettingsModel implements Serializable {
 		save();
 	}
 
-	public AgeGroup[] getGroups() {
-		return groups.toArray(new AgeGroup[0]);
+	public int getYear() {
+		return year;
+	}
+
+	public void setYear(int value) {
+		int diff = value - year;
+		year = value;
+		for (Group g : groups) g.change(diff);
+	}
+
+	public Group[] getGroups() {
+		return groups.toArray(new Group[0]);
 	}
 
 	public Weapon newWeapon() {
@@ -323,6 +332,8 @@ public class SettingsModel implements Serializable {
 	}
 
 	public boolean save() {
+		groups.sort(null);
+
 		boolean succeed = false;
 		ObjectOutputStream oos = null;
 		FileOutputStream fos = null;

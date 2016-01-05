@@ -8,23 +8,25 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
-import model.AgeGroup;
+import model.Group;
 
 
-public class AgeGroupTableModel implements TableModel {
-	List<AgeGroup> groups;
+public class GroupTableModel implements TableModel {
+	List<Group> groups;
 	List<TableModelListener> tml;
 
-	public AgeGroupTableModel(List<AgeGroup> groups) {
+	private Group lastChanged = null;
+
+	public GroupTableModel(List<Group> groups) {
 		tml = new Vector<TableModelListener>();
-		setWeapons(groups);
+		this.groups = groups;
 	}
 
-	public void setWeapons(List<AgeGroup> groups) {
-		this.groups = groups;
-		for (TableModelListener ml : tml) {
-			ml.tableChanged(new TableModelEvent(this));
-		}
+	public int getLastChanged() {
+		if (lastChanged == null) return -1;
+		int i = groups.indexOf(lastChanged);
+		lastChanged = null;
+		return i;
 	}
 
 	@Override
@@ -85,6 +87,7 @@ public class AgeGroupTableModel implements TableModel {
 
 	@Override
 	public void setValueAt(Object value, int row, int col) {
+		lastChanged = groups.get(row);
 		switch (col) {
 			case 0:
 				groups.get(row).setName((String) value); break;
@@ -94,6 +97,11 @@ public class AgeGroupTableModel implements TableModel {
 				groups.get(row).setTo((int) value); break;
 			case 3:
 				groups.get(row).setMale(((String) value).startsWith("m")); break;
+		}
+		groups.sort(null);
+
+		for (TableModelListener ml : tml) {
+			ml.tableChanged(new TableModelEvent(this));
 		}
 	}
 }

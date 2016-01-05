@@ -73,11 +73,11 @@ public class SettingsWeapons extends JPanel implements ActionListener, TableMode
 			}
 		});
 
-		table.getColumnModel().getColumn(2).setCellEditor(new TableEditor(new JSpinner()));
-		table.getColumnModel().getColumn(3).setCellEditor(new TableEditor(new JComboBox<Unit>(Unit.values())));
+		table.getColumnModel().getColumn(2).setCellEditor(new TableEditor(new JSpinner(), 1));
+		table.getColumnModel().getColumn(3).setCellEditor(new TableEditor(new JComboBox<Unit>(Unit.values()), 0));
 		JComboBox<Integer> comboBox = new JComboBox<Integer>(new Integer[] {1, 2, 3, 4, 5, 6});
 		((JLabel) comboBox.getRenderer()).setHorizontalAlignment(JLabel.RIGHT);
-		table.getColumnModel().getColumn(4).setCellEditor(new TableEditor(comboBox));
+		table.getColumnModel().getColumn(4).setCellEditor(new TableEditor(comboBox, 0));
 
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);

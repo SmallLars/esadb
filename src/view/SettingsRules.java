@@ -62,9 +62,9 @@ public class SettingsRules extends JPanel implements ActionListener, SettingsCha
 		});
 
 		JComboBox<TargetModel> targets = new JComboBox<TargetModel>(config.getTargets());
-		table.getColumnModel().getColumn(2).setCellEditor(new TableEditor(targets));
+		table.getColumnModel().getColumn(2).setCellEditor(new TableEditor(targets, 0));
 		JComboBox<Weapon> weapons = new JComboBox<Weapon>(config.getWeapons());
-		table.getColumnModel().getColumn(3).setCellEditor(new TableEditor(weapons));
+		table.getColumnModel().getColumn(3).setCellEditor(new TableEditor(weapons, 0));
 
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -108,8 +108,8 @@ public class SettingsRules extends JPanel implements ActionListener, SettingsCha
 	@Override
 	public void settingsChanged() {
 		JComboBox<TargetModel> targets = new JComboBox<TargetModel>(Controller.get().getConfig().getTargets());
-		table.getColumnModel().getColumn(2).setCellEditor(new TableEditor(targets));
+		table.getColumnModel().getColumn(2).setCellEditor(new TableEditor(targets, 0));
 		JComboBox<Weapon> weapons = new JComboBox<Weapon>(Controller.get().getConfig().getWeapons());
-		table.getColumnModel().getColumn(3).setCellEditor(new TableEditor(weapons));
+		table.getColumnModel().getColumn(3).setCellEditor(new TableEditor(weapons, 0));
 	}
 }

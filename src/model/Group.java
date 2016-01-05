@@ -4,7 +4,7 @@ package model;
 import java.io.Serializable;
 
 
-public class AgeGroup  implements Serializable, Comparable<AgeGroup> {
+public class Group  implements Serializable, Comparable<Group> {
 	private static final long serialVersionUID = 1L;
 
 	private String name;
@@ -12,7 +12,7 @@ public class AgeGroup  implements Serializable, Comparable<AgeGroup> {
 	private int to;
 	private boolean male;
 
-	public AgeGroup(String name, int from, int to, boolean male) {
+	public Group(String name, int from, int to, boolean male) {
 		this.name = name;
 		this.from = from;
 		this.to = to;
@@ -63,18 +63,13 @@ public class AgeGroup  implements Serializable, Comparable<AgeGroup> {
 		return true;
 	}
 
-	public void increase(int value) {
+	public void change(int value) {
 		from += value;
 		to += value;
 	}
 
-	public void decrease(int value) {
-		from -= value;
-		to -= value;
-	}
-
 	@Override
-	public int compareTo(AgeGroup o) {
+	public int compareTo(Group o) {
 		if (to < o.to) return 1;
 		if (to > o.to) return -1;
 

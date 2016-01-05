@@ -37,7 +37,8 @@ Danach sind folgende Schritte empfohlen:
 1. esadb.jar per Doppelklick starten
 2. Unter "Datei -> Einstellungen... -> Allgemein" die gewünschten Linien einfügen
 3. esadb beenden
-4. Für die Nutzung der Wildscheiben müssen die Dateien HZ_7775 und *.bmp auf die Linien in das Installationsverzeichnis von ESA 2002 kopiert werden.
+4. Für die Nutzung der Wildscheiben müssen die Dateien HZ_7775 und *.bmp  
+auf die Linien in das Installationsverzeichnis von ESA 2002 kopiert werden.
 5. Eine Verknüpfung zu esadb.jar auf dem Desktop anlegen
 6. Eine Verknüpfung zu Stammdaten.mdb auf dem Desktop anlegen
 7. Vereine, Schützen und Disziplinen in den Stammdaten hinterlegen

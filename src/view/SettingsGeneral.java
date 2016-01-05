@@ -3,6 +3,10 @@ package view;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.Arrays;
 import java.util.Vector;
 
@@ -17,6 +21,8 @@ import javax.swing.JSpinner;
 import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SpinnerModel;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.JSpinner.NumberEditor;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
@@ -37,12 +43,16 @@ import javax.swing.JTable;
 
 @SuppressWarnings("serial")
 public class SettingsGeneral extends JPanel implements ActionListener, DocumentListener {
+
 	private JSpinner spinner;
 	private DefaultListModel<Integer> listModel;
 	private JList<Integer> list;
+
 	private JTextField pathField;
 	private JTextField nameField;
+
 	private JTable table;
+	private GroupTableModel gtm;
 
 	public SettingsGeneral(SettingsModel config) {
 		this.setSize(735,  420);
@@ -173,10 +183,28 @@ public class SettingsGeneral extends JPanel implements ActionListener, DocumentL
 		lblAltersgruppen.setBounds(138, 112, 200, 20);
 		add(lblAltersgruppen);
 
-		AgeGroupTableModel agtm = new AgeGroupTableModel(Arrays.asList(config.getGroups()));
-		table = new JTable(agtm);
-		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		gtm = new GroupTableModel(Arrays.asList(config.getGroups()));
+		table = new JTable(gtm);
+		table.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
 		table.setRowHeight(20);
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		table.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseReleased(MouseEvent evt) {
+				int i = gtm.getLastChanged();
+				if (i < 0) return;
+				table.setRowSelectionInterval(i, i);
+			}
+		});
+		table.addFocusListener(new FocusListener() {
+			@Override
+			public void focusGained(FocusEvent arg0) {
+				gtm.getLastChanged();
+			}
+
+			@Override
+			public void focusLost(FocusEvent arg0) {}
+		});
 
 		table.getColumnModel().getColumn(0).setMinWidth(150);
 		table.getColumnModel().getColumn(1).setMinWidth(70);
@@ -195,9 +223,9 @@ public class SettingsGeneral extends JPanel implements ActionListener, DocumentL
 			}
 		});
 
-		table.getColumnModel().getColumn(1).setCellEditor(new TableEditor(null));
-		table.getColumnModel().getColumn(2).setCellEditor(new TableEditor(null));
-		table.getColumnModel().getColumn(3).setCellEditor(new TableEditor(new JComboBox<String>(new String[] {"männlich", "weiblich"})));
+		table.getColumnModel().getColumn(1).setCellEditor(new TableEditor(new JSpinner(), 0));
+		table.getColumnModel().getColumn(2).setCellEditor(new TableEditor(new JSpinner(), 0));
+		table.getColumnModel().getColumn(3).setCellEditor(new TableEditor(new JComboBox<String>(new String[] {"männlich", "weiblich"}), 0));
 
 		JScrollPane scrollPane1 = new JScrollPane();
 		scrollPane1.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -205,6 +233,18 @@ public class SettingsGeneral extends JPanel implements ActionListener, DocumentL
 		scrollPane1.setBounds(138, 143, 450, 261);
 		scrollPane1.setViewportView(table);
 		add(scrollPane1);
+		
+		JSpinner spinner_1 = new JSpinner(new SpinnerNumberModel(config.getYear(), 0, null, new Integer(1)));
+		spinner_1.setBounds(602, 143, 118, 18);
+		spinner_1.setEditor(new NumberEditor(spinner_1, "0000"));
+		spinner_1.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent arg0) {
+				Controller.get().getConfig().setYear((Integer) spinner_1.getValue());
+				table.repaint();
+			}
+		});
+		add(spinner_1);
 	}
 
 	@Override

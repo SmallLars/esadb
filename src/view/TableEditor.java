@@ -1,6 +1,8 @@
 package view;
 
 import java.awt.Component;
+import java.awt.event.MouseEvent;
+import java.util.EventObject;
 
 import javax.swing.AbstractCellEditor;
 import javax.swing.JComboBox;
@@ -17,26 +19,37 @@ public class TableEditor extends AbstractCellEditor implements TableCellEditor {
 
 	JComponent component = null;
 
-	public TableEditor(JComponent component) {
+	public TableEditor(JComponent component, int version) {
 		super();
 		
-		if (component == null) {
-			JSpinner spinner = new JSpinner(new SpinnerNumberModel(new Integer(1900), new Integer(0), null, new Integer(1)));
-			NumberEditor editor = new NumberEditor(spinner, "0000");
-			spinner.setEditor(editor);
-			this.component = spinner;
-			return;
-		}
-
 		if (component instanceof JSpinner) {
 			JSpinner spinner = (JSpinner) component;
-			spinner.setModel(new SpinnerNumberModel(new Double(0), new Double(0), null, new Double(0.01)));
-			NumberEditor editor = new NumberEditor(spinner, "0.000");
-			spinner.setEditor(editor);
+
+			switch (version) {
+				case 0:
+					spinner.setModel(new SpinnerNumberModel(new Integer(1900), new Integer(0), null, new Integer(1)));
+					spinner.setEditor(new NumberEditor(spinner, "0000"));
+					break;
+				case 1:
+					spinner.setModel(new SpinnerNumberModel(new Double(0), new Double(0), null, new Double(0.01)));
+					spinner.setEditor(new NumberEditor(spinner, "0.000"));
+					break;
+			}
 		}
 
 		this.component = component;
 	}
+
+    @Override
+    public boolean isCellEditable(EventObject e) {
+        if (super.isCellEditable(e)) {
+            if (e instanceof MouseEvent) {
+                MouseEvent me = (MouseEvent) e;
+                return me.getClickCount() >= 2;
+            }
+        }
+        return false;
+    }
 
 	@Override
 	public Object getCellEditorValue() {
