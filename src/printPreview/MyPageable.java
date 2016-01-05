@@ -1,4 +1,5 @@
-package druckvorschau;
+package printPreview;
+
 
 import java.awt.print.PageFormat;
 import java.awt.print.Pageable;

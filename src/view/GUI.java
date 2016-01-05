@@ -32,7 +32,6 @@ import model.SettingsModel;
 import model.Single;
 import model.Status;
 import controller.Controller;
-import druckvorschau.Druckvorschau;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -42,6 +41,8 @@ import java.awt.Toolkit;
 
 import javax.swing.Box;
 import javax.swing.ScrollPaneConstants;
+
+import printPreview.PrintPreview;
 
 
 @SuppressWarnings("serial")
@@ -282,7 +283,7 @@ public class GUI extends JFrame implements ActionListener, ComponentListener {
 		StyleConstants.setBold(style, true);
 
 		int returnVal;
-		Druckvorschau dv;
+		PrintPreview dv;
 		switch (e.getActionCommand()) {
 			case "NEW":
 				for (Line l : linien) if (!l.isFrei() || (l.isBusy() && !l.isError())) {
@@ -359,14 +360,14 @@ public class GUI extends JFrame implements ActionListener, ComponentListener {
 				}
 				break;
 			case "PRINTPREVIEW":
-				dv = new Druckvorschau(this, controller.getModel(), controller.getConfig().getPageFormat());
+				dv = new PrintPreview(this, controller.getModel(), controller.getConfig().getPageFormat());
 				controller.getConfig().setPageFormat(dv.showDialog());
 				break;
 			case "SINGLEPREVIEW":
 				SingleSelection einzel = new SingleSelection(this);
 				Single ez = einzel.showDialog();
 				if (ez == null) return;
-				dv = new Druckvorschau(this, ez, controller.getConfig().getPageFormat());
+				dv = new PrintPreview(this, ez, controller.getConfig().getPageFormat());
 				controller.getConfig().setPageFormat(dv.showDialog());
 				break;
 			case "SINGLEEDIT":

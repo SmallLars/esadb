@@ -1,4 +1,5 @@
-package druckvorschau;
+package printPreview;
+
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -13,13 +14,13 @@ import javax.swing.JPanel;
 
 
 @SuppressWarnings("serial")
-public class Seite extends JPanel {
+public class Page extends JPanel {
 	private Printable p;
 	private PageFormat pf;
 	private int scale;
 	private int index;
 
-	public Seite(Printable p, PageFormat pf, int index) {
+	public Page(Printable p, PageFormat pf, int index) {
 		this.p = p;
 		this.pf = pf;
 		this.scale = 100;

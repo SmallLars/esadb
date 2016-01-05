@@ -17,3 +17,6 @@
 
 2.0.2
  - Unterstützung für Wildscheiben wurde ergänzt.
+
+2.0.3
+ - Druckvorschau überarbeitet.

@@ -1,4 +1,5 @@
-package druckvorschau;
+package printPreview;
+
 
 import java.awt.Color;
 import java.awt.Cursor;
@@ -14,21 +15,21 @@ import javax.swing.event.MouseInputAdapter;
 
 
 @SuppressWarnings("serial")
-public class Seitenanzeige extends JPanel {
+public class PageView extends JPanel {
 	Printable printable;
 	private PageFormat pageFormat;
 	private int scale;
 
-	private Vector<Seite> seiten;
+	private Vector<Page> pages;
 	
-	public Seitenanzeige(Printable printable, PageFormat pageFormat) {
+	public PageView(Printable printable, PageFormat pageFormat) {
 		super();
 
 		this.printable = printable;
 		this.pageFormat = pageFormat;
 		this.scale = 100;
 
-		seiten = new Vector<Seite>();
+		pages = new Vector<Page>();
 
 		setLayout(null);
 		setBackground(Color.LIGHT_GRAY);
@@ -39,27 +40,27 @@ public class Seitenanzeige extends JPanel {
 	}
 
 	public int getNumberOfPages() {
-		return seiten.size();
+		return pages.size();
 	}
 
 	public void setPageFormat(PageFormat pageFormat) {
 		this.pageFormat = pageFormat;
-		seiten.clear();
+		pages.clear();
 		repaint();
 	}
 
 	public void setScale(int scale) {
 		this.scale = scale;
-		Seite s = null;
-		for (int i = 0; i < seiten.size(); i++) {
-			s = seiten.get(i);
+		Page s = null;
+		for (int i = 0; i < pages.size(); i++) {
+			s = pages.get(i);
 			s.setPageScale(scale);
 			s.setLocation(10 + i * (s.getWidth() + 10), 10);
 		}
 		if (s == null) {
 			setPreferredSize(new Dimension(20, 20));
 		} else {
-			setPreferredSize(new Dimension(10 + seiten.size() * (s.getWidth() + 10), s.getHeight() + 20));
+			setPreferredSize(new Dimension(10 + pages.size() * (s.getWidth() + 10), s.getHeight() + 20));
 		}
 		getParent().revalidate();
 	}
@@ -78,14 +79,14 @@ public class Seitenanzeige extends JPanel {
 			}
 			if (c == Printable.NO_SUCH_PAGE) break;
 		}
-		if (anzahl != seiten.size()) {
+		if (anzahl != pages.size()) {
 			removeAll();
-			seiten.clear();
+			pages.clear();
 
 			for (int i = 0; i < anzahl; i++) {
-				Seite s = new Seite(printable, pageFormat, i);
+				Page s = new Page(printable, pageFormat, i);
 				add(s);
-				seiten.add(s);
+				pages.add(s);
 			}
 		}
 		setScale(scale);
