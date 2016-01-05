@@ -6,6 +6,7 @@ import javax.swing.AbstractCellEditor;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JSpinner;
+import javax.swing.JSpinner.NumberEditor;
 import javax.swing.JTable;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.table.TableCellEditor;
@@ -18,11 +19,19 @@ public class TableEditor extends AbstractCellEditor implements TableCellEditor {
 
 	public TableEditor(JComponent component) {
 		super();
+		
+		if (component == null) {
+			JSpinner spinner = new JSpinner(new SpinnerNumberModel(new Integer(1900), new Integer(0), null, new Integer(1)));
+			NumberEditor editor = new NumberEditor(spinner, "0000");
+			spinner.setEditor(editor);
+			this.component = spinner;
+			return;
+		}
 
 		if (component instanceof JSpinner) {
 			JSpinner spinner = (JSpinner) component;
 			spinner.setModel(new SpinnerNumberModel(new Double(0), new Double(0), null, new Double(0.01)));
-			JSpinner.NumberEditor editor = new JSpinner.NumberEditor(spinner, "0.000");
+			NumberEditor editor = new NumberEditor(spinner, "0.000");
 			spinner.setEditor(editor);
 		}
 

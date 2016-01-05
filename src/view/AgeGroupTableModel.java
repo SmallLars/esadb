@@ -8,21 +8,20 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
-import model.Unit;
-import model.Weapon;
+import model.AgeGroup;
 
 
-public class WeaponTableModel implements TableModel {
-	List<Weapon> weapons;
+public class AgeGroupTableModel implements TableModel {
+	List<AgeGroup> groups;
 	List<TableModelListener> tml;
 
-	public WeaponTableModel(List<Weapon> weapons) {
+	public AgeGroupTableModel(List<AgeGroup> groups) {
 		tml = new Vector<TableModelListener>();
-		setWeapons(weapons);
+		setWeapons(groups);
 	}
 
-	public void setWeapons(List<Weapon> weapons) {
-		this.weapons = weapons;
+	public void setWeapons(List<AgeGroup> groups) {
+		this.groups = groups;
 		for (TableModelListener ml : tml) {
 			ml.tableChanged(new TableModelEvent(this));
 		}
@@ -31,9 +30,8 @@ public class WeaponTableModel implements TableModel {
 	@Override
 	public Class<?> getColumnClass(int col) {
 		switch (col) {
+			case 1:
 			case 2:
-				return Double.class;
-			case 4:
 				return Integer.class;
 			default:
 				return String.class;
@@ -42,39 +40,36 @@ public class WeaponTableModel implements TableModel {
 
 	@Override
 	public int getColumnCount() {
-		return 5;
+		return 4;
 	}
 
 	@Override
 	public String getColumnName(int arg0) {
-		String[] columnNames = {"Kennummer", "Bezeichnung", "Ø", "Einheit", "Mikrofon"};
+		String[] columnNames = {"Name", "Von", "Bis", "Geschlecht"};
 		return columnNames[arg0];
 	}
 
 	@Override
 	public int getRowCount() {
-		return weapons.size();
+		return groups.size();
 	}
 
 	@Override
 	public Object getValueAt(int row, int col) {
 		switch (col) {
-			case 0:
-				return weapons.get(row).getNumber();
+			case 1:
+				return groups.get(row).getFrom();
 			case 2:
-				return weapons.get(row).getDiameter() / 1000.;
+				return groups.get(row).getTo();
 			case 3:
-				return weapons.get(row).getUnit();
-			case 4:
-				return weapons.get(row).getMikro();
+				return groups.get(row).isMale();
 			default:
-				return weapons.get(row);
+				return groups.get(row);
 		}
 	}
 
 	@Override
 	public boolean isCellEditable(int rowIndex, int columnIndex) {
-		if (columnIndex == 0) return false;
 		return true;
 	}
 
@@ -92,15 +87,13 @@ public class WeaponTableModel implements TableModel {
 	public void setValueAt(Object value, int row, int col) {
 		switch (col) {
 			case 0:
-				weapons.get(row).setNumber((String) value); break;
+				groups.get(row).setName((String) value); break;
+			case 1:
+				groups.get(row).setFrom((int) value); break;
 			case 2:
-				weapons.get(row).setDiameter((int) (((Double) value) * 1000)); break;
+				groups.get(row).setTo((int) value); break;
 			case 3:
-				weapons.get(row).setUnit((Unit) value); break;
-			case 4:
-				weapons.get(row).setMikro((int) value); break;
-			default:
-				weapons.get(row).setName((String) value); break;
+				groups.get(row).setMale(((String) value).startsWith("m")); break;
 		}
 	}
 }

@@ -3,21 +3,25 @@ package view;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
 import java.util.Vector;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.ListSelectionModel;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.SpinnerModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.table.DefaultTableCellRenderer;
 
 import model.SettingsModel;
 
@@ -28,6 +32,7 @@ import javax.swing.SwingConstants;
 import controller.Controller;
 
 import javax.swing.JTextField;
+import javax.swing.JTable;
 
 
 @SuppressWarnings("serial")
@@ -37,6 +42,7 @@ public class SettingsGeneral extends JPanel implements ActionListener, DocumentL
 	private JList<Integer> list;
 	private JTextField pathField;
 	private JTextField nameField;
+	private JTable table;
 
 	public SettingsGeneral(SettingsModel config) {
 		this.setSize(735,  420);
@@ -120,7 +126,7 @@ public class SettingsGeneral extends JPanel implements ActionListener, DocumentL
 
 		JSeparator separator = new JSeparator();
 		separator.setOrientation(SwingConstants.VERTICAL);
-		separator.setBounds(121, 11, 2, 398);
+		separator.setBounds(121, 11, 2, 393);
 		add(separator);
 
 		JLabel lblDatei = new JLabel("Standarddatei");
@@ -133,30 +139,72 @@ public class SettingsGeneral extends JPanel implements ActionListener, DocumentL
 		add(lblDateipfad);
 
 		pathField = new JTextField(config.getPath());
-		pathField.setBounds(138, 60, 250, 20);
+		pathField.setBounds(138, 60, 328, 20);
 		pathField.setColumns(10);
 		pathField.setEditable(false);
 		add(pathField);
 		
 		JButton button = new JButton("...");
-		button.setBounds(398, 60, 32, 20);
+		button.setBounds(476, 60, 32, 20);
 		button.setActionCommand("PATH");
 		button.addActionListener(this);
 		add(button);
 
 		JLabel lblDateiname = new JLabel("Dateiname");
-		lblDateiname.setBounds(138, 95, 100, 14);
+		lblDateiname.setBounds(528, 42, 100, 14);
 		add(lblDateiname);
 
 		nameField = new JTextField(config.getFilename());
-		nameField.setBounds(138, 111, 250, 20);
+		nameField.setBounds(528, 60, 150, 20);
 		nameField.setColumns(10);
 		nameField.getDocument().addDocumentListener(this);
 		add(nameField);
 
 		JLabel lblesa = new JLabel(".esa");
-		lblesa.setBounds(398, 114, 32, 14);
+		lblesa.setBounds(688, 63, 32, 14);
 		add(lblesa);
+
+		JSeparator separator_1 = new JSeparator();
+		separator_1.setBounds(138, 95, 582, 2);
+		add(separator_1);
+
+		JLabel lblAltersgruppen = new JLabel("Altersgruppen");
+		lblAltersgruppen.setFont(lblAltersgruppen.getFont().deriveFont(18f));
+		lblAltersgruppen.setBounds(138, 112, 200, 20);
+		add(lblAltersgruppen);
+
+		AgeGroupTableModel agtm = new AgeGroupTableModel(Arrays.asList(config.getGroups()));
+		table = new JTable(agtm);
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		table.setRowHeight(20);
+
+		table.getColumnModel().getColumn(0).setMinWidth(150);
+		table.getColumnModel().getColumn(1).setMinWidth(70);
+		table.getColumnModel().getColumn(2).setMinWidth(70);
+		table.getColumnModel().getColumn(3).setMinWidth(100);
+
+		table.getColumnModel().getColumn(0).setPreferredWidth(500);
+		table.getColumnModel().getColumn(1).setPreferredWidth(70);
+		table.getColumnModel().getColumn(2).setPreferredWidth(70);
+		table.getColumnModel().getColumn(3).setPreferredWidth(100);
+
+		table.getColumnModel().getColumn(3).setCellRenderer(new DefaultTableCellRenderer() {
+			@Override
+			protected void setValue(Object o) {
+				super.setValue((Boolean) o ? "männlich" : "weiblich");
+			}
+		});
+
+		table.getColumnModel().getColumn(1).setCellEditor(new TableEditor(null));
+		table.getColumnModel().getColumn(2).setCellEditor(new TableEditor(null));
+		table.getColumnModel().getColumn(3).setCellEditor(new TableEditor(new JComboBox<String>(new String[] {"männlich", "weiblich"})));
+
+		JScrollPane scrollPane1 = new JScrollPane();
+		scrollPane1.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollPane1.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		scrollPane1.setBounds(138, 143, 450, 261);
+		scrollPane1.setViewportView(table);
+		add(scrollPane1);
 	}
 
 	@Override

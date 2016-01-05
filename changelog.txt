@@ -20,3 +20,4 @@
 
 2.0.3
  - Druckvorschau überarbeitet.
+ - Konfiguration für Altersgruppen erstellt. Wird in späteren Versionen in der Ergebnisliste berücksichtig.

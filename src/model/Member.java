@@ -15,14 +15,14 @@ public class Member implements Serializable, Comparable<Member> {
 	public String vorname;			// Vorname des Schützen
 	public String titelname;		// Bezeichnung in der Titelleiste
 	public Date geburtsdatum;		// Geburtsdatum des Schützen
-	public String geschlecht;		// -1 für männlich, 0 für weiblich
+	public String geschlecht;		// m für männlich, w für weiblich
 	public short startnummer;		// Startnummer des Schützen
 	public int vereinsnummer;		// Identifikationsnummer des Vereins
 
 	public Member() {
 		wettkampfID = 0;
 		passnummer = "0000000-0000";
-		nachname = "Demosch�tz";
+		nachname = "Demoschütz";
 		vorname = "Hugo";
 		titelname = "Demoschütz, Hugo";
 		Calendar cal = Calendar.getInstance();
@@ -61,5 +61,15 @@ public class Member implements Serializable, Comparable<Member> {
 		if (c != 0) return c;
 
 		return passnummer.compareTo(s.passnummer);
+	}
+
+	public boolean isMale() {
+		return geschlecht.equals("m");
+	}
+
+	public int getBirthYear() {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(geburtsdatum); 
+		return cal.get(Calendar.YEAR);
 	}
 }
