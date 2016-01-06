@@ -205,8 +205,24 @@ public class SettingsModel implements Serializable {
 		for (Group g : groups) g.change(diff);
 	}
 
+	public Group newGroup() {
+		Group g;
+		if (groups.size() > 0) {
+			Group last = groups.get(groups.size() - 1);
+			g = new Group("Neue Gruppe", last.getFrom() - 13, last.getFrom() - 1, last.isMale());
+		} else {
+			g = new Group("Neue Gruppe", year - 12, year, true);
+		}
+		groups.add(g);
+		return g;
+	}
+
 	public Group[] getGroups() {
 		return groups.toArray(new Group[0]);
+	}
+
+	public boolean removeGroup(Group g) {
+		return groups.remove(g);
 	}
 
 	public Weapon newWeapon() {
@@ -322,13 +338,14 @@ public class SettingsModel implements Serializable {
 		standardRule = rule;
 	}
 
-	public void removeRule(String ruleNumber) {
-		rules.remove(ruleNumber);
+	public boolean removeRule(String ruleNumber) {
+		boolean succeed = (rules.remove(ruleNumber) != null);
 		if (ruleNumber.equals(standardRule.getRegelnummer())) {
 			if (rules.size() > 0) {
 				standardRule = rules.values().toArray(new Rule[0])[0];
 			}
 		}
+		return succeed;
 	}
 
 	public boolean save() {

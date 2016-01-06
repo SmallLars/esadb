@@ -3,6 +3,7 @@ package view;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Arrays;
@@ -95,8 +96,14 @@ public class SettingsRules extends JPanel implements ActionListener, SettingsCha
 
 		switch (e.getActionCommand()) {
 			case "-":
-				config.removeRule((String) table.getValueAt(index, 0));
-				rtm.removeRule(index);
+				if (config.removeRule((String) table.getValueAt(index, 0))) {
+					rtm.removeRule(index);
+					if (index >= table.getRowCount()) index = table.getRowCount() - 1;
+					if (table.getRowCount() > 0) {
+						table.setRowSelectionInterval(index, index);
+						table.scrollRectToVisible(new Rectangle(table.getCellRect(index, 0, true)));
+					}
+				}
 				break;
 			case "DEFAULT":
 				config.setStandardRule((Rule) table.getValueAt(index, 1));

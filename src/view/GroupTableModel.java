@@ -29,6 +29,20 @@ public class GroupTableModel implements TableModel {
 		return i;
 	}
 
+	public void addGroup(Group g) {
+		groups.add(g);
+		for (TableModelListener ml : tml) {
+			ml.tableChanged(new TableModelEvent(this));
+		}
+	}
+
+	public void removeGroup(Group g) {
+		groups.remove(g);
+		for (TableModelListener ml : tml) {
+			ml.tableChanged(new TableModelEvent(this));
+		}
+	}
+
 	@Override
 	public Class<?> getColumnClass(int col) {
 		switch (col) {
@@ -60,9 +74,9 @@ public class GroupTableModel implements TableModel {
 	public Object getValueAt(int row, int col) {
 		switch (col) {
 			case 1:
-				return groups.get(row).getFrom();
-			case 2:
 				return groups.get(row).getTo();
+			case 2:
+				return groups.get(row).getFrom();
 			case 3:
 				return groups.get(row).isMale();
 			default:
@@ -92,9 +106,9 @@ public class GroupTableModel implements TableModel {
 			case 0:
 				groups.get(row).setName((String) value); break;
 			case 1:
-				groups.get(row).setFrom((int) value); break;
-			case 2:
 				groups.get(row).setTo((int) value); break;
+			case 2:
+				groups.get(row).setFrom((int) value); break;
 			case 3:
 				groups.get(row).setMale(((String) value).startsWith("m")); break;
 		}

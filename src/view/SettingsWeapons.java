@@ -1,6 +1,7 @@
 package view;
 
 
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Arrays;
@@ -104,11 +105,27 @@ public class SettingsWeapons extends JPanel implements ActionListener, TableMode
 		switch (arg0.getActionCommand()) {
 			case "+":
 				Controller.get().getConfig().newWeapon();
+				wtm.setWeapons(Arrays.asList(Controller.get().getConfig().getWeapons()));
+				for (int i = 0; i < table.getRowCount(); i++) {
+					if (((Weapon) table.getValueAt(i, 1)).toString().equals("Neue Waffe")) {
+						table.setRowSelectionInterval(i, i);
+						table.scrollRectToVisible(new Rectangle(table.getCellRect(i, 0, true)));
+					}
+				}
 				break;
 			case "-":
-				if (table.getSelectedRow() < 0) break;
+				int index = table.getSelectedRow();
+				if (index < 0) break;
+
 				Weapon w = (Weapon) wtm.getValueAt(table.getSelectedRow(), 1);
-				if (!Controller.get().getConfig().removeWeapon(w)) {
+				if (Controller.get().getConfig().removeWeapon(w)) {
+					wtm.setWeapons(Arrays.asList(Controller.get().getConfig().getWeapons()));
+					if (index >= table.getRowCount()) index = table.getRowCount() - 1;
+					if (table.getRowCount() > 0) {
+						table.setRowSelectionInterval(index, index);
+						table.scrollRectToVisible(new Rectangle(table.getCellRect(index, 0, true)));
+					}
+				} else {
 					JOptionPane.showMessageDialog(
 						this,
 						"Die Waffe kann nicht gelöscht werden, da sie\nnoch mindestens einer Regel zugeordnet ist.",
@@ -118,7 +135,6 @@ public class SettingsWeapons extends JPanel implements ActionListener, TableMode
 				}
 				break;
 		}
-		wtm.setWeapons(Arrays.asList(Controller.get().getConfig().getWeapons()));
 	}
 
 	@Override

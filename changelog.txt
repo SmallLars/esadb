@@ -1,23 +1,23 @@
-1.0.0
+1.0.0        18.09.2015
  - Veröffentlichung
 
-1.0.1
+1.0.1        31.10.2015
  - Problem behoben, bei dem Ergebnisse durch Toggel von "Sperren" verloren gehen.
 
-1.0.2
+1.0.2        13.11.2015
  - Problem behoben, bei dem Ergebnisse durch Mehrfachbelegung von Linien verloren gehen.
 
-2.0.0
+2.0.0        30.12.2015
  - Waffe, Scheiben und Regeln können nun individuell angepasst werden.
  - Das .esa Dateiformat ist nicht kompatibel mit Version 1.x.
 
-2.0.1
+2.0.1        01.01.2016
  - In den Einstellungen können nun Standardpfad und Dateiname angepasst werden.
  - Einige Feinheiten bei der Scheibenanzeige wurden verbessert.
 
-2.0.2
+2.0.2        04.01.2016
  - Unterstützung für Wildscheiben wurde ergänzt.
 
-2.0.3
+2.0.3        06.01.2016
  - Druckvorschau überarbeitet.
  - Konfiguration für Altersgruppen erstellt. Wird in späteren Versionen in der Ergebnisliste berücksichtig.

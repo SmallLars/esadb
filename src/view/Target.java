@@ -127,15 +127,16 @@ public class Target extends JPanel implements LineListener {
 			mitte = Math.max(width, height) / 2;
 			g2.scale(new Double(getWidth()) / new Double(2 * mitte), new Double(getHeight()) / new Double(2 * mitte));
 
+			String image = target.getImage();
+			if (target.getValue(TargetValue.IMAGE) == 0) image = "HZ_" + image;
 			try {
-				String image = target.getImage();
-				if (target.getValue(TargetValue.IMAGE) == 0) image = "HZ_" + image;
 				BufferedImage bi = ImageIO.read(new File(image));
 				int dx = width > height ? 0 : (height - width) / 2;
 				int dy = height > width ? 0 : (width - height) / 2;
 				g2.drawImage(bi, dx, dy, target.getValue(TargetValue.SIZE_WIDTH), target.getValue(TargetValue.SIZE_HEIGHT), null);
 			} catch (IOException e) {
 				g1.setFont(new Font("Bitstream Vera Sans", Font.BOLD, 64));
+				g1.drawString(image, 32, 708);
 				g1.drawString("Bilddatei konnte", 32, 876);
 				g1.drawString("nicht gefunden werden.", 32, 960);
 			}
