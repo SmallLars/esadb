@@ -2,6 +2,7 @@ package view;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Point;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.ItemEvent;
@@ -210,6 +211,11 @@ public class HitCreate extends JPanel implements MouseWheelListener, KeyListener
 			} catch (ParseException e) {}
 		}
 		doUpdate = true;
+	}
+
+	public void setPosition(Point p) {
+		component_X.setText(String.format("%.3f", p.getX() / 100.));
+		component_Y.setText(String.format("%.3f", p.getY() / 100.));
 	}
 
 	public void setValues(Hit t) {

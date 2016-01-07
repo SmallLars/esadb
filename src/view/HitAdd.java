@@ -1,11 +1,14 @@
 package view;
 
+
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -67,6 +70,12 @@ public class HitAdd extends JDialog implements ComponentListener, ListSelectionL
 
 		scheibe = new Target(controller.getStandardRule());
 		scheibe.setBounds(324, 52, 375, 375);
+		scheibe.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				treffer.setPosition(scheibe.getPointForPixel(e.getX(), e.getY()));
+			}			
+		});
 		getContentPane().add(scheibe);
 
 		treffer = new HitCreate(scheibe, controller.getStandardRule());

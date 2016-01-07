@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -32,7 +33,7 @@ public class Target extends JPanel implements LineListener {
 	private final int PROBE = 1;
 	private final int MATCH = 2;
 
-	private TargetModel target;
+	private TargetModel model;
 	private Weapon weapon;
 	private Single single;
 	private Hit hit;
@@ -79,7 +80,7 @@ public class Target extends JPanel implements LineListener {
 	}
 	
 	private void init() {
-		this.target = null;
+		this.model = null;
 		this.weapon = null;
 		this.single = null;
 		this.hit = null;
@@ -87,17 +88,36 @@ public class Target extends JPanel implements LineListener {
 		this.force = 0;
 	}
 
-	public void setTarget(TargetModel target) {
-		Validate.notNull(target, "target can't be null");
-		this.target = target;
+	public void setTarget(TargetModel model) {
+		Validate.notNull(model, "model can't be null");
+		this.model = model;
 		repaint();
 	}
 
 	public void setRule(Rule rule) {
 		Validate.notNull(rule, "rule can't be null");
-		this.target = rule.getScheibe();
+		this.model = rule.getScheibe();
 		this.weapon = rule.getWaffe();
 		repaint();
+	}
+
+	public Point getPointForPixel(int x, int y) {
+		x = x - getWidth() / 2;
+		y = (y - getHeight() / 2) * -1;
+		
+		int scale = 0;
+		int ox = 0;
+		int oy = 0;
+		if (model.isDeerTarget()) {
+			scale = Math.max(model.getValue(TargetValue.SIZE_WIDTH), model.getValue(TargetValue.SIZE_HEIGHT));
+			ox = model.getValue(TargetValue.OFFSET_X);
+			oy = model.getValue(TargetValue.OFFSET_Y);
+		}
+		if (model.isRingTarget()) {
+			scale = (model.getRingRadius(model.getValue(TargetValue.RING_MIN)) + model.getValue(TargetValue.RING_WIDTH)) * 2;
+		}
+
+		return new Point(x * scale / getWidth() - ox, y * scale / getHeight() - oy);
 	}
 
 	@Override
@@ -121,19 +141,19 @@ public class Target extends JPanel implements LineListener {
 		Graphics2D g2 = (Graphics2D) g.create();
 		int mitte;
 
-		if (target.isDeerTarget()) {
-			int width = target.getValue(TargetValue.SIZE_WIDTH);
-			int height = target.getValue(TargetValue.SIZE_HEIGHT);
+		if (model.isDeerTarget()) {
+			int width = model.getValue(TargetValue.SIZE_WIDTH);
+			int height = model.getValue(TargetValue.SIZE_HEIGHT);
 			mitte = Math.max(width, height) / 2;
 			g2.scale(new Double(getWidth()) / new Double(2 * mitte), new Double(getHeight()) / new Double(2 * mitte));
 
-			String image = target.getImage();
-			if (target.getValue(TargetValue.IMAGE) == 0) image = "HZ_" + image;
+			String image = model.getImage();
+			if (model.getValue(TargetValue.IMAGE) == 0) image = "HZ_" + image;
 			try {
 				BufferedImage bi = ImageIO.read(new File(image));
 				int dx = width > height ? 0 : (height - width) / 2;
 				int dy = height > width ? 0 : (width - height) / 2;
-				g2.drawImage(bi, dx, dy, target.getValue(TargetValue.SIZE_WIDTH), target.getValue(TargetValue.SIZE_HEIGHT), null);
+				g2.drawImage(bi, dx, dy, model.getValue(TargetValue.SIZE_WIDTH), model.getValue(TargetValue.SIZE_HEIGHT), null);
 			} catch (IOException e) {
 				g1.setFont(new Font("Bitstream Vera Sans", Font.BOLD, 64));
 				g1.drawString(image, 32, 708);
@@ -142,48 +162,48 @@ public class Target extends JPanel implements LineListener {
 			}
 		} else {
 			int r;
-			mitte = target.getRingRadius(target.getValue(TargetValue.RING_MIN)) + target.getValue(TargetValue.RING_WIDTH);
+			mitte = model.getRingRadius(model.getValue(TargetValue.RING_MIN)) + model.getValue(TargetValue.RING_WIDTH);
 			g2.scale(new Double(getWidth()) / new Double(2 * mitte), new Double(getHeight()) / new Double(2 * mitte));
 
-			Color black = target.getValue(TargetValue.TYPE) == 5 ? Color.WHITE : Color.BLACK;
-			Color white = target.getValue(TargetValue.TYPE) == 5 ? Color.BLACK : Color.WHITE;
+			Color black = model.getValue(TargetValue.TYPE) == 5 ? Color.WHITE : Color.BLACK;
+			Color white = model.getValue(TargetValue.TYPE) == 5 ? Color.BLACK : Color.WHITE;
 			
 			g2.setColor(white);
-			r =  target.getAussenRadius();
+			r =  model.getAussenRadius();
 			g2.fillOval(mitte - r, mitte - r, 2 * r, 2 * r);
 	
 			g2.setColor(black);
-			r =  target.getSpiegelRadius();
+			r =  model.getSpiegelRadius();
 		    g2.fillOval(mitte - r, mitte - r, 2 * r, 2 * r);
 	
-			for (int i = target.getValue(TargetValue.RING_MIN); i <= target.getValue(TargetValue.RING_MAX); i++) {
-				r = target.getRingRadius(i);
-			    g2.setColor(r < target.getSpiegelRadius() ? white : black);
-			    if (i == target.getValue(TargetValue.RING_MAX) && target.getValue(TargetValue.FILL) > 1) {
+			for (int i = model.getValue(TargetValue.RING_MIN); i <= model.getValue(TargetValue.RING_MAX); i++) {
+				r = model.getRingRadius(i);
+			    g2.setColor(r < model.getSpiegelRadius() ? white : black);
+			    if (i == model.getValue(TargetValue.RING_MAX) && model.getValue(TargetValue.FILL) > 1) {
 			    	g2.fillOval(mitte - r, mitte - r, 2 * r, 2 * r);
 			    } else {
 			    	g2.drawOval(mitte - r, mitte - r, r * 2, r * 2);
 			    }
 			}
 	
-			if (target.getInnenZehnRadius() > 0) {
-				r = target.getInnenZehnRadius();
-				g2.setColor(r < target.getSpiegelRadius() ? white : black);
-			    if (target.getValue(TargetValue.FILL) > 0) {
+			if (model.getInnenZehnRadius() > 0) {
+				r = model.getInnenZehnRadius();
+				g2.setColor(r < model.getSpiegelRadius() ? white : black);
+			    if (model.getValue(TargetValue.FILL) > 0) {
 			    	g2.fillOval(mitte - r, mitte - r, 2 * r, 2 * r);
 			    } else {
 			    	g2.drawOval(mitte - r, mitte - r, 2 * r, 2 * r);
 			    }
 			}
 	
-			g2.setFont(new Font("Bitstream Vera Sans", Font.BOLD, target.getFontSize()));
-			if (target.getValue(TargetValue.NUM_ANGLE) == 0) {
+			g2.setFont(new Font("Bitstream Vera Sans", Font.BOLD, model.getFontSize()));
+			if (model.getValue(TargetValue.NUM_ANGLE) == 0) {
 				int dy = g2.getFontMetrics().getAscent() / 2 - 2;
-				for (int i = target.getValue(TargetValue.RING_MIN); target.drawNumber(i); i++) {
+				for (int i = model.getValue(TargetValue.RING_MIN); model.drawNumber(i); i++) {
 					int dx = (int) (g2.getFontMetrics().getStringBounds("" + i, g2).getWidth() / -2) + 2;
-					g2.setColor(target.blackNumber(i) ? black : white);
+					g2.setColor(model.blackNumber(i) ? black : white);
 					String s = "" + i;
-					r = target.getNumberRadius(i);
+					r = model.getNumberRadius(i);
 					g2.drawString(s, mitte - r + dx, mitte + dy);	// Links
 					g2.drawString(s, mitte + dx, mitte - r + dy);	// Oben
 					g2.drawString(s, mitte + r + dx , mitte + dy);	// Rechts
@@ -194,10 +214,10 @@ public class Target extends JPanel implements LineListener {
 					Graphics2D gn = (Graphics2D) g2.create();
 					gn.rotate(Math.PI / 4 + Math.PI / 2 * w, mitte, mitte);
 					int dy = gn.getFontMetrics().getAscent() / 2 - 2;
-					for (int i = target.getValue(TargetValue.RING_MIN); target.drawNumber(i); i++) {
+					for (int i = model.getValue(TargetValue.RING_MIN); model.drawNumber(i); i++) {
 						int dx = (int) (gn.getFontMetrics().getStringBounds("" + i, gn).getWidth() / -2) + 2;
-						gn.setColor(target.blackNumber(i) ? black : white);
-						gn.drawString("" + i, mitte + dx, mitte - target.getNumberRadius(i) + dy);
+						gn.setColor(model.blackNumber(i) ? black : white);
+						gn.drawString("" + i, mitte + dx, mitte - model.getNumberRadius(i) + dy);
 					}
 				}
 			}
@@ -248,9 +268,9 @@ public class Target extends JPanel implements LineListener {
 		
 		int ox = 0;
 		int oy = 0;
-		if (target.isDeerTarget()) {
-			ox = target.getValue(TargetValue.OFFSET_X);
-			oy = target.getValue(TargetValue.OFFSET_Y);
+		if (model.isDeerTarget()) {
+			ox = model.getValue(TargetValue.OFFSET_X);
+			oy = model.getValue(TargetValue.OFFSET_Y);
 		}
 
 		g.setColor(Color.GREEN);
