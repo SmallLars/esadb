@@ -10,13 +10,13 @@ public class Group  implements Serializable, Comparable<Group> {
 	private String name;
 	private int from;
 	private int to;
-	private boolean male;
+	private Gender gender;
 
-	public Group(String name, int from, int to, boolean male) {
+	public Group(String name, int from, int to, Gender gender) {
 		this.name = name;
 		this.from = from;
 		this.to = to;
-		this.male = male;
+		this.gender = gender;
 	}
 
 	@Override
@@ -28,12 +28,12 @@ public class Group  implements Serializable, Comparable<Group> {
 		this.name = name;
 	}
 
-	public boolean isMale() {
-		return male;
+	public Gender getGender() {
+		return gender;
 	}
 
-	public void setMale(boolean male) {
-		this.male = male;
+	public void setGender(Gender gender) {
+		this.gender = gender;
 	}
 
 	public int getFrom() {
@@ -52,9 +52,17 @@ public class Group  implements Serializable, Comparable<Group> {
 		this.to = to;
 	}
 
-	public boolean isInGroup(Member member) {
-		if (male != member.isMale()) {
-			return false;
+	public boolean isMember(Member member, boolean forceMaleFemale) {
+		switch (gender) {
+			case ANY:
+				if (forceMaleFemale) return false;
+				break;
+			case MALE:
+				if (member.isFemale()) return false;
+				break;
+			case FEMALE:
+				if (member.isMale()) return false;
+				break;
 		}
 
 		if (from > member.getBirthYear()) return false;
@@ -76,8 +84,6 @@ public class Group  implements Serializable, Comparable<Group> {
 		if (from < o.from) return 1;
 		if (from > o.from) return -1;
 
-		if (male != o.male) return male ? -1 : 1;
-
-		return 0;
+		return gender.compareTo(o.gender);
 	}
 }

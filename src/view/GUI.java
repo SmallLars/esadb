@@ -139,7 +139,7 @@ public class GUI extends JFrame implements ActionListener, ComponentListener {
 				mntmDrucken.setActionCommand("PRINT");
 				mntmDrucken.addActionListener(this);
 
-				mntmVorschau = new JMenuItem("Druckvorschau...");
+				mntmVorschau = new JMenuItem("Anzeigen...");
 				mnErgebnisliste.add(mntmVorschau);
 				mntmVorschau.setActionCommand("PRINTPREVIEW");
 				mntmVorschau.addActionListener(this);
@@ -147,7 +147,7 @@ public class GUI extends JFrame implements ActionListener, ComponentListener {
 			JMenu mnEinzelergebnisse = new JMenu("Einzelergebnisse");
 			mnErgebnisse.add(mnEinzelergebnisse);
 
-				mntmEinzel = new JMenuItem("Druckvorschau...");
+				mntmEinzel = new JMenuItem("Anzeigen...");
 				mnEinzelergebnisse.add(mntmEinzel);
 				mntmEinzel.setActionCommand("SINGLEPREVIEW");
 				mntmEinzel.addActionListener(this);
@@ -278,9 +278,7 @@ public class GUI extends JFrame implements ActionListener, ComponentListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		SimpleAttributeSet style = new SimpleAttributeSet();
-		StyleConstants.setForeground(style, Color.decode("0x00A050"));
-		StyleConstants.setBold(style, true);
+		Color green = Color.decode("0x00A050");
 
 		int returnVal;
 		PrintPreview dv;
@@ -299,7 +297,7 @@ public class GUI extends JFrame implements ActionListener, ComponentListener {
 					if (file == null) return;
 					controller.neu(file);
 					setTitle("ESADB - Datenbank für ESA 2002 - " + controller.getFileName());
-					println("Neu: " + file.getPath() + ".", style);
+					println("Neu: " + file.getPath() + ".", green);
 				}
 				break;
 			case "OPEN":
@@ -316,7 +314,7 @@ public class GUI extends JFrame implements ActionListener, ComponentListener {
 					if (file.exists()) {
 						if (controller.load(file)) {
 							setTitle("ESADB - Datenbank für ESA 2002 - " + controller.getFileName());
-							println("Öffnen: " + file.getPath() + ".", style);
+							println("Öffnen: " + file.getPath() + ".", green);
 						} else {
 							JOptionPane.showMessageDialog(
 								this,
@@ -342,13 +340,13 @@ public class GUI extends JFrame implements ActionListener, ComponentListener {
 					if (file == null) return;
 					controller.save(file);
 					setTitle("ESADB - Datenbank für ESA 2002 - " + controller.getFileName());
-					println("Speichern: " + file.getPath() + ".", style);
+					println("Speichern: " + file.getPath() + ".", green);
 				}
 				break;
 			case "PRINT":
 				PrinterJob pjob = PrinterJob.getPrinterJob();
 			    if (pjob.printDialog() == false) return;
-			    pjob.setPrintable(controller.getModel(), controller.getConfig().getPageFormat());
+			    pjob.setPrintable(controller.getModel().getPrintable(), controller.getConfig().getPageFormat());
 			    try {
 					pjob.print();
 				} catch (PrinterException e1) {
@@ -360,7 +358,7 @@ public class GUI extends JFrame implements ActionListener, ComponentListener {
 				}
 				break;
 			case "PRINTPREVIEW":
-				dv = new PrintPreview(this, controller.getModel(), controller.getConfig().getPageFormat());
+				dv = new PrintPreview(this, controller.getModel().getPrintable(), controller.getConfig().getPageFormat());
 				controller.getConfig().setPageFormat(dv.showDialog());
 				break;
 			case "SINGLEPREVIEW":
@@ -400,13 +398,11 @@ public class GUI extends JFrame implements ActionListener, ComponentListener {
 		}
 	}
 
-	/*
-	SimpleAttributeSet style = new SimpleAttributeSet();
-	StyleConstants.setForeground(style, Color.RED);
-	StyleConstants.setBackground(style, Color.YELLOW);
-	StyleConstants.setBold(style, true);
-	*/
-	public void print(String string, SimpleAttributeSet style) {
+	public void print(String string, Color color) {
+		SimpleAttributeSet style = new SimpleAttributeSet();
+		StyleConstants.setForeground(style, color);
+		StyleConstants.setBold(style, true);
+
 		StyledDocument doc = konsole.getStyledDocument();
 		try {
 			doc.insertString(doc.getLength(), string, style);
@@ -416,8 +412,8 @@ public class GUI extends JFrame implements ActionListener, ComponentListener {
 		konsole.setCaretPosition(konsole.getStyledDocument().getLength());
 	}
 	
-	public void println(String string, SimpleAttributeSet style) {
-		print(string + "\n", style);
+	public void println(String string, Color color) {
+		print(string + "\n", color);
 	}
 
 	private void close() {

@@ -1,12 +1,8 @@
 package model;
 
 
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.print.PageFormat;
+import java.awt.Color;
 import java.awt.print.Printable;
-import java.awt.print.PrinterException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -27,7 +23,7 @@ import controller.Controller;
 import controller.KampfDB;
 
 
-public class Model implements Serializable, Printable {
+public class Model implements Serializable {
 	private static final long serialVersionUID = 2L;
 
 	private Set<Member> schuetzen;
@@ -165,63 +161,37 @@ public class Model implements Serializable, Printable {
 		return model;
 	}
 
-	@Override
-	public int print(Graphics g, PageFormat pageFormat, int pageIndex) throws PrinterException {
-		if (ergebnisse.size() == 0) return Printable.NO_SUCH_PAGE;
+	public Printable getPrintable() {
+		Color red = Color.decode("0xC80000");
+
 		ergebnisse.sort(null);
 
-		int status = Printable.NO_SUCH_PAGE;
-		final double SCALE = 2000 / pageFormat.getImageableWidth();
-
-		Graphics2D g2 = (Graphics2D) g;
-		g2.scale(1.0 / SCALE, 1.0 / SCALE);
-		g2.setFont(new Font("Consolas", Font.PLAIN, 48));
-		
-		final int lineHeight = g2.getFontMetrics().getHeight();
-		final int pageLines = (int) (pageFormat.getImageableHeight() * SCALE / lineHeight) - 2;
-		final int startY = (int) (pageFormat.getImageableY() * SCALE) + 3 * lineHeight;
-		final int startX = (int) (pageFormat.getImageableX() * SCALE);
-
 		SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
-		String headline = String.format("%s - Seite %2d - %s", Controller.get().getFileName(), pageIndex + 1, sdf.format(new Date()));
-		double headLen = g2.getFontMetrics().getStringBounds(headline, g2).getCenterX();
-		g2.drawString(headline, startX + 1000 - (int) headLen, startY - 2 * lineHeight);
+		ResultList resultList = new ResultList(Controller.get().getFileName(), sdf.format(new Date()));
 
-        int lineIndex = pageIndex * -pageLines;
-		int platz = 1;
-		Discipline d = ergebnisse.get(0).getDisziplin();
+		Discipline d = null;
+		Group g = null;
 		for (Start s : ergebnisse) {
+			if (s.getGroup() == null) {
+				String name = ((Single) s).getSchuetze().toString();
+				Controller.get().println(name + " konnte keine Gruppe zugeordnet werden." , red);
+				Controller.get().println("Das Ergebnis in der Diziplin " + s.getDisziplin() + " wird in der Ergebnisliste nicht aufgeführt." , red);
+				continue;
+			}
+
 			if (s.getDisziplin() != d) {
-				if (lineIndex % pageLines != 0) lineIndex++;
-				platz = 1;
 				d = s.getDisziplin();
+				resultList.addDiszipline(d.toString());
+				g = null;
 			}
 
-			if (platz == 1) {
-				if (lineIndex >= 0 && lineIndex < pageLines) {
-					g2.drawString(s.getDisziplin().toString(), startX, startY + lineHeight * lineIndex);
-					status = Printable.PAGE_EXISTS;
-				}
-				lineIndex++;
+			if (s.getGroup() != g) {
+				g = s.getGroup();
+				resultList.addGroup(g.toString());
 			}
-
-			int size = s.lineCount();
-
-			int available = (lineIndex < 0 ? -(lineIndex % pageLines) : pageLines - (lineIndex % pageLines));
-			if (size > available) lineIndex += available;
-
-			if (lineIndex >= 0 && lineIndex < pageLines) {
-				Graphics ge = g2.create();
-				ge.translate(startX, startY + lineHeight * lineIndex);
-				s.draw(ge, platz);
-				status = Printable.PAGE_EXISTS;
-			}
-			platz++;
-			lineIndex += size;
-
-			if (lineIndex >= pageLines) break;
+			resultList.addSingleResult((Single) s);
 		}
 
-		return status;
+		return resultList;
 	}
 }

@@ -1,6 +1,7 @@
 package model;
 
-import java.awt.Graphics;
+
+import java.awt.Graphics2D;
 import java.io.Serializable;
 
 
@@ -9,7 +10,9 @@ public abstract class Start implements Serializable, Comparable<Start> {
 
 	public abstract Discipline getDisziplin();
 
+	public abstract Group getGroup();
+
 	public abstract int lineCount();
 
-	public abstract void draw(Graphics g, int platz);
+	public abstract void draw(Graphics2D g, int platz);
 }

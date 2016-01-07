@@ -67,6 +67,10 @@ public class Member implements Serializable, Comparable<Member> {
 		return geschlecht.equals("m");
 	}
 
+	public boolean isFemale() {
+		return geschlecht.equals("w");
+	}
+
 	public int getBirthYear() {
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(geburtsdatum); 

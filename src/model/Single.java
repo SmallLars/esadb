@@ -1,5 +1,6 @@
 package model;
 
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -65,6 +66,19 @@ public class Single extends Start implements Printable {
 		return disziplin;
 	}
 
+	@Override
+	public Group getGroup() {
+		for (Group g : Controller.get().getConfig().getGroups()) {
+			if (g.isMember(schuetze, true)) return g;
+		}
+
+		for (Group g : Controller.get().getConfig().getGroups()) {
+			if (g.isMember(schuetze, false)) return g;
+		}
+
+		return null;
+	}
+
 	public Member getSchuetze() {
 		return schuetze;
 	}
@@ -124,21 +138,21 @@ public class Single extends Start implements Printable {
 		return ((i - 2) / 4) + 1;
 	}
 
-	public void draw(Graphics g, int platz) {
+	public void draw(Graphics2D g, int platz) {
 		final int lineheight = g.getFontMetrics().getHeight();
 
-		g.drawString(String.format("%2d. %s", platz, schuetze), 0, 0);
+		g.drawString(String.format("%2d. %s", platz, schuetze), 0, lineheight);
 		int anzahl = 0;
 		for (int i = 0; i < disziplin.getSerienAnzahl(); i++) {
 			if (getSerie(false, i) == 0) break;
 
 			int dx = 800 + ((i % 4) * 225);
 			int dy = (i / 4) * lineheight;
-			g.drawString(String.format("%5.1f", getSerie(false, i)), dx, dy);
+			g.drawString(String.format("%5.1f", getSerie(false, i)), dx, dy + lineheight);
 			anzahl++;
 		}
 		int height = ((anzahl - 1) / 4) * lineheight;
-		g.drawString(String.format("%5.1f", getResult(false)), 1800, height);
+		g.drawString(String.format("%5.1f", getResult(false)), 1800, height + lineheight);
 	}
 	
 	@Override
@@ -173,11 +187,18 @@ public class Single extends Start implements Printable {
 	public int compareTo(Start s) {
 		int c;
 
+		// Zuerst nach Disziplin sortieren
 		c = disziplin.compareTo(s.getDisziplin());
 		if (c != 0) return c;
-		
+
+		// Sortierung nach Gruppen
+		c = getGroup().compareTo(s.getGroup());
+		if (c != 0) return c;
+
+		// Mannschaften kommen vor Einzel
 		if (s instanceof Team) return 1;
 
+		// Zwei Einzelstarts werden nun verglichen
 		Single e = (Single) s;
 
 		// 1. Endergebnis vergleichen

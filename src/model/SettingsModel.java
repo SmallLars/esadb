@@ -23,7 +23,7 @@ import java.util.Vector;
 
 
 public class SettingsModel implements Serializable {
-	private static final long serialVersionUID = 2L;
+	private static final long serialVersionUID = 3L;
 	private static final File file = new File("settings.esc");
 	private static final double mmToDots = 72 / 2.54;
 
@@ -71,22 +71,30 @@ public class SettingsModel implements Serializable {
 		year = cal.get(Calendar.YEAR);
 
 		groups = new ArrayList<Group>();
-		groups.add(new Group("Schüler B",          year - 12, year,      true));
-		groups.add(new Group("Schüler B",          year - 12, year,      false));
-		groups.add(new Group("Schüler A",          year - 14, year - 13, true));
-		groups.add(new Group("Schüler A",          year - 14, year - 13, false));
-		groups.add(new Group("Jugend",             year - 16, year - 15, true));
-		groups.add(new Group("Jugend",             year - 16, year - 15, false));
-		groups.add(new Group("Junioren B",         year - 18, year - 17, true));
-		groups.add(new Group("Junioren B",         year - 18, year - 17, false));
-		groups.add(new Group("Junioren A",         year - 20, year - 19, true));
-		groups.add(new Group("Junioren A",         year - 20, year - 19, false));
-		groups.add(new Group("Herren",             year - 45, year - 21, true));
-		groups.add(new Group("Damen",              year - 45, year - 21, false));
-		groups.add(new Group("Altersklasse",       year - 55, year - 46, true));
-		groups.add(new Group("Damen Altersklasse", year - 55, year - 46, false));
-		groups.add(new Group("Senioren",           year - 99, year - 56, true));
-		groups.add(new Group("Seniorinnen",        year - 99, year - 56, false));
+		groups.add(new Group("Schüler B",             year -  12, year,      Gender.ANY));
+		groups.add(new Group("Schüler B - männlich",  year -  12, year,      Gender.MALE));
+		groups.add(new Group("Schüler B - weiblich",  year -  12, year,      Gender.FEMALE));
+		groups.add(new Group("Schüler A",             year -  14, year - 13, Gender.ANY));
+		groups.add(new Group("Schüler A - männlich",  year -  14, year - 13, Gender.MALE));
+		groups.add(new Group("Schüler A - weiblich",  year -  14, year - 13, Gender.FEMALE));
+		groups.add(new Group("Jugend",                year -  16, year - 15, Gender.ANY));
+		groups.add(new Group("Jugend - männlich",     year -  16, year - 15, Gender.MALE));
+		groups.add(new Group("Jugend - weiblich",     year -  16, year - 15, Gender.FEMALE));
+		groups.add(new Group("Junioren B",            year -  18, year - 17, Gender.ANY));
+		groups.add(new Group("Junioren B - männlich", year -  18, year - 17, Gender.MALE));
+		groups.add(new Group("Junioren B - weiblich", year -  18, year - 17, Gender.FEMALE));
+		groups.add(new Group("Junioren A",            year -  20, year - 19, Gender.ANY));
+		groups.add(new Group("Junioren A - männlich", year -  20, year - 19, Gender.MALE));
+		groups.add(new Group("Junioren A - weiblich", year -  20, year - 19, Gender.FEMALE));
+		groups.add(new Group("Herren/Damen",          year -  45, year - 21, Gender.ANY));
+		groups.add(new Group("Herren",                year -  45, year - 21, Gender.MALE));
+		groups.add(new Group("Damen",                 year -  45, year - 21, Gender.FEMALE));
+		groups.add(new Group("Altersklasse - m/w",    year -  55, year - 46, Gender.ANY));
+		groups.add(new Group("Altersklasse",          year -  55, year - 46, Gender.MALE));
+		groups.add(new Group("Damen Altersklasse",    year -  55, year - 46, Gender.FEMALE));
+		groups.add(new Group("Senioren - m/w",        year - 120, year - 56, Gender.ANY));
+		groups.add(new Group("Senioren",              year - 120, year - 56, Gender.MALE));
+		groups.add(new Group("Seniorinnen",           year - 120, year - 56, Gender.FEMALE));
 
 		targets = new TreeSet<TargetModel>();
 		//                         |                      |           |    Karton-    |Band-   |      Durchmesser       |Ring- | Ring  |  Nummer  |   |     |  Vorhalte-   |
@@ -209,9 +217,9 @@ public class SettingsModel implements Serializable {
 		Group g;
 		if (groups.size() > 0) {
 			Group last = groups.get(groups.size() - 1);
-			g = new Group("Neue Gruppe", last.getFrom() - 13, last.getFrom() - 1, last.isMale());
+			g = new Group("Neue Gruppe", last.getFrom() - 13, last.getFrom() - 1, last.getGender());
 		} else {
-			g = new Group("Neue Gruppe", year - 12, year, true);
+			g = new Group("Neue Gruppe", year - 12, year, Gender.MALE);
 		}
 		groups.add(g);
 		return g;
@@ -371,7 +379,10 @@ public class SettingsModel implements Serializable {
 	}
 
 	public static SettingsModel load() {
-		if (!file.exists()) return new SettingsModel();
+		if (!file.exists()) {
+			System.out.println("settings.esc wurde nicht gefunden. Standardkonfiguration wurde geladen.");
+			return new SettingsModel();
+		}
 
 		SettingsModel config = null;
 		ObjectInputStream ois = null;
@@ -382,10 +393,14 @@ public class SettingsModel implements Serializable {
 			Object obj = ois.readObject();
 			if (obj instanceof SettingsModel) {
 				config = (SettingsModel) obj;
+			} else {
+				config = new SettingsModel();
+				System.out.println("settings.esc ist ungültig. Standardkonfiguration wurde geladen.");
 			}
 		}
 		catch (IOException | ClassNotFoundException e) {
-			e.printStackTrace();
+			config = new SettingsModel();
+			System.out.println("settings.esc ist ungültig. Standardkonfiguration wurde geladen.");
 		}
 		finally {
 			if (ois != null) try { ois.close(); } catch (IOException e) {}

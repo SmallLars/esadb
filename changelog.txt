@@ -24,3 +24,6 @@
 
 2.0.4        XX.XX.2016
  - Treffereingabe kann nun per Klick auf die Scheibe erfolgen.
+ - Geschlecht "beliebig" für Mannschaften ergänzt.
+ - Schriften für die Styles Plain, Italic und Italic-Bold ergänzt.
+ - Bei alter oder fehlerhafter Konfiguration wird nun die Standardkonfiguration geladen.

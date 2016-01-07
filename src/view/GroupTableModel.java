@@ -8,6 +8,7 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
+import model.Gender;
 import model.Group;
 
 
@@ -78,7 +79,7 @@ public class GroupTableModel implements TableModel {
 			case 2:
 				return groups.get(row).getFrom();
 			case 3:
-				return groups.get(row).isMale();
+				return groups.get(row).getGender();
 			default:
 				return groups.get(row);
 		}
@@ -110,7 +111,7 @@ public class GroupTableModel implements TableModel {
 			case 2:
 				groups.get(row).setFrom((int) value); break;
 			case 3:
-				groups.get(row).setMale(((String) value).startsWith("m")); break;
+				groups.get(row).setGender((Gender) value); break;
 		}
 		groups.sort(null);
 

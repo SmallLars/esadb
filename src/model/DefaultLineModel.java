@@ -1,5 +1,6 @@
 package model;
 
+
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,8 +10,6 @@ import java.util.Vector;
 
 import javax.swing.ComboBoxModel;
 import javax.swing.Timer;
-import javax.swing.text.SimpleAttributeSet;
-import javax.swing.text.StyleConstants;
 
 import model.comboBoxModel.DisziplinenModel;
 import model.comboBoxModel.SchuetzenModel;
@@ -168,12 +167,11 @@ public class DefaultLineModel implements LineModel, LineReader, ActionListener {
 	}
 
 	public boolean addTreffer(Hit t) {
-		SimpleAttributeSet style = new SimpleAttributeSet();
-		StyleConstants.setBold(style, true);
-		StyleConstants.setForeground(style, Color.decode("0x0050A0"));
-
+		Color red = Color.decode("0xC80000");
+		Color blue = Color.decode("0x0050A0");
+		
 		if (einzel == null) {
-			controller.println(this + ": Schuß von freier Linie erhalten. Zuordnung nicht möglich.", style);
+			controller.println(this + ": Schuß von freier Linie erhalten. Zuordnung nicht möglich.", blue);
 			return false;
 		}
 
@@ -182,13 +180,10 @@ public class DefaultLineModel implements LineModel, LineReader, ActionListener {
 			einzel.toFile("HTErg" + nummer  + ".dat", t.isProbe());
 			setStatus(Status.UPDATE);
 
-			SimpleAttributeSet red = new SimpleAttributeSet();
-			StyleConstants.setBold(red, true);
-			StyleConstants.setForeground(red, Color.decode("0xC80000"));
 			controller.println(String.format("Linie %d: Treffer %s(%d) wurde empfangen und als %s(%d) gespeichert. Linie wurde aktualisiert.", nummer, t.isProbe() ? "P" : "M", oldNum, t.isProbe() ? "P" : "M", t.getNummer()), red);
 		}
 		String s = String.format("Linie %d: %s: %s: %s(%d) %s", nummer, einzel.getSchuetze(), einzel.getDisziplin(), t.isProbe() ? "P" : "M", t.getNummer(), t);
-		controller.println(s, style);
+		controller.println(s, blue);
 		controller.save();
 		modelChanged(RESULT_CHANGED);
 		if (!t.isProbe() && t.getNummer() == 1) modelChanged(STATE_CHANGED);

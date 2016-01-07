@@ -11,6 +11,7 @@ import java.awt.event.MouseEvent;
 import java.util.Arrays;
 import java.util.Vector;
 
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -24,12 +25,14 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.JSpinner.NumberEditor;
+import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableCellRenderer;
 
+import model.Gender;
 import model.Group;
 import model.SettingsModel;
 
@@ -62,7 +65,7 @@ public class SettingsGeneral extends JPanel implements ActionListener, DocumentL
 
 		JLabel lblLinien = new JLabel("Linien");
 		lblLinien.setFont(lblLinien.getFont().deriveFont(18f));
-		lblLinien.setBounds(15, 11, 78, 20);
+		lblLinien.setBounds(15, 11, 62, 20);
 		add(lblLinien);
 
 		spinner = new JSpinner(new SpinnerModel() {
@@ -109,65 +112,71 @@ public class SettingsGeneral extends JPanel implements ActionListener, DocumentL
 				listener.remove(l);
 			}
 		});
-		spinner.setBounds(15, 42, 91, 23);
+		spinner.setBounds(15, 42, 62, 23);
 		this.add(spinner);
-		spinner.setEditor(new JSpinner.DefaultEditor(spinner));
-		
-		JButton btnEinfgen = new JButton("Einfügen");
-		btnEinfgen.setBounds(15, 81, 91, 20);
+		spinner.setEditor(new JSpinner.DefaultEditor(spinner){
+			{getTextField().setHorizontalAlignment(SwingConstants.RIGHT);}
+		});
+
+		JButton btnEinfgen = new JButton("+");
+		btnEinfgen.setBounds(15, 81, 62, 20);
 		btnEinfgen.setActionCommand("ADD_LINE");
 		btnEinfgen.addActionListener(this);
 		this.add(btnEinfgen);
 
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(15, 117, 91, 251);
+		scrollPane.setBounds(15, 117, 62, 251);
+		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		this.add(scrollPane);
 
 		listModel = new DefaultListModel<Integer>();
 		for (int i : config.getLines()) listModel.addElement(i);
 		list = new JList<Integer>(listModel);
+		list.setBorder(new EmptyBorder(0, 10, 0, 10));
 		scrollPane.setViewportView(list);
 		list.setLayoutOrientation(JList.VERTICAL);
+		((DefaultListCellRenderer) list.getCellRenderer()).setHorizontalAlignment(SwingConstants.RIGHT);
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-		JButton btnLschen = new JButton("Löschen");
-		btnLschen.setBounds(15, 384, 91, 20);
+		JButton btnLschen = new JButton("-");
+		btnLschen.setBounds(15, 384, 62, 20);
 		btnLschen.setActionCommand("REMOVE_LINE");
 		btnLschen.addActionListener(this);
 		this.add(btnLschen);
 
 		JSeparator separator = new JSeparator();
 		separator.setOrientation(SwingConstants.VERTICAL);
-		separator.setBounds(121, 11, 2, 393);
+		separator.setBounds(93, 11, 2, 393);
 		add(separator);
 
 		JLabel lblDatei = new JLabel("Standarddatei");
 		lblDatei.setFont(lblDatei.getFont().deriveFont(18f));
-		lblDatei.setBounds(138, 11, 200, 20);
+		lblDatei.setBounds(110, 11, 200, 20);
 		add(lblDatei);
 
 		JLabel lblDateipfad = new JLabel("Dateipfad");
-		lblDateipfad.setBounds(138, 42, 100, 14);
+		lblDateipfad.setBounds(110, 42, 100, 14);
 		add(lblDateipfad);
 
 		pathField = new JTextField(config.getPath());
-		pathField.setBounds(138, 60, 328, 20);
+		pathField.setBounds(110, 60, 328, 20);
 		pathField.setColumns(10);
 		pathField.setEditable(false);
 		add(pathField);
 		
 		JButton button = new JButton("...");
-		button.setBounds(476, 60, 32, 20);
+		button.setBounds(448, 60, 32, 20);
 		button.setActionCommand("PATH");
 		button.addActionListener(this);
 		add(button);
 
 		JLabel lblDateiname = new JLabel("Dateiname");
-		lblDateiname.setBounds(528, 42, 100, 14);
+		lblDateiname.setBounds(500, 42, 100, 14);
 		add(lblDateiname);
 
 		nameField = new JTextField(config.getFilename());
-		nameField.setBounds(528, 60, 150, 20);
+		nameField.setBounds(500, 60, 178, 20);
 		nameField.setColumns(10);
 		nameField.getDocument().addDocumentListener(this);
 		add(nameField);
@@ -177,12 +186,12 @@ public class SettingsGeneral extends JPanel implements ActionListener, DocumentL
 		add(lblesa);
 
 		JSeparator separator_1 = new JSeparator();
-		separator_1.setBounds(138, 95, 582, 2);
+		separator_1.setBounds(110, 95, 610, 2);
 		add(separator_1);
 
 		JLabel lblAltersgruppen = new JLabel("Altersgruppen");
 		lblAltersgruppen.setFont(lblAltersgruppen.getFont().deriveFont(18f));
-		lblAltersgruppen.setBounds(138, 112, 200, 20);
+		lblAltersgruppen.setBounds(110, 112, 200, 20);
 		add(lblAltersgruppen);
 
 		gtm = new GroupTableModel(new Vector<Group>(Arrays.asList(config.getGroups())));
@@ -236,26 +245,20 @@ public class SettingsGeneral extends JPanel implements ActionListener, DocumentL
 				super.setValue("(" + (Controller.get().getConfig().getYear() - year) + ") " + year);
 			}
 		});
-		table.getColumnModel().getColumn(3).setCellRenderer(new DefaultTableCellRenderer() {
-			@Override
-			protected void setValue(Object o) {
-				super.setValue((Boolean) o ? "männlich" : "weiblich");
-			}
-		});
 
 		table.getColumnModel().getColumn(1).setCellEditor(new TableEditor(new JSpinner(), 0));
 		table.getColumnModel().getColumn(2).setCellEditor(new TableEditor(new JSpinner(), 0));
-		table.getColumnModel().getColumn(3).setCellEditor(new TableEditor(new JComboBox<String>(new String[] {"männlich", "weiblich"}), 0));
+		table.getColumnModel().getColumn(3).setCellEditor(new TableEditor(new JComboBox<Gender>(Gender.values()), 0));
 
 		JScrollPane scrollPane1 = new JScrollPane();
 		scrollPane1.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPane1.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		scrollPane1.setBounds(138, 143, 482, 225);
+		scrollPane1.setBounds(110, 143, 510, 225);
 		scrollPane1.setViewportView(table);
 		add(scrollPane1);
 
 		JButton button_1 = new JButton("-");
-		button_1.setBounds(138, 384, 45, 20);
+		button_1.setBounds(110, 384, 45, 20);
 		button_1.setActionCommand("REMOVE_GROUP");
 		button_1.addActionListener(this);
 		add(button_1);

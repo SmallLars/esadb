@@ -20,8 +20,6 @@ import java.util.Vector;
 
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
-import javax.swing.text.SimpleAttributeSet;
-import javax.swing.text.StyleConstants;
 
 import model.Rule;
 import model.SettingsModel;
@@ -42,7 +40,6 @@ public class Controller {
 	private static Controller controller = null;
 	private static GUI gui = null;
 
-	private SimpleAttributeSet redStyle;
 	private OutputStream errorLog = null;
 
 	private List<ModelChangeListener> modelChangeListener;
@@ -175,8 +172,8 @@ public class Controller {
 		return false;
 	}
 
-	public void println(String string, SimpleAttributeSet style) {
-		gui.println(string, style);
+	public void println(String string, Color color) {
+		gui.println(string, color);
 	}
 
 	public void addModelChangeListener(ModelChangeListener l) {
@@ -214,17 +211,13 @@ public class Controller {
 	}
 
 	private void initConsole() {
-		redStyle = new SimpleAttributeSet();
-		StyleConstants.setBold(redStyle, true);
-		StyleConstants.setForeground(redStyle, Color.decode("0xC80000"));
-
 		try {
 			errorLog = new FileOutputStream("error.log", true);
 		} catch (FileNotFoundException e) {}
 		PrintStream ps = new PrintStream(new OutputStream() {
 			@Override
 			public void write(int b) throws IOException {
-				if (gui != null) gui.print(String.valueOf((char) b), redStyle);
+				if (gui != null) gui.print(String.valueOf((char) b), Color.decode("0xC80000"));
 				if (errorLog != null) errorLog.write(b);
 			}
 		}, false);
@@ -254,12 +247,16 @@ public class Controller {
 	private void initFont() {
 		// http://all-fonts.com/about-fonts/download-arial-font/
 		ClassLoader classloader = Thread.currentThread().getContextClassLoader();
-		InputStream is = classloader.getResourceAsStream("Vera-Bold.ttf");
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-		try {
-			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, is));
-		} catch (FontFormatException | IOException e) {
-			e.printStackTrace();
+		String fontFiles[] = {"Vera.ttf", "Vera-Bold.ttf", "Vera-Bold-Italic.ttf", "Vera-Italic.ttf"};
+		for (String font : fontFiles) {
+			InputStream is = classloader.getResourceAsStream(font);
+			try {
+				Font f = Font.createFont(Font.TRUETYPE_FONT, is);
+				ge.registerFont(f);
+			} catch (FontFormatException | IOException e) {
+				e.printStackTrace();
+			}
 		}
 
 		String fontString = "Bitstream Vera Sans";
@@ -274,7 +271,7 @@ public class Controller {
 		UIManager.put("Button.font", b12);
 		UIManager.put("MenuItem.acceleratorFont", p10);
 		UIManager.put("Spinner.font", b12);
-		UIManager.put("TableHeader.font", p12);
+		UIManager.put("TableHeader.font", b12);
 		UIManager.put("TextPane.font", p12);
 		UIManager.put("PasswordField.font", p12);
 		UIManager.put("ColorChooser.font", p12);
@@ -290,7 +287,7 @@ public class Controller {
 		UIManager.put("Tree.font", p12);
 		UIManager.put("ToggleButton.font", b12);
 		UIManager.put("EditorPane.font", p12);
-		UIManager.put("List.font", b12);
+		UIManager.put("List.font", p12);
 		UIManager.put("CheckBox.font", b12);
 		UIManager.put("MenuBar.font", b12);
 		UIManager.put("OptionPane.font", p12);
@@ -317,9 +314,7 @@ public class Controller {
 				try {
 					out.close();
 					lockfile.delete();
-				} catch (IOException e) {
-					// e.printStackTrace();
-				}
+				} catch (IOException e) {}
 			}
 		}));
 

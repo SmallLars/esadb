@@ -3,6 +3,7 @@
 /definitionen/
 /extern/
 
+*.esa
 settings.esc
 data.mdb
 error.log
