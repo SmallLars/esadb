@@ -18,45 +18,69 @@ import controller.Controller;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JSeparator;
+import javax.swing.SwingConstants;
 
 
 @SuppressWarnings("serial")
 public class ResultListOptions extends JDialog implements ActionListener {
 
-	private DefaultComboBoxModel<Discipline> modelD;
-	private JCheckBox chckbxDiscipline;
-	private JComboBox<Discipline> cbDisziplin;
-	private JCheckBox chckbxNewPage;
+	private String action;
+
 	private JCheckBox chckbxGender;
 	private JCheckBox chckbxGroup;
-	private JLabel lblDisziplinen;
-	private JSeparator separator;
-	private JLabel lblGruppen;
-	private JSeparator separator_1;
+
+	private JCheckBox chckbxDiscipline;
+	private DefaultComboBoxModel<Discipline> modelD;
+	private JComboBox<Discipline> cbDisziplin;
+	private JCheckBox chckbxNewPage;
+
 	public ResultListOptions(Frame parent) {
 		super(parent, "Ergebnisliste");
 		setResizable(false);
 
 		setModal(true);
 		setModalityType(ModalityType.APPLICATION_MODAL);
-		setBounds(100, 100, 348, 278);
+		setSize(536, 188);
+		setLocationRelativeTo(parent);
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 
 		Container contentPanel = getContentPane();
 		contentPanel.setLayout(null);
 
-		lblDisziplinen = new JLabel("Disziplinen");
-		lblDisziplinen.setBounds(10, 11, 300, 14);
-		getContentPane().add(lblDisziplinen);
+		JLabel lblGruppen = new JLabel("Gruppen");
+		lblGruppen.setBounds(10, 11, 200, 14);
+		contentPanel.add(lblGruppen);
+
+		chckbxGender = new JCheckBox("Nach Geschlecht trennen");
+		chckbxGender.setSelected(true);
+		chckbxGender.setBounds(10, 29, 200, 23);
+		chckbxGender.addActionListener(this);
+		contentPanel.add(chckbxGender);
+
+		chckbxGroup = new JCheckBox("Nach Altersgruppen trennen");
+		chckbxGroup.setSelected(true);
+		chckbxGroup.setBounds(10, 58, 200, 23);
+		chckbxGroup.addActionListener(this);
+		contentPanel.add(chckbxGroup);
+
+		JSeparator separator_1 = new JSeparator();
+		separator_1.setOrientation(SwingConstants.VERTICAL);
+		separator_1.setBounds(235, 11, 2, 95);
+		contentPanel.add(separator_1);
+
+		JLabel lblDisziplinen = new JLabel("Disziplinen");
+		lblDisziplinen.setBounds(252, 11, 168, 14);
+		contentPanel.add(lblDisziplinen);
 
 		chckbxDiscipline = new JCheckBox("Nur folgende Disziplin auswerten:");
-		chckbxDiscipline.setBounds(10, 29, 300, 23);
+		chckbxDiscipline.setSelected(false);
+		chckbxDiscipline.setBounds(252, 29, 268, 23);
 		chckbxDiscipline.addActionListener(this);
-		getContentPane().add(chckbxDiscipline);
+		contentPanel.add(chckbxDiscipline);
 
 		modelD = new DefaultComboBoxModel<Discipline>();
 		cbDisziplin = new JComboBox<Discipline>(modelD);
-		cbDisziplin.setBounds(32, 59, 300, 22);
+		cbDisziplin.setBounds(274, 59, 246, 22);
 		for (Start s : Controller.get().getModel().getErgebnisse()) {
 			if (modelD.getIndexOf(s.getDisziplin()) == -1) {
 				cbDisziplin.addItem(s.getDisziplin());
@@ -66,55 +90,45 @@ public class ResultListOptions extends JDialog implements ActionListener {
 		contentPanel.add(cbDisziplin);
 
 		chckbxNewPage = new JCheckBox("Neue Seite für jede Disziplin");
-		chckbxNewPage.setBounds(10, 88, 300, 23);
-		getContentPane().add(chckbxNewPage);
+		chckbxNewPage.setBounds(252, 87, 268, 23);
+		contentPanel.add(chckbxNewPage);
 
-		separator = new JSeparator();
-		separator.setBounds(10, 118, 322, 2);
-		getContentPane().add(separator);
-
-		lblGruppen = new JLabel("Gruppen");
-		lblGruppen.setBounds(10, 132, 200, 14);
-		getContentPane().add(lblGruppen);
-
-		chckbxGender = new JCheckBox("Nach Geschlecht trennen");
-		chckbxGender.setSelected(true);
-		chckbxGender.setBounds(10, 150, 300, 23);
-		chckbxGender.addActionListener(this);
-		contentPanel.add(chckbxGender);
-		
-		chckbxGroup = new JCheckBox("Nach Altersgruppen trennen");
-		chckbxGroup.setSelected(true);
-		chckbxGroup.setBounds(10, 176, 300, 23);
-		chckbxGroup.addActionListener(this);
-		contentPanel.add(chckbxGroup);
-
-		separator_1 = new JSeparator();
-		separator_1.setBounds(10, 206, 322, 2);
-		getContentPane().add(separator_1);
+		JSeparator separator = new JSeparator();
+		separator.setBounds(10, 116, 510, 2);
+		contentPanel.add(separator);
 
 		JButton cancelButton = new JButton("Abbrechen");
-		cancelButton.setBounds(10, 219, 120, 23);
-		contentPanel.add(cancelButton);
+		cancelButton.setBounds(10, 129, 120, 23);
 		cancelButton.setActionCommand("CANCEL");
 		cancelButton.addActionListener(this);
+		contentPanel.add(cancelButton);
+		getRootPane().setDefaultButton(cancelButton);
 
-		JButton okButton = new JButton("Speichern");
-		okButton.setBounds(212, 219, 120, 23);
-		contentPanel.add(okButton);
-		okButton.setActionCommand("OK");
-		okButton.addActionListener(this);
-		getRootPane().setDefaultButton(okButton);
+		JButton printButton = new JButton("Drucken");
+		printButton.setBounds(270, 129, 120, 23);
+		printButton.setActionCommand("PRINT");
+		printButton.addActionListener(this);
+		contentPanel.add(printButton);
+
+		JButton showButton = new JButton("Anzeigen");
+		showButton.setBounds(400, 129, 120, 23);
+		showButton.setActionCommand("SHOW");
+		showButton.addActionListener(this);
+		contentPanel.add(showButton);
+	}
+
+	public String showDialog() {
+		setVisible(true);
+		return action;
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		switch (e.getActionCommand()) {
-			case "OK":
-				// TODO speichern
-				setVisible(false);
-				break;
+		action = e.getActionCommand();
+		switch (action) {
 			case "CANCEL":
+			case "PRINT":
+			case "SHOW":
 				setVisible(false);
 				break;
 			default:

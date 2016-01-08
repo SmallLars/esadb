@@ -49,24 +49,6 @@ import printPreview.PrintPreview;
 public class GUI extends JFrame implements ActionListener, ComponentListener {
 	private Controller controller;
 
-	private JMenuItem mntmNeu;
-	private JMenuItem mntmLaden;
-	private JMenuItem mntmSpeichern;
-	private JMenuItem mntmEinstellungen;
-	private JMenuItem mntmBeenden;
-
-	private JMenuItem mntmDrucken;
-	private JMenuItem mntmVorschau;
-	private JMenuItem mntmResultOptions;
-	private JMenuItem mntmEinzel;
-	private JMenuItem mntmEinzel_1;
-	private JMenuItem mntmTreffer;
-
-	private JMenuItem mntmSchtzen;
-	private JMenuItem mntmDisziplinen;
-	
-	private JMenuItem mntmInfo;
-
 	private JPanel contentPane;
 	private JTextPane konsole;
 	private Target scheiben[];
@@ -100,31 +82,31 @@ public class GUI extends JFrame implements ActionListener, ComponentListener {
 		JMenu mnDatei = new JMenu("Datei");
 		menuBar.add(mnDatei);
 
-			mntmNeu = new JMenuItem("Neu...");
+			JMenuItem mntmNeu = new JMenuItem("Neu...");
 			mntmNeu.setActionCommand("NEW");
 			mntmNeu.addActionListener(this);
 			mnDatei.add(mntmNeu);
 
-			mntmLaden = new JMenuItem("Öffnen...");
+			JMenuItem mntmLaden = new JMenuItem("Öffnen...");
 			mntmLaden.setActionCommand("OPEN");
 			mntmLaden.addActionListener(this);
 			mnDatei.add(mntmLaden);
 
-			mntmSpeichern = new JMenuItem("Speichern unter...");
+			JMenuItem mntmSpeichern = new JMenuItem("Speichern unter...");
 			mntmSpeichern.setActionCommand("SAVEAS");
 			mntmSpeichern.addActionListener(this);
 			mnDatei.add(mntmSpeichern);
 
 			mnDatei.addSeparator();
 
-			mntmEinstellungen = new JMenuItem("Einstellungen...");
+			JMenuItem mntmEinstellungen = new JMenuItem("Einstellungen...");
 			mntmEinstellungen.setActionCommand("PREFERENCES");
 			mntmEinstellungen.addActionListener(this);
 			mnDatei.add(mntmEinstellungen);
 
 			mnDatei.addSeparator();
 
-			mntmBeenden = new JMenuItem("Beenden");
+			JMenuItem mntmBeenden = new JMenuItem("Beenden");
 			mntmBeenden.setActionCommand("CLOSE");
 			mntmBeenden.addActionListener(this);
 			mnDatei.add(mntmBeenden);
@@ -132,40 +114,27 @@ public class GUI extends JFrame implements ActionListener, ComponentListener {
 		JMenu mnErgebnisse = new JMenu("Ergebnisse");
 		menuBar.add(mnErgebnisse);
 
-			JMenu mnErgebnisliste = new JMenu("Ergebnisliste");
-			mnErgebnisse.add(mnErgebnisliste);
-
-				mntmDrucken = new JMenuItem("Drucken...");
-				mnErgebnisliste.add(mntmDrucken);
-				mntmDrucken.setActionCommand("PRINT");
-				mntmDrucken.addActionListener(this);
-
-				mntmVorschau = new JMenuItem("Anzeigen...");
-				mnErgebnisliste.add(mntmVorschau);
-				mntmVorschau.setActionCommand("PRINTPREVIEW");
-				mntmVorschau.addActionListener(this);
-
-				mntmResultOptions = new JMenuItem("Optionen...");
-				mnErgebnisliste.add(mntmResultOptions);
-				mntmResultOptions.setActionCommand("PRINTOPTIONS");
-				mntmResultOptions.addActionListener(this);
+			JMenuItem mntmResultOptions = new JMenuItem("Ergebnisliste...");
+			mnErgebnisse.add(mntmResultOptions);
+			mntmResultOptions.setActionCommand("RESULTLIST");
+			mntmResultOptions.addActionListener(this);
 
 			JMenu mnEinzelergebnisse = new JMenu("Einzelergebnisse");
 			mnErgebnisse.add(mnEinzelergebnisse);
 
-				mntmEinzel = new JMenuItem("Anzeigen...");
+				JMenuItem mntmEinzel = new JMenuItem("Anzeigen...");
 				mnEinzelergebnisse.add(mntmEinzel);
 				mntmEinzel.setActionCommand("SINGLEPREVIEW");
 				mntmEinzel.addActionListener(this);
 
-				mntmEinzel_1 = new JMenuItem("Bearbeiten...");
+				JMenuItem mntmEinzel_1 = new JMenuItem("Bearbeiten...");
 				mnEinzelergebnisse.add(mntmEinzel_1);
 				mntmEinzel_1.setActionCommand("SINGLEEDIT");
 				mntmEinzel_1.addActionListener(this);
 
 			mnErgebnisse.addSeparator();
 
-			mntmTreffer = new JMenuItem("Treffer eingeben...");
+			JMenuItem mntmTreffer = new JMenuItem("Treffer eingeben...");
 			mntmTreffer.setActionCommand("TREFFERADD");
 			mntmTreffer.addActionListener(this);
 			mnErgebnisse.add(mntmTreffer);
@@ -173,12 +142,12 @@ public class GUI extends JFrame implements ActionListener, ComponentListener {
 		JMenu mnStammdaten = new JMenu("Stammdaten");
 		menuBar.add(mnStammdaten);
 
-			mntmSchtzen = new JMenuItem("Schützen...");
+			JMenuItem mntmSchtzen = new JMenuItem("Schützen...");
 			mntmSchtzen.setActionCommand("SCHUETZEN");
 			mntmSchtzen.addActionListener(this);
 			mnStammdaten.add(mntmSchtzen);
 
-			mntmDisziplinen = new JMenuItem("Disziplinen...");
+			JMenuItem mntmDisziplinen = new JMenuItem("Disziplinen...");
 			mntmDisziplinen.setActionCommand("DISZIPLINEN");
 			mntmDisziplinen.addActionListener(this);
 			mnStammdaten.add(mntmDisziplinen);
@@ -186,7 +155,7 @@ public class GUI extends JFrame implements ActionListener, ComponentListener {
 		JMenu mnHilfe = new JMenu("Hilfe");
 		menuBar.add(mnHilfe);
 
-			mntmInfo = new JMenuItem("Info");
+			JMenuItem mntmInfo = new JMenuItem("Info");
 			mntmInfo.setActionCommand("INFO");
 			mntmInfo.addActionListener(this);
 			mnHilfe.add(mntmInfo);
@@ -349,26 +318,28 @@ public class GUI extends JFrame implements ActionListener, ComponentListener {
 					println("Speichern: " + file.getPath() + ".", green);
 				}
 				break;
-			case "PRINT":
-				PrinterJob pjob = PrinterJob.getPrinterJob();
-			    if (pjob.printDialog() == false) return;
-			    pjob.setPrintable(controller.getModel().getPrintable(), controller.getConfig().getPageFormat());
-			    try {
-					pjob.print();
-				} catch (PrinterException e1) {
-					JOptionPane.showMessageDialog(	this,
-													"Druckfehler: " + e1.getMessage(),
-													"Fehler",
-													JOptionPane.WARNING_MESSAGE);
-				}
-				break;
-			case "PRINTPREVIEW":
-				dv = new PrintPreview(this, controller.getModel().getPrintable(), controller.getConfig().getPageFormat());
-				controller.getConfig().setPageFormat(dv.showDialog());
-				break;
-			case "PRINTOPTIONS":
+			case "RESULTLIST":
 				ResultListOptions rlo = new ResultListOptions(this);
-				rlo.setVisible(true);
+				String action = rlo.showDialog();
+				if (action.equals("PRINT")) {
+					PrinterJob pjob = PrinterJob.getPrinterJob();
+				    if (pjob.printDialog() == false) return;
+				    pjob.setPrintable(controller.getModel().getPrintable(), controller.getConfig().getPageFormat());
+				    try {
+						pjob.print();
+					} catch (PrinterException e1) {
+						JOptionPane.showMessageDialog(
+							this,
+							"Druckfehler: " + e1.getMessage(),
+							"Fehler",
+							JOptionPane.WARNING_MESSAGE
+						);
+					}
+				}
+				if (action.equals("SHOW")) {
+					dv = new PrintPreview(this, controller.getModel().getPrintable(), controller.getConfig().getPageFormat());
+					controller.getConfig().setPageFormat(dv.showDialog());
+				}
 				break;
 			case "SINGLEPREVIEW":
 				SingleSelection einzel = new SingleSelection(this);

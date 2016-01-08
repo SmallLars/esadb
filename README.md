@@ -45,13 +45,14 @@ auf die Linien in das Installationsverzeichnis von ESA 2002 kopiert werden.
 
 ## Screenshots:
 
-![Hautprogramm](https://github.com/SmallLars/esadb/raw/master/pub/main.png)
+[![Hautprogramm](https://github.com/SmallLars/esadb/raw/master/pub/main_tn.png)](https://github.com/SmallLars/esadb/raw/master/pub/main.png)
+[![Treffereditor](https://github.com/SmallLars/esadb/raw/master/pub/hits_tn.png)](https://github.com/SmallLars/esadb/raw/master/pub/hits.png)
 
-![Scheibeneditor](https://github.com/SmallLars/esadb/raw/master/pub/ringtarget.png)
+[![Scheibeneditor](https://github.com/SmallLars/esadb/raw/master/pub/ringtarget_tn.png)](https://github.com/SmallLars/esadb/raw/master/pub/ringtarget.png)
+[![Scheibeneditor](https://github.com/SmallLars/esadb/raw/master/pub/deertarget_tn.png)](https://github.com/SmallLars/esadb/raw/master/pub/deertarget.png)
 
-![Scheibeneditor](https://github.com/SmallLars/esadb/raw/master/pub/deertarget.png)
-
-![Treffereditor](https://github.com/SmallLars/esadb/raw/master/pub/hits.png)
+[![Einzelergebnis - Wertung](https://github.com/SmallLars/esadb/raw/master/pub/result_match_tn.png)](https://github.com/SmallLars/esadb/raw/master/pub/result_match.png)
+[![Einzelergebnis - Probe und Wertung](https://github.com/SmallLars/esadb/raw/master/pub/result_both_tn.png)](https://github.com/SmallLars/esadb/raw/master/pub/result_both.png)
 
 ## Dokumentation:
 
