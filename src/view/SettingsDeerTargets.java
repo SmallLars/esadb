@@ -26,6 +26,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Toolkit;
 import java.io.File;
 
@@ -42,6 +43,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.SwingConstants;
 
 import controller.Controller;
+
 import javax.swing.JToggleButton;
 
 
@@ -144,6 +146,7 @@ public class SettingsDeerTargets extends JPanel implements ActionListener, Chang
 
 		tgl_anzeige = new JToggleButton("Wertung");
 		tgl_anzeige.setBounds(X[0], Y[0] + 1 * Y[1], 90, 20);
+		tgl_anzeige.setFont(tgl_anzeige.getFont().deriveFont(Font.PLAIN));
 		addCaption(tgl_anzeige, this, "Anzeige", "");
 		tgl_anzeige.setActionCommand("Anzeige");
 		tgl_anzeige.addActionListener(this);

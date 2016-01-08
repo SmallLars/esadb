@@ -1,7 +1,6 @@
 package model;
 
 
-import java.awt.Color;
 import java.awt.print.Printable;
 import java.io.File;
 import java.io.FileInputStream;
@@ -162,8 +161,6 @@ public class Model implements Serializable {
 	}
 
 	public Printable getPrintable() {
-		Color red = Color.decode("0xC80000");
-
 		ergebnisse.sort(null);
 
 		SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
@@ -172,13 +169,6 @@ public class Model implements Serializable {
 		Discipline d = null;
 		Group g = null;
 		for (Start s : ergebnisse) {
-			if (s.getGroup() == null) {
-				String name = ((Single) s).getSchuetze().toString();
-				Controller.get().println(name + " konnte keine Gruppe zugeordnet werden." , red);
-				Controller.get().println("Das Ergebnis in der Diziplin " + s.getDisziplin() + " wird in der Ergebnisliste nicht aufgeführt." , red);
-				continue;
-			}
-
 			if (s.getDisziplin() != d) {
 				d = s.getDisziplin();
 				resultList.addDiszipline(d.toString());

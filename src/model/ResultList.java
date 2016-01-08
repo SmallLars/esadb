@@ -27,15 +27,17 @@ public class ResultList implements Printable {
 	private ArrayList<Integer> pages;
 
 	private static final int VSPACE = 0;
-	private static final int DISCIPLINE = 1;
-	private static final int GROUP = 2;
-	private static final int RESULT_SINGLE = 3;	
+	private static final int NEWPAGE = 1;
+	private static final int DISCIPLINE = 2;
+	private static final int GROUP = 3;
 	private static final int RESULT_TEAM = 4;
+	private static final int RESULT_SINGLE = 5;	
 
 	private static final int HEADLINE_HEIGHT = 100;
 	private static final int DISCIPLINE_HEIGHT = 70;
 	private static final int GROUP_HEIGHT = 60;
-	private static final int RESULT_SINGLE_HEIGHT = 49;	
+	//private static final int RESULT_TEAM_HEIGHT = 49;
+	private static final int RESULT_SINGLE_HEIGHT = 49;
 
 	public ResultList(String filename, String date) {
 		this.filename = filename;
@@ -65,7 +67,7 @@ public class ResultList implements Printable {
 				Entry e = entrys.get(i);
 				usedHeight += e.height;
 
-				if (e.type == VSPACE) continue;
+				if (e.type == VSPACE || e.type == NEWPAGE) continue;
 
 				int forwardCheck = 0;
 				if (e.type == DISCIPLINE || e.type == GROUP) {
@@ -121,6 +123,10 @@ public class ResultList implements Printable {
 		}
 
 		return Printable.PAGE_EXISTS;
+	}
+
+	public void addNewPage() {
+		if (entrys.size() > 0) entrys.add(new Entry(NEWPAGE, null, Integer.MAX_VALUE / 2));
 	}
 
 	public void addDiszipline(String name) {

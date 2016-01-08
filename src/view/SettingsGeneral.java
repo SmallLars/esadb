@@ -119,7 +119,7 @@ public class SettingsGeneral extends JPanel implements ActionListener, DocumentL
 		});
 
 		JButton btnEinfgen = new JButton("+");
-		btnEinfgen.setBounds(15, 81, 62, 20);
+		btnEinfgen.setBounds(24, 81, 44, 20);
 		btnEinfgen.setActionCommand("ADD_LINE");
 		btnEinfgen.addActionListener(this);
 		this.add(btnEinfgen);
@@ -140,7 +140,7 @@ public class SettingsGeneral extends JPanel implements ActionListener, DocumentL
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
 		JButton btnLschen = new JButton("-");
-		btnLschen.setBounds(15, 384, 62, 20);
+		btnLschen.setBounds(24, 384, 44, 20);
 		btnLschen.setActionCommand("REMOVE_LINE");
 		btnLschen.addActionListener(this);
 		this.add(btnLschen);

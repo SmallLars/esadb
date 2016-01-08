@@ -57,6 +57,7 @@ public class GUI extends JFrame implements ActionListener, ComponentListener {
 
 	private JMenuItem mntmDrucken;
 	private JMenuItem mntmVorschau;
+	private JMenuItem mntmResultOptions;
 	private JMenuItem mntmEinzel;
 	private JMenuItem mntmEinzel_1;
 	private JMenuItem mntmTreffer;
@@ -143,6 +144,11 @@ public class GUI extends JFrame implements ActionListener, ComponentListener {
 				mnErgebnisliste.add(mntmVorschau);
 				mntmVorschau.setActionCommand("PRINTPREVIEW");
 				mntmVorschau.addActionListener(this);
+
+				mntmResultOptions = new JMenuItem("Optionen...");
+				mnErgebnisliste.add(mntmResultOptions);
+				mntmResultOptions.setActionCommand("PRINTOPTIONS");
+				mntmResultOptions.addActionListener(this);
 
 			JMenu mnEinzelergebnisse = new JMenu("Einzelergebnisse");
 			mnErgebnisse.add(mnEinzelergebnisse);
@@ -354,12 +360,15 @@ public class GUI extends JFrame implements ActionListener, ComponentListener {
 													"Druckfehler: " + e1.getMessage(),
 													"Fehler",
 													JOptionPane.WARNING_MESSAGE);
-					//e1.printStackTrace();
 				}
 				break;
 			case "PRINTPREVIEW":
 				dv = new PrintPreview(this, controller.getModel().getPrintable(), controller.getConfig().getPageFormat());
 				controller.getConfig().setPageFormat(dv.showDialog());
+				break;
+			case "PRINTOPTIONS":
+				ResultListOptions rlo = new ResultListOptions(this);
+				rlo.setVisible(true);
 				break;
 			case "SINGLEPREVIEW":
 				SingleSelection einzel = new SingleSelection(this);

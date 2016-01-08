@@ -265,7 +265,7 @@ public class Controller {
 		Font p12 = new Font(fontString, Font.PLAIN, 11);
 
 		UIManager.put("Label.font", b12);
-		UIManager.put("ComboBox.font", b12);
+		UIManager.put("ComboBox.font", p12);
 		UIManager.put("Table.font", p12);
 		UIManager.put("InternalFrame.titleFont", b12);
 		UIManager.put("Button.font", b12);
@@ -288,7 +288,7 @@ public class Controller {
 		UIManager.put("ToggleButton.font", b12);
 		UIManager.put("EditorPane.font", p12);
 		UIManager.put("List.font", p12);
-		UIManager.put("CheckBox.font", b12);
+		UIManager.put("CheckBox.font", p12);
 		UIManager.put("MenuBar.font", b12);
 		UIManager.put("OptionPane.font", p12);
 		UIManager.put("Panel.font", p12);

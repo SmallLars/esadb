@@ -1,7 +1,7 @@
 package view;
 
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
+
+import java.awt.Container;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,8 +12,6 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 import javax.swing.JComboBox;
 
 import model.Discipline;
@@ -27,7 +25,6 @@ import javax.swing.JCheckBox;
 @SuppressWarnings("serial")
 public class SingleSelection extends JDialog implements ActionListener {
 
-	private final JPanel contentPanel = new JPanel();
 	private List<Single> ergebnisse;
 	private boolean okKlick;
 	
@@ -52,9 +49,7 @@ public class SingleSelection extends JDialog implements ActionListener {
 		setBounds(100, 100, 450, 300);
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 
-		getContentPane().setLayout(new BorderLayout());
-		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-		getContentPane().add(contentPanel, BorderLayout.CENTER);
+		Container contentPanel = getContentPane();
 		contentPanel.setLayout(null);
 
 		modelD = new DefaultComboBoxModel<Discipline>();
@@ -83,20 +78,18 @@ public class SingleSelection extends JDialog implements ActionListener {
 		chckbxMatch.setBounds(10, 132, 97, 23);
 		contentPanel.add(chckbxMatch);
 
-		JPanel buttonPane = new JPanel();
-		buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
-		getContentPane().add(buttonPane, BorderLayout.SOUTH);
-
-		JButton okButton = new JButton("OK");
-		okButton.setActionCommand("OK");
-		okButton.addActionListener(this);
-		buttonPane.add(okButton);
-		getRootPane().setDefaultButton(okButton);
-
 		JButton cancelButton = new JButton("Abbrechen");
+		cancelButton.setBounds(10, 241, 120, 23);
+		contentPanel.add(cancelButton);
 		cancelButton.setActionCommand("CANCEL");
 		cancelButton.addActionListener(this);
-		buttonPane.add(cancelButton);
+
+		JButton okButton = new JButton("Anzeigen");
+		okButton.setBounds(312, 241, 120, 23);
+		contentPanel.add(okButton);
+		okButton.setActionCommand("OK");
+		okButton.addActionListener(this);
+		getRootPane().setDefaultButton(okButton);
 	}
 
 	public Single showDialog() {

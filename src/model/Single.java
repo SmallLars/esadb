@@ -68,15 +68,35 @@ public class Single extends Start implements Printable {
 
 	@Override
 	public Group getGroup() {
-		for (Group g : Controller.get().getConfig().getGroups()) {
+		SettingsModel settings = Controller.get().getConfig();
+/*
+		if (weder männlich/weiblich noch alter) {
+			return new Group(Gender.ANY.toString(), settings.getYear() - 201, settings.getYear(), Gender.ANY);
+		}
+
+		if (nur männlich/weiblich) {
+			if (schuetze.isMale()) return new Group(Gender.MALE.toString(), settings.getYear() - 201, settings.getYear(), Gender.MALE);
+			if (schuetze.isFemale()) return new Group(Gender.FEMALE.toString(), settings.getYear() - 201, settings.getYear(), Gender.FEMALE);
+			return new Group(Gender.ANY.toString(), settings.getYear() - 201, settings.getYear(), Gender.ANY);
+		}
+
+		if (nur alter) {
+			for (Group g : settings.getGroups()) {
+				if (g.isMember(schuetze, false)) return g;
+			}
+		}
+
+		else männlich / weiblich und alter:
+*/
+		for (Group g : settings.getGroups()) {
 			if (g.isMember(schuetze, true)) return g;
 		}
 
-		for (Group g : Controller.get().getConfig().getGroups()) {
+		for (Group g : settings.getGroups()) {
 			if (g.isMember(schuetze, false)) return g;
 		}
 
-		return null;
+		return new Group("Ohne Zuordnung", settings.getYear() - 201, settings.getYear() - 200, Gender.ANY);
 	}
 
 	public Member getSchuetze() {
