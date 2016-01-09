@@ -161,21 +161,31 @@ public class Model implements Serializable {
 	}
 
 	public Printable getPrintable() {
-		ergebnisse.sort(null);
+		ResultListSettings options = Controller.get().getConfig().getResultListSettings();
+
+		List<Start> toPrint;
+		if (options.oneDiszipline) {
+			toPrint = new Vector<Start>();
+			for (Start s : ergebnisse) if (s.getDisziplin().getId() == options.discipline) toPrint.add(s);
+		} else {
+			toPrint = new Vector<Start>(ergebnisse);
+		}
+		toPrint.sort(null);
 
 		SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
 		ResultList resultList = new ResultList(Controller.get().getFileName(), sdf.format(new Date()));
 
 		Discipline d = null;
 		Group g = null;
-		for (Start s : ergebnisse) {
-			if (s.getDisziplin() != d) {
+		for (Start s : toPrint) {
+			if (s.getDisziplin().compareTo(d) != 0) {
 				d = s.getDisziplin();
+				if (options.newPage) resultList.addNewPage();
 				resultList.addDiszipline(d.toString());
 				g = null;
 			}
 
-			if (s.getGroup() != g) {
+			if (s.getGroup().compareTo(g) != 0) {
 				g = s.getGroup();
 				resultList.addGroup(g.toString());
 			}

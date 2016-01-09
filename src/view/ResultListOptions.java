@@ -12,6 +12,8 @@ import javax.swing.JDialog;
 import javax.swing.JComboBox;
 
 import model.Discipline;
+import model.ResultListSettings;
+import model.SettingsModel;
 import model.Start;
 import controller.Controller;
 
@@ -44,6 +46,8 @@ public class ResultListOptions extends JDialog implements ActionListener {
 		setLocationRelativeTo(parent);
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 
+		ResultListSettings options = Controller.get().getConfig().getResultListSettings();
+
 		Container contentPanel = getContentPane();
 		contentPanel.setLayout(null);
 
@@ -52,13 +56,13 @@ public class ResultListOptions extends JDialog implements ActionListener {
 		contentPanel.add(lblGruppen);
 
 		chckbxGender = new JCheckBox("Nach Geschlecht trennen");
-		chckbxGender.setSelected(true);
+		chckbxGender.setSelected(options.genderBased);
 		chckbxGender.setBounds(10, 29, 200, 23);
 		chckbxGender.addActionListener(this);
 		contentPanel.add(chckbxGender);
 
 		chckbxGroup = new JCheckBox("Nach Altersgruppen trennen");
-		chckbxGroup.setSelected(true);
+		chckbxGroup.setSelected(options.groupBased);
 		chckbxGroup.setBounds(10, 58, 200, 23);
 		chckbxGroup.addActionListener(this);
 		contentPanel.add(chckbxGroup);
@@ -73,7 +77,7 @@ public class ResultListOptions extends JDialog implements ActionListener {
 		contentPanel.add(lblDisziplinen);
 
 		chckbxDiscipline = new JCheckBox("Nur folgende Disziplin auswerten:");
-		chckbxDiscipline.setSelected(false);
+		chckbxDiscipline.setSelected(options.oneDiszipline);
 		chckbxDiscipline.setBounds(252, 29, 268, 23);
 		chckbxDiscipline.addActionListener(this);
 		contentPanel.add(chckbxDiscipline);
@@ -86,11 +90,19 @@ public class ResultListOptions extends JDialog implements ActionListener {
 				cbDisziplin.addItem(s.getDisziplin());
 			}
 		}
-		cbDisziplin.setEnabled(false);
+		for (int i = 0; i < cbDisziplin.getItemCount(); i++) {
+			if (cbDisziplin.getItemAt(i).getId() == options.discipline) {
+				cbDisziplin.setSelectedIndex(i);
+				break;
+			}
+		}
+		cbDisziplin.setEnabled(chckbxDiscipline.isSelected());
 		contentPanel.add(cbDisziplin);
 
 		chckbxNewPage = new JCheckBox("Neue Seite für jede Disziplin");
+		chckbxNewPage.setSelected(options.newPage);
 		chckbxNewPage.setBounds(252, 87, 268, 23);
+		chckbxNewPage.setEnabled(!chckbxDiscipline.isSelected());
 		contentPanel.add(chckbxNewPage);
 
 		JSeparator separator = new JSeparator();
@@ -127,8 +139,18 @@ public class ResultListOptions extends JDialog implements ActionListener {
 		action = e.getActionCommand();
 		switch (action) {
 			case "CANCEL":
+				setVisible(false);
+				break;
 			case "PRINT":
 			case "SHOW":
+				SettingsModel settings = Controller.get().getConfig();
+				ResultListSettings options = settings.getResultListSettings();
+				options.genderBased = chckbxGender.isSelected();
+				options.groupBased = chckbxGroup.isSelected();
+				options.oneDiszipline = chckbxDiscipline.isSelected();
+				if (cbDisziplin.getSelectedItem() != null) options.discipline = ((Discipline) cbDisziplin.getSelectedItem()).getId();
+				options.newPage = chckbxNewPage.isSelected();
+				settings.save();
 				setVisible(false);
 				break;
 			default:

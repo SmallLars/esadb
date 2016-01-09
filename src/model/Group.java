@@ -78,6 +78,8 @@ public class Group  implements Serializable, Comparable<Group> {
 
 	@Override
 	public int compareTo(Group o) {
+		if (o == null) return 1;
+
 		if (to < o.to) return 1;
 		if (to > o.to) return -1;
 

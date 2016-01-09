@@ -22,7 +22,7 @@
  - Druckvorschau überarbeitet.
  - Konfiguration für Altersgruppen erstellt. Wird in späteren Versionen in der Ergebnisliste berücksichtig.
 
-2.0.4        XX.XX.2016
+2.0.4        09.01.2016
  - Treffereingabe kann nun per Klick auf die Scheibe erfolgen.
  - Geschlecht "beliebig" für Mannschaften ergänzt.
  - Schriften für die Styles Plain, Italic und Italic-Bold ergänzt.

@@ -44,6 +44,7 @@ public class SettingsModel implements Serializable {
 
 	private int year;
 	private List<Group> groups;
+	private ResultListSettings resultListSettings;
 
 	private Set<TargetModel> targets;
 	private Set<Weapon> weapons;
@@ -95,6 +96,8 @@ public class SettingsModel implements Serializable {
 		groups.add(new Group("Senioren - m/w",        year - 120, year - 56, Gender.ANY));
 		groups.add(new Group("Senioren",              year - 120, year - 56, Gender.MALE));
 		groups.add(new Group("Seniorinnen",           year - 120, year - 56, Gender.FEMALE));
+
+		resultListSettings = new ResultListSettings();
 
 		targets = new TreeSet<TargetModel>();
 		//                         |                      |           |    Karton-    |Band-   |      Durchmesser       |Ring- | Ring  |  Nummer  |   |     |  Vorhalte-   |
@@ -231,6 +234,10 @@ public class SettingsModel implements Serializable {
 
 	public boolean removeGroup(Group g) {
 		return groups.remove(g);
+	}
+
+	public ResultListSettings getResultListSettings() {
+		return resultListSettings;
 	}
 
 	public Weapon newWeapon() {

@@ -7,7 +7,7 @@ Eine Alternative zu HAWEV 2002.
 
 [Version 1.0.2](https://github.com/SmallLars/esadb/raw/v1/pub/esadb.jar)
 
-[Version 2.0.3](https://github.com/SmallLars/esadb/raw/v2/pub/esadb.jar)
+[Version 2.0.4](https://github.com/SmallLars/esadb/raw/v2/pub/esadb.jar)
 
 ## Installation
 
@@ -53,6 +53,12 @@ auf die Linien in das Installationsverzeichnis von ESA 2002 kopiert werden.
 
 [![Einzelergebnis - Wertung](https://github.com/SmallLars/esadb/raw/master/pub/result_match_tn.png)](https://github.com/SmallLars/esadb/raw/master/pub/result_match.png)
 [![Einzelergebnis - Probe und Wertung](https://github.com/SmallLars/esadb/raw/master/pub/result_both_tn.png)](https://github.com/SmallLars/esadb/raw/master/pub/result_both.png)
+[![Ergebnisliste - Geschlecht und Alter](https://github.com/SmallLars/esadb/raw/master/pub/result_list_1_tn.png)](https://github.com/SmallLars/esadb/raw/master/pub/result_list_1.png)
+[![Ergebnisliste - Alter](https://github.com/SmallLars/esadb/raw/master/pub/result_list_2_tn.png)](https://github.com/SmallLars/esadb/raw/master/pub/result_list_2.png)
+
+[![Ergebnisliste - Geschlecht](https://github.com/SmallLars/esadb/raw/master/pub/result_list_3_tn.png)](https://github.com/SmallLars/esadb/raw/master/pub/result_list_3.png)
+[![Ergebnisliste - Beliebig](https://github.com/SmallLars/esadb/raw/master/pub/result_list_4_tn.png)](https://github.com/SmallLars/esadb/raw/master/pub/result_list_4.png)
+[![Ergebnisliste - Eigene Seite](https://github.com/SmallLars/esadb/raw/master/pub/result_list_5_tn.png)](https://github.com/SmallLars/esadb/raw/master/pub/result_list_5.png)
 
 ## Dokumentation:
 
