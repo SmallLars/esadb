@@ -1,5 +1,6 @@
 package view;
 
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -27,7 +28,7 @@ import model.Status;
 
 
 @SuppressWarnings("serial")
-public class Line extends JPanel implements LineListener {
+public class Line extends JPanel implements LineListener, ActionListener {
 	private LineModel linie;
 
 	private JComboBox<Member> schuetze;
@@ -57,64 +58,20 @@ public class Line extends JPanel implements LineListener {
 		
 		sperre = new JCheckBox("");
 		sperre.setBounds(55, 9, 23, 23);
-		sperre.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				if (sperre.isSelected()) {
-					Member s = (Member) schuetze.getSelectedItem();
-					Discipline d = (Discipline) disziplin.getSelectedItem();
-					if (s == null || d == null) {
-						sperre.setSelected(false);
-						JOptionPane.showMessageDialog(	null,
-								"Ein Sperren der Linie ist erst nach Auswahl eines Sch�tzen und einer Disziplin möglich.",
-								"Fehler",
-								JOptionPane.WARNING_MESSAGE);
-					} else {
-						Single e = linie.configure(s, d);
-						if (e != null) {
-							int answer = JOptionPane.showConfirmDialog(	null,
-									"Der Schütze ist in dieser Disziplin bereits einmal gestartet ohne den Wettkampf abzuschließen. Soll der Wettkampf fortgesetzt werden?",
-									"Information",
-									JOptionPane.YES_NO_OPTION);
-							if (answer == JOptionPane.NO_OPTION) {
-								linie.configure(e);
-							}
-						}
-						linie.setStatus(Status.SPERREN);
-					}
-				} else {
-					linie.setStatus(Status.ENTSPERREN);
-				}
-			}
-		});
+		sperre.addActionListener(this);
+		sperre.setActionCommand("SPERRE");
 		this.add(sperre);
 		
 		start = new JCheckBox("");
 		start.setBounds(101, 9, 23, 23);
-		start.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				if (start.isSelected()) {
-					linie.setStatus(Status.START);
-				} else {
-					linie.setStatus(Status.STOP);
-				}
-			}
-		});
+		start.addActionListener(this);
+		start.setActionCommand("START");
 		this.add(start);
 		
 		wertung = new JCheckBox("");
 		wertung.setBounds(147, 9, 23, 23);
-		wertung.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				if (wertung.isSelected()) {
-					linie.setStatus(Status.WERTUNG);
-				} else {
-					linie.setStatus(Status.PROBE);
-				}
-			}
-		});
+		wertung.addActionListener(this);
+		wertung.setActionCommand("WERTUNG");
 		this.add(wertung);
 
 		schuetze = new JComboBox<Member>(linie.getSchuetzenModel());
@@ -126,15 +83,9 @@ public class Line extends JPanel implements LineListener {
 		this.add(disziplin);
 
 		frei = new JButton("Frei");
-		frei.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				schuetze.setSelectedItem(null);
-				disziplin.setSelectedItem(null);
-				linie.setStatus(Status.FREI);
-			}
-		});
 		frei.setBounds(639, 10, 80, 22);
+		frei.addActionListener(this);
+		frei.setActionCommand("FREI");
 		this.add(frei);
 		
 		setEnabled(false);
@@ -189,6 +140,54 @@ public class Line extends JPanel implements LineListener {
 		if (!this.isEnabled()) {
 			g.setColor(Color.ORANGE);
 			g.fillRect(5, 5, 718, 31);
+		}
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent ae) {
+		switch (ae.getActionCommand()) {
+			case "SPERRE":
+				if (sperre.isSelected()) {
+					Member s = (Member) schuetze.getSelectedItem();
+					Discipline d = (Discipline) disziplin.getSelectedItem();
+					if (s == null || d == null) {
+						sperre.setSelected(false);
+						JOptionPane.showMessageDialog(
+							this.getRootPane(),
+							"Ein Sperren der Linie ist erst nach Auswahl eines Schützen und einer Disziplin möglich.",
+							"Fehler",
+							JOptionPane.WARNING_MESSAGE
+						);
+					} else {
+						Single e = linie.configure(s, d);
+						if (e != null) {
+							int answer = JOptionPane.showConfirmDialog(
+								this.getRootPane(),
+								"Der Schütze ist in dieser Disziplin bereits einmal gestartet ohne den Wettkampf abzuschließen. Soll der Wettkampf fortgesetzt werden?",
+								"Information",
+								JOptionPane.YES_NO_OPTION
+							);
+							if (answer == JOptionPane.NO_OPTION) {
+								linie.configure(e);
+							}
+						}
+						linie.setStatus(Status.SPERREN);
+					}
+				} else {
+					linie.setStatus(Status.ENTSPERREN);
+				}
+				break;
+			case "START":
+				linie.setStatus(start.isSelected() ? Status.START : Status.STOP);
+				break;
+			case "WERTUNG":
+				linie.setStatus(wertung.isSelected() ? Status.WERTUNG : Status.PROBE);
+				break;
+			case "FREI":
+				schuetze.setSelectedItem(null);
+				disziplin.setSelectedItem(null);
+				linie.setStatus(Status.FREI);
+				break;
 		}
 	}
 }

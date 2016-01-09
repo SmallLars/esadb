@@ -3,7 +3,6 @@ package model;
 
 import java.awt.Rectangle;
 import java.awt.print.PageFormat;
-import java.awt.print.Paper;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -14,6 +13,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -27,77 +27,18 @@ public class SettingsModel implements Serializable {
 	private static final File file = new File("settings.esc");
 	private static final double mmToDots = 72 / 2.54;
 
-	private Rectangle mainWindow;
-
-	private String path;
-	private String filename;
-
 	private Set<Integer> lines;
-
-	private double pageWidht;
-	private double pageHeight;
-	private double pageImageableX;
-	private double pageImageableY;
-	private double pageImageableWidth;
-	private double pageImageableHeight;
-	private int pageOrientation;
-
-	private int year;
-	private List<Group> groups;
-	private ResultListSettings resultListSettings;
-
 	private Set<TargetModel> targets;
 	private Set<Weapon> weapons;
 	private Map<String, Rule> rules;
-	private Rule standardRule;	
+	private Rule standardRule;
+	private int year;
+	private List<Group> groups;
+
+	private Map<String, Object> values;
 
 	private SettingsModel() {
-		mainWindow = new Rectangle(1, 1, 1022, 580);
-
-		path = (new File("")).getAbsolutePath();
-		filename = "yyyy-MM-dd";
-
 		lines = new TreeSet<Integer>();
-		
-		pageWidht =           21.0 * mmToDots;
-		pageHeight =          29.7 * mmToDots;
-		pageImageableX =       2.5 * mmToDots;
-		pageImageableY =       1.0 * mmToDots;
-		pageImageableWidth =  17.5 * mmToDots;
-		pageImageableHeight = 27.7 * mmToDots;
-		pageOrientation = PageFormat.PORTRAIT;
-
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(new Date());
-		year = cal.get(Calendar.YEAR);
-
-		groups = new ArrayList<Group>();
-		groups.add(new Group("Schüler B",             year -  12, year,      Gender.ANY));
-		groups.add(new Group("Schüler B - männlich",  year -  12, year,      Gender.MALE));
-		groups.add(new Group("Schüler B - weiblich",  year -  12, year,      Gender.FEMALE));
-		groups.add(new Group("Schüler A",             year -  14, year - 13, Gender.ANY));
-		groups.add(new Group("Schüler A - männlich",  year -  14, year - 13, Gender.MALE));
-		groups.add(new Group("Schüler A - weiblich",  year -  14, year - 13, Gender.FEMALE));
-		groups.add(new Group("Jugend",                year -  16, year - 15, Gender.ANY));
-		groups.add(new Group("Jugend - männlich",     year -  16, year - 15, Gender.MALE));
-		groups.add(new Group("Jugend - weiblich",     year -  16, year - 15, Gender.FEMALE));
-		groups.add(new Group("Junioren B",            year -  18, year - 17, Gender.ANY));
-		groups.add(new Group("Junioren B - männlich", year -  18, year - 17, Gender.MALE));
-		groups.add(new Group("Junioren B - weiblich", year -  18, year - 17, Gender.FEMALE));
-		groups.add(new Group("Junioren A",            year -  20, year - 19, Gender.ANY));
-		groups.add(new Group("Junioren A - männlich", year -  20, year - 19, Gender.MALE));
-		groups.add(new Group("Junioren A - weiblich", year -  20, year - 19, Gender.FEMALE));
-		groups.add(new Group("Herren/Damen",          year -  45, year - 21, Gender.ANY));
-		groups.add(new Group("Herren",                year -  45, year - 21, Gender.MALE));
-		groups.add(new Group("Damen",                 year -  45, year - 21, Gender.FEMALE));
-		groups.add(new Group("Altersklasse - m/w",    year -  55, year - 46, Gender.ANY));
-		groups.add(new Group("Altersklasse",          year -  55, year - 46, Gender.MALE));
-		groups.add(new Group("Damen Altersklasse",    year -  55, year - 46, Gender.FEMALE));
-		groups.add(new Group("Senioren - m/w",        year - 120, year - 56, Gender.ANY));
-		groups.add(new Group("Senioren",              year - 120, year - 56, Gender.MALE));
-		groups.add(new Group("Seniorinnen",           year - 120, year - 56, Gender.FEMALE));
-
-		resultListSettings = new ResultListSettings();
 
 		targets = new TreeSet<TargetModel>();
 		//                         |                      |           |    Karton-    |Band-   |      Durchmesser       |Ring- | Ring  |  Nummer  |   |     |  Vorhalte-   |
@@ -137,34 +78,40 @@ public class SettingsModel implements Serializable {
 		rules.put("1.35", new Rule("Kleinkaliber 100m", "1.35", targets.toArray(new TargetModel[0])[3], weapons.toArray(new Weapon[0])[2]));
 		rules.put("1.40", new Rule("Kleinkaliber 50m",  "1.40", targets.toArray(new TargetModel[0])[2], weapons.toArray(new Weapon[0])[2]));
 		rules.put("2.10", new Rule("Luftpistole",       "2.10", targets.toArray(new TargetModel[0])[6], weapons.toArray(new Weapon[0])[0]));
+
 		standardRule = rules.get("1.40");
 
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(new Date());
+		year = cal.get(Calendar.YEAR);
+
+		groups = new ArrayList<Group>();
+		groups.add(new Group("Schüler B",             year -  12, year,      Gender.ANY));
+		groups.add(new Group("Schüler B - männlich",  year -  12, year,      Gender.MALE));
+		groups.add(new Group("Schüler B - weiblich",  year -  12, year,      Gender.FEMALE));
+		groups.add(new Group("Schüler A",             year -  14, year - 13, Gender.ANY));
+		groups.add(new Group("Schüler A - männlich",  year -  14, year - 13, Gender.MALE));
+		groups.add(new Group("Schüler A - weiblich",  year -  14, year - 13, Gender.FEMALE));
+		groups.add(new Group("Jugend",                year -  16, year - 15, Gender.ANY));
+		groups.add(new Group("Jugend - männlich",     year -  16, year - 15, Gender.MALE));
+		groups.add(new Group("Jugend - weiblich",     year -  16, year - 15, Gender.FEMALE));
+		groups.add(new Group("Junioren B",            year -  18, year - 17, Gender.ANY));
+		groups.add(new Group("Junioren B - männlich", year -  18, year - 17, Gender.MALE));
+		groups.add(new Group("Junioren B - weiblich", year -  18, year - 17, Gender.FEMALE));
+		groups.add(new Group("Junioren A",            year -  20, year - 19, Gender.ANY));
+		groups.add(new Group("Junioren A - männlich", year -  20, year - 19, Gender.MALE));
+		groups.add(new Group("Junioren A - weiblich", year -  20, year - 19, Gender.FEMALE));
+		groups.add(new Group("Herren/Damen",          year -  45, year - 21, Gender.ANY));
+		groups.add(new Group("Herren",                year -  45, year - 21, Gender.MALE));
+		groups.add(new Group("Damen",                 year -  45, year - 21, Gender.FEMALE));
+		groups.add(new Group("Altersklasse - m/w",    year -  55, year - 46, Gender.ANY));
+		groups.add(new Group("Altersklasse",          year -  55, year - 46, Gender.MALE));
+		groups.add(new Group("Damen Altersklasse",    year -  55, year - 46, Gender.FEMALE));
+		groups.add(new Group("Senioren - m/w",        year - 120, year - 56, Gender.ANY));
+		groups.add(new Group("Senioren",              year - 120, year - 56, Gender.MALE));
+		groups.add(new Group("Seniorinnen",           year - 120, year - 56, Gender.FEMALE));
+
 		save();
-	}
-
-	public Rectangle getMainWindowBounds() {
-		return mainWindow;
-	}
-
-	public void setMainWindowBounds(Rectangle mainWindow) {
-		this.mainWindow = mainWindow;
-		save();
-	}
-
-	public String getPath() {
-		return path;
-	}
-
-	public void setPath(String path) {
-		this.path = path;
-	}
-
-	public String getFilename() {
-		return filename;
-	}
-
-	public void setFilename(String filename) {
-		this.filename = filename;
 	}
 
 	public Vector<Integer> getLines() {
@@ -183,88 +130,6 @@ public class SettingsModel implements Serializable {
 	public boolean removeLinie(Integer l) {
 		boolean b = lines.remove(l);
 		return b;
-	}
-
-	public PageFormat getPageFormat() {
-		Paper p = new Paper();
-		p.setSize(pageWidht, pageHeight);
-		p.setImageableArea(pageImageableX, pageImageableY, pageImageableWidth, pageImageableHeight);
-		PageFormat pf = new PageFormat();
-		pf.setPaper(p);
-		pf.setOrientation(pageOrientation);
-		return pf;
-	}
-
-	public void setPageFormat(PageFormat pf) {
-		pageWidht = pf.getPaper().getWidth();
-		pageHeight = pf.getPaper().getHeight();
-		pageImageableX = pf.getPaper().getImageableX();
-		pageImageableY = pf.getPaper().getImageableY();
-		pageImageableWidth = pf.getPaper().getImageableWidth();
-		pageImageableHeight = pf.getPaper().getImageableHeight();
-		pageOrientation = pf.getOrientation();
-		save();
-	}
-
-	public int getYear() {
-		return year;
-	}
-
-	public void setYear(int value) {
-		int diff = value - year;
-		year = value;
-		for (Group g : groups) g.change(diff);
-	}
-
-	public Group newGroup() {
-		Group g;
-		if (groups.size() > 0) {
-			Group last = groups.get(groups.size() - 1);
-			g = new Group("Neue Gruppe", last.getFrom() - 13, last.getFrom() - 1, last.getGender());
-		} else {
-			g = new Group("Neue Gruppe", year - 12, year, Gender.MALE);
-		}
-		groups.add(g);
-		return g;
-	}
-
-	public Group[] getGroups() {
-		return groups.toArray(new Group[0]);
-	}
-
-	public boolean removeGroup(Group g) {
-		return groups.remove(g);
-	}
-
-	public ResultListSettings getResultListSettings() {
-		return resultListSettings;
-	}
-
-	public Weapon newWeapon() {
-		Weapon w = new Weapon(	"Neue Waffe", "01",
-								standardRule.getWaffe().getDiameter(),
-								standardRule.getWaffe().getUnit(),
-								standardRule.getWaffe().getMikro()
-		);
-		for (int n = 1; true; n++) {
-			w.setNumber(String.format("%02d", n));
-			if (!weapons.contains(w)) {
-				weapons.add(w);
-				return w;
-			}
-		}
-
-	}
-
-	public Weapon[] getWeapons() {
-		return weapons.toArray(new Weapon[0]);
-	}
-
-	public boolean removeWeapon(Weapon w) {
-		for (Rule r : rules.values()) {
-			if (w.compareTo(r.getWaffe()) == 0) return false;
-		}
-		return weapons.remove(w);
 	}
 
 	public TargetModel newTarget(int type) {
@@ -312,6 +177,33 @@ public class SettingsModel implements Serializable {
 		return targets.remove(t);
 	}
 
+	public Weapon newWeapon() {
+		Weapon w = new Weapon(	"Neue Waffe", "01",
+								standardRule.getWaffe().getDiameter(),
+								standardRule.getWaffe().getUnit(),
+								standardRule.getWaffe().getMikro()
+		);
+		for (int n = 1; true; n++) {
+			w.setNumber(String.format("%02d", n));
+			if (!weapons.contains(w)) {
+				weapons.add(w);
+				return w;
+			}
+		}
+
+	}
+
+	public Weapon[] getWeapons() {
+		return weapons.toArray(new Weapon[0]);
+	}
+
+	public boolean removeWeapon(Weapon w) {
+		for (Rule r : rules.values()) {
+			if (w.compareTo(r.getWaffe()) == 0) return false;
+		}
+		return weapons.remove(w);
+	}
+
 	public Rule[] getRules() {
 		return rules.values().toArray(new Rule[0]);
 	}
@@ -345,14 +237,6 @@ public class SettingsModel implements Serializable {
 		return rules.get(ruleNumber);
 	}
 
-	public Rule getStandardRule() {
-		return standardRule;
-	}
-
-	public void setStandardRule(Rule rule) {
-		standardRule = rule;
-	}
-
 	public boolean removeRule(String ruleNumber) {
 		boolean succeed = (rules.remove(ruleNumber) != null);
 		if (ruleNumber.equals(standardRule.getRegelnummer())) {
@@ -361,6 +245,99 @@ public class SettingsModel implements Serializable {
 			}
 		}
 		return succeed;
+	}
+
+	public Rule getStandardRule() {
+		return standardRule;
+	}
+
+	public void setStandardRule(Rule rule) {
+		standardRule = rule;
+	}
+
+	public int getYear() {
+		return year;
+	}
+
+	public void setYear(int value) {
+		int diff = value - year;
+		year = value;
+		for (Group g : groups) g.change(diff);
+	}
+
+	public Group newGroup() {
+		Group g;
+		if (groups.size() > 0) {
+			Group last = groups.get(groups.size() - 1);
+			g = new Group("Neue Gruppe", last.getFrom() - 13, last.getFrom() - 1, last.getGender());
+		} else {
+			g = new Group("Neue Gruppe", year - 12, year, Gender.MALE);
+		}
+		groups.add(g);
+		return g;
+	}
+
+	public Group[] getGroups() {
+		return groups.toArray(new Group[0]);
+	}
+
+	public boolean removeGroup(Group g) {
+		return groups.remove(g);
+	}
+
+	@SuppressWarnings("unchecked")
+	public <T> T getValue(String key, Class<T> c) {
+		if (values == null) {
+			values = new HashMap<String, Object>();
+		}
+		Object o = values.get(key);
+		if (o == null) {
+			o = getStandardValue(key);
+			values.put(key, o);
+		}
+		return (T) o;
+	}
+
+	public void setValue(String key, Object value) {
+		values.put(key, value);
+	}
+
+	public Object getStandardValue(String key) {
+		switch (key) {
+			case "MainWindowBounds":
+				return new Rectangle(1, 1, 1022, 570);
+			case "MainWindowDividerLocation":
+				return 250;
+			case "Filepath":
+				return (new File("")).getAbsolutePath();
+			case "Filename":
+				return "yyyy-MM-dd";
+			case "PageWidht":
+				return 21.0 * mmToDots;
+			case "PageHeight":
+				return 29.7 * mmToDots;
+			case "PageImageableX":
+				return 2.5 * mmToDots;
+			case "PageImageableY":
+				return 1.0 * mmToDots;
+			case "PageImageableWidth":
+				return 17.5 * mmToDots;
+			case "PageImageableHeight":
+				return 27.7 * mmToDots;
+			case "PageOrientation":
+				return PageFormat.PORTRAIT;
+			case "ResultListGender":
+				return true;
+			case "ResultListGroup":
+				return true;
+			case "ResultListSingleDiscipline":
+				return false;
+			case "ResultListDiscipline":
+				return 0;
+			case "ResultListNewPage":
+				return false;
+		}
+		return null;
 	}
 
 	public boolean save() {

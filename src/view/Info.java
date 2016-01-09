@@ -1,5 +1,6 @@
 package view;
 
+
 import java.awt.BorderLayout;
 import java.awt.Cursor;
 import java.awt.Desktop;
@@ -25,7 +26,6 @@ public class Info extends JDialog implements ActionListener {
 
 	private final JPanel contentPanel = new JPanel();
 
-
 	public Info(Frame parent) {
 		super(parent, "Info");
 		setResizable(false);
@@ -40,7 +40,7 @@ public class Info extends JDialog implements ActionListener {
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		
-		JLabel lblEsadb = new JLabel("ESADB (2.0.4)");
+		JLabel lblEsadb = new JLabel("ESADB (2.0.5)");
 		lblEsadb.setBounds(10, 10, 280, 20);
 		contentPanel.add(lblEsadb);
 		

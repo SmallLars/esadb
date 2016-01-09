@@ -118,7 +118,7 @@ public class SettingsRingTargets extends JPanel implements ActionListener, Chang
 				if (!number.matches("^[0-9]+(\\.[0-9]+)*$")) {
 					Toolkit.getDefaultToolkit().beep();
 					JOptionPane.showMessageDialog(
-						null,
+						text_number.getRootPane(),
 						"Die Kennnummer darf nur aus Punkten und Zahlen bestehen\nund muss mit einer mit einer Zahl beginnen und enden.",
 						"Ungültige Eingabe",
 						JOptionPane.WARNING_MESSAGE
@@ -129,7 +129,7 @@ public class SettingsRingTargets extends JPanel implements ActionListener, Chang
 				if (!Controller.get().getConfig().validTargetNumber((TargetModel) comboBox.getSelectedItem(), number)) {
 					Toolkit.getDefaultToolkit().beep();
 					JOptionPane.showMessageDialog(
-						null,
+						text_number.getRootPane(),
 						"Zwei Scheiben mit der gleichen Kennnummer sind nicht möglich.",
 						"Ungültige Eingabe",
 						JOptionPane.WARNING_MESSAGE

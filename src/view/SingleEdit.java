@@ -74,7 +74,7 @@ public class SingleEdit extends JDialog implements ComponentListener, ActionList
 
 		setModal(true);
 		setModalityType(ModalityType.APPLICATION_MODAL);
-		Dimension d = new Dimension(700, 500);
+		Dimension d = new Dimension(702, 500);
 		setMinimumSize(d);
 		setSize(d);
 		setLocationRelativeTo(parent);
@@ -119,7 +119,7 @@ public class SingleEdit extends JDialog implements ComponentListener, ActionList
 		getContentPane().add(rdbtnProbe);
 		
 		rdbtnMatch = new JRadioButton("Match");
-		rdbtnMatch.setBounds(314, 249, 62, 23);
+		rdbtnMatch.setBounds(314, 249, 64, 23);
 	    group.add(rdbtnMatch);
 		getContentPane().add(rdbtnMatch);
 
@@ -136,11 +136,11 @@ public class SingleEdit extends JDialog implements ComponentListener, ActionList
 
 		lblZwischenablage = new JLabel("Zwischenablage");
 		lblZwischenablage.setFont(new Font("Tahoma", Font.BOLD, 16));
-		lblZwischenablage.setBounds(380, 44, 300, 22);
+		lblZwischenablage.setBounds(382, 44, 300, 22);
 		getContentPane().add(lblZwischenablage);
 		
 		scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBounds(380, 77, 300, 351);
+		scrollPane_1.setBounds(382, 77, 300, 351);
 		getContentPane().add(scrollPane_1);
 		
 		table_1 = new JTable(new HitTableModel(controller.getTreffer()));
@@ -150,7 +150,7 @@ public class SingleEdit extends JDialog implements ComponentListener, ActionList
 		scrollPane_1.setViewportView(table_1);
 
 		cancelButton = new JButton("Schließen");
-		cancelButton.setBounds(582, 439, 100, 23);
+		cancelButton.setBounds(584, 439, 100, 23);
 		cancelButton.setActionCommand("CANCEL");
 		cancelButton.addActionListener(this);
 		getContentPane().add(cancelButton);

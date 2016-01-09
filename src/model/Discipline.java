@@ -13,7 +13,7 @@ public class Discipline implements Serializable, Comparable<Discipline> {
 	private int schusszahl;			// Anzahl der Schüsse im Match
 	private int schiesszeit;		// Zeit in Minuten für die Schüsse im Match
 	private int stellungsanzahl;	// Anzahl der Stellungen
-	private int probeschuesse;		// Anzahl der Probesch�sse (-1 = beliebig viele)
+	private int probeschuesse;		// Anzahl der Probeschüsse (-1 = beliebig viele)
 	private int probezeit;			// Zeit für Probeschüsse (-1 = ist in der Matchzeit enthalten)
 	private int serienlaenge;		// Gibt die Länge der Serien an
 	private String ruleNumber;
@@ -74,6 +74,14 @@ public class Discipline implements Serializable, Comparable<Discipline> {
 	@Override
 	public String toString() {
 		return name;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (o instanceof Discipline) {
+			return compareTo((Discipline) o) == 0;
+		}
+		return false;
 	}
 
 	@Override

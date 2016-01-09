@@ -69,25 +69,22 @@ public class Single extends Start implements Printable {
 	@Override
 	public Group getGroup() {
 		SettingsModel settings = Controller.get().getConfig();
-		ResultListSettings options = settings.getResultListSettings();
 
-		if (!options.genderBased && !options.groupBased) {
-			return new Group(Gender.ANY.toString(), settings.getYear() - 201, settings.getYear(), Gender.ANY);
-		}
+		if (!settings.getValue("ResultListGroup", Boolean.class)) {
+			if (!settings.getValue("ResultListGender", Boolean.class)) {
+				return new Group(Gender.ANY.toString(), settings.getYear() - 201, settings.getYear(), Gender.ANY);
+			}
 
-		if (options.genderBased && !options.groupBased) {
 			if (schuetze.isMale()) return new Group(Gender.MALE.toString(), settings.getYear() - 201, settings.getYear(), Gender.MALE);
 			if (schuetze.isFemale()) return new Group(Gender.FEMALE.toString(), settings.getYear() - 201, settings.getYear(), Gender.FEMALE);
 			return new Group(Gender.ANY.toString(), settings.getYear() - 201, settings.getYear(), Gender.ANY);
 		}
 
-		if (!options.genderBased && options.groupBased) {
+		if (!settings.getValue("ResultListGender", Boolean.class)) {
 			for (Group g : settings.getGroups()) {
 				if (g.isMember(schuetze, false)) return g;
 			}
-		}
-
-		if (options.genderBased && options.groupBased) {
+		} else {
 			for (Group g : settings.getGroups()) {
 				if (g.isMember(schuetze, true)) return g;
 			}

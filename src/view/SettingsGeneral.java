@@ -159,7 +159,7 @@ public class SettingsGeneral extends JPanel implements ActionListener, DocumentL
 		lblDateipfad.setBounds(110, 42, 100, 14);
 		add(lblDateipfad);
 
-		pathField = new JTextField(config.getPath());
+		pathField = new JTextField(config.getValue("Filepath", String.class));
 		pathField.setBounds(110, 60, 328, 20);
 		pathField.setColumns(10);
 		pathField.setEditable(false);
@@ -175,7 +175,7 @@ public class SettingsGeneral extends JPanel implements ActionListener, DocumentL
 		lblDateiname.setBounds(500, 42, 100, 14);
 		add(lblDateiname);
 
-		nameField = new JTextField(config.getFilename());
+		nameField = new JTextField(config.getValue("Filename", String.class));
 		nameField.setBounds(500, 60, 178, 20);
 		nameField.setColumns(10);
 		nameField.getDocument().addDocumentListener(this);
@@ -314,11 +314,11 @@ public class SettingsGeneral extends JPanel implements ActionListener, DocumentL
 				}
 				break;
 			case "PATH":
-				JFileChooser fc = new JFileChooser(Controller.get().getConfig().getPath());
+				JFileChooser fc = new JFileChooser(Controller.get().getConfig().getValue("Filepath", String.class));
 				fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 				if (fc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
 					String path = fc.getSelectedFile().getPath();
-					Controller.get().getConfig().setPath(path);
+					Controller.get().getConfig().setValue("Filepath", path);
 					pathField.setText(path);
 				}
 				break;
@@ -346,7 +346,7 @@ public class SettingsGeneral extends JPanel implements ActionListener, DocumentL
 	}
 
 	private void saveFilename() {
-		Controller.get().getConfig().setFilename(nameField.getText());
+		Controller.get().getConfig().setValue("Filename", nameField.getText());
 	}
 
 	@Override

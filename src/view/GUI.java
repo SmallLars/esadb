@@ -1,8 +1,10 @@
 package view;
 
+
 import java.awt.Color;
+import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.Font;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
@@ -10,8 +12,6 @@ import java.awt.event.ComponentListener;
 import java.io.File;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.SimpleAttributeSet;
@@ -20,6 +20,7 @@ import javax.swing.text.StyledDocument;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JSplitPane;
 import javax.swing.JTextPane;
 import javax.swing.JScrollPane;
 import javax.swing.JMenuBar;
@@ -35,9 +36,13 @@ import controller.Controller;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.print.PageFormat;
+import java.awt.print.Paper;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import java.awt.Toolkit;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 import javax.swing.Box;
 import javax.swing.ScrollPaneConstants;
@@ -49,7 +54,8 @@ import printPreview.PrintPreview;
 public class GUI extends JFrame implements ActionListener, ComponentListener {
 	private Controller controller;
 
-	private JPanel contentPane;
+	private Container contentPane;
+	private JSplitPane splitPane;
 	private JTextPane konsole;
 	private Target scheiben[];
 	private Line linien[];
@@ -66,7 +72,7 @@ public class GUI extends JFrame implements ActionListener, ComponentListener {
 			@Override
 			public void windowClosing(WindowEvent arg0) {close();}
 		});
-		setMinimumSize(new Dimension(1022, 580));
+		setMinimumSize(new Dimension(1022, 570));
 
 		controller = Controller.get();
 		scheiben = new Target[controller.getConfig().getLineCount()];
@@ -74,7 +80,7 @@ public class GUI extends JFrame implements ActionListener, ComponentListener {
 		SettingsModel config = controller.getConfig();
 
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		setBounds(config.getMainWindowBounds());
+		setBounds(config.getValue("MainWindowBounds", Rectangle.class));
 
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
@@ -172,53 +178,77 @@ public class GUI extends JFrame implements ActionListener, ComponentListener {
 			public String getDescription() {return "*.esa";}
 		});
 
-
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
+		contentPane = this.getContentPane();
 		contentPane.setLayout(null);
 
 		JLabel lblSperre = new JLabel("Sperre");
-		lblSperre.setBounds(47, 8, 50, 14);
+		lblSperre.setBounds(47, 6, 50, 14);
 		contentPane.add(lblSperre);
 		
 		JLabel lblStart = new JLabel("Start");
-		lblStart.setBounds(97, 8, 39, 14);
+		lblStart.setBounds(97, 6, 39, 14);
 		contentPane.add(lblStart);
 		
 		JLabel lblPm = new JLabel("Wertung");
-		lblPm.setBounds(136, 8, 61, 14);
+		lblPm.setBounds(136, 6, 61, 14);
 		contentPane.add(lblPm);
 
 		JLabel lblSchtze = new JLabel("Schütze");
-		lblSchtze.setBounds(197, 8, 60, 14);
+		lblSchtze.setBounds(197, 6, 60, 14);
 		contentPane.add(lblSchtze);
 		
 		JLabel lblDisziplin = new JLabel("Disziplin");
-		lblDisziplin.setBounds(420, 8, 56, 14);
+		lblDisziplin.setBounds(420, 6, 56, 14);
 		contentPane.add(lblDisziplin);
 
 		JLabel lblScheiben = new JLabel("Scheiben");
-		lblScheiben.setBounds(749, 8, 60, 14);
+		lblScheiben.setBounds(749, 6, 60, 14);
 		contentPane.add(lblScheiben);
 
 		JScrollPane scrollLinien = new JScrollPane();
+		scrollLinien.setMinimumSize(new Dimension(728, 86));
 		scrollLinien.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		scrollLinien.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		scrollLinien.setBounds(0, 32, 746, 249);
-		contentPane.add(scrollLinien);
 		
 		Box linienBox = Box.createVerticalBox();
 		scrollLinien.setViewportView(linienBox);
+		Dimension d = new Dimension(728, 41 * config.getLines().size());
+		linienBox.setSize(d);
+		linienBox.setMinimumSize(d);
+		linienBox.setPreferredSize(d);
+
+		scrollKonsole = new JScrollPane();
+		scrollKonsole.setMinimumSize(new Dimension(728, 90));
+		scrollKonsole.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		scrollKonsole.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+
+		konsole = new JTextPane();
+		konsole.setEditable(false);
+		scrollKonsole.setViewportView(konsole);
+
+		splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, scrollLinien, scrollKonsole);
+		splitPane.setBorder(null);
+		splitPane.setBounds(0, 22, 746, 500);
+		splitPane.setDividerLocation(config.getValue("MainWindowDividerLocation", Integer.class));
+		splitPane.addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent pce) {
+				SettingsModel config = Controller.get().getConfig();
+				config.setValue("MainWindowDividerLocation", splitPane.getDividerLocation());
+				config.save();
+			}
+		});
+		contentPane.add(splitPane);
 
 		scrollScheiben = new JScrollPane();
 		scrollScheiben.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		scrollScheiben.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		scrollScheiben.setBounds(746, 32, 268, 498);
+		scrollScheiben.setBounds(746, 22, 268, 500);
 		contentPane.add(scrollScheiben);
-		
+
 		scheibenBox = Box.createVerticalBox();
 		scrollScheiben.setViewportView(scheibenBox);
+		scheibenBox.setPreferredSize(new Dimension(250, config.getLineCount() * 250));
 
 		int i = 0;
 		for (int l : config.getLines()) {
@@ -235,16 +265,6 @@ public class GUI extends JFrame implements ActionListener, ComponentListener {
 
 			i++;
 		}
-		scheibenBox.setPreferredSize(new Dimension(250, config.getLineCount() * 250));
-
-		scrollKonsole = new JScrollPane();
-		scrollKonsole.setBounds(0, 281, 746, 249);
-		contentPane.add(scrollKonsole);
-
-		konsole = new JTextPane();
-		konsole.setEditable(false);
-		konsole.setFont(new Font("Consolas", Font.PLAIN, 12));
-		scrollKonsole.setViewportView(konsole);
 
 		addComponentListener(this);
 
@@ -260,10 +280,12 @@ public class GUI extends JFrame implements ActionListener, ComponentListener {
 		switch (e.getActionCommand()) {
 			case "NEW":
 				for (Line l : linien) if (!l.isFrei() || (l.isBusy() && !l.isError())) {
-					JOptionPane.showMessageDialog(	this,
-													"Ein neuer Wettkampf kann erst angelegt werden, wenn alle Linien frei sind.",
-													"Fehler",
-													JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(
+						this,
+						"Ein neuer Wettkampf kann erst angelegt werden, wenn alle Linien frei sind.",
+						"Fehler",
+						JOptionPane.WARNING_MESSAGE
+					);
 					return;
 				}
 				returnVal = fc.showDialog(this, "Neu");
@@ -277,10 +299,12 @@ public class GUI extends JFrame implements ActionListener, ComponentListener {
 				break;
 			case "OPEN":
 				for (Line l : linien) if (!l.isFrei() || (l.isBusy() && !l.isError())) {
-					JOptionPane.showMessageDialog(	this,
-													"Ein Wettkampf kann erst geladen werden, wenn alle Linien frei sind.",
-													"Fehler",
-													JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(
+						this,
+						"Ein Wettkampf kann erst geladen werden, wenn alle Linien frei sind.",
+						"Fehler",
+						JOptionPane.WARNING_MESSAGE
+					);
 					return;
 				}
 				returnVal = fc.showOpenDialog(this);
@@ -324,7 +348,7 @@ public class GUI extends JFrame implements ActionListener, ComponentListener {
 				if (action.equals("PRINT")) {
 					PrinterJob pjob = PrinterJob.getPrinterJob();
 				    if (pjob.printDialog() == false) return;
-				    pjob.setPrintable(controller.getModel().getPrintable(), controller.getConfig().getPageFormat());
+				    pjob.setPrintable(controller.getModel().getPrintable(), getPageFormat());
 				    try {
 						pjob.print();
 					} catch (PrinterException e1) {
@@ -337,16 +361,16 @@ public class GUI extends JFrame implements ActionListener, ComponentListener {
 					}
 				}
 				if (action.equals("SHOW")) {
-					dv = new PrintPreview(this, controller.getModel().getPrintable(), controller.getConfig().getPageFormat());
-					controller.getConfig().setPageFormat(dv.showDialog());
+					dv = new PrintPreview(this, controller.getModel().getPrintable(), getPageFormat());
+					setPageFormat(dv.showDialog());
 				}
 				break;
 			case "SINGLEPREVIEW":
 				SingleSelection einzel = new SingleSelection(this);
 				Single ez = einzel.showDialog();
 				if (ez == null) return;
-				dv = new PrintPreview(this, ez, controller.getConfig().getPageFormat());
-				controller.getConfig().setPageFormat(dv.showDialog());
+				dv = new PrintPreview(this, ez, getPageFormat());
+				setPageFormat(dv.showDialog());
 				break;
 			case "SINGLEEDIT":
 				SingleEdit ee = new SingleEdit(this);
@@ -396,20 +420,55 @@ public class GUI extends JFrame implements ActionListener, ComponentListener {
 		print(string + "\n", color);
 	}
 
+	private PageFormat getPageFormat() {
+		SettingsModel settings = Controller.get().getConfig();
+		Paper p = new Paper();
+		p.setSize(
+			settings.getValue("PageWidht", Double.class),
+			settings.getValue("PageHeight", Double.class)
+		);
+		p.setImageableArea(
+			settings.getValue("PageImageableX", Double.class),
+			settings.getValue("PageImageableY", Double.class),
+			settings.getValue("PageImageableWidth", Double.class),
+			settings.getValue("PageImageableHeight", Double.class)
+		);
+		PageFormat pf = new PageFormat();
+		pf.setPaper(p);
+		pf.setOrientation(settings.getValue("PageOrientation", Integer.class));
+		return pf;
+	}
+
+	private void setPageFormat(PageFormat pf) {
+		SettingsModel settings = Controller.get().getConfig();
+		settings.setValue("PageWidht", pf.getPaper().getWidth());
+		settings.setValue("PageHeight", pf.getPaper().getHeight());
+		settings.setValue("PageImageableX", pf.getPaper().getImageableX());
+		settings.setValue("PageImageableY", pf.getPaper().getImageableY());
+		settings.setValue("PageImageableWidth", pf.getPaper().getImageableWidth());
+		settings.setValue("PageImageableHeight", pf.getPaper().getImageableHeight());
+		settings.setValue("PageOrientation", pf.getOrientation());
+		settings.save();
+	}
+
 	private void close() {
 		for (Line l : linien) if (!l.isError() && (!l.isFrei() || l.isBusy())) {
-			JOptionPane.showMessageDialog(	this,
-											"Das Programm kann erst beendet werden, wenn alle Linien frei sind.",
-											"Fehler",
-											JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(
+				this,
+				"Das Programm kann erst beendet werden, wenn alle Linien frei sind.",
+				"Fehler",
+				JOptionPane.WARNING_MESSAGE
+			);
 			return;
 		}
 
-		int v = JOptionPane.showConfirmDialog(	this,
-												"Soll das Programm wirklich beendet werden?",
-												"Warnung",
-												JOptionPane.YES_NO_OPTION,
-												JOptionPane.WARNING_MESSAGE);
+		int v = JOptionPane.showConfirmDialog(
+			this,
+			"Soll das Programm wirklich beendet werden?",
+			"Warnung",
+			JOptionPane.YES_NO_OPTION,
+			JOptionPane.WARNING_MESSAGE
+		);
 		if (v != JOptionPane.OK_OPTION) return;
 
 		controller.exit();
@@ -423,11 +482,13 @@ public class GUI extends JFrame implements ActionListener, ComponentListener {
 		}
 		file = new File(name);
 		if (file.exists()) {
-			int v = JOptionPane.showConfirmDialog(	this,
-													"Soll die gewählte Datei wirklich überschrieben werden?",
-													"Warnung",
-													JOptionPane.YES_NO_OPTION,
-													JOptionPane.WARNING_MESSAGE);
+			int v = JOptionPane.showConfirmDialog(
+				this,
+				"Soll die gewählte Datei wirklich überschrieben werden?",
+				"Warnung",
+				JOptionPane.YES_NO_OPTION,
+				JOptionPane.WARNING_MESSAGE
+			);
 			if (v != JOptionPane.OK_OPTION) return null;
 		}
 		return file;
@@ -440,7 +501,8 @@ public class GUI extends JFrame implements ActionListener, ComponentListener {
 	public void componentMoved(ComponentEvent arg0) {
 		if ((getExtendedState() & JFrame.MAXIMIZED_BOTH) == 0) {
 			SettingsModel config = Controller.get().getConfig();
-			config.setMainWindowBounds(getBounds());
+			config.setValue("MainWindowBounds", getBounds());
+			config.save();
 		}
 	}
 
@@ -448,13 +510,14 @@ public class GUI extends JFrame implements ActionListener, ComponentListener {
 	public void componentResized(ComponentEvent arg0) {
 		SettingsModel config = Controller.get().getConfig();
 		if ((getExtendedState() & JFrame.MAXIMIZED_BOTH) == 0) {
-			config.setMainWindowBounds(getBounds());
+			config.setValue("MainWindowBounds", getBounds());
+			config.save();
 		}
 		scheibenBox.setPreferredSize(new Dimension(contentPane.getWidth() - 764, config.getLineCount() * (contentPane.getWidth() - 764)));
-		scrollScheiben.setSize(contentPane.getWidth() - 746, contentPane.getHeight() - 32);
+		scrollScheiben.setSize(contentPane.getWidth() - 746, contentPane.getHeight() - 22);
 		scrollScheiben.revalidate();
-		scrollKonsole.setSize(746, contentPane.getHeight() - 281);
-		scrollKonsole.revalidate();
+		splitPane.setSize(746, contentPane.getHeight() - 22);
+		splitPane.revalidate();
 	}
 
 	@Override

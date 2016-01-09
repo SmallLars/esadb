@@ -201,8 +201,8 @@ public class Controller {
 
 		fileChecker = new FileChecker(config.getLineCount());
 
-		SimpleDateFormat sdf = new SimpleDateFormat(config.getFilename());
-		file = new File(config.getPath() + "/" + sdf.format(new Date()) + ".esa");
+		SimpleDateFormat sdf = new SimpleDateFormat(config.getValue("Filename", String.class));
+		file = new File(config.getValue("Filepath", String.class) + "/" + sdf.format(new Date()) + ".esa");
 		if (file.exists()) {
 			model = Model.load(file);
 		} else {
@@ -319,10 +319,12 @@ public class Controller {
 		}));
 
 		if (out.getChannel().tryLock() == null) {
-			JOptionPane.showMessageDialog(	null,
-					"Das Programm kann nur einmal zur Zeit gestartet werden.",
-					"Fehler",
-					JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(
+				null,
+				"Das Programm kann nur einmal zur Zeit gestartet werden.",
+				"Fehler",
+				JOptionPane.WARNING_MESSAGE
+			);
 			return;
 		}
 

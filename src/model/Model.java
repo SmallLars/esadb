@@ -161,12 +161,15 @@ public class Model implements Serializable {
 	}
 
 	public Printable getPrintable() {
-		ResultListSettings options = Controller.get().getConfig().getResultListSettings();
+		SettingsModel settings = Controller.get().getConfig();
+
+		
+
 
 		List<Start> toPrint;
-		if (options.oneDiszipline) {
+		if (settings.getValue("ResultListSingleDiscipline", Boolean.class)) {
 			toPrint = new Vector<Start>();
-			for (Start s : ergebnisse) if (s.getDisziplin().getId() == options.discipline) toPrint.add(s);
+			for (Start s : ergebnisse) if (s.getDisziplin().getId() == settings.getValue("ResultListDiscipline", Integer.class)) toPrint.add(s);
 		} else {
 			toPrint = new Vector<Start>(ergebnisse);
 		}
@@ -178,14 +181,14 @@ public class Model implements Serializable {
 		Discipline d = null;
 		Group g = null;
 		for (Start s : toPrint) {
-			if (s.getDisziplin().compareTo(d) != 0) {
+			if (!s.getDisziplin().equals(d)) {
 				d = s.getDisziplin();
-				if (options.newPage) resultList.addNewPage();
+				if (settings.getValue("ResultListNewPage", Boolean.class)) resultList.addNewPage();
 				resultList.addDiszipline(d.toString());
 				g = null;
 			}
 
-			if (s.getGroup().compareTo(g) != 0) {
+			if (!s.getGroup().equals(g)) {
 				g = s.getGroup();
 				resultList.addGroup(g.toString());
 			}

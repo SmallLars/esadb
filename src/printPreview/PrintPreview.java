@@ -149,11 +149,12 @@ public class PrintPreview extends JDialog implements ActionListener {
 			    try {
 					pjob.print();
 				} catch (PrinterException e1) {
-					JOptionPane.showMessageDialog(	this,
-													"Druckfehler: " + e1.getMessage(),
-													"Fehler",
-													JOptionPane.WARNING_MESSAGE);
-					//e1.printStackTrace();
+					JOptionPane.showMessageDialog(
+						this,
+						"Druckfehler: " + e1.getMessage(),
+						"Fehler",
+						JOptionPane.WARNING_MESSAGE
+					);
 				}
 				break;
 			case "CANCEL":
