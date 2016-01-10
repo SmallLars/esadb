@@ -49,9 +49,9 @@ public class RuleTableModel implements TableModel {
 	}
 
 	@Override
-	public String getColumnName(int arg0) {
+	public String getColumnName(int col) {
 		String[] columnNames = {"Kennummer", "Bezeichnung", "Scheibe", "Waffe"};
-		return columnNames[arg0];
+		return columnNames[col];
 	}
 
 	@Override

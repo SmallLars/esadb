@@ -16,7 +16,7 @@ public class HitTableModel implements TableModel {
 	}
 
 	@Override
-	public Class<?> getColumnClass(int arg0) {
+	public Class<?> getColumnClass(int col) {
 		return Hit.class;
 	}
 
@@ -26,9 +26,9 @@ public class HitTableModel implements TableModel {
 	}
 
 	@Override
-	public String getColumnName(int arg0) {
+	public String getColumnName(int col) {
 		String[] columnNames = {"Nummer", "Art", "Wert", "Lage", "Linie"};
-		return columnNames[arg0];
+		return columnNames[col];
 	}
 
 	@Override
@@ -44,7 +44,7 @@ public class HitTableModel implements TableModel {
 			case 1:
 				return treffer.get(row).isProbe();
 			case 2:
-				return treffer.get(row).getWert();
+				return treffer.get(row);
 			case 3:
 				return treffer.get(row).getLage();
 			case 4:

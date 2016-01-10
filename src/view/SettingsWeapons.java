@@ -49,6 +49,7 @@ public class SettingsWeapons extends JPanel implements ActionListener, TableMode
 		table = new JTable(wtm);
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.setRowHeight(20);
+		table.getTableHeader().setReorderingAllowed(false);
 
 		table.getColumnModel().getColumn(0).setMinWidth(100);
 		table.getColumnModel().getColumn(1).setMinWidth(200);

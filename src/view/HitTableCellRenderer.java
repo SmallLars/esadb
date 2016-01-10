@@ -8,6 +8,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 
+import model.Hit;
+
 
 @SuppressWarnings("serial")
 public class HitTableCellRenderer extends DefaultTableCellRenderer {
@@ -33,10 +35,10 @@ public class HitTableCellRenderer extends DefaultTableCellRenderer {
 			return this;
 		}
 
-		if (value instanceof Float) {
+		if (value instanceof Hit) {
 			setHorizontalAlignment(RIGHT);
 			setIcon(null);
-			setText(String.format("%.1f  ", (Float) value));
+			setText(value.toString());
 			setForeground(null);
 			return this;
 		}

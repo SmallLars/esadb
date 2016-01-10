@@ -102,6 +102,7 @@ public class SingleEdit extends JDialog implements ComponentListener, ActionList
 		table = new JTable(new HitTableModel(new Vector<Hit>()));
 		table.setDefaultRenderer(Hit.class, new HitTableCellRenderer());
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		table.getTableHeader().setReorderingAllowed(false);
 		scrollPane.setViewportView(table);
 
 		button = new JButton("->");
@@ -147,6 +148,7 @@ public class SingleEdit extends JDialog implements ComponentListener, ActionList
 		table_1.setDefaultRenderer(Hit.class, new HitTableCellRenderer());
 		table_1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table_1.getSelectionModel().addListSelectionListener(this);
+		table_1.getTableHeader().setReorderingAllowed(false);
 		scrollPane_1.setViewportView(table_1);
 
 		cancelButton = new JButton("Schließen");

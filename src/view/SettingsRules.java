@@ -39,6 +39,7 @@ public class SettingsRules extends JPanel implements ActionListener, SettingsCha
 		table = new JTable(rtm);
 		table.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
 		table.setRowHeight(20);
+		table.getTableHeader().setReorderingAllowed(false);
 
 		table.getColumnModel().getColumn(0).setMinWidth(100);
 		table.getColumnModel().getColumn(1).setMinWidth(150);

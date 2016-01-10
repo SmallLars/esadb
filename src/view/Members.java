@@ -74,6 +74,7 @@ public class Members extends JDialog implements ComponentListener, ActionListene
 		sorter.setRowFilter(new MemberRowFilter(true, null));
 		table = new JTable(tmodel);
 		table.setRowSorter(sorter);
+		table.getTableHeader().setReorderingAllowed(false);
 		scrollPane.setViewportView(table);
 
 		button = new JButton("<-");
@@ -92,6 +93,7 @@ public class Members extends JDialog implements ComponentListener, ActionListene
 		sorter_1.setRowFilter(new MemberRowFilter(false, null));
 		table_1 = new JTable(tmodel_1);
 		table_1.setRowSorter(sorter_1);
+		table_1.getTableHeader().setReorderingAllowed(false);
 		scrollPane_1.setViewportView(table_1);
 		
 		lblVerein = new JLabel("Verein");

@@ -17,6 +17,7 @@ import model.Rule;
 import model.Hit;
 import controller.Controller;
 
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
@@ -46,6 +47,7 @@ public class HitAdd extends JDialog implements ComponentListener, ListSelectionL
 	private JTable table_1;
 	
 	private JButton cancelButton;
+	private JButton button_1;
 
 	public HitAdd(Frame parent) {
 		super(parent, "Treffer eingeben");
@@ -61,7 +63,7 @@ public class HitAdd extends JDialog implements ComponentListener, ListSelectionL
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		getContentPane().setLayout(null);
 
-		comboBox = new JComboBox<Rule>(controller.getRules());
+		comboBox = new JComboBox<Rule>();//controller.getRules());
 		comboBox.setSelectedItem(controller.getStandardRule());
 		comboBox.setBounds(411, 15, 200, 25);
 		comboBox.setActionCommand("TYP");
@@ -82,9 +84,15 @@ public class HitAdd extends JDialog implements ComponentListener, ListSelectionL
 		treffer.setSize(300, 200);
 		treffer.setLocation(12, 10);
 		getContentPane().add(treffer);
-		
-		button = new JButton("\\/");
-		button.setBounds(137, 222, 50, 23);
+
+		button_1 = new JButton("-");
+		button_1.setBounds(14, 222, 44, 20);
+		button_1.setActionCommand("REMOVE");
+		button_1.addActionListener(this);
+		getContentPane().add(button_1);
+
+		button = new JButton("+");
+		button.setBounds(266, 222, 44, 20);
 		button.setActionCommand("ADD");
 		button.addActionListener(this);
 		getContentPane().add(button);
@@ -102,6 +110,7 @@ public class HitAdd extends JDialog implements ComponentListener, ListSelectionL
 		table_1.setDefaultRenderer(Hit.class, new HitTableCellRenderer());
 		table_1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table_1.getSelectionModel().addListSelectionListener(this);
+		table_1.getTableHeader().setReorderingAllowed(false);
 		scrollPane_1.setViewportView(table_1);
 
 		cancelButton = new JButton("Schließen");
@@ -157,6 +166,24 @@ public class HitAdd extends JDialog implements ComponentListener, ListSelectionL
 				break;
 			case "ADD":
 				controller.add(treffer.getTreffer());
+				table_1.setModel(new HitTableModel(controller.getTreffer()));
+				break;
+			case "REMOVE":
+				int index = table_1.getSelectedRow();
+				if (index < 0) break;
+
+				Hit h = (Hit) table_1.getValueAt(index, 2);
+				if (h.getLinie() > 0) {
+					JOptionPane.showMessageDialog(
+						this,
+						"Der Treffer kann nicht gelöscht werden, da er von einer Linie stammt.\nNur Treffer der Linie 0 (von esadb erzeugt) können gelöscht werden.",
+						"Löschen nicht möglich",
+						JOptionPane.INFORMATION_MESSAGE
+					);
+					break;
+				}
+
+				controller.remove(h);
 				table_1.setModel(new HitTableModel(controller.getTreffer()));
 				break;
 		}

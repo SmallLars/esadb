@@ -197,6 +197,7 @@ public class SettingsGeneral extends JPanel implements ActionListener, DocumentL
 		gtm = new GroupTableModel(new Vector<Group>(Arrays.asList(config.getGroups())));
 		table = new JTable(gtm);
 		table.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
+		table.getTableHeader().setReorderingAllowed(false);
 		table.setRowHeight(20);
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.addMouseListener(new MouseAdapter() {
