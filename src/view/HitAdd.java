@@ -63,7 +63,7 @@ public class HitAdd extends JDialog implements ComponentListener, ListSelectionL
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		getContentPane().setLayout(null);
 
-		comboBox = new JComboBox<Rule>();//controller.getRules());
+		comboBox = new JComboBox<Rule>(controller.getRules());
 		comboBox.setSelectedItem(controller.getStandardRule());
 		comboBox.setBounds(411, 15, 200, 25);
 		comboBox.setActionCommand("TYP");

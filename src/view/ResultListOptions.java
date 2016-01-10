@@ -146,7 +146,9 @@ public class ResultListOptions extends JDialog implements ActionListener {
 				settings.setValue("ResultListGender", chckbxGender.isSelected());
 				settings.setValue("ResultListGroup", chckbxGroup.isSelected());
 				settings.setValue("ResultListSingleDiscipline", chckbxDiscipline.isSelected());
-				settings.setValue("ResultListDiscipline", ((Discipline) cbDisziplin.getSelectedItem()).getId());
+				if (cbDisziplin.getSelectedItem() != null) {
+					settings.setValue("ResultListDiscipline", ((Discipline) cbDisziplin.getSelectedItem()).getId());
+				}
 				settings.setValue("ResultListNewPage", chckbxNewPage.isSelected());
 				settings.save();
 				setVisible(false);

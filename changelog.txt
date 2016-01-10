@@ -9,7 +9,7 @@
 
 2.0.0        30.12.2015
  - Waffe, Scheiben und Regeln können nun individuell angepasst werden.
- - Das .esa Dateiformat ist nicht kompatibel mit Version 1.x.
+ - Das .esa Dateiformat und die data.mdb sind nicht kompatibel mit Version 1.x.
 
 2.0.1        01.01.2016
  - In den Einstellungen können nun Standardpfad und Dateiname angepasst werden.
@@ -30,7 +30,7 @@
  - Bei alter oder fehlerhafter Konfiguration wird nun die Standardkonfiguration geladen.
  - Ergebnisliste kann konfiguriert werden (Disziplin(en), Gruppen , Geschlecht).
 
-2.0.5        XX.YY.2016
+2.0.5        10.01.2016
  - Die Höhe der Linien/Konsole kann nun geändert werden.
  - Dateiformat der Einstellungen angepasst:
    Einfache Änderung ist nun ohne Verlust bereits vorhandener Einstellungen möglich.
