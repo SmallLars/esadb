@@ -36,3 +36,6 @@
    Einfache Änderung ist nun ohne Verlust bereits vorhandener Einstellungen möglich.
  - Quellcode optimiert und kleinere Fehler beseitigt.
  - Eingegebene Treffer können nun wieder gelöscht werden.
+
+2.0.6        XX.YY.2016
+ - Update von Jackcess: Es erfolgt nun keine Warnung mehr beim Anzeigen der Stammdaten.
