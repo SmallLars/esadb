@@ -112,6 +112,12 @@ public class ResultList implements Printable {
 					number = 1;
 					break;
 				case RESULT_SINGLE:
+					if (number > 1) {
+						if (((Start) e.value).compareTo((Start) entrys.get(i - 1).value) == 0) {
+							// Es liegt völlige Gleicheit vor: Gleiche Platzierung
+							number--;
+						}
+					}
 					drawSingleResult(g, e.value, number++);
 					if (i != pages.get(pageIndex) && number > 2) g.drawLine(0, 10, 2000, 10);
 					g.drawLine(700, 10, 700, e.height + 10);
