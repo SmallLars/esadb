@@ -49,6 +49,16 @@ public class Single extends Start implements Printable {
 		this.treffer = Collections.synchronizedNavigableMap(new TreeMap<Hit, Hit>());
 	}
 
+	@Override
+	public String toString() {
+		String s = "";
+
+		SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
+		s = s.concat(String.format("%s %-30s", sdf.format(datum), schuetze));
+
+		return s;
+	}
+
 	public boolean isEmpty() {
 		return treffer.isEmpty();
 	}
@@ -148,6 +158,61 @@ public class Single extends Start implements Printable {
 		return treffer.get(new Hit(probe, nummer));
 	}
 
+	public float getResult(boolean probe) {
+		float summe = 0;
+		for (int i = 0; i < disziplin.getSchusszahl(); i++) {
+			float value = getValue(probe, i);
+			if (value == -1) break;
+			summe += value;
+		}
+		return summe;
+	}
+
+	public float getSerie(boolean probe, int serie) {
+		if (probe && serie < 0) return 0;
+
+		float summe = 0;
+		int num;
+		if (serie >= 0) {
+			num = disziplin.getSerienlaenge() * serie;
+		} else {
+			num = disziplin.getSerienlaenge() * (disziplin.getSerienAnzahl() + serie);
+		}
+		for (int i = 0; i < disziplin.getSerienlaenge(); i++) {
+			float value = getValue(probe, num + i);
+			if (value >= 0) summe += value;
+		}
+		return summe;
+	}
+
+	public int getMaxNumber() {
+		return Controller.get().getRule(disziplin.getRuleNumber()).getScheibe().getValue(TargetValue.RING_MAX);
+	}	
+
+	public int getNumberCount(boolean probe, int number) {
+		int count = 0;
+
+		for (int i = 1; probe || i <= disziplin.getSchusszahl(); i++) {
+			Hit t = getTreffer(probe, i);
+			if (t == null) break;
+
+			if (number == -1 || number == (int) t.getWert()) count++;
+		}
+		return count;
+	}
+
+	public int getInnerCount(boolean probe) {
+		int count = 0;
+
+		for (int i = 1; probe || i <= disziplin.getSchusszahl(); i++) {
+			Hit t = getTreffer(probe, i);
+			if (t == null) break;
+
+			if (t.isInnenZehner()) count++;
+		}
+		return count;
+	}
+
 	public int lineCount() {
 		int i;
 		for (i = 1; i <= disziplin.getSerienAnzahl(); i++) {
@@ -172,16 +237,6 @@ public class Single extends Start implements Printable {
 		int height = ((anzahl - 1) / 4) * lineheight;
 		g.drawString(String.format("%5.1f", getResult(false)), 1800, height + lineheight);
 	}
-	
-	@Override
-	public String toString() {
-		String s = "";
-
-		SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
-		s = s.concat(String.format("%s %-30s", sdf.format(datum), schuetze));
-
-		return s;
-	}
 
 	public boolean toFile(String filename, boolean probe) {
 		File file = new File(filename);
@@ -192,7 +247,7 @@ public class Single extends Start implements Printable {
 			return false;
 		}
 		writer.println(probe ? "\"0\"" : "\"-1\"");
-		int anzahl = getNumberCount(probe)[12];
+		int anzahl = getNumberCount(probe, -1);
 		writer.println(anzahl);
 		for (int i = 1; i <= anzahl; i++) {
 			getTreffer(probe, i).print(writer);
@@ -229,16 +284,14 @@ public class Single extends Start implements Printable {
 			if (c != 0) return c;
 		}
 
-		int[] count = e.getNumberCount(false);
-		int[] mycount = getNumberCount(false);
 		// 3. Höchste Zahl der 10er, dann 9er, .... dann 1er
 		for (int i = 10; i >=0; i--) {
-			c = count[i] - mycount[i];
+			c = e.getNumberCount(false, i) - getNumberCount(false, i);
 			if (c != 0) return c;
 		}
 
-		// 4. Höchste Zahl der InnenZehner (5 mm durchmesser)
-		return count[11] - mycount[11];
+		// 4. Höchste Zahl der InnenZehner
+		return e.getInnerCount(false) - this.getInnerCount(false);
 	}
 
 	@Override
@@ -354,13 +407,20 @@ public class Single extends Start implements Printable {
 	}
 
 	private void drawNumberCountTable(Graphics2D g, int lineHeight, boolean probe) {
-		int[] count = getNumberCount(probe);
+		int maxNum = getMaxNumber();
+		int[] count = new int[maxNum + 3];
+		for (int i = 0; i <= maxNum; i++) {
+			count[i] = getNumberCount(probe, i);
+			count[maxNum + 2] += count[i];
+		}
+		count[maxNum + 1] = getInnerCount(probe);
+
 		g.drawString("Ring", 0, 0);
 		g.drawString("Anzahl", 0, lineHeight);
-		for (int i = 0; i < 13; i++) {
-			final int width = 135;
+		for (int i = 0; i < maxNum + 3; i++) { // 13
+			final int width = 1755 / (maxNum + 3);
 			final int rectDiff = - g.getFontMetrics().getHeight() + g.getFontMetrics().getLeading();
-			drawStringRight(g, i == 12 ? "Sum" : i == 11 ? "10i" : "" + i, 2000 - i * width, 0);
+			drawStringRight(g, i == maxNum + 2 ? "Sum" : i == maxNum + 1 ? maxNum + "i" : "" + i, 2000 - i * width, 0);
 			g.drawRect(2000 - width*(i+1), rectDiff, width, lineHeight);
 			drawStringRight(g, "" + count[i], 2000 - i * width, lineHeight);
 			g.drawRect(2000 - width*(i+1), lineHeight + rectDiff, width, lineHeight);
@@ -376,40 +436,6 @@ public class Single extends Start implements Printable {
 		if (disziplin.getWertung() == 0) wert = ((int) wert);
 
 		return wert;
-	}
-
-	private float getSerie(boolean probe, int serie) {
-		float summe = 0;
-		int num = disziplin.getSerienlaenge() * serie;
-		for (int i = 0; i < disziplin.getSerienlaenge(); i++) {
-			float value = getValue(probe, num + i);
-			if (value >= 0) summe += value;
-		}
-		return summe;
-	}
-
-	private float getResult(boolean probe) {
-		float summe = 0;
-		for (int i = 0; i < disziplin.getSchusszahl(); i++) {
-			float value = getValue(probe, i);
-			if (value == -1) break;
-			summe += value;
-		}
-		return summe;
-	}
-
-	private int[] getNumberCount(boolean probe) {
-		int[] count = new int[13];
-
-		for (int i = 1; probe || i <= disziplin.getSchusszahl(); i++) {
-			Hit t = getTreffer(probe, i);
-			if (t == null) break;
-			
-			count[12]++;
-			if (t.isInnenZehner()) count[11]++;
-			count[(int) t.getWert()]++;
-		}
-		return count;
 	}
 
 	private int getNextNum(boolean probe) {
