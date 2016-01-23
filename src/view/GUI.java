@@ -125,18 +125,10 @@ public class GUI extends JFrame implements ActionListener, ComponentListener {
 			mntmResultOptions.setActionCommand("RESULTLIST");
 			mntmResultOptions.addActionListener(this);
 
-			JMenu mnEinzelergebnisse = new JMenu("Einzelergebnisse");
-			mnErgebnisse.add(mnEinzelergebnisse);
-
-				JMenuItem mntmEinzel = new JMenuItem("Anzeigen...");
-				mnEinzelergebnisse.add(mntmEinzel);
-				mntmEinzel.setActionCommand("SINGLEPREVIEW");
-				mntmEinzel.addActionListener(this);
-
-				JMenuItem mntmEinzel_1 = new JMenuItem("Bearbeiten...");
-				mnEinzelergebnisse.add(mntmEinzel_1);
-				mntmEinzel_1.setActionCommand("SINGLEEDIT");
-				mntmEinzel_1.addActionListener(this);
+			JMenuItem mntmEinzel = new JMenuItem("Einzelergebnisse...");
+			mnErgebnisse.add(mntmEinzel);
+			mntmEinzel.setActionCommand("SINGLEPREVIEW");
+			mntmEinzel.addActionListener(this);
 
 			mnErgebnisse.addSeparator();
 
@@ -144,6 +136,16 @@ public class GUI extends JFrame implements ActionListener, ComponentListener {
 			mntmTreffer.setActionCommand("TREFFERADD");
 			mntmTreffer.addActionListener(this);
 			mnErgebnisse.add(mntmTreffer);
+
+			JMenuItem mntmEinzel_1 = new JMenuItem("Ergebnisse bearbeiten...");
+			mnErgebnisse.add(mntmEinzel_1);
+			mntmEinzel_1.setActionCommand("SINGLEEDIT");
+			mntmEinzel_1.addActionListener(this);
+
+			JMenuItem mntmTeam = new JMenuItem("Mannschaften bearbeiten...");
+			mntmTeam.setActionCommand("TEAMEDIT");
+			mntmTeam.addActionListener(this);
+			mnErgebnisse.add(mntmTeam);
 
 		JMenu mnStammdaten = new JMenu("Stammdaten");
 		menuBar.add(mnStammdaten);
@@ -375,6 +377,10 @@ public class GUI extends JFrame implements ActionListener, ComponentListener {
 			case "SINGLEEDIT":
 				SingleEdit ee = new SingleEdit(this);
 				ee.setVisible(true);
+				break;
+			case "TEAMEDIT":
+				TeamEdit te = new TeamEdit(this);
+				te.setVisible(true);
 				break;
 			case "TREFFERADD":
 				HitAdd ta = new HitAdd(this);

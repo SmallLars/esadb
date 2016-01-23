@@ -77,10 +77,10 @@ public class Single extends Start implements Printable {
 	}
 
 	@Override
-	public Group getGroup() {
+	public Group getGroup(boolean useSettings) {
 		SettingsModel settings = Controller.get().getConfig();
 
-		if (!settings.getValue("ResultListGroup", Boolean.class)) {
+		if (useSettings && !settings.getValue("ResultListGroup", Boolean.class)) {
 			if (!settings.getValue("ResultListGender", Boolean.class)) {
 				return new Group(Gender.ANY.toString(), settings.getYear() - 201, settings.getYear(), Gender.ANY);
 			}
@@ -90,7 +90,7 @@ public class Single extends Start implements Printable {
 			return new Group(Gender.ANY.toString(), settings.getYear() - 201, settings.getYear(), Gender.ANY);
 		}
 
-		if (!settings.getValue("ResultListGender", Boolean.class)) {
+		if (useSettings && !settings.getValue("ResultListGender", Boolean.class)) {
 			for (Group g : settings.getGroups()) {
 				if (g.isMember(schuetze, false)) return g;
 			}
@@ -158,6 +158,7 @@ public class Single extends Start implements Printable {
 		return treffer.get(new Hit(probe, nummer));
 	}
 
+	@Override
 	public float getResult(boolean probe) {
 		float summe = 0;
 		for (int i = 0; i < disziplin.getSchusszahl(); i++) {
@@ -265,7 +266,7 @@ public class Single extends Start implements Printable {
 		if (c != 0) return c;
 
 		// Sortierung nach Gruppen
-		c = getGroup().compareTo(s.getGroup());
+		c = getGroup(true).compareTo(s.getGroup(true));
 		if (c != 0) return c;
 
 		// Mannschaften kommen vor Einzel

@@ -13,6 +13,7 @@ import java.io.Serializable;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -100,6 +101,16 @@ public class Model implements Serializable {
 		return ergebnisse;
 	}
 
+	public List<Team> getTeams() {
+		List<Team> teams = new ArrayList<Team>();
+		for (Start s : ergebnisse) {
+			if (s instanceof Team) {
+				teams.add((Team) s);
+			}
+		}
+		return teams;
+	}
+
 	public List<Member> getSchuetzen() {
 		if (s == null) s = new Vector<Member>(schuetzen);
 		return s;
@@ -163,9 +174,6 @@ public class Model implements Serializable {
 	public Printable getPrintable() {
 		SettingsModel settings = Controller.get().getConfig();
 
-		
-
-
 		List<Start> toPrint;
 		if (settings.getValue("ResultListSingleDiscipline", Boolean.class)) {
 			toPrint = new Vector<Start>();
@@ -188,8 +196,8 @@ public class Model implements Serializable {
 				g = null;
 			}
 
-			if (!s.getGroup().equals(g)) {
-				g = s.getGroup();
+			if (!s.getGroup(true).equals(g)) {
+				g = s.getGroup(true);
 				resultList.addGroup(g.toString());
 			}
 			resultList.addSingleResult((Single) s);

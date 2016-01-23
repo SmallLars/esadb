@@ -6,52 +6,50 @@ import java.util.List;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
-import model.Hit;
+import model.Start;
 
 
-public class HitTableModel implements TableModel {
-	List<Hit> treffer;
+public class StartTableModel implements TableModel {
+	List<Start> starts;
 
-	public HitTableModel(List<Hit> treffer) {
-		this.treffer = treffer;
+	public StartTableModel(List<Start> starts) {
+		this.starts = starts;
 	}
 
 	@Override
 	public Class<?> getColumnClass(int col) {
-		return Hit.class;
+		return Start.class;
 	}
 
 	@Override
 	public int getColumnCount() {
-		return 5;
+		return 4;
 	}
 
 	@Override
 	public String getColumnName(int col) {
-		String[] columnNames = {"Nummer", "Art", "Wert", "Lage", "Linie"};
+		String[] columnNames = {"Name", "Disziplin", "Altersgruppe", "Ergebnis"};
 		return columnNames[col];
 	}
 
 	@Override
 	public int getRowCount() {
-		return treffer.size();
+		return starts.size();
 	}
 
 	@Override
 	public Object getValueAt(int row, int col) {
 		switch (col) {
 			case 0:
-				return treffer.get(row).getNummer();
+				return starts.get(row);
 			case 1:
-				return treffer.get(row).isProbe();
+				return starts.get(row).getDisziplin();
 			case 2:
-				return treffer.get(row);
+				return starts.get(row).getGroup(false);
 			case 3:
-				return treffer.get(row).getLage();
-			case 4:
-				return treffer.get(row).getLinie();
+				return starts.get(row).getResult(false);
 			default:
-				return treffer.get(row);
+				return starts.get(row);
 		}
 	}
 

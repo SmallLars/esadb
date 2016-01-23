@@ -10,7 +10,9 @@ public abstract class Start implements Serializable, Comparable<Start> {
 
 	public abstract Discipline getDisziplin();
 
-	public abstract Group getGroup();
+	public abstract Group getGroup(boolean useSettings);
+
+	public abstract float getResult(boolean probe);
 
 	public abstract int lineCount();
 

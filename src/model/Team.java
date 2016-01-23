@@ -9,14 +9,21 @@ import java.util.List;
 public class Team extends Start {
 	private static final long serialVersionUID = 2L;
 
+	private String name;
 	private Discipline disziplin;
 	private Group group;
 	private List<Single> member;
 
 	public Team(Discipline disziplin, Group group) {
+		this.name = "Mannschaft";
 		this.disziplin = disziplin;
 		this.group = group;
-		member = new ArrayList<Single>();
+		this.member = new ArrayList<Single>();
+	}
+
+	@Override
+	public String toString() {
+		return name;
 	}
 
 	@Override
@@ -28,7 +35,7 @@ public class Team extends Start {
 		if (c != 0) return c;
 
 		// Sortierung nach Gruppen
-		c = getGroup().compareTo(s.getGroup());
+		c = getGroup(true).compareTo(s.getGroup(true));
 		if (c != 0) return c;
 
 		// Mannschaften kommen vor Einzel
@@ -38,7 +45,7 @@ public class Team extends Start {
 		Team t = (Team) s;
 
 		// 1. Endergebnis vergleichen
-		c = (int) (t.getResult() * 10) - (int) (getResult() * 10);
+		c = (int) (t.getResult(false) * 10) - (int) (getResult(false) * 10);
 		if (c != 0) return c;
 
 		// 2. Serien rückwärts vergleichen
@@ -85,6 +92,10 @@ public class Team extends Start {
 		return count - mycount;
 	}
 
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	public void setDisziplin(Discipline disziplin) {
 		this.disziplin = disziplin;
 	}
@@ -99,8 +110,17 @@ public class Team extends Start {
 	}
 
 	@Override
-	public Group getGroup() {
+	public Group getGroup(boolean useSettings) {
 		return group;
+	}
+
+	@Override
+	public float getResult(boolean probe) {
+		float summe = 0;
+		for (Single s : member) {
+			summe += s.getResult(probe);
+		}
+		return summe;
 	}
 
 	public void addMember(Single single) {
@@ -125,13 +145,4 @@ public class Team extends Start {
 		// TODO Auto-generated method stub
 
 	}
-
-	private float getResult() {
-		float summe = 0;
-		for (Single s : member) {
-			summe += s.getResult(false);
-		}
-		return summe;
-	}
-
 }
