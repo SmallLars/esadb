@@ -113,7 +113,7 @@ public class ResultList implements Printable {
 					break;
 				case RESULT_SINGLE:
 					if (number > 1) {
-						if (((Start) e.value).compareTo((Start) entrys.get(i - 1).value) == 0) {
+						if (((Result) e.value).compareTo((Result) entrys.get(i - 1).value) == 0) {
 							// Es liegt völlige Gleicheit vor: Gleiche Platzierung
 							number--;
 						}
@@ -144,7 +144,7 @@ public class ResultList implements Printable {
 		entrys.add(new Entry(GROUP, name, GROUP_HEIGHT));
 	}
 
-	public void addSingleResult(Start start) {
+	public void addSingleResult(Result start) {
 		entrys.add(new Entry(RESULT_SINGLE, start, start.lineCount() * RESULT_SINGLE_HEIGHT));
 	}
 
@@ -164,7 +164,7 @@ public class ResultList implements Printable {
 
 	private void drawSingleResult(Graphics2D g, Object start, int number) {
 		g.setFont(new Font("Bitstream Vera Sans", Font.PLAIN, 40));
-		((Start) start).draw(g, number);
+		((Result) start).draw(g, number);
 	}
 
 	private void drawStringLeft(Graphics2D g, AttributedCharacterIterator s, int x, int y) {

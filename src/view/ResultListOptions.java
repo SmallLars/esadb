@@ -13,7 +13,7 @@ import javax.swing.JComboBox;
 
 import model.Discipline;
 import model.SettingsModel;
-import model.Start;
+import model.Result;
 import controller.Controller;
 
 import javax.swing.JCheckBox;
@@ -84,7 +84,7 @@ public class ResultListOptions extends JDialog implements ActionListener {
 		modelD = new DefaultComboBoxModel<Discipline>();
 		cbDisziplin = new JComboBox<Discipline>(modelD);
 		cbDisziplin.setBounds(274, 59, 246, 22);
-		for (Start s : Controller.get().getModel().getErgebnisse()) {
+		for (Result s : Controller.get().getModel().getErgebnisse()) {
 			if (modelD.getIndexOf(s.getDisziplin()) == -1) {
 				cbDisziplin.addItem(s.getDisziplin());
 			}

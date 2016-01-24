@@ -5,8 +5,10 @@ import java.awt.Graphics2D;
 import java.io.Serializable;
 
 
-public abstract class Start implements Serializable, Comparable<Start> {
+public abstract class Result implements Serializable, Comparable<Result> {
 	private static final long serialVersionUID = 2L;
+
+	public abstract String getName();
 
 	public abstract Discipline getDisziplin();
 

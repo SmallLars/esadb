@@ -6,19 +6,19 @@ import java.util.List;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
-import model.Start;
+import model.Result;
 
 
-public class StartTableModel implements TableModel {
-	List<Start> starts;
+public class ResultTableModel implements TableModel {
+	List<Result> starts;
 
-	public StartTableModel(List<Start> starts) {
+	public ResultTableModel(List<Result> starts) {
 		this.starts = starts;
 	}
 
 	@Override
 	public Class<?> getColumnClass(int col) {
-		return Start.class;
+		return Result.class;
 	}
 
 	@Override
@@ -41,7 +41,7 @@ public class StartTableModel implements TableModel {
 	public Object getValueAt(int row, int col) {
 		switch (col) {
 			case 0:
-				return starts.get(row);
+				return starts.get(row).getName();
 			case 1:
 				return starts.get(row).getDisziplin();
 			case 2:

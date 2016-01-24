@@ -26,7 +26,7 @@ import controller.Controller;
 import view.Target;
 
 
-public class Single extends Start implements Printable {
+public class Single extends Result implements Printable {
 	private static final long serialVersionUID = 2L;
 	
 	public static final int PROBE = 0;
@@ -57,6 +57,10 @@ public class Single extends Start implements Printable {
 		s = s.concat(String.format("%s %-30s", sdf.format(datum), schuetze));
 
 		return s;
+	}
+
+	public String getName() {
+		return schuetze.toString();
 	}
 
 	public boolean isEmpty() {
@@ -258,7 +262,7 @@ public class Single extends Start implements Printable {
 	}
 	
 	@Override
-	public int compareTo(Start s) {
+	public int compareTo(Result s) {
 		int c;
 
 		// Zuerst nach Disziplin sortieren

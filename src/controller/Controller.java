@@ -142,8 +142,8 @@ public class Controller {
 		return model.getSchuetzen();
 	}
 
-	public List<Discipline> getDisziplinen() {
-		return  model.getDisziplinen();
+	public Discipline[] getDisziplinen() {
+		return model.getDisziplinen();
 	}
 
 	public List<Hit> getTreffer() {

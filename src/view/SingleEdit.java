@@ -16,7 +16,7 @@ import javax.swing.JComboBox;
 
 import model.Discipline;
 import model.Single;
-import model.Start;
+import model.Result;
 import model.Hit;
 import controller.Controller;
 
@@ -68,7 +68,7 @@ public class SingleEdit extends JDialog implements ComponentListener, ActionList
 
 		this.controller = Controller.get();
 		ergebnisse = new Vector<Single>();
-		for (Start s : controller.getModel().getErgebnisse()) {
+		for (Result s : controller.getModel().getErgebnisse()) {
 			if (s instanceof Single) ergebnisse.add((Single) s);
 		}
 

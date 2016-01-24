@@ -31,6 +31,10 @@ public class Discipline implements Serializable, Comparable<Discipline> {
 		this.ruleNumber = ruleNumber;
 	}
 
+	public Discipline(String name) {
+		this.name = name;
+	}
+
 	public int getId() {
 		return id;
 	}

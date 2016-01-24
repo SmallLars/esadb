@@ -28,7 +28,7 @@ public class Model implements Serializable {
 
 	private Set<Member> schuetzen;
 	private Set<Discipline> disziplinen;
-	private List<Start> ergebnisse;
+	private List<Result> ergebnisse;
 	private List<Hit> treffer;
 	private byte[] file;
 
@@ -36,7 +36,7 @@ public class Model implements Serializable {
 	transient private List<Discipline> d;
 
 	public Model(SettingsModel config) {
-		ergebnisse = new Vector<Start>();
+		ergebnisse = new Vector<Result>();
 		schuetzen = KampfDB.getSchuetzen();
 		disziplinen = KampfDB.getDisziplinen(config);
 		treffer = new Vector<Hit>();
@@ -53,8 +53,8 @@ public class Model implements Serializable {
 	}
 
 	public boolean add(Object o) {
-		if (o instanceof Start) {
-			return ergebnisse.add((Start) o);
+		if (o instanceof Result) {
+			return ergebnisse.add((Result) o);
 		}
 		if (o instanceof Member) {
 			s = null;
@@ -77,8 +77,8 @@ public class Model implements Serializable {
 	}
 
 	public boolean remove(Object o) {
-		if (o instanceof Start) {
-			return ergebnisse.remove((Start) o);
+		if (o instanceof Result) {
+			return ergebnisse.remove((Result) o);
 		}
 		if (o instanceof Hit) {
 			return treffer.remove((Hit) o);
@@ -88,7 +88,7 @@ public class Model implements Serializable {
 
 	public List<Single> getIncomplete() {
 		Vector<Single> incomplete = new Vector<Single>();
-		for (Start s : ergebnisse) {
+		for (Result s : ergebnisse) {
 			if (s instanceof Single) {
 				Single e = (Single) s;
 				if (!e.isEmpty() && !e.isComplete()) incomplete.add(e);
@@ -97,13 +97,13 @@ public class Model implements Serializable {
 		return incomplete;
 	}
 
-	public List<Start> getErgebnisse() {
+	public List<Result> getErgebnisse() {
 		return ergebnisse;
 	}
 
 	public List<Team> getTeams() {
 		List<Team> teams = new ArrayList<Team>();
-		for (Start s : ergebnisse) {
+		for (Result s : ergebnisse) {
 			if (s instanceof Team) {
 				teams.add((Team) s);
 			}
@@ -116,9 +116,9 @@ public class Model implements Serializable {
 		return s;
 	}
 
-	public List<Discipline> getDisziplinen() {
+	public Discipline[] getDisziplinen() {
 		if (d == null) d = new Vector<Discipline>(disziplinen); 
-		return d;
+		return d.toArray(new Discipline[0]);
 	}
 
 	public List<Hit> getTreffer() {
@@ -174,12 +174,12 @@ public class Model implements Serializable {
 	public Printable getPrintable() {
 		SettingsModel settings = Controller.get().getConfig();
 
-		List<Start> toPrint;
+		List<Result> toPrint;
 		if (settings.getValue("ResultListSingleDiscipline", Boolean.class)) {
-			toPrint = new Vector<Start>();
-			for (Start s : ergebnisse) if (s.getDisziplin().getId() == settings.getValue("ResultListDiscipline", Integer.class)) toPrint.add(s);
+			toPrint = new Vector<Result>();
+			for (Result s : ergebnisse) if (s.getDisziplin().getId() == settings.getValue("ResultListDiscipline", Integer.class)) toPrint.add(s);
 		} else {
-			toPrint = new Vector<Start>(ergebnisse);
+			toPrint = new Vector<Result>(ergebnisse);
 		}
 		toPrint.sort(null);
 
@@ -188,7 +188,7 @@ public class Model implements Serializable {
 
 		Discipline d = null;
 		Group g = null;
-		for (Start s : toPrint) {
+		for (Result s : toPrint) {
 			if (!s.getDisziplin().equals(d)) {
 				d = s.getDisziplin();
 				if (settings.getValue("ResultListNewPage", Boolean.class)) resultList.addNewPage();

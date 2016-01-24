@@ -1,12 +1,12 @@
 package view;
 
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -34,7 +34,7 @@ public class Disciplines extends JDialog implements ActionListener {
 
 	private final JPanel contentPanel = new JPanel();
 
-	public Disciplines(Frame parent, List<Discipline> disziplinen) {
+	public Disciplines(Frame parent, Discipline[] disziplinen) {
 		super(parent, "Disziplinen");
 		setResizable(false);
 
@@ -76,7 +76,7 @@ public class Disciplines extends JDialog implements ActionListener {
 		comboPane.setLayout(new FlowLayout(FlowLayout.LEFT));
 		getContentPane().add(comboPane, BorderLayout.NORTH);
 
-		comboBox = new JComboBox<Discipline>(disziplinen.toArray(new Discipline[0]));
+		comboBox = new JComboBox<Discipline>(disziplinen);
 		comboBox.setPreferredSize(new Dimension(257, 22));
 		comboBox.setActionCommand("DISZIPLIN");
 		comboBox.addActionListener(this);

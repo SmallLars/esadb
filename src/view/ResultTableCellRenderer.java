@@ -6,11 +6,9 @@ import java.awt.Component;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 
-import model.Start;
-
 
 @SuppressWarnings("serial")
-public class StartTableCellRenderer extends DefaultTableCellRenderer {
+public class ResultTableCellRenderer extends DefaultTableCellRenderer {
 
 	@Override
 	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
@@ -18,18 +16,10 @@ public class StartTableCellRenderer extends DefaultTableCellRenderer {
 
 		if (value instanceof Float) {
 			setHorizontalAlignment(RIGHT);
-			setIcon(null);
 			setText(String.format("%.1f", (Float) value));
-			setForeground(null);
-			return this;
-		}
-
-		if (value instanceof Start) {
+		} else {
 			setHorizontalAlignment(LEFT);
-			setIcon(null);
 			setText(value.toString());
-			setForeground(null);
-			return this;
 		}
 
 		return this;

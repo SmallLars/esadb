@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class Team extends Start {
+public class Team extends Result {
 	private static final long serialVersionUID = 2L;
 
 	private String name;
@@ -27,7 +27,7 @@ public class Team extends Start {
 	}
 
 	@Override
-	public int compareTo(Start s) {
+	public int compareTo(Result s) {
 		int c;
 
 		// Zuerst nach Disziplin sortieren
@@ -94,6 +94,11 @@ public class Team extends Start {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	@Override
+	public String getName() {
+		return name;
 	}
 
 	public void setDisziplin(Discipline disziplin) {
