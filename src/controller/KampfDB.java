@@ -71,7 +71,7 @@ public class KampfDB {
 		return set;
 	}
 
-	public static Vector<Member> getAllSchuetzen() {
+	public static Member[] getAllSchuetzen() {
 		Vector<Member> list = new Vector<Member>();
 
 		try {
@@ -84,10 +84,10 @@ public class KampfDB {
 		}
 
 		list.sort(null);
-		return list;
+		return list.toArray(new Member[0]);
 	}
 
-	public static Vector<Club> getVereine() {
+	public static Club[] getVereine() {
 		Vector<Club> list = new Vector<Club>();
 
 		try {
@@ -99,7 +99,7 @@ public class KampfDB {
 			e.printStackTrace();
 		}
 
-		return list;
+		return list.toArray(new Club[0]);
 	}
 
 	private static Database getDB(String filename) throws IOException {

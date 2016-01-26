@@ -1,7 +1,7 @@
 package view;
 
+
 import java.util.Date;
-import java.util.List;
 
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
@@ -10,9 +10,9 @@ import model.Member;
 
 
 public class MemberTableModel implements TableModel {
-	List<Member> schuetzen;
+	Member[] schuetzen;
 
-	public MemberTableModel(List<Member> schuetzen) {
+	public MemberTableModel(Member[] schuetzen) {
 		this.schuetzen = schuetzen;
 	}
 
@@ -35,20 +35,20 @@ public class MemberTableModel implements TableModel {
 
 	@Override
 	public int getRowCount() {
-		return schuetzen.size();
+		return schuetzen.length;
 	}
 
 	@Override
 	public Object getValueAt(int row, int col) {
 		switch (col) {
 			case 0:
-				return schuetzen.get(row).nachname;
+				return schuetzen[row].nachname;
 			case 1:
-				return schuetzen.get(row).vorname;
+				return schuetzen[row].vorname;
 			case 2:
-				return schuetzen.get(row).geburtsdatum;
+				return schuetzen[row].geburtsdatum;
 			default:
-				return schuetzen.get(row);
+				return schuetzen[row];
 		}
 	}
 

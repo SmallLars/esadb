@@ -13,6 +13,11 @@ public class Club implements Comparable<Club> {
 		name = (String) row.get("Vereinsname");
 	}
 
+	public Club (int id, String name) {
+		this.id = id;
+		this.name = name;
+	}
+
 	public int getId() {
 		return id;
 	}

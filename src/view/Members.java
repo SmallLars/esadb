@@ -1,11 +1,13 @@
 package view;
 
+
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.util.Arrays;
 import java.util.Vector;
 
 import javax.swing.JButton;
@@ -30,7 +32,7 @@ import javax.swing.table.TableRowSorter;
 public class Members extends JDialog implements ComponentListener, ActionListener {
 
 	private Controller controller;
-	private Vector<Member> schuetzen;
+	private Member[] schuetzen;
 
 	private JScrollPane scrollPane;
 	private MemberTableModel tmodel;
@@ -100,9 +102,9 @@ public class Members extends JDialog implements ComponentListener, ActionListene
 		lblVerein.setBounds(20, 443, 46, 14);
 		getContentPane().add(lblVerein);
 
-		Vector<Club> vereine = KampfDB.getVereine();
-		vereine.add(0, null);
-		comboBox = new JComboBox<Club>(vereine);
+		comboBox = new JComboBox<Club>(KampfDB.getVereine());
+		comboBox.insertItemAt(new Club(0,  "Alle Vereine"), 0);
+		comboBox.setSelectedIndex(0);
 		comboBox.setBounds(69, 439, 251, 22);
 		comboBox.setActionCommand("FILTER");
 		comboBox.addActionListener(this);
@@ -131,7 +133,7 @@ public class Members extends JDialog implements ComponentListener, ActionListene
 					}
 				}
 				for (Object o : changed) {
-					int listIndex = schuetzen.indexOf(o);
+					int listIndex = Arrays.asList(schuetzen).indexOf(o);
 					table.tableChanged(new TableModelEvent(tmodel, listIndex));
 					table_1.tableChanged(new TableModelEvent(tmodel_1, listIndex));
 				}
@@ -141,8 +143,10 @@ public class Members extends JDialog implements ComponentListener, ActionListene
 				scrollPane_1.repaint();
 				break;
 			case "FILTER":
-				sorter.setRowFilter(new MemberRowFilter(true, (Club) comboBox.getSelectedItem()));
-				sorter_1.setRowFilter(new MemberRowFilter(false, (Club) comboBox.getSelectedItem()));
+				Club club = (Club) comboBox.getSelectedItem();
+				if (club.getId() == 0) club = null;
+				sorter.setRowFilter(new MemberRowFilter(true, club));
+				sorter_1.setRowFilter(new MemberRowFilter(false, club));
 				break;
 			case "CANCEL":
 				setVisible(false);
