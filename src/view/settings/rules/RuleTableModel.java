@@ -1,32 +1,26 @@
-package view;
+package view.settings.rules;
 
 
 import java.util.List;
-import java.util.Vector;
 
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
-import javax.swing.table.TableModel;
+import javax.swing.table.DefaultTableModel;
 
 import model.Rule;
 import model.TargetModel;
 import model.Weapon;
 
 
-public class RuleTableModel implements TableModel {
+@SuppressWarnings("serial")
+public class RuleTableModel extends DefaultTableModel {
 	List<Rule> rules;
-	List<TableModelListener> tml;
 
 	public RuleTableModel(List<Rule> rules) {
-		tml = new Vector<TableModelListener>();
 		this.rules = rules;
 	}
 
 	public void removeRule(int index) {
 		rules.remove(index);
-		for (TableModelListener ml : tml) {
-			ml.tableChanged(new TableModelEvent(this));
-		}
+		fireTableDataChanged();
 	}
 
 	@Override
@@ -56,7 +50,7 @@ public class RuleTableModel implements TableModel {
 
 	@Override
 	public int getRowCount() {
-		return rules.size();
+		return rules == null ? 0 : rules.size();
 	}
 
 	@Override
@@ -77,16 +71,6 @@ public class RuleTableModel implements TableModel {
 	public boolean isCellEditable(int rowIndex, int columnIndex) {
 		if (columnIndex > 1) return true;
 		return false;
-	}
-
-	@Override
-	public void addTableModelListener(TableModelListener tml) {
-		this.tml.add(tml);
-	}
-
-	@Override
-	public void removeTableModelListener(TableModelListener tml) {
-		this.tml.remove(tml);
 	}
 
 	@Override

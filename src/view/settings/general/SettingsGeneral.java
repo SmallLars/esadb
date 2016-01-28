@@ -1,4 +1,4 @@
-package view;
+package view.settings.general;
 
 
 import java.awt.Rectangle;
@@ -44,6 +44,8 @@ import controller.Controller;
 
 import javax.swing.JTextField;
 import javax.swing.JTable;
+
+import view.TableEditor;
 
 
 @SuppressWarnings("serial")

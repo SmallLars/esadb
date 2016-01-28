@@ -1,4 +1,4 @@
-package view;
+package view.teamedit;
 
 
 import java.awt.Dimension;
@@ -14,12 +14,14 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JComboBox;
+import javax.swing.SwingConstants;
 
 import model.Discipline;
 import model.Gender;
 import model.Group;
 import model.Single;
 import model.Result;
+import model.Team;
 import controller.Controller;
 
 import javax.swing.JScrollPane;
@@ -27,11 +29,12 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableRowSorter;
 import javax.swing.JLabel;
-
-import java.awt.Font;
-
 import javax.swing.JSeparator;
+
+import view.TableEditor;
 
 
 @SuppressWarnings("serial")
@@ -46,9 +49,9 @@ public class TeamEdit extends JDialog implements ComponentListener, ActionListen
 	private JButton button;
 	private JButton button_1;
 
-	private JLabel lblEinzelergebnisse;
-
 	private JScrollPane scrollPane_1;
+	private ResultTableModel tmodel;
+	private TableRowSorter<ResultTableModel> sorter;
 	private JTable table_1;
 	
 	private JButton cancelButton;
@@ -65,9 +68,9 @@ public class TeamEdit extends JDialog implements ComponentListener, ActionListen
 
 		setModal(true);
 		setModalityType(ModalityType.APPLICATION_MODAL);
-		Dimension d = new Dimension(902, 500);
+		Dimension d = new Dimension(632, 500);
 		setMinimumSize(d);
-		setSize(d);
+		setSize(new Dimension(632, 500));
 		setLocationRelativeTo(parent);
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		getContentPane().setLayout(null);
@@ -88,33 +91,42 @@ public class TeamEdit extends JDialog implements ComponentListener, ActionListen
 		group.insertItemAt(new Group("Alle Gruppen", 0, 0, Gender.ANY), 0);
 		group.setSelectedIndex(0);
 		group.setBounds(298, 11, 200, 22);
-		group.setActionCommand("START");
+		group.setActionCommand("GROUP");
 		group.addActionListener(this);
 		getContentPane().add(group);
 
-		button = new JButton("->");
-		button.setBounds(320, 173, 50, 23);
+		button = new JButton("-");
+		button.setBounds(14, 391, 50, 23);
 		button.setActionCommand("REMOVE");
 		button.addActionListener(this);
 		getContentPane().add(button);
 
-		button_1 = new JButton("<-");
-		button_1.setBounds(320, 308, 50, 23);
+		button_1 = new JButton("+");
+		button_1.setBounds(564, 391, 50, 23);
 		button_1.setActionCommand("ADD");
 		button_1.addActionListener(this);
 		getContentPane().add(button_1);
-
-		lblEinzelergebnisse = new JLabel("Einzelergebnisse");
-		lblEinzelergebnisse.setFont(new Font("Tahoma", Font.BOLD, 16));
-		lblEinzelergebnisse.setBounds(382, 57, 300, 22);
-		getContentPane().add(lblEinzelergebnisse);
 		
 		scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBounds(382, 90, 500, 338);
+		scrollPane_1.setBounds(14, 57, 600, 320);
 		getContentPane().add(scrollPane_1);
-		
-		table_1 = new JTable(new ResultTableModel(controller.getModel().getErgebnisse()));
-		table_1.setDefaultRenderer(Result.class, new ResultTableCellRenderer());
+
+		tmodel = new ResultTableModel(controller.getModel().getErgebnisse());
+		sorter = new TableRowSorter<ResultTableModel>(tmodel);
+		sorter.setSortsOnUpdates(true);
+		sorter.setRowFilter(new ResultRowFilter(disziplin, group));
+		table_1 = new JTable(tmodel);
+		table_1.setRowSorter(sorter);
+		table_1.setDefaultRenderer(Float.class, new DefaultTableCellRenderer() {
+			{setHorizontalAlignment(SwingConstants.RIGHT);}
+			
+			@Override
+			protected void setValue(Object o) {
+				super.setValue(String.format("%.1f", (Float) o));
+			}
+		});
+		table_1.getColumnModel().getColumn(1).setCellEditor(new TableEditor(new JComboBox<Discipline>(new DefaultComboBoxModel<Discipline>(Controller.get().getDisziplinen())), 0));
+		table_1.getColumnModel().getColumn(2).setCellEditor(new TableEditor(new JComboBox<Group>(new DefaultComboBoxModel<Group>(Controller.get().getConfig().getGroups())), 0));
 		table_1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table_1.getSelectionModel().addListSelectionListener(this);
 		table_1.getTableHeader().setReorderingAllowed(false);
@@ -126,32 +138,37 @@ public class TeamEdit extends JDialog implements ComponentListener, ActionListen
 		scrollPane_1.setViewportView(table_1);
 
 		cancelButton = new JButton("Schließen");
-		cancelButton.setBounds(784, 439, 100, 23);
+		cancelButton.setBounds(514, 438, 100, 23);
 		cancelButton.setActionCommand("CANCEL");
 		cancelButton.addActionListener(this);
 		getContentPane().add(cancelButton);
 		getRootPane().setDefaultButton(cancelButton);
 		
 		separator = new JSeparator();
-		separator.setBounds(14, 44, 868, 2);
+		separator.setBounds(14, 44, 600, 2);
 		getContentPane().add(separator);
+		
+		JSeparator separator_1 = new JSeparator();
+		separator_1.setBounds(14, 425, 600, 2);
+		getContentPane().add(separator_1);
 
 		addComponentListener(this);
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent arg0) {
-		switch (arg0.getActionCommand()) {
+	public void actionPerformed(ActionEvent e) {
+		switch (e.getActionCommand()) {
 			case "CANCEL":
 				setVisible(false);
 				break;
 			case "DISZIPLIN":
-				break;
-			case "START":
+			case "GROUP":
+				tmodel.fireTableDataChanged();
 				break;
 			case "REMOVE":
 				break;
 			case "ADD":
+				controller.add(new Team(null, null));
 				break;
 		}
 	}

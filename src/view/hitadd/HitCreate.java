@@ -1,4 +1,4 @@
-package view;
+package view.hitadd;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -29,6 +29,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import view.Target;
 import model.Rule;
 import model.Hit;
 import model.TargetValue;

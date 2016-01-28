@@ -1,4 +1,4 @@
-package view;
+package view.settings.rules;
 
 
 import java.awt.Color;
@@ -18,6 +18,7 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 
+import view.TableEditor;
 import controller.Controller;
 import model.Rule;
 import model.SettingsChangeListener;

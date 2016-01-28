@@ -1,4 +1,4 @@
-package view;
+package view.settings;
 
 
 import java.awt.Frame;
@@ -15,6 +15,9 @@ import model.SettingsModel;
 
 import javax.swing.JTabbedPane;
 
+import view.settings.general.SettingsGeneral;
+import view.settings.rules.SettingsRules;
+import view.settings.weapons.SettingsWeapons;
 import controller.Controller;
 
 

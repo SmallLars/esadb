@@ -1,4 +1,4 @@
-package view;
+package view.settings;
 
 
 import java.awt.event.ActionEvent;
@@ -13,8 +13,6 @@ import javax.swing.JPanel;
 
 import model.SettingsChangeListener;
 import model.SettingsModel;
-import model.TargetAngle;
-import model.TargetFill;
 import model.TargetModel;
 import model.TargetType;
 import model.TargetValue;
@@ -22,26 +20,37 @@ import model.TargetValue;
 import javax.swing.border.LineBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.filechooser.FileFilter;
 
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Toolkit;
+import java.io.File;
 
 import javax.swing.InputVerifier;
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.SwingConstants;
 
 import controller.Controller;
 
+import javax.swing.JToggleButton;
+
+import view.Target;
+
 
 @SuppressWarnings("serial")
-public class SettingsRingTargets extends JPanel implements ActionListener, ChangeListener, FocusListener {
+public class SettingsDeerTargets extends JPanel implements ActionListener, ChangeListener, FocusListener {
 
 	private boolean doUpdate = false;
 	private SettingsChangeListener scl;
@@ -50,22 +59,18 @@ public class SettingsRingTargets extends JPanel implements ActionListener, Chang
 	private Target scheibe;
 	private JTextField text_name;
 	private JTextField text_number;
-	private JSpinner spinner_size;
-	private JSpinner spinner_feed;
-	private JSpinner spinner_dia_outside;
-	private JSpinner spinner_ring_width;
-	private JSpinner spinner_dia_black;
-	private JSpinner spinner_dia_inner_ten;
-	private JSpinner spinner_ring_min;
-	private JSpinner spinner_ring_max;
-	private JSpinner spinner_num_max;
-	private JComboBox<TargetAngle> comboBox_ring_angle;
+	private JToggleButton tgl_anzeige;
+	private JTextField text_image;
+	private JSpinner spinner_size_x;
+	private JSpinner spinner_size_y;
+	private JSpinner spinner_zoom_x;
+	private JSpinner spinner_zoom_y;
 	private JComboBox<TargetType> comboBox_typ;
-	private JComboBox<TargetFill> comboBox_fill;
-	private JSpinner spinner_vorhaltediameter;
-	private JSpinner spinner_vorhalteabstand;
+	private JSpinner spinner_zoom_lvl;
+	private JSpinner spinner_offset_x;
+	private JSpinner spinner_offset_y;
 
-	public SettingsRingTargets(SettingsModel config, SettingsChangeListener scl) {
+	public SettingsDeerTargets(SettingsModel config, SettingsChangeListener scl) {
 		this.scl = scl;
 
 		this.setSize(735,  420);
@@ -84,7 +89,7 @@ public class SettingsRingTargets extends JPanel implements ActionListener, Chang
 
 		comboBox = new JComboBox<TargetModel>();
 		for (TargetModel tm : config.getTargets()) {
-			if (tm.isRingTarget()) comboBox.addItem(tm);
+			if (tm.isDeerTarget()) comboBox.addItem(tm);
 		}
 		comboBox.setSelectedItem(config.getStandardRule().getScheibe());
 		comboBox.setBounds(480, 15, 180, 20);
@@ -141,35 +146,54 @@ public class SettingsRingTargets extends JPanel implements ActionListener, Chang
 			}
 		});
 
-		spinner_size = addJSpinner(this, X[0], Y[0] + 1 * Y[1], "Kartongröße", "mm");
-		spinner_feed = addJSpinner(this, X[0] + X[1], Y[0] + 1 * Y[1], "Bandvorschub", "");
+		tgl_anzeige = new JToggleButton("Wertung");
+		tgl_anzeige.setBounds(X[0], Y[0] + 1 * Y[1], 90, 20);
+		tgl_anzeige.setFont(tgl_anzeige.getFont().deriveFont(Font.PLAIN));
+		addCaption(tgl_anzeige, this, "Anzeige", "");
+		tgl_anzeige.setActionCommand("Anzeige");
+		tgl_anzeige.addActionListener(this);
+		add(tgl_anzeige);
 
-		spinner_dia_outside = addJSpinner(this, X[0], Y[0] + 2 * Y[1], "Ø Aussen", "mm");
-		spinner_ring_width = addJSpinner(this, X[0] + X[1], Y[0] + 2 * Y[1], "Ringbreite", "mm");
+		text_image = addJTextField(this, X[0] + 110, Y[0] + 1 * Y[1], 118, "Bilddatei");
+		text_image.setEditable(false);
+		JButton button = new JButton("...");
+		button.setBounds(X[0] + 238, Y[0] + 1 * Y[1], 32, 20);
+		button.setActionCommand("Bilddatei");
+		button.addActionListener(this);
+		add(button);
 
-		spinner_dia_black = addJSpinner(this, X[0], Y[0] + 3 * Y[1], "Ø Spiegel", "mm");
-		spinner_dia_inner_ten = addJSpinner(this, X[0] + X[1], Y[0] + 3 * Y[1], "Ø Innenzehn", "mm");
-		
-		spinner_ring_min = addJSpinner(this, X[0], Y[0] + 4 * Y[1], "Kleinster Ring", "");
-		spinner_ring_max = addJSpinner(this, X[0] + X[1], Y[0] + 4 * Y[1], "Größter Ring", "");
+		spinner_size_x = addJSpinner(this, X[0], Y[0] + 2 * Y[1], "Kartonbreite", "mm");
+		spinner_size_y = addJSpinner(this, X[0] + X[1], Y[0] + 2 * Y[1], "Kartonhöhe", "mm");
 
-		spinner_num_max = addJSpinner(this, X[0], Y[0] + 5 * Y[1], "Größte Ringzahl", "");
-		comboBox_ring_angle = addJComboBox(this, X[0] + X[1], Y[0] + 5 * Y[1], "Winkel Ringzahlen", "°", TargetAngle.values());
-		((JLabel) comboBox_ring_angle.getRenderer()).setHorizontalAlignment(JLabel.RIGHT);
+		spinner_zoom_x = addJSpinner(this, X[0], Y[0] + 3 * Y[1], "Zoomzentrum X", "mm");
+		spinner_zoom_y = addJSpinner(this, X[0] + X[1], Y[0] + 3 * Y[1], "Zoomzentrum Y", "mm");
 
-		comboBox_typ = addJComboBox(this, X[0], Y[0] + 6 * Y[1], "Scheibenart", "", new TargetType[] {
-			TargetType.RING,
-			TargetType.WEIß,
-			TargetType.PA25PC,
-			TargetType.INVERS
-		});
-		comboBox_fill = addJComboBox(this, X[0] + X[1], Y[0] + 6 * Y[1], "Ausgefüllter Ring", "", TargetFill.values());
+		comboBox_typ = addJComboBox(this, X[0], Y[0] + 4 * Y[1], "Scheibenart", "", new TargetType[] {
+				TargetType.KLAPP,
+				TargetType.JAGD,
+				TargetType.DOPPELSAU
+			});
+		spinner_zoom_lvl = addJSpinner(this, X[0] + X[1], Y[0] + 4 * Y[1], "Zoomlevels", "");
 	
-		spinner_vorhaltediameter = addJSpinner(this, X[0], Y[0] + 7 * Y[1], "Ø Vorhaltespiegel", "mm");
-		spinner_vorhalteabstand =  addJSpinner(this, X[0] + X[1], Y[0] + 7 * Y[1], "Vorhalteabstand", "mm");
+		spinner_offset_x = addJSpinner(this, X[0], Y[0] + 5 * Y[1], "Offset X", "mm");
+		spinner_offset_y =  addJSpinner(this, X[0] + X[1], Y[0] + 5 * Y[1], "Offset Y", "mm");
+
+		addColor(this, 420, 331,  1, "0xFF0000");
+		addColor(this, 420, 351,  2, "0x008080");
+		addColor(this, 420, 371,  3, "0x0000FF");
+		addColor(this, 420, 391,  4, "0x008000");
+		addColor(this, 522, 331,  5, "0xFFFF00");
+		addColor(this, 522, 351,  6, "0x808000");
+		addColor(this, 522, 371,  7, "0x800000");
+		addColor(this, 522, 391,  8, "0xFF00FF");
+		addColor(this, 624, 331,  9, "0x00FFFF");
+		addColor(this, 624, 351, 10, "0x00FF00");
+		addColor(this, 624, 371, 11, "0x000080");
+		addColor(this, 624, 391, 12, "0x800080");
 		
 		updateDisplay();
 		scheibe.setTarget(getSelectedTargetModel());
+
 		doUpdate = true;
 	}
 
@@ -178,21 +202,17 @@ public class SettingsRingTargets extends JPanel implements ActionListener, Chang
 
 		TargetModel target = getSelectedTargetModel();
 		text_name.setText(target.toString());
-		text_number.setText(target.getNumber());			
-		spinner_size.setValue(target.getValue(TargetValue.SIZE_WIDTH) / 100.);
-		spinner_feed.setValue(target.getValue(TargetValue.FEED));
-		spinner_dia_outside.setValue(target.getValue(TargetValue.DIA_OUTSIDE) / 100.);
-		spinner_ring_width.setValue(target.getValue(TargetValue.RING_WIDTH) / 100.);
-		spinner_dia_black.setValue(target.getValue(TargetValue.DIA_BLACK) / 100.);
-		spinner_dia_inner_ten.setValue(target.getValue(TargetValue.DIA_INNER_TEN) / 100.);
-		spinner_ring_min.setValue(target.getValue(TargetValue.RING_MIN));
-		spinner_ring_max.setValue(target.getValue(TargetValue.RING_MAX));
-		spinner_num_max.setValue(target.getValue(TargetValue.NUM_MAX));
-		comboBox_ring_angle.setSelectedItem(TargetAngle.getByValue(target.getValue(TargetValue.NUM_ANGLE)));
+		text_number.setText(target.getNumber());
+		tgl_anzeige.setSelected(target.getValue(TargetValue.IMAGE) == 0 ? true : false);
+		text_image.setText(target.getImage());
+		spinner_size_x.setValue(target.getValue(TargetValue.SIZE_WIDTH) / 100.);
+		spinner_size_y.setValue(target.getValue(TargetValue.SIZE_HEIGHT) / 100.);
+		spinner_zoom_x.setValue(target.getValue(TargetValue.ZOOM_CENTER_X) / 100.);
+		spinner_zoom_y.setValue(target.getValue(TargetValue.ZOOM_CENTER_Y) / 100.);
 		comboBox_typ.setSelectedItem(TargetType.getByValue(target.getValue(TargetValue.TYPE)));
-		comboBox_fill.setSelectedItem(TargetFill.getByValue(target.getValue(TargetValue.FILL)));
-		spinner_vorhaltediameter.setValue(target.getValue(TargetValue.SUSP_DIA) / 100.);
-		spinner_vorhalteabstand.setValue(target.getValue(TargetValue.SUSP_DISTANCE) / 100.);
+		spinner_zoom_lvl.setValue(target.getValue(TargetValue.ZOOM_LEVELS));
+		spinner_offset_x.setValue(target.getValue(TargetValue.OFFSET_X) / 100.);
+		spinner_offset_y.setValue(target.getValue(TargetValue.OFFSET_Y) / 100.);
 
 		doUpdate = true;
 	}
@@ -241,17 +261,46 @@ public class SettingsRingTargets extends JPanel implements ActionListener, Chang
 			case "Kennnummer":
 				Controller.get().getConfig().changeTargetNumber(t, text_number.getText());
 				break;
-			case "Winkel Ringzahlen":
-				value = ((TargetAngle) comboBox_ring_angle.getSelectedItem()).getValue();
-				t.setValue(TargetValue.NUM_ANGLE, value);
+			case "Anzeige":
+				if (tgl_anzeige.isSelected()) {
+					tgl_anzeige.setText("Wertung");
+					t.setValue(TargetValue.IMAGE, 0);
+				} else {
+					tgl_anzeige.setText("Ziel");
+					t.setValue(TargetValue.IMAGE, 1);
+				}
+				break;
+			case "Bilddatei":
+				JFileChooser fc = new JFileChooser((new File("")).getAbsolutePath());
+				fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+				disableNav(fc);
+				fc.setFileFilter(new FileFilter() {
+					@Override
+					public boolean accept(File file) {
+						if (file.isDirectory()) return false;
+
+						if (file.getName().endsWith("bmp")) return true;
+						
+						//if (file.getName().endsWith("jpg")) return true;
+						// wird zwar angezeigt aber farben für ringwerte sind nicht mehr korrekt
+						
+						return false;
+					}
+
+					@Override
+					public String getDescription() {
+						return "Bilddateien im Programmverzeichnis";
+					}
+				});
+				if (fc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+					String path = fc.getSelectedFile().getName();
+					text_image.setText(path);
+					t.setImage(path);
+				}
 				break;
 			case "Scheibenart":
 				value = ((TargetType) comboBox_typ.getSelectedItem()).getValue();
 				t.setValue(TargetValue.TYPE, value);
-				break;
-			case "Ausgefüllter Ring":
-				value = ((TargetFill) comboBox_fill.getSelectedItem()).getValue();
-				t.setValue(TargetValue.FILL, value);
 				break;
 		}
 		updateDisplay();
@@ -279,18 +328,13 @@ public class SettingsRingTargets extends JPanel implements ActionListener, Chang
 
 		TargetModel target = getSelectedTargetModel();
 		switch (((JSpinner) e.getSource()).getName()) {
-			case "Kartongröße":       target.setValue(TargetValue.SIZE_WIDTH,    (int) ((double) spinner_size.getValue()             * 100));
-									  target.setValue(TargetValue.SIZE_HEIGHT,   (int) ((double) spinner_size.getValue()             * 100)); break;
-			case "Bandvorschub":      target.setValue(TargetValue.FEED,          (int)           spinner_feed.getValue());                    break;
-			case "Ø Aussen":          target.setValue(TargetValue.DIA_OUTSIDE,   (int) ((double) spinner_dia_outside.getValue()      * 100)); break;
-			case "Ringbreite":        target.setValue(TargetValue.RING_WIDTH,    (int) ((double) spinner_ring_width.getValue()       * 100)); break;
-			case "Ø Spiegel":         target.setValue(TargetValue.DIA_BLACK,     (int) ((double) spinner_dia_black.getValue()        * 100)); break;
-			case "Ø Innenzehn":       target.setValue(TargetValue.DIA_INNER_TEN, (int) ((double) spinner_dia_inner_ten.getValue()    * 100)); break;
-			case "Kleinster Ring":    target.setValue(TargetValue.RING_MIN,      (int)           spinner_ring_min.getValue());                break;
-			case "Größter Ring":      target.setValue(TargetValue.RING_MAX,      (int)           spinner_ring_max.getValue());                break;
-			case "Größte Ringzahl":   target.setValue(TargetValue.NUM_MAX,       (int)           spinner_num_max.getValue());                 break;
-			case "Ø Vorhaltespiegel": target.setValue(TargetValue.SUSP_DIA,      (int) ((double) spinner_vorhaltediameter.getValue() * 100)); break;
-			case "Vorhalteabstand":   target.setValue(TargetValue.SUSP_DISTANCE, (int) ((double) spinner_vorhalteabstand.getValue()  * 100)); break;
+			case "Kartonbreite":  target.setValue(TargetValue.SIZE_WIDTH,    (int) ((double) spinner_size_x.getValue()   * 100)); break;
+			case "Kartonhöhe":    target.setValue(TargetValue.SIZE_HEIGHT,   (int) ((double) spinner_size_y.getValue()   * 100)); break;
+			case "Zoomzentrum X": target.setValue(TargetValue.ZOOM_CENTER_X, (int) ((double) spinner_zoom_x.getValue()   * 100)); break;
+			case "Zoomzentrum Y": target.setValue(TargetValue.ZOOM_CENTER_Y, (int) ((double) spinner_zoom_y.getValue()   * 100)); break;
+			case "Zoomlevels":    target.setValue(TargetValue.ZOOM_LEVELS,   (int)           spinner_zoom_lvl.getValue()       ); break;
+			case "Offset X":      target.setValue(TargetValue.OFFSET_X,      (int) ((double) spinner_offset_x.getValue() * 100)); break;
+			case "Offset Y":      target.setValue(TargetValue.OFFSET_Y,      (int) ((double) spinner_offset_y.getValue() * 100)); break;
 		}
 
 		updateDisplay();
@@ -304,7 +348,7 @@ public class SettingsRingTargets extends JPanel implements ActionListener, Chang
 	}
 
 	private TargetModel createTarget() {
-		TargetModel tm = Controller.get().getConfig().newTarget(TargetType.RING.getValue());
+		TargetModel tm = Controller.get().getConfig().newTarget(TargetType.JAGD.getValue());
 		comboBox.addItem(tm);
 		comboBox.setSelectedItem(tm);
 		scl.settingsChanged();
@@ -381,5 +425,41 @@ public class SettingsRingTargets extends JPanel implements ActionListener, Chang
 		label = new JLabel(unit);
 		label.setBounds(component.getX() + component.getWidth() + 6, component.getY(), 24, component.getHeight());
 		parent.add(label);
+	}
+
+	private void addColor(JComponent component, int x, int y, int value, String color_string) {
+		Color color = Color.decode(color_string);
+		JLabel label = new JLabel(value + ": " + color_string + " ");
+		label.setHorizontalAlignment(SwingConstants.RIGHT);
+		label.setOpaque(true);
+		label.setBackground(color);
+
+		// Invert
+		// label.setForeground(new Color(255 - color.getRed(), 255 - color.getGreen(), 255 - color.getBlue()));
+
+		// 50%
+		//label.setForeground(Integer.decode(color_string) > 0xFFFFFF / 2 ? Color.BLACK : Color.WHITE);
+		
+		// YIO
+		int yiq = (color.getRed() * 299 + color.getGreen() * 587 + color.getBlue() * 114) / 1000;
+		label.setForeground(yiq >= 128 ? Color.BLACK : Color.WHITE);
+
+		label.setBounds(x, y, 96, 14);
+		component.add(label);
+	}
+
+	private void disableNav(Container c) {
+		for (Component x : c.getComponents()) {
+			if (x instanceof JComboBox) {
+				((JComboBox<?>) x).setEnabled(false);
+			} else if (x instanceof JButton) {
+				String text = ((JButton)x).getText();
+				if (text == null || text.isEmpty()) {
+					((JButton)x).setEnabled(false);
+				}
+		    } else if (x instanceof Container) {
+		    	disableNav((Container)x);
+		    }
+		}
 	}
 }

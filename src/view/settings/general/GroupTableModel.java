@@ -1,25 +1,21 @@
-package view;
+package view.settings.general;
 
 
 import java.util.List;
-import java.util.Vector;
 
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
-import javax.swing.table.TableModel;
+import javax.swing.table.DefaultTableModel;
 
 import model.Gender;
 import model.Group;
 
 
-public class GroupTableModel implements TableModel {
+@SuppressWarnings("serial")
+public class GroupTableModel extends DefaultTableModel {
 	List<Group> groups;
-	List<TableModelListener> tml;
 
 	private Group lastChanged = null;
 
 	public GroupTableModel(List<Group> groups) {
-		tml = new Vector<TableModelListener>();
 		this.groups = groups;
 	}
 
@@ -32,16 +28,12 @@ public class GroupTableModel implements TableModel {
 
 	public void addGroup(Group g) {
 		groups.add(g);
-		for (TableModelListener ml : tml) {
-			ml.tableChanged(new TableModelEvent(this));
-		}
+		fireTableDataChanged();
 	}
 
 	public void removeGroup(Group g) {
 		groups.remove(g);
-		for (TableModelListener ml : tml) {
-			ml.tableChanged(new TableModelEvent(this));
-		}
+		fireTableDataChanged();
 	}
 
 	@Override
@@ -68,7 +60,7 @@ public class GroupTableModel implements TableModel {
 
 	@Override
 	public int getRowCount() {
-		return groups.size();
+		return groups == null ? 0 : groups.size();
 	}
 
 	@Override
@@ -91,16 +83,6 @@ public class GroupTableModel implements TableModel {
 	}
 
 	@Override
-	public void addTableModelListener(TableModelListener tml) {
-		this.tml.add(tml);
-	}
-
-	@Override
-	public void removeTableModelListener(TableModelListener tml) {
-		this.tml.remove(tml);
-	}
-
-	@Override
 	public void setValueAt(Object value, int row, int col) {
 		lastChanged = groups.get(row);
 		switch (col) {
@@ -115,8 +97,6 @@ public class GroupTableModel implements TableModel {
 		}
 		groups.sort(null);
 
-		for (TableModelListener ml : tml) {
-			ml.tableChanged(new TableModelEvent(this));
-		}
+		fireTableDataChanged();
 	}
 }

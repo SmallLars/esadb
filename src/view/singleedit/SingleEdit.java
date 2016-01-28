@@ -1,4 +1,4 @@
-package view;
+package view.singleedit;
 
 import java.awt.Dimension;
 import java.awt.Frame;
@@ -30,6 +30,10 @@ import javax.swing.JRadioButton;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.JLabel;
+
+import view.HitTableCellRenderer;
+import view.HitTableModel;
+
 import java.awt.Font;
 
 

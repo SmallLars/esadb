@@ -3,13 +3,13 @@ package view;
 
 import java.util.List;
 
-import javax.swing.event.TableModelListener;
-import javax.swing.table.TableModel;
+import javax.swing.table.DefaultTableModel;
 
 import model.Hit;
 
 
-public class HitTableModel implements TableModel {
+@SuppressWarnings("serial")
+public class HitTableModel extends DefaultTableModel {
 	List<Hit> treffer;
 
 	public HitTableModel(List<Hit> treffer) {
@@ -34,7 +34,7 @@ public class HitTableModel implements TableModel {
 
 	@Override
 	public int getRowCount() {
-		return treffer.size();
+		return treffer == null ? 0 : treffer.size();
 	}
 
 	@Override
@@ -58,21 +58,5 @@ public class HitTableModel implements TableModel {
 	@Override
 	public boolean isCellEditable(int arg0, int arg1) {
 		return false;
-	}
-
-	@Override
-	public void addTableModelListener(TableModelListener arg0) {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
-	public void removeTableModelListener(TableModelListener arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void setValueAt(Object arg0, int arg1, int arg2) {
-		// TODO Auto-generated method stub
 	}
 }

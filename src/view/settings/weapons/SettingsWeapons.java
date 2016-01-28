@@ -1,4 +1,4 @@
-package view;
+package view.settings.weapons;
 
 
 import java.awt.Rectangle;
@@ -27,6 +27,7 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableCellRenderer;
 
+import view.TableEditor;
 import controller.Controller;
 
 

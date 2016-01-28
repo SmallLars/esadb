@@ -1,15 +1,15 @@
-package view;
+package view.member;
 
 
 import java.util.Date;
 
-import javax.swing.event.TableModelListener;
-import javax.swing.table.TableModel;
+import javax.swing.table.DefaultTableModel;
 
 import model.Member;
 
 
-public class MemberTableModel implements TableModel {
+@SuppressWarnings("serial")
+public class MemberTableModel extends DefaultTableModel {
 	Member[] schuetzen;
 
 	public MemberTableModel(Member[] schuetzen) {
@@ -35,7 +35,7 @@ public class MemberTableModel implements TableModel {
 
 	@Override
 	public int getRowCount() {
-		return schuetzen.length;
+		return schuetzen == null ? 0 : schuetzen.length;
 	}
 
 	@Override
@@ -55,21 +55,5 @@ public class MemberTableModel implements TableModel {
 	@Override
 	public boolean isCellEditable(int arg0, int arg1) {
 		return false;
-	}
-
-	@Override
-	public void addTableModelListener(TableModelListener arg0) {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
-	public void removeTableModelListener(TableModelListener arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void setValueAt(Object arg0, int arg1, int arg2) {
-		// TODO Auto-generated method stub
 	}
 }

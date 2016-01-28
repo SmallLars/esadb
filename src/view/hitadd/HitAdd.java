@@ -1,4 +1,4 @@
-package view;
+package view.hitadd;
 
 
 import java.awt.Dimension;
@@ -28,6 +28,10 @@ import javax.swing.JLabel;
 import java.awt.Font;
 
 import javax.swing.JComboBox;
+
+import view.HitTableCellRenderer;
+import view.HitTableModel;
+import view.Target;
 
 
 @SuppressWarnings("serial")

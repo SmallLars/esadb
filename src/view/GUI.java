@@ -48,6 +48,11 @@ import javax.swing.Box;
 import javax.swing.ScrollPaneConstants;
 
 import printPreview.PrintPreview;
+import view.hitadd.HitAdd;
+import view.member.Members;
+import view.settings.Settings;
+import view.singleedit.SingleEdit;
+import view.teamedit.TeamEdit;
 
 
 @SuppressWarnings("serial")

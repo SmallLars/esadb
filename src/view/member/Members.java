@@ -1,4 +1,4 @@
-package view;
+package view.member;
 
 
 import java.awt.Dimension;
