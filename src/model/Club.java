@@ -28,6 +28,14 @@ public class Club implements Comparable<Club> {
 	}
 
 	@Override
+	public boolean equals(Object o) {
+		if (o instanceof Club) {
+			return compareTo((Club) o) == 0;
+		}
+		return false;
+	}
+
+	@Override
 	public int compareTo(Club d) {
 		if (d == null) return 1;
 		return id - d.id;

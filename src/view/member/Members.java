@@ -73,7 +73,6 @@ public class Members extends JDialog implements ComponentListener, ActionListene
 		tmodel = new MemberTableModel(schuetzen);
 		sorter = new TableRowSorter<MemberTableModel>(tmodel);
 		sorter.setSortsOnUpdates(true);
-		sorter.setRowFilter(new MemberRowFilter(true, null));
 		table = new JTable(tmodel);
 		table.setRowSorter(sorter);
 		table.getTableHeader().setReorderingAllowed(false);
@@ -92,7 +91,6 @@ public class Members extends JDialog implements ComponentListener, ActionListene
 		tmodel_1 = new MemberTableModel(schuetzen);
 		sorter_1 = new TableRowSorter<MemberTableModel>(tmodel_1);
 		sorter_1.setSortsOnUpdates(true);
-		sorter_1.setRowFilter(new MemberRowFilter(false, null));
 		table_1 = new JTable(tmodel_1);
 		table_1.setRowSorter(sorter_1);
 		table_1.getTableHeader().setReorderingAllowed(false);
@@ -109,6 +107,8 @@ public class Members extends JDialog implements ComponentListener, ActionListene
 		comboBox.setActionCommand("FILTER");
 		comboBox.addActionListener(this);
 		getContentPane().add(comboBox);
+		sorter.setRowFilter(new MemberRowFilter(true, comboBox));
+		sorter_1.setRowFilter(new MemberRowFilter(false, comboBox));
 
 		cancelButton = new JButton("Schließen");
 		cancelButton.setBounds(660, 439, 100, 23);
@@ -143,10 +143,8 @@ public class Members extends JDialog implements ComponentListener, ActionListene
 				scrollPane_1.repaint();
 				break;
 			case "FILTER":
-				Club club = (Club) comboBox.getSelectedItem();
-				if (club.getId() == 0) club = null;
-				sorter.setRowFilter(new MemberRowFilter(true, club));
-				sorter_1.setRowFilter(new MemberRowFilter(false, club));
+				tmodel.fireTableDataChanged();
+				tmodel_1.fireTableDataChanged();
 				break;
 			case "CANCEL":
 				setVisible(false);

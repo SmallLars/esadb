@@ -79,6 +79,7 @@ public class ResultTableModel extends DefaultTableModel {
 				case 2:
 					t.setGroup((Group) value); break;
 			}
+			fireTableDataChanged();
 		}
 	}
 }

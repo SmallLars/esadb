@@ -13,7 +13,6 @@ import java.io.Serializable;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -99,16 +98,6 @@ public class Model implements Serializable {
 
 	public List<Result> getErgebnisse() {
 		return ergebnisse;
-	}
-
-	public List<Team> getTeams() {
-		List<Team> teams = new ArrayList<Team>();
-		for (Result s : ergebnisse) {
-			if (s instanceof Team) {
-				teams.add((Team) s);
-			}
-		}
-		return teams;
 	}
 
 	public List<Member> getSchuetzen() {

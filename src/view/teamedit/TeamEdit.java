@@ -114,7 +114,7 @@ public class TeamEdit extends JDialog implements ComponentListener, ActionListen
 		tmodel = new ResultTableModel(controller.getModel().getErgebnisse());
 		sorter = new TableRowSorter<ResultTableModel>(tmodel);
 		sorter.setSortsOnUpdates(true);
-		sorter.setRowFilter(new ResultRowFilter(disziplin, group));
+		sorter.setRowFilter(new ResultRowFilter(disziplin, group, true));
 		table_1 = new JTable(tmodel);
 		table_1.setRowSorter(sorter);
 		table_1.setDefaultRenderer(Float.class, new DefaultTableCellRenderer() {
