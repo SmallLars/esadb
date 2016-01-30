@@ -177,19 +177,24 @@ public class Model implements Serializable {
 
 		Discipline d = null;
 		Group g = null;
-		for (Result s : toPrint) {
-			if (!s.getDisziplin().equals(d)) {
-				d = s.getDisziplin();
+		for (Result r : toPrint) {
+			if (!r.getDisziplin().equals(d)) {
 				if (settings.getValue("ResultListNewPage", Boolean.class)) resultList.addNewPage();
+				d = r.getDisziplin();
 				resultList.addDiszipline(d.toString());
 				g = null;
 			}
 
-			if (!s.getGroup(true).equals(g)) {
-				g = s.getGroup(true);
+			if (!r.getGroup(true).equals(g)) {
+				g = r.getGroup(true);
 				resultList.addGroup(g.toString());
 			}
-			resultList.addSingleResult((Single) s);
+
+			if (r instanceof Single) {
+				resultList.addSingleResult(r);
+			} else {
+				resultList.addTeamResult(r);
+			}
 		}
 
 		return resultList;

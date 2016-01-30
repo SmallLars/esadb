@@ -1,6 +1,7 @@
 package model;
 
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.List;
@@ -142,12 +143,22 @@ public class Team extends Result {
 
 	@Override
 	public int lineCount() {
-		return member.size() + 2;
+		return member.size() + 1;
 	}
 
 	@Override
-	public void draw(Graphics2D g, int platz) {
-		// TODO Auto-generated method stub
+	public void draw(Graphics2D g, int platz, int fontsize, int lineheight) {
+		GraphicsString gs = new GraphicsString(g, fontsize, false, true, Color.BLACK);
+		gs.drawStringRight(String.format("%d.", platz), 450, lineheight);
+		gs.drawStringLeft(String.format("%s", name), 475, lineheight);
+		gs.drawStringRight(String.format("%.1f", getResult(false)), 1600, lineheight);
 
+		gs.setBold(false);
+		int y = lineheight;
+		for (Single m : member) {
+			y += lineheight;
+			gs.drawStringLeft(String.format("%s", m.getName()), 475, y);
+			gs.drawStringRight(String.format("%.1f", m.getResult(false)), 1300, y);
+		}
 	}
 }

@@ -28,7 +28,7 @@ http://java.com/de/download/
 * ESA 2002 (1.3.1024)
 
 * Bei der Nutzung von Windows 7 ist es empfehlenswert einige Registry-Einträge zu setzen,  
-um die Steuerung mit esadb zu beschleunigen. Diese sind in [fast_smb.reg](https://github.com/SmallLars/esadb/raw/v2/pub/fast_smb.reg) hinterlegt.
+um die Steuerung mit esadb zu beschleunigen. Diese sind in [fast_smb.reg](https://github.com/SmallLars/esadb/raw/master/pub/fast_smb.reg) hinterlegt.
 
 ### Anleitung
 

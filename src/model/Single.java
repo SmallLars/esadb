@@ -226,21 +226,22 @@ public class Single extends Result implements Printable {
 		return ((i - 2) / 4) + 1;
 	}
 
-	public void draw(Graphics2D g, int platz) {
-		final int lineheight = g.getFontMetrics().getHeight();
+	public void draw(Graphics2D g, int platz, int fontsize, int lineheight) {
+		GraphicsString gs = new GraphicsString(g, fontsize, false, false, Color.BLACK);
 
-		g.drawString(String.format("%2d. %s", platz, schuetze), 0, lineheight);
+		gs.drawStringRight(String.format("%d.", platz), 100, lineheight);
+		gs.drawStringLeft(schuetze.toString(), 125, lineheight);
 		int anzahl = 0;
 		for (int i = 0; i < disziplin.getSerienAnzahl(); i++) {
 			if (getSerie(false, i) == 0) break;
 
-			int dx = 800 + ((i % 4) * 225);
+			int dx = 950 + ((i % 4) * 225);
 			int dy = (i / 4) * lineheight;
-			g.drawString(String.format("%5.1f", getSerie(false, i)), dx, dy + lineheight);
+			gs.drawStringRight(String.format("%5.1f", getSerie(false, i)), dx, dy + lineheight);
 			anzahl++;
 		}
 		int height = ((anzahl - 1) / 4) * lineheight;
-		g.drawString(String.format("%5.1f", getResult(false)), 1800, height + lineheight);
+		gs.drawStringRight(String.format("%.1f", getResult(false)), 1950, height + lineheight);
 	}
 
 	public boolean toFile(String filename, boolean probe) {

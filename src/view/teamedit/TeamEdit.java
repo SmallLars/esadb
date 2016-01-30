@@ -205,7 +205,8 @@ public class TeamEdit extends JDialog implements ActionListener {
 			case "EDIT":
 				break;
 			case "ADD":
-				controller.add(new Team(null, null));
+				Team t = new Team(null, null);
+				controller.add(t);
 				tmodel.fireTableDataChanged();
 				break;
 		}

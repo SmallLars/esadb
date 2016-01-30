@@ -5,15 +5,9 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.font.FontRenderContext;
-import java.awt.font.LineBreakMeasurer;
-import java.awt.font.TextAttribute;
-import java.awt.font.TextLayout;
 import java.awt.print.PageFormat;
 import java.awt.print.Printable;
 import java.awt.print.PrinterException;
-import java.text.AttributedCharacterIterator;
-import java.text.AttributedString;
 import java.util.ArrayList;
 
 
@@ -35,8 +29,8 @@ public class ResultList implements Printable {
 
 	private static final int HEADLINE_HEIGHT = 100;
 	private static final int DISCIPLINE_HEIGHT = 70;
-	private static final int GROUP_HEIGHT = 60;
-	//private static final int RESULT_TEAM_HEIGHT = 49;
+	private static final int GROUP_HEIGHT = 80;
+	private static final int RESULT_TEAM_HEIGHT = 49;
 	private static final int RESULT_SINGLE_HEIGHT = 49;
 
 	public ResultList(String filename, String date) {
@@ -87,15 +81,6 @@ public class ResultList implements Printable {
 
 		if (pageIndex >= pages.size()) return Printable.NO_SUCH_PAGE;
 
-		int number = 0;
-		for (int i = pages.get(pageIndex); i >= 0; i--) {
-			int type = entrys.get(i).type;
-			if (type == RESULT_SINGLE || type == RESULT_TEAM) {
-				number++;
-				continue;
-			}
-			break;
-		}
 		int nextPage = pageIndex + 1;
 		drawHeadline(g, nextPage);
 		g.translate(0, HEADLINE_HEIGHT);
@@ -109,19 +94,17 @@ public class ResultList implements Printable {
 					break;
 				case GROUP:
 					drawGroup(g, e.value);
-					number = 1;
 					break;
 				case RESULT_SINGLE:
-					if (number > 1) {
-						if (((Result) e.value).compareTo((Result) entrys.get(i - 1).value) == 0) {
-							// Es liegt völlige Gleicheit vor: Gleiche Platzierung
-							number--;
-						}
-					}
-					drawSingleResult(g, e.value, number++);
-					if (i != pages.get(pageIndex) && number > 2) g.drawLine(0, 10, 2000, 10);
-					g.drawLine(700, 10, 700, e.height + 10);
+					drawSingleResult(g, e.value, e.number);
+					if (i != pages.get(pageIndex) && entrys.get(i - 1).type == RESULT_SINGLE) g.drawLine(0, 10, 2000, 10);
+					g.drawLine(725, 10, 725, e.height + 10);
 					g.drawLine(1700, 10, 1700, e.height + 10);
+					break;
+				case RESULT_TEAM:
+					drawTeamResult(g, e.value, e.number);
+					if (i != pages.get(pageIndex) && entrys.get(i - 1).type == RESULT_TEAM) g.drawLine(350, 10, 1650, 10);
+					g.drawLine(1350, 10, 1350, e.height + 10);
 					break;
 			}
 			// VSPACE wir nur erzeugt, falls er nicht der erste Eintrag auf einer Seite ist.
@@ -132,77 +115,78 @@ public class ResultList implements Printable {
 	}
 
 	public void addNewPage() {
-		if (entrys.size() > 0) entrys.add(new Entry(NEWPAGE, null, Integer.MAX_VALUE / 2));
+		if (entrys.size() > 0) entrys.add(new Entry(NEWPAGE, 0, null, Integer.MAX_VALUE / 2));
 	}
 
 	public void addDiszipline(String name) {
-		if (entrys.size() > 0) entrys.add(new Entry(VSPACE, null, 100));
-		entrys.add(new Entry(DISCIPLINE, name, DISCIPLINE_HEIGHT));
+		if (entrys.size() > 0) entrys.add(new Entry(VSPACE, 0, null, 100));
+		entrys.add(new Entry(DISCIPLINE, 0, name, DISCIPLINE_HEIGHT));
 	}
 
 	public void addGroup(String name) {
-		entrys.add(new Entry(GROUP, name, GROUP_HEIGHT));
+		entrys.add(new Entry(GROUP, 0, name, GROUP_HEIGHT));
 	}
 
 	public void addSingleResult(Result start) {
-		entrys.add(new Entry(RESULT_SINGLE, start, start.lineCount() * RESULT_SINGLE_HEIGHT));
+		if (entrys.get(entrys.size() - 1).type == RESULT_TEAM) entrys.add(new Entry(VSPACE, 0, null, 100));
+		int number = 1;
+		if (entrys.size() > 0) {
+			Entry e = entrys.get(entrys.size() - 1);
+			if (e.type == RESULT_SINGLE) {
+				number = e.number;
+				if (((Result) e.value).compareTo(start) != 0) number++;
+			}
+		}
+		entrys.add(new Entry(RESULT_SINGLE, number, start, start.lineCount() * RESULT_SINGLE_HEIGHT));
+	}
+
+	public void addTeamResult(Result start) {
+		int number = 1;
+		if (entrys.size() > 0) {
+			Entry e = entrys.get(entrys.size() - 1);
+			if (e.type == RESULT_TEAM) {
+				number = e.number;
+				if (((Result) e.value).compareTo(start) != 0) number++;
+			}
+		}
+		entrys.add(new Entry(RESULT_TEAM, number, start, start.lineCount() * RESULT_TEAM_HEIGHT));
 	}
 
 	private void drawHeadline(Graphics2D g, int page) {
-		drawStringLeft(g, formatString(filename, 32, false, false, Color.BLACK), 0, 32);
-		drawStringCenter(g, formatString(date, 32, false, false, Color.BLACK), pageWidth / 2, 32);
-		drawStringRight(g, formatString(page + " / " + pages.size(), 32, false, false, Color.BLACK), pageWidth, 32);
+		GraphicsString gs = new GraphicsString(g, 32, false, false, Color.BLACK);
+		gs.drawStringLeft(filename, 0, 32);
+		gs.drawStringCenter(date, pageWidth / 2, 32);
+		gs.drawStringRight(page + " / " + pages.size(), pageWidth, 32);
 	}
 
 	private void drawDiszipline(Graphics2D g, Object diszipline) {
-		drawStringCenter(g, formatString("---- " + (String) diszipline + " ----", 60, false, true, Color.BLACK), pageWidth / 2, 60);
+		GraphicsString gs = new GraphicsString(g, 60, false, true, Color.BLACK);
+		gs.drawStringCenter("---- " + (String) diszipline + " ----", pageWidth / 2, DISCIPLINE_HEIGHT - 10);
 	}
 
 	private void drawGroup(Graphics2D g, Object group) {
-		drawStringLeft(g, formatString((String) group, 45, true, true, Color.BLACK), 0, 56);
+		GraphicsString gs = new GraphicsString(g,  45, true, true, Color.BLACK);
+		gs.drawStringLeft((String) group, 0, GROUP_HEIGHT - 4);
 	}
 
 	private void drawSingleResult(Graphics2D g, Object start, int number) {
 		g.setFont(new Font("Bitstream Vera Sans", Font.PLAIN, 40));
-		((Result) start).draw(g, number);
+		((Result) start).draw(g, number, 40, RESULT_SINGLE_HEIGHT);
 	}
 
-	private void drawStringLeft(Graphics2D g, AttributedCharacterIterator s, int x, int y) {
-		g.drawString(s, x , y);
-	}
-
-	private void drawStringCenter(Graphics2D g, AttributedCharacterIterator s, int x, int y) {
-		int len = getStringWidth(g, s);
-		g.drawString(s, x - len / 2, y);
-	}
-	
-	private void drawStringRight(Graphics2D g, AttributedCharacterIterator s, int x, int y) {
-		int len = getStringWidth(g, s);
-		g.drawString(s, x - len - 8, y);
-	}
-
-	private int getStringWidth(Graphics2D g, AttributedCharacterIterator s) {
-	    FontRenderContext fontRenderContext = g.getFontRenderContext();
-	    LineBreakMeasurer lbm = new LineBreakMeasurer(s, fontRenderContext);
-	    TextLayout textLayout = lbm.nextLayout(Integer.MAX_VALUE);
-	    return (int) textLayout.getBounds().getWidth();
-	}
-
-	private AttributedCharacterIterator formatString(String s, int size, boolean underline, boolean bold, Color color) {
-		AttributedString as = new AttributedString(s);
-		as.addAttribute(TextAttribute.FONT, (new Font("Bitstream Vera Sans", bold ? Font.BOLD : Font.PLAIN, size)));
-		if (underline) as.addAttribute(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
-		as.addAttribute(TextAttribute.FOREGROUND, color);
-		return as.getIterator();
+	private void drawTeamResult(Graphics2D g, Object start, int number) {
+		((Result) start).draw(g, number, 40, RESULT_TEAM_HEIGHT);
 	}
 
 	private class Entry {
 		public int type;
+		public int number;
 		public Object value;
 		public int height;
 
-		public Entry(int type, Object value, int height) {
+		public Entry(int type, int number, Object value, int height) {
 			this.type = type;
+			this.number = number;
 			this.value = value;
 			this.height = height;
 		}
