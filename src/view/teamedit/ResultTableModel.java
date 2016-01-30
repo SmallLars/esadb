@@ -50,7 +50,7 @@ public class ResultTableModel extends DefaultTableModel {
 	public Object getValueAt(int row, int col) {
 		switch (col) {
 			case 0:
-				return results.get(row);
+				return results.get(row).getName();
 			case 1:
 				return results.get(row).getDisziplin();
 			case 2:

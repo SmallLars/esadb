@@ -384,8 +384,7 @@ public class GUI extends JFrame implements ActionListener, ComponentListener {
 				ee.setVisible(true);
 				break;
 			case "TEAMEDIT":
-				TeamEdit te = new TeamEdit(this);
-				te.setVisible(true);
+				(new TeamEdit(this)).setVisible(true);
 				break;
 			case "TREFFERADD":
 				HitAdd ta = new HitAdd(this);

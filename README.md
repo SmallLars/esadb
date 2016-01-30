@@ -23,7 +23,7 @@ https://www.microsoft.com/de-de/download/details.aspx?id=27835
 Java 8:  
 http://java.com/de/download/
 
-### Vorraussetzungen - Linie(n)
+### Vorraussetzungen - Linie(n):
 
 * ESA 2002 (1.3.1024)
 
@@ -51,7 +51,7 @@ auf die Linien in das Installationsverzeichnis von ESA 2002 kopiert werden.
 6. Eine Verknüpfung zu Stammdaten.mdb auf dem Desktop anlegen
 7. Vereine, Schützen und Disziplinen in den Stammdaten hinterlegen
 
-## Screenshots:
+## Screenshots
 
 [![Hautprogramm](https://github.com/SmallLars/esadb/raw/master/pub/main_tn.png)](https://github.com/SmallLars/esadb/raw/master/pub/main.png)
 [![Treffereditor](https://github.com/SmallLars/esadb/raw/master/pub/hits_tn.png)](https://github.com/SmallLars/esadb/raw/master/pub/hits.png)
@@ -68,7 +68,7 @@ auf die Linien in das Installationsverzeichnis von ESA 2002 kopiert werden.
 [![Ergebnisliste - Beliebig](https://github.com/SmallLars/esadb/raw/master/pub/result_list_4_tn.png)](https://github.com/SmallLars/esadb/raw/master/pub/result_list_4.png)
 [![Ergebnisliste - Eigene Seite](https://github.com/SmallLars/esadb/raw/master/pub/result_list_5_tn.png)](https://github.com/SmallLars/esadb/raw/master/pub/result_list_5.png)
 
-## Dokumentation:
+## Dokumentation
 
 ###Eclipse Plugin
 
