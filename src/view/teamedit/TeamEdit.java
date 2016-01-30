@@ -1,12 +1,9 @@
 package view.teamedit;
 
 
-import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.util.List;
 import java.util.Vector;
 
@@ -38,7 +35,7 @@ import view.TableEditor;
 
 
 @SuppressWarnings("serial")
-public class TeamEdit extends JDialog implements ComponentListener, ActionListener, ListSelectionListener {
+public class TeamEdit extends JDialog implements ActionListener, ListSelectionListener {
 
 	private Controller controller;
 	private List<Single> ergebnisse;
@@ -59,6 +56,7 @@ public class TeamEdit extends JDialog implements ComponentListener, ActionListen
 
 	public TeamEdit(Frame parent) {
 		super(parent, "Mannschaften bearbeiten");
+		setResizable(false);
 
 		this.controller = Controller.get();
 		ergebnisse = new Vector<Single>();
@@ -68,9 +66,7 @@ public class TeamEdit extends JDialog implements ComponentListener, ActionListen
 
 		setModal(true);
 		setModalityType(ModalityType.APPLICATION_MODAL);
-		Dimension d = new Dimension(632, 500);
-		setMinimumSize(d);
-		setSize(new Dimension(632, 500));
+		setSize(632, 500);
 		setLocationRelativeTo(parent);
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		getContentPane().setLayout(null);
@@ -116,6 +112,7 @@ public class TeamEdit extends JDialog implements ComponentListener, ActionListen
 		sorter.setSortsOnUpdates(true);
 		sorter.setRowFilter(new ResultRowFilter(disziplin, group, true));
 		table_1 = new JTable(tmodel);
+		table_1.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
 		table_1.setRowSorter(sorter);
 		table_1.setDefaultRenderer(Float.class, new DefaultTableCellRenderer() {
 			{setHorizontalAlignment(SwingConstants.RIGHT);}
@@ -151,8 +148,6 @@ public class TeamEdit extends JDialog implements ComponentListener, ActionListen
 		JSeparator separator_1 = new JSeparator();
 		separator_1.setBounds(14, 425, 600, 2);
 		getContentPane().add(separator_1);
-
-		addComponentListener(this);
 	}
 
 	@Override
@@ -166,9 +161,15 @@ public class TeamEdit extends JDialog implements ComponentListener, ActionListen
 				tmodel.fireTableDataChanged();
 				break;
 			case "REMOVE":
+				int row = table_1.getSelectedRow();
+				if (row >= 0) {
+					controller.remove(table_1.getValueAt(row, 0));
+					tmodel.fireTableDataChanged();
+				}
 				break;
 			case "ADD":
 				controller.add(new Team(null, null));
+				tmodel.fireTableDataChanged();
 				break;
 		}
 	}
@@ -178,33 +179,4 @@ public class TeamEdit extends JDialog implements ComponentListener, ActionListen
 		int row = table_1.getSelectedRow();
 		if (row == -1) return;
 	}
-
-	@Override
-	public void componentResized(ComponentEvent e) {
-		/*
-		Dimension d = getContentPane().getSize();
-		disziplin.setSize(				(d.width - 92) / 2, 22);
-		start.setSize(					(d.width - 92) / 2, 22);
-		scrollPane.setSize(				(d.width - 92) / 2, d.height - 122);
-		button.setLocation(				(d.width / 2) - 26, -2 + scrollPane.getHeight() / 2);
-		rdbtnProbe.setLocation(			(d.width / 2) - 32, 55 + scrollPane.getHeight() / 2);
-		rdbtnMatch.setLocation(			(d.width / 2) - 32, 74 + scrollPane.getHeight() / 2);
-		spinner.setLocation(			(d.width / 2) - 26, 104 + scrollPane.getHeight() / 2);
-		button_1.setLocation(			(d.width / 2) - 26, 133 + scrollPane.getHeight() / 2);
-		lblZwischenablage.setLocation(	(d.width / 2) + 34, 44);
-		lblZwischenablage.setSize(		(d.width - 92) / 2, 22);
-		scrollPane_1.setLocation(		(d.width / 2) + 34, 77);
-		scrollPane_1.setSize(			(d.width - 92) / 2, d.height - 122);
-		cancelButton.setLocation(		d.width - 112, d.height - 34);
-		*/
-	}
-
-	@Override
-	public void componentHidden(ComponentEvent e) {}
-
-	@Override
-	public void componentMoved(ComponentEvent e) {}
-
-	@Override
-	public void componentShown(ComponentEvent e) {}
 }
