@@ -84,8 +84,8 @@ public class Single extends Result implements Printable {
 	public Group getGroup(boolean useSettings) {
 		SettingsModel settings = Controller.get().getConfig();
 
-		if (useSettings && !settings.getValue("ResultListGroup", Boolean.class)) {
-			if (!settings.getValue("ResultListGender", Boolean.class)) {
+		if (useSettings && !settings.getValue("ResultListGroup", true)) {
+			if (!settings.getValue("ResultListGender", true)) {
 				return new Group(Gender.ANY.toString(), settings.getYear() - 201, settings.getYear(), Gender.ANY);
 			}
 
@@ -94,7 +94,7 @@ public class Single extends Result implements Printable {
 			return new Group(Gender.ANY.toString(), settings.getYear() - 201, settings.getYear(), Gender.ANY);
 		}
 
-		if (useSettings && !settings.getValue("ResultListGender", Boolean.class)) {
+		if (useSettings && !settings.getValue("ResultListGender", true)) {
 			for (Group g : settings.getGroups()) {
 				if (g.isMember(schuetze, false)) return g;
 			}

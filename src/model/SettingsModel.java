@@ -1,8 +1,6 @@
 package model;
 
 
-import java.awt.Rectangle;
-import java.awt.print.PageFormat;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -25,7 +23,6 @@ import java.util.Vector;
 public class SettingsModel implements Serializable {
 	private static final long serialVersionUID = 3L;
 	private static final File file = new File("settings.esc");
-	private static final double mmToDots = 72 / 2.54;
 
 	private Set<Integer> lines;
 	private Set<TargetModel> targets;
@@ -286,58 +283,20 @@ public class SettingsModel implements Serializable {
 	}
 
 	@SuppressWarnings("unchecked")
-	public <T> T getValue(String key, Class<T> c) {
+	public <T> T getValue(String key, T standard) {
 		if (values == null) {
 			values = new HashMap<String, Object>();
 		}
 		Object o = values.get(key);
 		if (o == null) {
-			o = getStandardValue(key);
-			values.put(key, o);
+			o = standard;
+			values.put(key, standard);
 		}
 		return (T) o;
 	}
 
 	public void setValue(String key, Object value) {
 		values.put(key, value);
-	}
-
-	public Object getStandardValue(String key) {
-		switch (key) {
-			case "MainWindowBounds":
-				return new Rectangle(1, 1, 1022, 570);
-			case "MainWindowDividerLocation":
-				return 250;
-			case "Filepath":
-				return (new File("")).getAbsolutePath();
-			case "Filename":
-				return "yyyy-MM-dd";
-			case "PageWidht":
-				return 21.0 * mmToDots;
-			case "PageHeight":
-				return 29.7 * mmToDots;
-			case "PageImageableX":
-				return 2.5 * mmToDots;
-			case "PageImageableY":
-				return 1.0 * mmToDots;
-			case "PageImageableWidth":
-				return 17.5 * mmToDots;
-			case "PageImageableHeight":
-				return 27.7 * mmToDots;
-			case "PageOrientation":
-				return PageFormat.PORTRAIT;
-			case "ResultListGender":
-				return true;
-			case "ResultListGroup":
-				return true;
-			case "ResultListSingleDiscipline":
-				return false;
-			case "ResultListDiscipline":
-				return 0;
-			case "ResultListNewPage":
-				return false;
-		}
-		return null;
 	}
 
 	public boolean save() {

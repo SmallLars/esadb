@@ -85,7 +85,7 @@ public class GUI extends JFrame implements ActionListener, ComponentListener {
 		SettingsModel config = controller.getConfig();
 
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		setBounds(config.getValue("MainWindowBounds", Rectangle.class));
+		setBounds(config.getValue("MainWindowBounds", new Rectangle(1, 1, 1022, 570)));
 
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
@@ -236,7 +236,7 @@ public class GUI extends JFrame implements ActionListener, ComponentListener {
 		splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, scrollLinien, scrollKonsole);
 		splitPane.setBorder(null);
 		splitPane.setBounds(0, 22, 746, 500);
-		splitPane.setDividerLocation(config.getValue("MainWindowDividerLocation", Integer.class));
+		splitPane.setDividerLocation(config.getValue("MainWindowDividerLocation", 250));
 		splitPane.addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent pce) {
@@ -431,21 +431,23 @@ public class GUI extends JFrame implements ActionListener, ComponentListener {
 	}
 
 	private PageFormat getPageFormat() {
+		final double mmToDots = 72 / 2.54;
+
 		SettingsModel settings = Controller.get().getConfig();
 		Paper p = new Paper();
 		p.setSize(
-			settings.getValue("PageWidht", Double.class),
-			settings.getValue("PageHeight", Double.class)
+			settings.getValue("PageWidht", 21.0 * mmToDots),
+			settings.getValue("PageHeight", 29.7 * mmToDots)
 		);
 		p.setImageableArea(
-			settings.getValue("PageImageableX", Double.class),
-			settings.getValue("PageImageableY", Double.class),
-			settings.getValue("PageImageableWidth", Double.class),
-			settings.getValue("PageImageableHeight", Double.class)
+			settings.getValue("PageImageableX", 2.5 * mmToDots),
+			settings.getValue("PageImageableY", 1.0 * mmToDots),
+			settings.getValue("PageImageableWidth", 17.5 * mmToDots),
+			settings.getValue("PageImageableHeight", 27.7 * mmToDots)
 		);
 		PageFormat pf = new PageFormat();
 		pf.setPaper(p);
-		pf.setOrientation(settings.getValue("PageOrientation", Integer.class));
+		pf.setOrientation(settings.getValue("PageOrientation", PageFormat.PORTRAIT));
 		return pf;
 	}
 

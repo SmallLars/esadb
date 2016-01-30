@@ -8,6 +8,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
 import java.util.Arrays;
 import java.util.Vector;
 
@@ -161,7 +162,7 @@ public class SettingsGeneral extends JPanel implements ActionListener, DocumentL
 		lblDateipfad.setBounds(110, 42, 100, 14);
 		add(lblDateipfad);
 
-		pathField = new JTextField(config.getValue("Filepath", String.class));
+		pathField = new JTextField(config.getValue("Filepath", (new File("")).getAbsolutePath()));
 		pathField.setBounds(110, 60, 328, 20);
 		pathField.setColumns(10);
 		pathField.setEditable(false);
@@ -177,7 +178,7 @@ public class SettingsGeneral extends JPanel implements ActionListener, DocumentL
 		lblDateiname.setBounds(500, 42, 100, 14);
 		add(lblDateiname);
 
-		nameField = new JTextField(config.getValue("Filename", String.class));
+		nameField = new JTextField(config.getValue("Filename", "yyyy-MM-dd"));
 		nameField.setBounds(500, 60, 178, 20);
 		nameField.setColumns(10);
 		nameField.getDocument().addDocumentListener(this);
@@ -317,7 +318,7 @@ public class SettingsGeneral extends JPanel implements ActionListener, DocumentL
 				}
 				break;
 			case "PATH":
-				JFileChooser fc = new JFileChooser(Controller.get().getConfig().getValue("Filepath", String.class));
+				JFileChooser fc = new JFileChooser(Controller.get().getConfig().getValue("Filepath", (new File("")).getAbsolutePath()));
 				fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 				if (fc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
 					String path = fc.getSelectedFile().getPath();

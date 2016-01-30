@@ -201,8 +201,8 @@ public class Controller {
 
 		fileChecker = new FileChecker(config.getLineCount());
 
-		SimpleDateFormat sdf = new SimpleDateFormat(config.getValue("Filename", String.class));
-		file = new File(config.getValue("Filepath", String.class) + "/" + sdf.format(new Date()) + ".esa");
+		SimpleDateFormat sdf = new SimpleDateFormat(config.getValue("Filename", "yyyy-MM-dd"));
+		file = new File(config.getValue("Filepath", (new File("")).getAbsolutePath()) + "/" + sdf.format(new Date()) + ".esa");
 		if (file.exists()) {
 			model = Model.load(file);
 		} else {

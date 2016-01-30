@@ -164,9 +164,9 @@ public class Model implements Serializable {
 		SettingsModel settings = Controller.get().getConfig();
 
 		List<Result> toPrint;
-		if (settings.getValue("ResultListSingleDiscipline", Boolean.class)) {
+		if (settings.getValue("ResultListSingleDiscipline", false)) {
 			toPrint = new Vector<Result>();
-			for (Result s : ergebnisse) if (s.getDisziplin().getId() == settings.getValue("ResultListDiscipline", Integer.class)) toPrint.add(s);
+			for (Result s : ergebnisse) if (s.getDisziplin().getId() == settings.getValue("ResultListDiscipline", 0)) toPrint.add(s);
 		} else {
 			toPrint = new Vector<Result>(ergebnisse);
 		}
@@ -179,7 +179,7 @@ public class Model implements Serializable {
 		Group g = null;
 		for (Result r : toPrint) {
 			if (!r.getDisziplin().equals(d)) {
-				if (settings.getValue("ResultListNewPage", Boolean.class)) resultList.addNewPage();
+				if (settings.getValue("ResultListNewPage", false)) resultList.addNewPage();
 				d = r.getDisziplin();
 				resultList.addDiszipline(d.toString());
 				g = null;

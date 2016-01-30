@@ -55,13 +55,13 @@ public class ResultListOptions extends JDialog implements ActionListener {
 		contentPanel.add(lblGruppen);
 
 		chckbxGender = new JCheckBox("Nach Geschlecht trennen");
-		chckbxGender.setSelected(settings.getValue("ResultListGender", Boolean.class));
+		chckbxGender.setSelected(settings.getValue("ResultListGender", true));
 		chckbxGender.setBounds(10, 29, 200, 23);
 		chckbxGender.addActionListener(this);
 		contentPanel.add(chckbxGender);
 
 		chckbxGroup = new JCheckBox("Nach Altersgruppen trennen");
-		chckbxGroup.setSelected(settings.getValue("ResultListGroup", Boolean.class));
+		chckbxGroup.setSelected(settings.getValue("ResultListGroup", true));
 		chckbxGroup.setBounds(10, 58, 200, 23);
 		chckbxGroup.addActionListener(this);
 		contentPanel.add(chckbxGroup);
@@ -76,7 +76,7 @@ public class ResultListOptions extends JDialog implements ActionListener {
 		contentPanel.add(lblDisziplinen);
 
 		chckbxDiscipline = new JCheckBox("Nur folgende Disziplin auswerten:");
-		chckbxDiscipline.setSelected(settings.getValue("ResultListSingleDiscipline", Boolean.class));
+		chckbxDiscipline.setSelected(settings.getValue("ResultListSingleDiscipline", false));
 		chckbxDiscipline.setBounds(252, 29, 268, 23);
 		chckbxDiscipline.addActionListener(this);
 		contentPanel.add(chckbxDiscipline);
@@ -90,7 +90,7 @@ public class ResultListOptions extends JDialog implements ActionListener {
 			}
 		}
 		for (int i = 0; i < cbDisziplin.getItemCount(); i++) {
-			if (cbDisziplin.getItemAt(i).getId() == settings.getValue("ResultListDiscipline", Integer.class)) {
+			if (cbDisziplin.getItemAt(i).getId() == settings.getValue("ResultListDiscipline", 0)) {
 				cbDisziplin.setSelectedIndex(i);
 				break;
 			}
@@ -99,7 +99,7 @@ public class ResultListOptions extends JDialog implements ActionListener {
 		contentPanel.add(cbDisziplin);
 
 		chckbxNewPage = new JCheckBox("Neue Seite für jede Disziplin");
-		chckbxNewPage.setSelected(settings.getValue("ResultListNewPage", Boolean.class));
+		chckbxNewPage.setSelected(settings.getValue("ResultListNewPage", false));
 		chckbxNewPage.setBounds(252, 87, 268, 23);
 		chckbxNewPage.setEnabled(!chckbxDiscipline.isSelected());
 		contentPanel.add(chckbxNewPage);
