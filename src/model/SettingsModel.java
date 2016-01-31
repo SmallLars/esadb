@@ -292,7 +292,10 @@ public class SettingsModel implements Serializable {
 			o = standard;
 			values.put(key, standard);
 		}
-		return (T) o;
+		if (o.getClass() == standard.getClass()) {
+			return (T) o;
+		}
+		return null;
 	}
 
 	public void setValue(String key, Object value) {

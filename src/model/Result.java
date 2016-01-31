@@ -18,5 +18,5 @@ public abstract class Result implements Serializable, Comparable<Result> {
 
 	public abstract int lineCount();
 
-	public abstract void draw(Graphics2D g, int platz, int fontsize, int lineheight);
+	public abstract void draw(Graphics2D g, int platz, int fontsize, int lineheight, boolean overline);
 }

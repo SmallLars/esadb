@@ -2,7 +2,6 @@ package model;
 
 
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.print.PageFormat;
@@ -89,23 +88,20 @@ public class ResultList implements Printable {
 		for (int i = pages.get(pageIndex); i < lastEntry; i++) {
 			Entry e = entrys.get(i);
 			switch (e.type) {
+				case VSPACE:
+				case NEWPAGE:
+					break;
 				case DISCIPLINE:
-					drawDiszipline(g, e.value);
+					drawDiszipline(g, (String) e.value);
 					break;
 				case GROUP:
-					drawGroup(g, e.value);
+					drawGroup(g, (String) e.value);
 					break;
-				case RESULT_SINGLE:
-					drawSingleResult(g, e.value, e.number);
-					if (i != pages.get(pageIndex) && entrys.get(i - 1).type == RESULT_SINGLE) g.drawLine(0, 10, 2000, 10);
-					g.drawLine(725, 10, 725, e.height + 10);
-					g.drawLine(1700, 10, 1700, e.height + 10);
-					break;
-				case RESULT_TEAM:
-					drawTeamResult(g, e.value, e.number);
-					if (i != pages.get(pageIndex) && entrys.get(i - 1).type == RESULT_TEAM) g.drawLine(350, 10, 1650, 10);
-					g.drawLine(1350, 10, 1350, e.height + 10);
-					break;
+				default:
+					// RESULT_SINGLE
+					// RESULT_TEAM
+					boolean overline = i != pages.get(pageIndex) && entrys.get(i - 1).type == e.type;
+					drawResult(g, (Result) e.value, e.number, overline);
 			}
 			// VSPACE wir nur erzeugt, falls er nicht der erste Eintrag auf einer Seite ist.
 			if (e.type != VSPACE || i != pages.get(pageIndex)) g.translate(0, e.height);
@@ -159,23 +155,18 @@ public class ResultList implements Printable {
 		gs.drawStringRight(page + " / " + pages.size(), pageWidth, 32);
 	}
 
-	private void drawDiszipline(Graphics2D g, Object diszipline) {
+	private void drawDiszipline(Graphics2D g, String diszipline) {
 		GraphicsString gs = new GraphicsString(g, 60, false, true, Color.BLACK);
-		gs.drawStringCenter("---- " + (String) diszipline + " ----", pageWidth / 2, DISCIPLINE_HEIGHT - 10);
+		gs.drawStringCenter("---- " + diszipline + " ----", pageWidth / 2, DISCIPLINE_HEIGHT - 10);
 	}
 
-	private void drawGroup(Graphics2D g, Object group) {
+	private void drawGroup(Graphics2D g, String group) {
 		GraphicsString gs = new GraphicsString(g,  45, true, true, Color.BLACK);
-		gs.drawStringLeft((String) group, 0, GROUP_HEIGHT - 4);
+		gs.drawStringLeft(group, 0, GROUP_HEIGHT - 4);
 	}
 
-	private void drawSingleResult(Graphics2D g, Object start, int number) {
-		g.setFont(new Font("Bitstream Vera Sans", Font.PLAIN, 40));
-		((Result) start).draw(g, number, 40, RESULT_SINGLE_HEIGHT);
-	}
-
-	private void drawTeamResult(Graphics2D g, Object start, int number) {
-		((Result) start).draw(g, number, 40, RESULT_TEAM_HEIGHT);
+	private void drawResult(Graphics2D g, Result result, int number, boolean overline) {
+		result.draw(g, number, 40, RESULT_SINGLE_HEIGHT, overline);
 	}
 
 	private class Entry {

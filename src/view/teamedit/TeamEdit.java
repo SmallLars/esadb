@@ -54,8 +54,6 @@ public class TeamEdit extends JDialog implements ActionListener {
 		setModal(true);
 		setModalityType(ModalityType.APPLICATION_MODAL);
 		setMinimumSize(new Dimension(480, 231));
-		setSize(630, 500);
-		setLocationRelativeTo(parent);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
 		getContentPane().setLayout(new BorderLayout());
@@ -104,6 +102,7 @@ public class TeamEdit extends JDialog implements ActionListener {
 				JScrollPane scrollPane = new JScrollPane();
 				scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 				scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+				scrollPane.setPreferredSize(new Dimension(600, 400));
 				panel.add(scrollPane, BorderLayout.CENTER);
 				{
 					tmodel = new ResultTableModel(controller.getModel().getErgebnisse());
@@ -126,10 +125,11 @@ public class TeamEdit extends JDialog implements ActionListener {
 					table.getColumnModel().getColumn(2).setCellEditor(new TableEditor(new JComboBox<Group>(new DefaultComboBoxModel<Group>(Controller.get().getConfig().getGroups())), 0));
 					table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 					table.getTableHeader().setReorderingAllowed(false);
-					
-					table.getColumnModel().getColumn(3).setMinWidth(70);
-					table.getColumnModel().getColumn(3).setPreferredWidth(70);
-					table.getColumnModel().getColumn(3).setMaxWidth(70);
+
+					for (int i = 0; i < 4; i++) {
+						table.getColumnModel().getColumn(i).setMinWidth(80);
+						table.getColumnModel().getColumn(i).setPreferredWidth(i < 3 ? 160: 80);
+					}
 
 					scrollPane.setViewportView(table);
 				}
@@ -183,6 +183,9 @@ public class TeamEdit extends JDialog implements ActionListener {
 
 			}
 		}
+
+		pack();
+		setLocationRelativeTo(parent);
 	}
 
 	@Override

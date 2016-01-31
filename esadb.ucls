@@ -352,153 +352,149 @@
       <operations public="false" package="false" protected="false" private="false" static="false"/>    
     </display>  
   </class>  
-  <association id="40">    
+  <generalization id="40">    
+    <end type="SOURCE" refId="13"/>    
+    <end type="TARGET" refId="12"/>  
+  </generalization>  
+  <association id="41">    
     <end type="SOURCE" refId="7" navigable="false">      
-      <attribute id="41" name="pages"/>      
-      <multiplicity id="42" minimum="0" maximum="2147483647"/>    
+      <attribute id="42" name="pages"/>      
+      <multiplicity id="43" minimum="0" maximum="2147483647"/>    
     </end>    
     <end type="TARGET" refId="6" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <realization id="43">    
-    <end type="SOURCE" refId="10"/>    
-    <end type="TARGET" refId="32"/>  
-  </realization>  
-  <generalization id="44">    
-    <end type="SOURCE" refId="17"/>    
-    <end type="TARGET" refId="15"/>  
-  </generalization>  
-  <association id="45">    
-    <end type="SOURCE" refId="28" navigable="false">      
-      <attribute id="46" name="lineReader"/>      
-      <multiplicity id="47" minimum="0" maximum="2147483647"/>    
-    </end>    
-    <end type="TARGET" refId="29" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="48">    
-    <end type="SOURCE" refId="10" navigable="false">      
-      <attribute id="49" name="linie"/>      
-      <multiplicity id="50" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="30" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="51">    
-    <end type="SOURCE" refId="22" navigable="false">      
-      <attribute id="52" name="sortManager"/>      
-      <multiplicity id="53" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="23" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <dependency id="54">    
-    <end type="SOURCE" refId="38"/>    
-    <end type="TARGET" refId="39"/>  
-  </dependency>  
-  <association id="55">    
+  <association id="44">    
     <end type="SOURCE" refId="34" navigable="false">      
-      <attribute id="56" name="model"/>      
-      <multiplicity id="57" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="3" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <generalization id="58">    
-    <end type="SOURCE" refId="20"/>    
-    <end type="TARGET" refId="25"/>  
-  </generalization>  
-  <association id="59">    
-    <end type="SOURCE" refId="13" navigable="false">      
-      <attribute id="60" name="treffer"/>      
-      <multiplicity id="61" minimum="0" maximum="2147483647"/>    
-    </end>    
-    <end type="TARGET" refId="9" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="62">    
-    <end type="SOURCE" refId="13" navigable="false">      
-      <attribute id="63" name="disziplin"/>      
-      <multiplicity id="64" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="2" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <generalization id="65">    
-    <end type="SOURCE" refId="36"/>    
-    <end type="TARGET" refId="26"/>  
-  </generalization>  
-  <nesting id="66">    
-    <end type="SOURCE" refId="22"/>    
-    <end type="TARGET" refId="23"/>  
-  </nesting>  
-  <association id="67">    
-    <end type="SOURCE" refId="3" navigable="false">      
-      <attribute id="68" name="disziplinen"/>      
-      <multiplicity id="69" minimum="0" maximum="2147483647"/>    
-    </end>    
-    <end type="TARGET" refId="2" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <generalization id="70">    
-    <end type="SOURCE" refId="13"/>    
-    <end type="TARGET" refId="12"/>  
-  </generalization>  
-  <association id="71">    
-    <end type="SOURCE" refId="38" navigable="false">      
-      <attribute id="72" name="table"/>      
-      <multiplicity id="73" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="22" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="74">    
-    <end type="SOURCE" refId="35" navigable="false">      
-      <attribute id="75" name="table"/>      
-      <multiplicity id="76" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="22" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="77">    
-    <end type="SOURCE" refId="34" navigable="false">      
-      <attribute id="78" name="fileChecker"/>      
-      <multiplicity id="79" minimum="0" maximum="1"/>    
+      <attribute id="45" name="fileChecker"/>      
+      <multiplicity id="46" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="28" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="80">    
-    <bendpoint x="809" y="170"/>    
+  <association id="47">    
+    <end type="SOURCE" refId="34" navigable="false">      
+      <attribute id="48" name="model"/>      
+      <multiplicity id="49" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="3" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="50">    
     <end type="SOURCE" refId="8" navigable="false">      
-      <attribute id="81" name="linien"/>      
-      <multiplicity id="82" minimum="0" maximum="2147483647"/>    
+      <attribute id="51" name="controller"/>      
+      <multiplicity id="52" minimum="0" maximum="1"/>    
     </end>    
-    <end type="TARGET" refId="10" navigable="true"/>    
+    <end type="TARGET" refId="34" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="83">    
+  <generalization id="53">    
+    <end type="SOURCE" refId="16"/>    
+    <end type="TARGET" refId="15"/>  
+  </generalization>  
+  <association id="54">    
+    <end type="SOURCE" refId="5" navigable="false">      
+      <attribute id="55" name="pages"/>      
+      <multiplicity id="56" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="7" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="57">    
+    <end type="SOURCE" refId="10" navigable="false">      
+      <attribute id="58" name="disziplin"/>      
+      <multiplicity id="59" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="18" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="60">    
+    <end type="SOURCE" refId="15" navigable="false">      
+      <attribute id="61" name="controller"/>      
+      <multiplicity id="62" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="34" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="63">    
+    <end type="SOURCE" refId="10"/>    
+    <end type="TARGET" refId="32"/>  
+  </realization>  
+  <association id="64">    
     <end type="SOURCE" refId="35" navigable="false">      
-      <attribute id="84" name="sorter"/>      
-      <multiplicity id="85" minimum="0" maximum="1"/>    
+      <attribute id="65" name="tmodel"/>      
+      <multiplicity id="66" minimum="0" maximum="1"/>    
     </end>    
-    <end type="TARGET" refId="36" navigable="true"/>    
+    <end type="TARGET" refId="21" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="86">    
-    <end type="SOURCE" refId="23" navigable="false">      
-      <attribute id="87" name="this$0"/>      
-      <multiplicity id="88" minimum="0" maximum="1"/>    
+  <dependency id="67">    
+    <end type="SOURCE" refId="38"/>    
+    <end type="TARGET" refId="39"/>  
+  </dependency>  
+  <association id="68">    
+    <end type="SOURCE" refId="38" navigable="false">      
+      <attribute id="69" name="table"/>      
+      <multiplicity id="70" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="22" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <realization id="89">    
-    <end type="SOURCE" refId="15"/>    
-    <end type="TARGET" refId="33"/>  
-  </realization>  
-  <association id="90">    
+  <association id="71">    
+    <end type="SOURCE" refId="34" navigable="false">      
+      <attribute id="72" name="modelChangeListener"/>      
+      <multiplicity id="73" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="33" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="74">    
+    <end type="SOURCE" refId="23" navigable="false">      
+      <attribute id="75" name="sorter"/>      
+      <multiplicity id="76" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="24" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="77">    
+    <bendpoint x="1017" y="170"/>    
+    <end type="SOURCE" refId="8" navigable="false">      
+      <attribute id="78" name="scheiben"/>      
+      <multiplicity id="79" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="11" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="80">    
     <end type="SOURCE" refId="35" navigable="false">      
+      <attribute id="81" name="controller"/>      
+      <multiplicity id="82" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="34" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="83">    
+    <end type="SOURCE" refId="31" navigable="false">      
+      <attribute id="84" name="listener"/>      
+      <multiplicity id="85" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="32" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="86">    
+    <end type="SOURCE" refId="26"/>    
+    <end type="TARGET" refId="24"/>  
+  </generalization>  
+  <association id="87">    
+    <end type="SOURCE" refId="14" navigable="false">      
+      <attribute id="88" name="member"/>      
+      <multiplicity id="89" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="13" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="90">    
+    <end type="SOURCE" refId="31" navigable="false">      
       <attribute id="91" name="controller"/>      
       <multiplicity id="92" minimum="0" maximum="1"/>    
     </end>    
@@ -506,213 +502,217 @@
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="93">    
-    <end type="SOURCE" refId="14" navigable="false">      
-      <attribute id="94" name="member"/>      
-      <multiplicity id="95" minimum="0" maximum="2147483647"/>    
-    </end>    
-    <end type="TARGET" refId="13" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <generalization id="96">    
-    <end type="SOURCE" refId="26"/>    
-    <end type="TARGET" refId="24"/>  
-  </generalization>  
-  <association id="97">    
-    <end type="SOURCE" refId="20" navigable="false">      
-      <attribute id="98" name="controller"/>      
-      <multiplicity id="99" minimum="0" maximum="1"/>    
+    <bendpoint x="-359" y="843"/>    
+    <end type="SOURCE" refId="38" navigable="false">      
+      <attribute id="94" name="controller"/>      
+      <multiplicity id="95" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="34" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="100">    
-    <end type="SOURCE" refId="10" navigable="false">      
-      <attribute id="101" name="schuetze"/>      
-      <multiplicity id="102" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="18" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="103">    
+  <association id="96">    
     <end type="SOURCE" refId="35" navigable="false">      
-      <attribute id="104" name="tmodel"/>      
-      <multiplicity id="105" minimum="0" maximum="1"/>    
+      <attribute id="97" name="sorter"/>      
+      <multiplicity id="98" minimum="0" maximum="1"/>    
     </end>    
-    <end type="TARGET" refId="21" navigable="true"/>    
+    <end type="TARGET" refId="36" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="106">    
-    <end type="SOURCE" refId="5" navigable="false">      
-      <attribute id="107" name="pages"/>      
-      <multiplicity id="108" minimum="0" maximum="1"/>    
+  <association id="99">    
+    <end type="SOURCE" refId="35" navigable="false">      
+      <attribute id="100" name="table"/>      
+      <multiplicity id="101" minimum="0" maximum="1"/>    
     </end>    
-    <end type="TARGET" refId="7" navigable="true"/>    
+    <end type="TARGET" refId="22" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="109">    
-    <end type="SOURCE" refId="10" navigable="false">      
-      <attribute id="110" name="disziplin"/>      
-      <multiplicity id="111" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="18" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="112">    
-    <end type="SOURCE" refId="3" navigable="false">      
-      <attribute id="113" name="schuetzen"/>      
-      <multiplicity id="114" minimum="0" maximum="2147483647"/>    
-    </end>    
-    <end type="TARGET" refId="4" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="115">    
-    <end type="SOURCE" refId="13" navigable="false">      
-      <attribute id="116" name="schuetze"/>      
-      <multiplicity id="117" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="4" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="118">    
+  <association id="102">    
     <end type="SOURCE" refId="34" navigable="false">      
-      <attribute id="119" name="config"/>      
-      <multiplicity id="120" minimum="0" maximum="1"/>    
+      <attribute id="103" name="config"/>      
+      <multiplicity id="104" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="1" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="121">    
-    <end type="SOURCE" refId="31" navigable="false">      
-      <attribute id="122" name="listener"/>      
-      <multiplicity id="123" minimum="0" maximum="2147483647"/>    
-    </end>    
-    <end type="TARGET" refId="32" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="124">    
-    <end type="SOURCE" refId="8" navigable="false">      
-      <attribute id="125" name="controller"/>      
-      <multiplicity id="126" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="34" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <realization id="127">    
-    <end type="SOURCE" refId="31"/>    
-    <end type="TARGET" refId="29"/>  
-  </realization>  
-  <association id="128">    
-    <bendpoint x="281" y="490"/>    
-    <end type="SOURCE" refId="34" navigable="false">      
-      <attribute id="129" name="gui"/>      
-      <multiplicity id="130" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="8" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <realization id="131">    
-    <end type="SOURCE" refId="11"/>    
-    <end type="TARGET" refId="32"/>  
-  </realization>  
-  <generalization id="132">    
-    <end type="SOURCE" refId="14"/>    
-    <end type="TARGET" refId="12"/>  
-  </generalization>  
-  <association id="133">    
-    <end type="SOURCE" refId="26" navigable="false">      
-      <attribute id="134" name="filter"/>      
-      <multiplicity id="135" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="25" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="136">    
-    <end type="SOURCE" refId="23" navigable="false">      
-      <attribute id="137" name="sorter"/>      
-      <multiplicity id="138" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="24" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="139">    
-    <bendpoint x="40" y="1146"/>    
-    <end type="SOURCE" refId="3" navigable="false">      
-      <attribute id="140" name="treffer"/>      
-      <multiplicity id="141" minimum="0" maximum="2147483647"/>    
-    </end>    
-    <end type="TARGET" refId="9" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="142">    
-    <end type="SOURCE" refId="31" navigable="false">      
-      <attribute id="143" name="controller"/>      
-      <multiplicity id="144" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="34" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <realization id="145">    
+  <realization id="105">    
     <end type="SOURCE" refId="15"/>    
     <end type="TARGET" refId="19"/>  
   </realization>  
-  <association id="146">    
-    <end type="SOURCE" refId="15" navigable="false">      
-      <attribute id="147" name="controller"/>      
-      <multiplicity id="148" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="34" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="149">    
-    <end type="SOURCE" refId="34" navigable="false">      
-      <attribute id="150" name="modelChangeListener"/>      
-      <multiplicity id="151" minimum="0" maximum="2147483647"/>    
-    </end>    
-    <end type="TARGET" refId="33" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <realization id="152">    
-    <end type="SOURCE" refId="31"/>    
-    <end type="TARGET" refId="30"/>  
+  <generalization id="106">    
+    <end type="SOURCE" refId="20"/>    
+    <end type="TARGET" refId="25"/>  
+  </generalization>  
+  <realization id="107">    
+    <end type="SOURCE" refId="15"/>    
+    <end type="TARGET" refId="33"/>  
   </realization>  
-  <association id="153">    
-    <end type="SOURCE" refId="18" navigable="false">      
-      <attribute id="154" name="dataModel"/>      
-      <multiplicity id="155" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="19" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="156">    
+  <association id="108">    
     <end type="SOURCE" refId="3" navigable="false">      
-      <attribute id="157" name="ergebnisse"/>      
-      <multiplicity id="158" minimum="0" maximum="2147483647"/>    
+      <attribute id="109" name="ergebnisse"/>      
+      <multiplicity id="110" minimum="0" maximum="2147483647"/>    
     </end>    
     <end type="TARGET" refId="12" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="159">    
-    <bendpoint x="1017" y="170"/>    
-    <end type="SOURCE" refId="8" navigable="false">      
-      <attribute id="160" name="scheiben"/>      
-      <multiplicity id="161" minimum="0" maximum="2147483647"/>    
+  <association id="111">    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="112" name="schuetzen"/>      
+      <multiplicity id="113" minimum="0" maximum="2147483647"/>    
     </end>    
-    <end type="TARGET" refId="11" navigable="true"/>    
+    <end type="TARGET" refId="4" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="162">    
-    <bendpoint x="-359" y="843"/>    
-    <end type="SOURCE" refId="38" navigable="false">      
-      <attribute id="163" name="controller"/>      
-      <multiplicity id="164" minimum="0" maximum="1"/>    
+  <generalization id="114">    
+    <end type="SOURCE" refId="14"/>    
+    <end type="TARGET" refId="12"/>  
+  </generalization>  
+  <generalization id="115">    
+    <end type="SOURCE" refId="36"/>    
+    <end type="TARGET" refId="26"/>  
+  </generalization>  
+  <association id="116">    
+    <end type="SOURCE" refId="18" navigable="false">      
+      <attribute id="117" name="dataModel"/>      
+      <multiplicity id="118" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="19" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <nesting id="119">    
+    <end type="SOURCE" refId="22"/>    
+    <end type="TARGET" refId="23"/>  
+  </nesting>  
+  <association id="120">    
+    <end type="SOURCE" refId="23" navigable="false">      
+      <attribute id="121" name="this$0"/>      
+      <multiplicity id="122" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="22" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="123">    
+    <bendpoint x="40" y="1146"/>    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="124" name="treffer"/>      
+      <multiplicity id="125" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="9" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="126">    
+    <end type="SOURCE" refId="13" navigable="false">      
+      <attribute id="127" name="schuetze"/>      
+      <multiplicity id="128" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="4" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="129">    
+    <end type="SOURCE" refId="11"/>    
+    <end type="TARGET" refId="32"/>  
+  </realization>  
+  <association id="130">    
+    <end type="SOURCE" refId="28" navigable="false">      
+      <attribute id="131" name="lineReader"/>      
+      <multiplicity id="132" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="29" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="133">    
+    <end type="SOURCE" refId="22" navigable="false">      
+      <attribute id="134" name="sortManager"/>      
+      <multiplicity id="135" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="23" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="136">    
+    <bendpoint x="809" y="170"/>    
+    <end type="SOURCE" refId="8" navigable="false">      
+      <attribute id="137" name="linien"/>      
+      <multiplicity id="138" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="10" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="139">    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="140" name="disziplinen"/>      
+      <multiplicity id="141" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="2" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="142">    
+    <end type="SOURCE" refId="10" navigable="false">      
+      <attribute id="143" name="linie"/>      
+      <multiplicity id="144" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="30" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="145">    
+    <end type="SOURCE" refId="26" navigable="false">      
+      <attribute id="146" name="filter"/>      
+      <multiplicity id="147" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="25" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="148">    
+    <end type="SOURCE" refId="10" navigable="false">      
+      <attribute id="149" name="schuetze"/>      
+      <multiplicity id="150" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="18" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="151">    
+    <bendpoint x="281" y="490"/>    
+    <end type="SOURCE" refId="34" navigable="false">      
+      <attribute id="152" name="gui"/>      
+      <multiplicity id="153" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="8" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="154">    
+    <end type="SOURCE" refId="31"/>    
+    <end type="TARGET" refId="30"/>  
+  </realization>  
+  <generalization id="155">    
+    <end type="SOURCE" refId="17"/>    
+    <end type="TARGET" refId="15"/>  
+  </generalization>  
+  <association id="156">    
+    <end type="SOURCE" refId="20" navigable="false">      
+      <attribute id="157" name="controller"/>      
+      <multiplicity id="158" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="34" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <generalization id="165">    
-    <end type="SOURCE" refId="16"/>    
-    <end type="TARGET" refId="15"/>  
-  </generalization>  
+  <realization id="159">    
+    <end type="SOURCE" refId="31"/>    
+    <end type="TARGET" refId="29"/>  
+  </realization>  
+  <association id="160">    
+    <end type="SOURCE" refId="13" navigable="false">      
+      <attribute id="161" name="treffer"/>      
+      <multiplicity id="162" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="9" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="163">    
+    <end type="SOURCE" refId="13" navigable="false">      
+      <attribute id="164" name="disziplin"/>      
+      <multiplicity id="165" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="2" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
     accessors="true" visibility="true">    
     <attributes public="true" package="true" protected="true" private="true" static="true"/>    

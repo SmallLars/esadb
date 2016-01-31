@@ -6,6 +6,8 @@ import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.List;
 
+import controller.Controller;
+
 
 public class Team extends Result {
 	private static final long serialVersionUID = 2L;
@@ -117,6 +119,28 @@ public class Team extends Result {
 
 	@Override
 	public Group getGroup(boolean useSettings) {
+		SettingsModel settings = Controller.get().getConfig();
+
+		if (useSettings && !settings.getValue("ResultListGroup", true)) {
+			if (!settings.getValue("ResultListGender", true)) {
+				return Group.getStandardGroup(Gender.ANY, settings.getYear(), null);
+			}
+
+			return Group.getStandardGroup(group.getGender(), settings.getYear(), null);
+		}
+
+		if (useSettings && !settings.getValue("ResultListGender", true)) {
+			Group g = new Group(group.toString() + " - männlich/weiblich", group.getFrom(), group.getTo(), Gender.ANY);
+
+			// Versuch eine vorhandene Unisex-Gruppe zu finden um Gruppennamen wie "Herren - männlich/weiblich" zu vermeiden
+			for (Group gc : settings.getGroups()) {
+				if (gc.equals(g)) return gc;
+			}
+
+			// Leider keine Unisex-Gruppe gefunden :(
+			return g;
+		}
+
 		return group;
 	}
 
@@ -147,7 +171,7 @@ public class Team extends Result {
 	}
 
 	@Override
-	public void draw(Graphics2D g, int platz, int fontsize, int lineheight) {
+	public void draw(Graphics2D g, int platz, int fontsize, int lineheight, boolean overline) {
 		GraphicsString gs = new GraphicsString(g, fontsize, false, true, Color.BLACK);
 		gs.drawStringRight(String.format("%d.", platz), 450, lineheight);
 		gs.drawStringLeft(String.format("%s", name), 475, lineheight);
@@ -160,5 +184,8 @@ public class Team extends Result {
 			gs.drawStringLeft(String.format("%s", m.getName()), 475, y);
 			gs.drawStringRight(String.format("%.1f", m.getResult(false)), 1300, y);
 		}
+
+		g.drawLine(1350, 10, 1350, lineCount() * lineheight + 10);
+		if (overline) g.drawLine(350, 10, 1650, 10);
 	}
 }

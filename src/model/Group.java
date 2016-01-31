@@ -96,4 +96,10 @@ public class Group  implements Serializable, Comparable<Group> {
 
 		return gender.compareTo(o.gender);
 	}
+
+	public static Group getStandardGroup(Gender gender, int year, String name) {
+		Group g = new Group(gender.toString(), year - 201, year, gender);
+		if (name != null) g.setName(name);
+		return g;
+	}
 }

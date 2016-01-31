@@ -86,12 +86,12 @@ public class Single extends Result implements Printable {
 
 		if (useSettings && !settings.getValue("ResultListGroup", true)) {
 			if (!settings.getValue("ResultListGender", true)) {
-				return new Group(Gender.ANY.toString(), settings.getYear() - 201, settings.getYear(), Gender.ANY);
+				return Group.getStandardGroup(Gender.ANY, settings.getYear(), null);
 			}
 
-			if (schuetze.isMale()) return new Group(Gender.MALE.toString(), settings.getYear() - 201, settings.getYear(), Gender.MALE);
-			if (schuetze.isFemale()) return new Group(Gender.FEMALE.toString(), settings.getYear() - 201, settings.getYear(), Gender.FEMALE);
-			return new Group(Gender.ANY.toString(), settings.getYear() - 201, settings.getYear(), Gender.ANY);
+			if (schuetze.isMale()) return Group.getStandardGroup(Gender.MALE, settings.getYear(), null);
+			if (schuetze.isFemale()) return Group.getStandardGroup(Gender.FEMALE, settings.getYear(), null);
+			return Group.getStandardGroup(Gender.ANY, settings.getYear(), null);
 		}
 
 		if (useSettings && !settings.getValue("ResultListGender", true)) {
@@ -108,7 +108,7 @@ public class Single extends Result implements Printable {
 			}
 		}
 
-		return new Group("Ohne Zuordnung", settings.getYear() - 201, settings.getYear() - 200, Gender.ANY);
+		return Group.getStandardGroup(Gender.ANY, settings.getYear(), "Ohne Zuordnung");
 	}
 
 	public Member getSchuetze() {
@@ -226,7 +226,7 @@ public class Single extends Result implements Printable {
 		return ((i - 2) / 4) + 1;
 	}
 
-	public void draw(Graphics2D g, int platz, int fontsize, int lineheight) {
+	public void draw(Graphics2D g, int platz, int fontsize, int lineheight, boolean overline) {
 		GraphicsString gs = new GraphicsString(g, fontsize, false, false, Color.BLACK);
 
 		gs.drawStringRight(String.format("%d.", platz), 100, lineheight);
@@ -242,6 +242,10 @@ public class Single extends Result implements Printable {
 		}
 		int height = ((anzahl - 1) / 4) * lineheight;
 		gs.drawStringRight(String.format("%.1f", getResult(false)), 1950, height + lineheight);
+
+		g.drawLine(725, 10, 725, lineCount() * lineheight + 10);
+		g.drawLine(1700, 10, 1700, lineCount() * lineheight + 10);
+		if (overline) g.drawLine(0, 10, 2000, 10);
 	}
 
 	public boolean toFile(String filename, boolean probe) {

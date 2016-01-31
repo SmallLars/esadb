@@ -2,7 +2,7 @@ package model;
 
 
 public enum Gender {
-	ANY("beliebig"),
+	ANY("männlich/weiblich"),
 	MALE("männlich"),
 	FEMALE("weiblich");
 
