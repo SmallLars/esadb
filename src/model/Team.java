@@ -130,8 +130,9 @@ public class Team extends Result {
 		}
 
 		if (useSettings && !settings.getValue("ResultListGender", true)) {
-			Group g = new Group(group.toString() + " - männlich/weiblich", group.getFrom(), group.getTo(), Gender.ANY);
+			if (group.getGender() == Gender.ANY) return group;
 
+			Group g = new Group(group.toString() + " - männlich/weiblich", group.getFrom(), group.getTo(), Gender.ANY);
 			// Versuch eine vorhandene Unisex-Gruppe zu finden um Gruppennamen wie "Herren - männlich/weiblich" zu vermeiden
 			for (Group gc : settings.getGroups()) {
 				if (gc.equals(g)) return gc;
