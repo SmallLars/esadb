@@ -31,6 +31,7 @@ import javax.swing.JComboBox;
 
 import view.HitTableCellRenderer;
 import view.HitTableModel;
+import view.IconButton;
 import view.Target;
 
 
@@ -89,16 +90,12 @@ public class HitAdd extends JDialog implements ComponentListener, ListSelectionL
 		treffer.setLocation(12, 10);
 		getContentPane().add(treffer);
 
-		button_1 = new JButton("-");
+		button_1 = new IconButton(IconButton.REMOVE, "REMOVE", this);
 		button_1.setBounds(14, 222, 44, 20);
-		button_1.setActionCommand("REMOVE");
-		button_1.addActionListener(this);
 		getContentPane().add(button_1);
 
-		button = new JButton("+");
+		button = new IconButton(IconButton.ADD, "ADD", this);
 		button.setBounds(266, 222, 44, 20);
-		button.setActionCommand("ADD");
-		button.addActionListener(this);
 		getContentPane().add(button);
 
 		lblZwischenablage = new JLabel("Zwischenablage");

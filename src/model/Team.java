@@ -158,6 +158,10 @@ public class Team extends Result {
 		member.add(single);
 	}
 
+	public boolean contains(Single single) {
+		return member.contains(single);
+	}
+
 	public Member[] getMember() {
 		return member.toArray(new Member[0]);
 	}

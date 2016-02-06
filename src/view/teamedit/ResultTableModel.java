@@ -64,7 +64,7 @@ public class ResultTableModel extends DefaultTableModel {
 
 	@Override
 	public boolean isCellEditable(int row, int col) {
-		return col <= 2;
+		return col <= 2 && results.get(row) instanceof Team;
 	}
 
 	@Override

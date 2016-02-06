@@ -27,6 +27,8 @@ import javax.swing.JComboBox;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.TableRowSorter;
 
+import view.IconButton;
+
 
 @SuppressWarnings("serial")
 public class Members extends JDialog implements ComponentListener, ActionListener {
@@ -78,10 +80,8 @@ public class Members extends JDialog implements ComponentListener, ActionListene
 		table.getTableHeader().setReorderingAllowed(false);
 		scrollPane.setViewportView(table);
 
-		button = new JButton("<-");
+		button = new IconButton(IconButton.LEFT, "ADD", this);
 		button.setBounds(360, 209, 50, 23);
-		button.setActionCommand("ADD");
-		button.addActionListener(this);
 		getContentPane().add(button);
 
 		scrollPane_1 = new JScrollPane();

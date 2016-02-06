@@ -33,6 +33,7 @@ import javax.swing.JLabel;
 
 import view.HitTableCellRenderer;
 import view.HitTableModel;
+import view.IconButton;
 
 import java.awt.Font;
 
@@ -109,10 +110,8 @@ public class SingleEdit extends JDialog implements ComponentListener, ActionList
 		table.getTableHeader().setReorderingAllowed(false);
 		scrollPane.setViewportView(table);
 
-		button = new JButton("->");
+		button = new IconButton(IconButton.RIGHT, "REMOVE", this);
 		button.setBounds(320, 173, 50, 23);
-		button.setActionCommand("REMOVE");
-		button.addActionListener(this);
 		getContentPane().add(button);
 
 		group = new ButtonGroup();
@@ -133,10 +132,8 @@ public class SingleEdit extends JDialog implements ComponentListener, ActionList
 		spinner.setBounds(320, 279, 50, 18);
 		getContentPane().add(spinner);
 
-		button_1 = new JButton("<-");
+		button_1 = new IconButton(IconButton.LEFT, "ADD", this);
 		button_1.setBounds(320, 308, 50, 23);
-		button_1.setActionCommand("ADD");
-		button_1.addActionListener(this);
 		getContentPane().add(button_1);
 
 		lblZwischenablage = new JLabel("Zwischenablage");
