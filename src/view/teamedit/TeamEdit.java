@@ -7,6 +7,8 @@ import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -55,10 +57,15 @@ public class TeamEdit extends JDialog implements ActionListener {
 		setModal(true);
 		setModalityType(ModalityType.APPLICATION_MODAL);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				controller.save();
+			}
+		});
 		setMinimumSize(new Dimension(500, 340));
 
-		BorderLayout borderLayout = new BorderLayout();
-		getContentPane().setLayout(borderLayout);
+		getContentPane().setLayout(new BorderLayout());
 		{
 			card_panel = new JPanel();
 			getContentPane().add(card_panel, BorderLayout.CENTER);
@@ -115,8 +122,8 @@ public class TeamEdit extends JDialog implements ActionListener {
 					panel_1.setBorder(null);
 					panel_1.setLayout(new BorderLayout(5, 5));
 					{
-						JButton btnNewButton = new IconButton(IconButton.REMOVE, "REMOVE_TEAM", this);
-						panel_1.add(btnNewButton, BorderLayout.WEST);
+						JButton button = new IconButton(IconButton.REMOVE, "REMOVE_TEAM", this);
+						panel_1.add(button, BorderLayout.WEST);
 					}
 					{
 						JPanel panel_1_1 = new JPanel();
@@ -124,15 +131,15 @@ public class TeamEdit extends JDialog implements ActionListener {
 						panel_1_1.setBorder(null);
 						panel_1_1.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
 						{
-							JButton btnNewButton = new JButton("Bearbeiten");
-							btnNewButton.setActionCommand("EDIT");
-							btnNewButton.addActionListener(this);
-							panel_1_1.add(btnNewButton);
+							JButton button = new JButton("Bearbeiten");
+							button.setActionCommand("EDIT");
+							button.addActionListener(this);
+							panel_1_1.add(button);
 						}
 					}
 					{
-						JButton btnNewButton = new IconButton(IconButton.ADD, "ADD_TEAM", this);
-						panel_1.add(btnNewButton, BorderLayout.EAST);
+						JButton button = new IconButton(IconButton.ADD, "ADD_TEAM", this);
+						panel_1.add(button, BorderLayout.EAST);
 					}
 				}
 			}
@@ -185,8 +192,8 @@ public class TeamEdit extends JDialog implements ActionListener {
 					panel_1.setBorder(null);
 					panel_1.setLayout(new BorderLayout(5, 5));
 					{
-						JButton btnNewButton = new IconButton(IconButton.UP, "REMOVE_SINGLE", this);
-						panel_1.add(btnNewButton, BorderLayout.WEST);
+						JButton button = new IconButton(IconButton.UP, "REMOVE_SINGLE", this);
+						panel_1.add(button, BorderLayout.WEST);
 					}
 					{
 						JPanel panel_1_1 = new JPanel();
@@ -194,15 +201,15 @@ public class TeamEdit extends JDialog implements ActionListener {
 						panel_1_1.setBorder(null);
 						panel_1_1.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
 						{
-							JButton btnNewButton = new JButton("Mannschaften");
-							btnNewButton.setActionCommand("LIST");
-							btnNewButton.addActionListener(this);
-							panel_1_1.add(btnNewButton);
+							JButton button = new JButton("Mannschaften");
+							button.setActionCommand("LIST");
+							button.addActionListener(this);
+							panel_1_1.add(button);
 						}
 					}
 					{
-						JButton btnNewButton = new IconButton(IconButton.DOWN, "ADD_SINGLE", this);
-						panel_1.add(btnNewButton, BorderLayout.EAST);
+						JButton button = new IconButton(IconButton.DOWN, "ADD_SINGLE", this);
+						panel_1.add(button, BorderLayout.EAST);
 					}
 				}
 
@@ -229,11 +236,11 @@ public class TeamEdit extends JDialog implements ActionListener {
 				panel.add(separator, BorderLayout.NORTH);
 			}
 			{
-				JButton cancelButton = new JButton("Schließen");
-				panel.add(cancelButton, BorderLayout.EAST);
-				cancelButton.setActionCommand("CANCEL");
-				cancelButton.addActionListener(this);
-				getRootPane().setDefaultButton(cancelButton);
+				JButton button = new JButton("Schließen");
+				panel.add(button, BorderLayout.EAST);
+				button.setActionCommand("CANCEL");
+				button.addActionListener(this);
+				getRootPane().setDefaultButton(button);
 			}
 		}
 
@@ -259,49 +266,60 @@ public class TeamEdit extends JDialog implements ActionListener {
 
 		switch (e.getActionCommand()) {
 			case "CANCEL":
+				dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
 				setVisible(false);
+				dispose();
 				break;
 			case "DISCIPLINE_TEAM":
 			case "GROUP_TEAM":
-				table_team.getModel().fireTableDataChanged();
-				break;
-			case "DISCIPLINE_SINGLE":
-			case "GROUP_SINGLE":
-				table_single.getModel().fireTableDataChanged();
+				table_team.fireTableDataChanged(team);
 				break;
 			case "REMOVE_TEAM":
 				if (team != null) {
 					controller.remove(team);
-					table_team.getModel().fireTableDataChanged();
+					table_team.fireTableDataChanged(null);
 				}
 				break;
 			case "EDIT":
 				if (team != null) {
-					table_single.getModel().fireTableDataChanged();
-					table_member.getModel().fireTableDataChanged();
+					table_single.fireTableDataChanged(null);
+					table_member.fireTableDataChanged(null);
 					cards.show(card_panel, "TEAM_MEMBER");
 				}
 				break;
 			case "ADD_TEAM":
 				Team t = new Team(null, null);
 				controller.add(t);
-				table_team.getModel().fireTableDataChanged();
+				table_team.fireTableDataChanged(t);
+				table_single.fireTableDataChanged(null);
+				table_member.fireTableDataChanged(null);
+				cards.show(card_panel, "TEAM_MEMBER");
+				break;
+			case "DISCIPLINE_SINGLE":
+			case "GROUP_SINGLE":
+				table_single.fireTableDataChanged(single);
 				break;
 			case "REMOVE_SINGLE":
 				if (member != null) {
 					team.removeMember(member);
-					table_single.getModel().fireTableDataChanged();
-					table_member.getModel().fireTableDataChanged();
+					table_single.fireTableDataChanged(member);
+					table_member.fireTableDataChanged(null);
 				}
 				break;
 			case "LIST":
+				if (team.getDisziplin() == null || team.getGroup(false) == null) {
+					controller.remove(team);
+					table_team.fireTableDataChanged(null);
+				}
 				cards.show(card_panel, "TEAM_LIST");
 				break;
 			case "ADD_SINGLE":
 				if (single != null) {
+					if (team.getDisziplin() == null) team.setDisziplin(single.getDisziplin());
+					if (team.getGroup(false) == null) team.setGroup(single.getGroup(false));
 					team.addMember(single);
-					table_single.getModel().fireTableDataChanged();
-					table_member.getModel().fireTableDataChanged();
+					table_single.fireTableDataChanged(null);
+					table_member.fireTableDataChanged(single);
 				}
 				break;
 		}

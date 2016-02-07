@@ -37,6 +37,7 @@
  - Quellcode optimiert und kleinere Fehler beseitigt.
  - Eingegebene Treffer können nun wieder gelöscht werden.
 
-2.0.6        XX.YY.2016
+2.0.6        07.02.2016
  - Update von Jackcess: Es erfolgt nun keine Warnung mehr beim Anzeigen der Stammdaten.
  - Bei völliger Ergebnisgleicheit wird nun die selbe Platzierung in der Ergebnisliste genutzt.
+ - Mannschaften können nun erstellt/bearbeitet werden und werden in der Ergebnisliste aufgeführt.

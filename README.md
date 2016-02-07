@@ -7,7 +7,7 @@ Eine Alternative zu HAWEV 2002.
 
 * [Version 1.0.2](https://github.com/SmallLars/esadb/raw/v1/pub/esadb.jar)
 
-* [Version 2.0.5](https://github.com/SmallLars/esadb/raw/v2/pub/esadb.jar)
+* [Version 2.0.6](https://github.com/SmallLars/esadb/raw/v2/pub/esadb.jar)
     * [Beispiel.esa](https://github.com/SmallLars/esadb/raw/v2/pub/Beispiel.esa) mit 2 Disziplinen, 4 Schützen und 8 Ergebnissen
 
 ## Installation
@@ -67,6 +67,7 @@ auf die Linien in das Installationsverzeichnis von ESA 2002 kopiert werden.
 [![Ergebnisliste - Geschlecht](https://github.com/SmallLars/esadb/raw/master/pub/result_list_3_tn.png)](https://github.com/SmallLars/esadb/raw/master/pub/result_list_3.png)
 [![Ergebnisliste - Beliebig](https://github.com/SmallLars/esadb/raw/master/pub/result_list_4_tn.png)](https://github.com/SmallLars/esadb/raw/master/pub/result_list_4.png)
 [![Ergebnisliste - Eigene Seite](https://github.com/SmallLars/esadb/raw/master/pub/result_list_5_tn.png)](https://github.com/SmallLars/esadb/raw/master/pub/result_list_5.png)
+[![Ergebnisliste - Mannschaften](https://github.com/SmallLars/esadb/raw/master/pub/result_list_6_tn.png)](https://github.com/SmallLars/esadb/raw/master/pub/result_list_6.png)
 
 ## Dokumentation
 

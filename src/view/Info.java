@@ -14,17 +14,17 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
+import javax.swing.BoxLayout;
 
 
 @SuppressWarnings("serial")
 public class Info extends JDialog implements ActionListener {
-
-	private final JPanel contentPanel = new JPanel();
 
 	public Info(Frame parent) {
 		super(parent, "Info");
@@ -33,58 +33,70 @@ public class Info extends JDialog implements ActionListener {
 		setModal(true);
 		setModalityType(ModalityType.APPLICATION_MODAL);
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-		setSize(305, 175);
-		setLocationRelativeTo(parent);
+
 		getContentPane().setLayout(new BorderLayout());
-		contentPanel.setLayout(null);
-		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-		getContentPane().add(contentPanel, BorderLayout.CENTER);
-		
-		JLabel lblEsadb = new JLabel("ESADB (2.0.5)");
-		lblEsadb.setBounds(10, 10, 280, 20);
-		contentPanel.add(lblEsadb);
-		
-		JLabel lblSource = new JLabel("<html><body><a href=\"https://github.com/SmallLars/esadb\">https://github.com/SmallLars/esadb</a></body></html>");
-		lblSource.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		lblSource.setBounds(10, 30, 280, 20);
-		lblSource.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				if (e.getClickCount() > 0) {
-					if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
-						try {
-							Desktop.getDesktop().browse(new URI("https://github.com/SmallLars/esadb"));
-						} catch (IOException | URISyntaxException e1) {
-							// Do nothing
-							// e1.printStackTrace();
+		{
+			JPanel panel = new JPanel();
+			getContentPane().add(panel, BorderLayout.CENTER);
+			panel.setBorder(new EmptyBorder(5, 5, 5, 5));
+			panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+			{
+				JLabel label = new JLabel("ESADB 2.0.6 vom 07.02.2016");
+				panel.add(label);
+				panel.add(Box.createVerticalStrut(8));
+			}
+			{
+				JLabel label = new JLabel("<html><body><a href=\"https://github.com/SmallLars/esadb\">https://github.com/SmallLars/esadb</a></body></html>");
+				label.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+				label.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						if (e.getClickCount() > 0) {
+							if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
+								try {
+									Desktop.getDesktop().browse(new URI("https://github.com/SmallLars/esadb"));
+								} catch (IOException | URISyntaxException e1) {
+									// Do nothing
+									// e1.printStackTrace();
+								}
+							}
 						}
 					}
-				}
+				});
+				panel.add(label);
+				panel.add(Box.createVerticalStrut(8));
 			}
-		});
-		contentPanel.add(lblSource);
-		
-		JLabel lblAuthor = new JLabel("Copyright © 2015-2016 Lars Schmertmann.");
-		lblAuthor.setBounds(10, 50, 280, 20);
-		contentPanel.add(lblAuthor);
+			{
+				JLabel label = new JLabel("Copyright © 2015-2016 Lars Schmertmann.");
+				panel.add(label);
+				panel.add(Box.createVerticalStrut(8));
+			}
+			{
+				JLabel label = new JLabel("SmallLars@t-online.de");
+				panel.add(label);
+				panel.add(Box.createVerticalStrut(8));
+			}
+			{
+				JLabel label = new JLabel("Alle Rechte vorbehalten.");
+				panel.add(label);
+			}
+		}
+		{
+			JPanel panel = new JPanel();
+			getContentPane().add(panel, BorderLayout.SOUTH);
+			panel.setBorder(null);
+			panel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+			{
+				JButton button = new JButton("Schließen");
+				button.setActionCommand("CANCEL");
+				button.addActionListener(this);
+				panel.add(button);
+				getRootPane().setDefaultButton(button);
+			}
+		}
 
-		JLabel lblEmail = new JLabel("SmallLars@t-online.de");
-		lblEmail.setBounds(10, 70, 300, 20);
-		contentPanel.add(lblEmail);
-
-		JLabel lblRights = new JLabel("Alle Rechte vorbehalten.");
-		lblRights.setBounds(10, 90, 280, 20);
-		contentPanel.add(lblRights);
-
-		JPanel buttonPane = new JPanel();
-		buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
-		getContentPane().add(buttonPane, BorderLayout.SOUTH);
-
-		JButton cancelButton = new JButton("Schließen");
-		cancelButton.setActionCommand("CANCEL");
-		cancelButton.addActionListener(this);
-		buttonPane.add(cancelButton);
-		getRootPane().setDefaultButton(cancelButton);
+		pack();
+		setLocationRelativeTo(parent);
 	}
 
 	@Override

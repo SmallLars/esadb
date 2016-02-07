@@ -21,13 +21,15 @@ import model.Result;
 @SuppressWarnings("serial")
 public class ResultTable extends JTable {
 
+	private int selectedRow = -1;
+
 	public ResultTable(boolean team, List<Result> starts, JComboBox<Discipline> cd, JComboBox<Group> cg, ResultTable t, boolean m) {
 		super(new ResultTableModel(starts));
 		putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
 		setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		getTableHeader().setReorderingAllowed(false);
 
-		TableRowSorter<ResultTableModel> sorter = new TableRowSorter<ResultTableModel>(getModel());
+		TableRowSorter<ResultTableModel> sorter = new TableRowSorter<ResultTableModel>((ResultTableModel) getModel());
 		sorter.setSortsOnUpdates(true);
 		sorter.setRowFilter(new ResultRowFilter(team, cd, cg, t, m));
 		setRowSorter(sorter);
@@ -50,8 +52,22 @@ public class ResultTable extends JTable {
 		}
 	}
 
-	@Override
-	public ResultTableModel getModel() {
-		return (ResultTableModel) super.getModel();
+	public void fireTableDataChanged(Result newResult) {
+		selectedRow = getSelectedRow();
+		((ResultTableModel) getModel()).fireTableDataChanged();
+
+		if (newResult == null) {
+			if (selectedRow >= 0) {
+				if (selectedRow >= getRowCount()) selectedRow = getRowCount() - 1;
+				if (selectedRow >= 0) setRowSelectionInterval(selectedRow, selectedRow);
+			}
+		} else {
+			for (int i = 0; i < getRowCount(); i++) {
+				if (getValueAt(i, -1) == newResult) {
+					setRowSelectionInterval(i, i);
+					return;
+				}
+			}
+		}
 	}
 }

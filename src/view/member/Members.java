@@ -96,7 +96,7 @@ public class Members extends JDialog implements ComponentListener, ActionListene
 		table_1.getTableHeader().setReorderingAllowed(false);
 		scrollPane_1.setViewportView(table_1);
 		
-		lblVerein = new JLabel("Verein");
+		lblVerein = new JLabel("Filter:");
 		lblVerein.setBounds(20, 443, 46, 14);
 		getContentPane().add(lblVerein);
 
