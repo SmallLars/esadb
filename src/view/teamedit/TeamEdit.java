@@ -60,6 +60,13 @@ public class TeamEdit extends JDialog implements ActionListener {
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
+				int row = table_team.getSelectedRow();
+				if (row >= 0) {
+					Team team = (Team) table_team.getValueAt(row, -1);
+					if (team.getDisziplin() == null || team.getGroup(false) == null) {
+						controller.remove(team);
+					}
+				}
 				controller.save();
 			}
 		});

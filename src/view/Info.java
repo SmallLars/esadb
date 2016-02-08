@@ -41,7 +41,7 @@ public class Info extends JDialog implements ActionListener {
 			panel.setBorder(new EmptyBorder(5, 5, 5, 5));
 			panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 			{
-				JLabel label = new JLabel("ESADB 2.0.6 vom 07.02.2016");
+				JLabel label = new JLabel("ESADB 2.0.6 vom 08.02.2016");
 				panel.add(label);
 				panel.add(Box.createVerticalStrut(8));
 			}
