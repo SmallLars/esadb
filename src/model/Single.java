@@ -219,11 +219,9 @@ public class Single extends Result implements Printable {
 	}
 
 	public int lineCount() {
-		int i;
-		for (i = 1; i <= disziplin.getSerienAnzahl(); i++) {
-			if (getSerie(false, i) == 0) break;
-		}
-		return ((i - 2) / 4) + 1;
+		int hitsDone = getNextNum(false) - 1;		
+		int hitsOnLine = disziplin.getSerienlaenge() * 4;
+		return ((hitsDone - 1) / hitsOnLine) + 1;
 	}
 
 	public void draw(Graphics2D g, int platz, int fontsize, int lineheight, boolean overline) {
@@ -231,17 +229,15 @@ public class Single extends Result implements Printable {
 
 		gs.drawStringRight(String.format("%d.", platz), 100, lineheight);
 		gs.drawStringLeft(schuetze.toString(), 125, lineheight);
-		int anzahl = 0;
-		for (int i = 0; i < disziplin.getSerienAnzahl(); i++) {
-			if (getSerie(false, i) == 0) break;
 
+		int serien = ((getNextNum(false) - 2) / disziplin.getSerienlaenge()) + 1;
+		if (serien > disziplin.getSerienAnzahl()) serien = disziplin.getSerienAnzahl();
+		for (int i = 0; i < serien; i++) {
 			int dx = 950 + ((i % 4) * 225);
 			int dy = (i / 4) * lineheight;
 			gs.drawStringRight(String.format("%5.1f", getSerie(false, i)), dx, dy + lineheight);
-			anzahl++;
 		}
-		int height = ((anzahl - 1) / 4) * lineheight;
-		gs.drawStringRight(String.format("%.1f", getResult(false)), 1950, height + lineheight);
+		gs.drawStringRight(String.format("%.1f", getResult(false)), 1950, lineCount() * lineheight);
 
 		g.drawLine(725, 10, 725, lineCount() * lineheight + 10);
 		g.drawLine(1700, 10, 1700, lineCount() * lineheight + 10);

@@ -41,3 +41,6 @@
  - Update von Jackcess: Es erfolgt nun keine Warnung mehr beim Anzeigen der Stammdaten.
  - Bei völliger Ergebnisgleicheit wird nun die selbe Platzierung in der Ergebnisliste genutzt.
  - Mannschaften können nun erstellt/bearbeitet werden und werden in der Ergebnisliste aufgeführt.
+
+2.0.7        XX.YY.2016
+ - In der Ergebnisliste werden Serien mit Ergebnis 0,0 auch mit 0,0 angezeigt.
