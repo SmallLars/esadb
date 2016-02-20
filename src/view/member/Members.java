@@ -20,13 +20,12 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 import model.Member;
-import model.Club;
 
 import javax.swing.JLabel;
-import javax.swing.JComboBox;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.TableRowSorter;
 
+import view.FilterBox;
 import view.IconButton;
 
 
@@ -49,7 +48,7 @@ public class Members extends JDialog implements ComponentListener, ActionListene
 	private JTable table_1;
 
 	private JLabel lblVerein;
-	private JComboBox<Club> comboBox;
+	private FilterBox comboBox;
 
 	private JButton cancelButton;
 
@@ -100,9 +99,7 @@ public class Members extends JDialog implements ComponentListener, ActionListene
 		lblVerein.setBounds(20, 443, 46, 14);
 		getContentPane().add(lblVerein);
 
-		comboBox = new JComboBox<Club>(KampfDB.getVereine());
-		comboBox.insertItemAt(new Club(0,  "Alle Vereine"), 0);
-		comboBox.setSelectedIndex(0);
+		comboBox = new FilterBox("Alle Vereine", KampfDB.getVereine());
 		comboBox.setBounds(69, 439, 251, 22);
 		comboBox.setActionCommand("FILTER");
 		comboBox.addActionListener(this);

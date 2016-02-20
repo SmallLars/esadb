@@ -11,6 +11,7 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableRowSorter;
 
+import view.FilterBox;
 import view.TableEditor;
 import controller.Controller;
 import model.Discipline;
@@ -23,7 +24,7 @@ public class ResultTable extends JTable {
 
 	private int selectedRow = -1;
 
-	public ResultTable(boolean team, List<Result> starts, JComboBox<Discipline> cd, JComboBox<Group> cg, ResultTable t, boolean m) {
+	public ResultTable(boolean team, List<Result> starts, FilterBox cd, FilterBox cg, ResultTable t, boolean m) {
 		super(new ResultTableModel(starts));
 		putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
 		setSelectionMode(ListSelectionModel.SINGLE_SELECTION);

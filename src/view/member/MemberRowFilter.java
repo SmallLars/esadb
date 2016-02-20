@@ -1,9 +1,9 @@
 package view.member;
 
 
-import javax.swing.JComboBox;
 import javax.swing.RowFilter;
 
+import view.FilterBox;
 import controller.Controller;
 import model.Member;
 import model.Club;
@@ -12,10 +12,10 @@ import model.Club;
 public class MemberRowFilter extends RowFilter<MemberTableModel, Integer> {
 
 	private Controller controller;
-	private JComboBox<Club> verein;
+	private FilterBox verein;
 	private boolean active;
 
-	public MemberRowFilter(boolean active, JComboBox<Club> verein) {
+	public MemberRowFilter(boolean active, FilterBox verein) {
 		this.controller = Controller.get();
 		this.active = active;
 		this.verein = verein;
@@ -25,7 +25,7 @@ public class MemberRowFilter extends RowFilter<MemberTableModel, Integer> {
 	public boolean include(RowFilter.Entry<? extends MemberTableModel, ? extends Integer> entry) {
 		MemberTableModel model = entry.getModel();
 		Member schuetze = (Member) model.getValueAt(entry.getIdentifier(), -1);
-		if (verein.getSelectedIndex() > 0) {
+		if (verein.doFilter()) {
 			Club c = (Club) verein.getSelectedItem();
 			if (c.getId() != schuetze.vereinsnummer) {
 				return false;

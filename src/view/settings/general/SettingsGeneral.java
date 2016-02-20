@@ -4,20 +4,15 @@ package view.settings.general;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.io.File;
-import java.util.Arrays;
 import java.util.Vector;
 
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
@@ -32,6 +27,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableRowSorter;
 
 import model.Gender;
 import model.Group;
@@ -46,6 +42,8 @@ import controller.Controller;
 import javax.swing.JTextField;
 import javax.swing.JTable;
 
+import view.FilterBox;
+import view.IconButton;
 import view.TableEditor;
 
 
@@ -59,6 +57,7 @@ public class SettingsGeneral extends JPanel implements ActionListener, DocumentL
 	private JTextField pathField;
 	private JTextField nameField;
 
+	private FilterBox genderFilter;
 	private JTable table;
 	private GroupTableModel gtm;
 
@@ -197,29 +196,43 @@ public class SettingsGeneral extends JPanel implements ActionListener, DocumentL
 		lblAltersgruppen.setBounds(110, 112, 200, 20);
 		add(lblAltersgruppen);
 
-		gtm = new GroupTableModel(new Vector<Group>(Arrays.asList(config.getGroups())));
+		JLabel lblFilter = new JLabel("Filter");
+		lblFilter.setBounds(640, 143, 80, 14);
+		add(lblFilter);
+
+		genderFilter = new FilterBox("Alle", Gender.values());
+		genderFilter.setBounds(640, 161, 80, 20);
+		genderFilter.setActionCommand("FILTER_CHANGE");
+		genderFilter.addActionListener(this);
+		add(genderFilter);
+
+		JLabel lblSportjahr = new JLabel("Sportjahr");
+		lblSportjahr.setBounds(640, 192, 80, 14);
+		add(lblSportjahr);
+
+		JSpinner spinner_1 = new JSpinner(new SpinnerNumberModel(config.getYear(), 0, null, new Integer(1)));
+		spinner_1.setBounds(640, 210, 80, 18);
+		spinner_1.setEditor(new NumberEditor(spinner_1, "0000"));
+		spinner_1.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent arg0) {
+				Controller.get().getConfig().setYear((Integer) spinner_1.getValue());
+				table.repaint();
+			}
+		});
+		add(spinner_1);
+
+		gtm = new GroupTableModel(config.getGroups());
 		table = new JTable(gtm);
 		table.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
 		table.getTableHeader().setReorderingAllowed(false);
 		table.setRowHeight(20);
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		table.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseReleased(MouseEvent evt) {
-				int i = gtm.getLastChanged();
-				if (i < 0) return;
-				table.setRowSelectionInterval(i, i);
-			}
-		});
-		table.addFocusListener(new FocusListener() {
-			@Override
-			public void focusGained(FocusEvent arg0) {
-				gtm.getLastChanged();
-			}
 
-			@Override
-			public void focusLost(FocusEvent arg0) {}
-		});
+		TableRowSorter<GroupTableModel> sorter = new TableRowSorter<GroupTableModel>(gtm);
+		sorter.setSortsOnUpdates(true);
+		sorter.setRowFilter(new GroupRowFilter(genderFilter));
+		table.setRowSorter(sorter);
 
 		table.getColumnModel().getColumn(0).setMinWidth(150);
 		table.getColumnModel().getColumn(1).setMinWidth(80);
@@ -249,10 +262,7 @@ public class SettingsGeneral extends JPanel implements ActionListener, DocumentL
 				super.setValue("(" + (Controller.get().getConfig().getYear() - year) + ") " + year);
 			}
 		});
-
-		table.getColumnModel().getColumn(1).setCellEditor(new TableEditor(new JSpinner(), 0));
 		table.getColumnModel().getColumn(2).setCellEditor(new TableEditor(new JSpinner(), 0));
-		table.getColumnModel().getColumn(3).setCellEditor(new TableEditor(new JComboBox<Gender>(Gender.values()), 0));
 
 		JScrollPane scrollPane1 = new JScrollPane();
 		scrollPane1.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -261,33 +271,13 @@ public class SettingsGeneral extends JPanel implements ActionListener, DocumentL
 		scrollPane1.setViewportView(table);
 		add(scrollPane1);
 
-		JButton button_1 = new JButton("-");
+		JButton button_1 = new IconButton(IconButton.REMOVE, "REMOVE_GROUP", this);
 		button_1.setBounds(110, 384, 45, 20);
-		button_1.setActionCommand("REMOVE_GROUP");
-		button_1.addActionListener(this);
 		add(button_1);
 
-		JButton button_2 = new JButton("+");
+		JButton button_2 = new IconButton(IconButton.ADD, "ADD_GROUP", this);
 		button_2.setBounds(575, 384, 45, 20);
-		button_2.setActionCommand("ADD_GROUP");
-		button_2.addActionListener(this);
 		add(button_2);
-
-		JLabel lblSportjahr = new JLabel("Sportjahr");
-		lblSportjahr.setBounds(640, 143, 80, 14);
-		add(lblSportjahr);
-
-		JSpinner spinner_1 = new JSpinner(new SpinnerNumberModel(config.getYear(), 0, null, new Integer(1)));
-		spinner_1.setBounds(640, 161, 80, 18);
-		spinner_1.setEditor(new NumberEditor(spinner_1, "0000"));
-		spinner_1.addChangeListener(new ChangeListener() {
-			@Override
-			public void stateChanged(ChangeEvent arg0) {
-				Controller.get().getConfig().setYear((Integer) spinner_1.getValue());
-				table.repaint();
-			}
-		});
-		add(spinner_1);
 	}
 
 	@Override
@@ -327,24 +317,59 @@ public class SettingsGeneral extends JPanel implements ActionListener, DocumentL
 				}
 				break;
 			case "ADD_GROUP":
-				gtm.addGroup(Controller.get().getConfig().newGroup());
-				int i = table.getRowCount() - 1;
-				table.setRowSelectionInterval(i, i);
-				table.scrollRectToVisible(new Rectangle(table.getCellRect(i, 0, true)));
+				Gender gender = null;
+				int row = table.getSelectedRow();
+				Group group = row < 0 ? null : (Group) table.getValueAt(row, -1);
+
+				// 1. Falls Filter gesetzt: Geschlecht nutzen
+				if (genderFilter.doFilter()) {
+					gender = (Gender) genderFilter.getSelectedItem();
+				}
+
+				// 2. Falls eine Altersgruppe markiert ist: Geschlecht nutzen
+				if (gender == null) {
+					if (group != null) {
+						gender = group.getGender();
+					}
+				}
+
+				// 3. Benutzer nach Geschlecht fragen
+				if (gender == null) {
+					gender = (Gender) JOptionPane.showInputDialog(
+						this,
+						"Bitte wählen Sie ein Geschlecht\nfür die neue Altersgruppe:",
+						"Geschlechtsauswahl",
+						JOptionPane.QUESTION_MESSAGE,
+						null,
+						Gender.values(),
+						Gender.ANY
+					);
+				}
+
+				if (gender != null) {
+					gtm.addGroup(gender, group);
+	
+					if (row++ == -1) row = table.getRowCount() - 1;
+					table.setRowSelectionInterval(row, row);
+					table.scrollRectToVisible(new Rectangle(table.getCellRect(row, 0, true)));
+				}
+
 				break;
 			case "REMOVE_GROUP":
 				index = table.getSelectedRow();
 				if (index < 0) break;
 
-				Group g = (Group) gtm.getValueAt(table.getSelectedRow(), 0);
-				if (Controller.get().getConfig().removeGroup(g)) {
-					gtm.removeGroup(g);
-					if (index >= table.getRowCount()) index = table.getRowCount() - 1;
-					if (table.getRowCount() > 0) {
-						table.setRowSelectionInterval(index, index);
-						table.scrollRectToVisible(new Rectangle(table.getCellRect(index, 0, true)));
-					}
+				Group g = (Group) table.getValueAt(table.getSelectedRow(), -1);
+				gtm.removeGroup(g);
+
+				if (index >= table.getRowCount()) index = table.getRowCount() - 1;
+				if (table.getRowCount() > 0) {
+					table.setRowSelectionInterval(index, index);
+					table.scrollRectToVisible(new Rectangle(table.getCellRect(index, 0, true)));
 				}
+				break;
+			case "FILTER_CHANGE":
+				gtm.fireTableDataChanged();
 				break;
 		}
 	}

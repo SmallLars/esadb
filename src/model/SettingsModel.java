@@ -262,16 +262,8 @@ public class SettingsModel implements Serializable {
 		for (Group g : groups) g.change(diff);
 	}
 
-	public Group newGroup() {
-		Group g;
-		if (groups.size() > 0) {
-			Group last = groups.get(groups.size() - 1);
-			g = new Group("Neue Gruppe", last.getFrom() - 13, last.getFrom() - 1, last.getGender());
-		} else {
-			g = new Group("Neue Gruppe", year - 12, year, Gender.MALE);
-		}
+	public void addGroup(Group g) {
 		groups.add(g);
-		return g;
 	}
 
 	public Group[] getGroups() {

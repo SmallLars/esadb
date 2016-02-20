@@ -44,3 +44,4 @@
 
 2.0.7        XX.YY.2016
  - In der Ergebnisliste werden Serien mit Ergebnis 0,0 auch mit 0,0 angezeigt.
+ - Verwaltung der Altersgruppen verbessert.

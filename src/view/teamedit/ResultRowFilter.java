@@ -1,11 +1,9 @@
 package view.teamedit;
 
 
-import javax.swing.JComboBox;
 import javax.swing.RowFilter;
 
-import model.Discipline;
-import model.Group;
+import view.FilterBox;
 import model.Result;
 import model.Single;
 import model.Team;
@@ -14,12 +12,12 @@ import model.Team;
 public class ResultRowFilter extends RowFilter<ResultTableModel, Integer> {
 
 	private boolean teams;
-	private JComboBox<Discipline> cd;
-	private JComboBox<Group> cg;
+	private FilterBox cd;
+	private FilterBox cg;
 	private ResultTable team;
 	private boolean member;
 
-	public ResultRowFilter(boolean teams, JComboBox<Discipline> cd, JComboBox<Group> cg, ResultTable team, boolean member) {
+	public ResultRowFilter(boolean teams, FilterBox cd, FilterBox cg, ResultTable team, boolean member) {
 		this.teams = teams;
 		this.cd = cd;
 		this.cg = cg;
@@ -34,11 +32,11 @@ public class ResultRowFilter extends RowFilter<ResultTableModel, Integer> {
 		
 		if (teams != result instanceof Team) return false;
 		
-		if (cd != null && cd.getSelectedIndex() > 0 && !cd.getSelectedItem().equals(result.getDisziplin())) {
+		if (cd != null && cd.doFilter() && !cd.getSelectedItem().equals(result.getDisziplin())) {
 			return false;
 		}
 
-		if (cg != null && cg.getSelectedIndex() > 0 && !cg.getSelectedItem().equals(result.getGroup(false))) {
+		if (cg != null && cg.doFilter() && !cg.getSelectedItem().equals(result.getGroup(false))) {
 			return false;
 		}
 

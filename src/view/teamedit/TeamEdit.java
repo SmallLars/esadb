@@ -10,15 +10,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.ScrollPaneConstants;
 
-import model.Discipline;
 import model.Gender;
 import model.Group;
 import model.Single;
@@ -31,9 +28,11 @@ import javax.swing.JLabel;
 import javax.swing.JSeparator;
 
 import java.awt.CardLayout;
+import java.util.Vector;
 
 import javax.swing.JSplitPane;
 
+import view.FilterBox;
 import view.IconButton;
 
 
@@ -80,8 +79,8 @@ public class TeamEdit extends JDialog implements ActionListener {
 			cards = new CardLayout(0, 0);
 			card_panel.setLayout(cards);
 			{
-				JComboBox<Discipline> discipline;
-				JComboBox<Group> group;
+				FilterBox discipline;
+				FilterBox group;
 
 				JPanel panel = new JPanel();
 				card_panel.add(panel, "TEAM_LIST");
@@ -97,18 +96,14 @@ public class TeamEdit extends JDialog implements ActionListener {
 						panel_1.add(label);
 					}
 					{
-						discipline = new JComboBox<Discipline>(new DefaultComboBoxModel<Discipline>(Controller.get().getDisziplinen()));
+						discipline = new FilterBox("Alle Disziplinen", Controller.get().getDisziplinen());
 						panel_1.add(discipline);
-						discipline.insertItemAt(new Discipline("Alle Disziplinen"), 0);
-						discipline.setSelectedIndex(0);
 						discipline.setActionCommand("DISCIPLINE_TEAM");
 						discipline.addActionListener(this);
 					}
 					{
-						group = new JComboBox<Group>(new DefaultComboBoxModel<Group>(Controller.get().getConfig().getGroups()));
+						group = new FilterBox("Alle Gruppen", Controller.get().getConfig().getGroups());
 						panel_1.add(group);
-						group.insertItemAt(new Group("Alle Gruppen", 0, 0, Gender.ANY), 0);
-						group.setSelectedIndex(0);
 						group.setActionCommand("GROUP_TEAM");
 						group.addActionListener(this);
 					}
@@ -151,8 +146,8 @@ public class TeamEdit extends JDialog implements ActionListener {
 				}
 			}
 			{
-				JComboBox<Discipline> discipline;
-				JComboBox<Group> group;
+				FilterBox discipline;
+				FilterBox group;
 
 				JPanel panel = new JPanel();
 				panel.setBorder(null);
@@ -167,18 +162,18 @@ public class TeamEdit extends JDialog implements ActionListener {
 						panel_1.add(label);
 					}
 					{
-						discipline = new JComboBox<Discipline>(new DefaultComboBoxModel<Discipline>(Controller.get().getDisziplinen()));
+						discipline = new FilterBox("Alle Disziplinen", Controller.get().getDisziplinen());
 						panel_1.add(discipline);
-						discipline.insertItemAt(new Discipline("Alle Disziplinen"), 0);
-						discipline.setSelectedIndex(0);
 						discipline.setActionCommand("DISCIPLINE_SINGLE");
 						discipline.addActionListener(this);
 					}
 					{
-						group = new JComboBox<Group>(new DefaultComboBoxModel<Group>(Controller.get().getConfig().getGroups()));
+						Vector<Object> filterGroups = new Vector<Object>();
+						for (Group g : Controller.get().getConfig().getGroups()) {
+							if (g.getGender() != Gender.ANY) filterGroups.add(g);
+						}
+						group = new FilterBox("Alle Gruppen", filterGroups);
 						panel_1.add(group);
-						group.insertItemAt(new Group("Alle Gruppen", 0, 0, Gender.ANY), 0);
-						group.setSelectedIndex(0);
 						group.setActionCommand("GROUP_SINGLE");
 						group.addActionListener(this);
 					}
