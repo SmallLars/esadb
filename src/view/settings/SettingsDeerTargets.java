@@ -46,6 +46,7 @@ import controller.Controller;
 
 import javax.swing.JToggleButton;
 
+import view.IconButton;
 import view.Target;
 
 
@@ -81,10 +82,8 @@ public class SettingsDeerTargets extends JPanel implements ActionListener, Chang
 		scheibe.setBounds(15, 15, 390, 390);
 		this.add(scheibe);
 
-		JButton button_minus = new JButton("-");
+		JButton button_minus = new IconButton(IconButton.REMOVE, "-", this);
 		button_minus.setBounds(420, 15, 45, 20);
-		button_minus.setActionCommand("-");
-		button_minus.addActionListener(this);
 		add(button_minus);
 
 		comboBox = new JComboBox<TargetModel>();
@@ -97,10 +96,8 @@ public class SettingsDeerTargets extends JPanel implements ActionListener, Chang
 		comboBox.addActionListener(this);
 		this.add(comboBox);
 		
-		JButton button_plus = new JButton("+");
+		JButton button_plus =  new IconButton(IconButton.ADD, "+", this);
 		button_plus.setBounds(675, 15, 45, 20);
-		button_plus.setActionCommand("+");
-		button_plus.addActionListener(this);
 		add(button_plus);
 		
 		final int X[] = {420, 160};

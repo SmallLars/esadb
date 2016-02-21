@@ -18,6 +18,7 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 
+import view.IconButton;
 import view.TableEditor;
 import controller.Controller;
 import model.Rule;
@@ -76,10 +77,8 @@ public class SettingsRules extends JPanel implements ActionListener, SettingsCha
 		scrollPane.setViewportView(table);
 		add(scrollPane);		
 
-		JButton button_minus = new JButton("-");
+		JButton button_minus = new IconButton(IconButton.REMOVE, "-", this);
 		button_minus.setBounds(15, 385, 45, 20);
-		button_minus.setActionCommand("-");
-		button_minus.addActionListener(this);
 		add(button_minus);
 
 		JButton button_plus = new JButton("Standardregel");

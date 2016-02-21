@@ -27,6 +27,7 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableCellRenderer;
 
+import view.IconButton;
 import view.TableEditor;
 import controller.Controller;
 
@@ -89,16 +90,12 @@ public class SettingsWeapons extends JPanel implements ActionListener, TableMode
 		scrollPane.setViewportView(table);
 		add(scrollPane);		
 
-		JButton button_minus = new JButton("-");
+		JButton button_minus = new IconButton(IconButton.REMOVE, "-", this);
 		button_minus.setBounds(15, 385, 45, 20);
-		button_minus.setActionCommand("-");
-		button_minus.addActionListener(this);
 		add(button_minus);
 
-		JButton button_plus = new JButton("+");
+		JButton button_plus = new IconButton(IconButton.ADD, "+", this);
 		button_plus.setBounds(675, 385, 45, 20);
-		button_plus.setActionCommand("+");
-		button_plus.addActionListener(this);
 		add(button_plus);
 	}
 

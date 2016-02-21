@@ -120,10 +120,8 @@ public class SettingsGeneral extends JPanel implements ActionListener, DocumentL
 			{getTextField().setHorizontalAlignment(SwingConstants.RIGHT);}
 		});
 
-		JButton btnEinfgen = new JButton("+");
+		JButton btnEinfgen = new IconButton(IconButton.ADD, "ADD_LINE", this);
 		btnEinfgen.setBounds(24, 81, 44, 20);
-		btnEinfgen.setActionCommand("ADD_LINE");
-		btnEinfgen.addActionListener(this);
 		this.add(btnEinfgen);
 
 		JScrollPane scrollPane = new JScrollPane();
@@ -141,10 +139,8 @@ public class SettingsGeneral extends JPanel implements ActionListener, DocumentL
 		((DefaultListCellRenderer) list.getCellRenderer()).setHorizontalAlignment(SwingConstants.RIGHT);
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-		JButton btnLschen = new JButton("-");
+		JButton btnLschen = new IconButton(IconButton.REMOVE, "REMOVE_LINE", this);
 		btnLschen.setBounds(24, 384, 44, 20);
-		btnLschen.setActionCommand("REMOVE_LINE");
-		btnLschen.addActionListener(this);
 		this.add(btnLschen);
 
 		JSeparator separator = new JSeparator();
