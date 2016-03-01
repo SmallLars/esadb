@@ -20,6 +20,7 @@ import javax.swing.text.StyledDocument;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.JTextPane;
 import javax.swing.JScrollPane;
@@ -53,6 +54,7 @@ import view.member.Members;
 import view.settings.Settings;
 import view.singleedit.SingleEdit;
 import view.teamedit.TeamEdit;
+import java.awt.GridLayout;
 
 
 @SuppressWarnings("serial")
@@ -66,7 +68,7 @@ public class GUI extends JFrame implements ActionListener, ComponentListener {
 	private Line linien[];
 	private JFileChooser fc;
 
-	private Box scheibenBox;
+	private JPanel scheibenBox;
 	private JScrollPane scrollScheiben;
 	private JScrollPane scrollKonsole;
 
@@ -253,9 +255,9 @@ public class GUI extends JFrame implements ActionListener, ComponentListener {
 		scrollScheiben.setBounds(746, 22, 268, 500);
 		contentPane.add(scrollScheiben);
 
-		scheibenBox = Box.createVerticalBox();
+		scheibenBox = new JPanel();
+		scheibenBox.setLayout(new GridLayout(0, config.getValue("TargetColumns", 2), 0, 0));
 		scrollScheiben.setViewportView(scheibenBox);
-		scheibenBox.setPreferredSize(new Dimension(250, config.getLineCount() * 250));
 
 		int i = 0;
 		for (int l : config.getLines()) {
@@ -525,7 +527,10 @@ public class GUI extends JFrame implements ActionListener, ComponentListener {
 			config.setValue("MainWindowBounds", getBounds());
 			config.save();
 		}
-		scheibenBox.setPreferredSize(new Dimension(contentPane.getWidth() - 764, config.getLineCount() * (contentPane.getWidth() - 764)));
+		int columns = config.getValue("TargetColumns", 2);
+		int rows = ((int) ((config.getLineCount() / new Double(columns)) + 1));
+		((GridLayout) scheibenBox.getLayout()).setColumns(columns);
+		scheibenBox.setPreferredSize(new Dimension((contentPane.getWidth() - 764), rows * (contentPane.getWidth() - 764) / columns));
 		scrollScheiben.setSize(contentPane.getWidth() - 746, contentPane.getHeight() - 22);
 		scrollScheiben.revalidate();
 		splitPane.setSize(746, contentPane.getHeight() - 22);
