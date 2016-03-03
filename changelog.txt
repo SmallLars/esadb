@@ -44,6 +44,5 @@
 
 2.0.7        XX.YY.2016
  - In der Ergebnisliste werden Serien mit Ergebnis 0,0 auch mit 0,0 angezeigt.
- - In den Einstellungen kann nun festgelegt werden, in wie vielen Spalten
-   die Scheiben im Hauptfenster dargestellt werden.
+ - Es kann nun festgelegt werden, in wie vielen Spalten die Scheiben im Hauptfenster dargestellt werden.
  - Verwaltung der Altersgruppen verbessert.

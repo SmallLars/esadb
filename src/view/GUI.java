@@ -12,6 +12,8 @@ import java.awt.event.ComponentListener;
 import java.io.File;
 
 import javax.swing.JFrame;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.SimpleAttributeSet;
@@ -27,6 +29,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JMenu;
+import javax.swing.SpinnerNumberModel;
 
 import model.DefaultLineModel;
 import model.LineModel;
@@ -54,11 +57,14 @@ import view.member.Members;
 import view.settings.Settings;
 import view.singleedit.SingleEdit;
 import view.teamedit.TeamEdit;
+
 import java.awt.GridLayout;
+
+import javax.swing.JSpinner;
 
 
 @SuppressWarnings("serial")
-public class GUI extends JFrame implements ActionListener, ComponentListener {
+public class GUI extends JFrame implements ActionListener, ComponentListener, ChangeListener {
 	private Controller controller;
 
 	private Container contentPane;
@@ -68,6 +74,8 @@ public class GUI extends JFrame implements ActionListener, ComponentListener {
 	private Line linien[];
 	private JFileChooser fc;
 
+	private JLabel lblColumns;
+	private JSpinner targetColumns;
 	private JPanel scheibenBox;
 	private JScrollPane scrollScheiben;
 	private JScrollPane scrollKonsole;
@@ -213,6 +221,18 @@ public class GUI extends JFrame implements ActionListener, ComponentListener {
 		JLabel lblScheiben = new JLabel("Scheiben");
 		lblScheiben.setBounds(749, 6, 60, 14);
 		contentPane.add(lblScheiben);
+
+		lblColumns = new JLabel("Spalten:");
+		lblColumns.setBounds(875, 6, 60, 14);
+		contentPane.add(lblColumns);
+
+		int lineCount = config.getLineCount() > 0 ? config.getLineCount() : 1;
+		int columncount = config.getValue("TargetColumns", 2);
+		if (columncount > lineCount) columncount = lineCount;
+		targetColumns = new JSpinner(new SpinnerNumberModel(new Integer(columncount), new Integer(1), new Integer(lineCount), new Integer(1)));
+		targetColumns.setBounds(938, 4, 60, 18);
+		targetColumns.addChangeListener(this);
+		getContentPane().add(targetColumns);
 
 		JScrollPane scrollLinien = new JScrollPane();
 		scrollLinien.setMinimumSize(new Dimension(728, 86));
@@ -527,6 +547,8 @@ public class GUI extends JFrame implements ActionListener, ComponentListener {
 			config.setValue("MainWindowBounds", getBounds());
 			config.save();
 		}
+		lblColumns.setLocation(contentPane.getWidth() - 139, 6);
+		targetColumns.setLocation(contentPane.getWidth() - 76, 4);
 		int columns = config.getValue("TargetColumns", 2);
 		int rows = ((int) ((config.getLineCount() / new Double(columns)) + 1));
 		((GridLayout) scheibenBox.getLayout()).setColumns(columns);
@@ -539,4 +561,15 @@ public class GUI extends JFrame implements ActionListener, ComponentListener {
 
 	@Override
 	public void componentShown(ComponentEvent arg0) {}
+
+	@Override
+	public void stateChanged(ChangeEvent e) {
+		int columns = (int) targetColumns.getValue();
+
+		SettingsModel config = Controller.get().getConfig();
+		config.setValue("TargetColumns", columns);
+
+		componentResized(null);
+		scheibenBox.revalidate();
+	}
 }
