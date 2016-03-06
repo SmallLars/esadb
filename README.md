@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/SmallLars/esadb.png?branch=master)](https://travis-ci.org/SmallLars/esadb)
+
 # esadb
 
 Programm zur Steuerung von Häring-Anlagen mit ESA 2002.  
