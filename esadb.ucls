@@ -428,10 +428,6 @@
     <end type="TARGET" refId="21" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <dependency id="67">    
-    <end type="SOURCE" refId="38"/>    
-    <end type="TARGET" refId="39"/>  
-  </dependency>  
   <association id="68">    
     <end type="SOURCE" refId="38" navigable="false">      
       <attribute id="69" name="table"/>      
