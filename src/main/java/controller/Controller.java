@@ -23,15 +23,17 @@ import javax.swing.UIManager;
 
 import org.apache.commons.io.FileUtils;
 
+import main.java.model.DefaultLineModel;
 import main.java.model.Discipline;
 import main.java.model.Hit;
-import main.java.model.LineReader;
+import main.java.model.LineModel;
 import main.java.model.Member;
 import main.java.model.Model;
 import main.java.model.ModelChangeListener;
 import main.java.model.Rule;
 import main.java.model.SettingsModel;
 import main.java.model.Single;
+import main.java.model.Status;
 import main.java.view.GUI;
 
 
@@ -149,11 +151,16 @@ public class Controller {
 		return  model.getTreffer();
 	}
 
-	public boolean add(Object o) {
-		if (o instanceof LineReader) {
-			return fileChecker.addLineReader((LineReader) o);
+	public LineModel newLine(int number) {
+		DefaultLineModel line = new DefaultLineModel(number, this);
+		if (fileChecker.addLineReader(line)) {
+			line.setStatus(Status.INIT);
+			return line;
 		}
+		return null;
+	}
 
+	public boolean add(Object o) {
 		if (model.add(o)) {
 			modelChanged();
 			save();

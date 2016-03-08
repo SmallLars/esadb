@@ -6,6 +6,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Vector;
 
 import javax.swing.ComboBoxModel;
@@ -24,18 +26,26 @@ public class DefaultLineModel implements LineModel, LineReader, ActionListener {
 	private Controller controller;
 	private Single einzel;
 
-	private boolean busy = false;
+	private boolean busy;
 	private Timer busyTimer;
-	private boolean error = false;
+	private boolean error;
+	private Queue<String> queue;
+
 	private Vector<LineListener> listener;
 
 	private int state;
 
 	public DefaultLineModel(int nummer, Controller controller) {
 		this.nummer = nummer;
-
 		this.controller = controller;
 		einzel = null;
+
+		busy = false;
+		busyTimer = new Timer(30000, this);
+		busyTimer.setRepeats(false);
+		error = false;
+		queue = new LinkedList<String>();
+
 		listener = new Vector<LineListener>();
 
 		state = 0;
@@ -76,9 +86,6 @@ public class DefaultLineModel implements LineModel, LineReader, ActionListener {
 
 	public void setStatus(Status status) {
 		if (busy == false) {
-			busy = true;
-			busyTimer = new Timer(30000, this);
-			busyTimer.start();
 			String cmd = null;
 			if (status == Status.SPERREN) {
 				if (einzel != null) {
@@ -88,6 +95,9 @@ public class DefaultLineModel implements LineModel, LineReader, ActionListener {
 				cmd = status.getCode();
 			}
 			switch (status) {
+				case INIT:
+					queue.add(Status.ESADBCTL.getCode());
+					break;
 				case SPERREN:
 					state = 1;
 					break;
@@ -110,15 +120,14 @@ public class DefaultLineModel implements LineModel, LineReader, ActionListener {
 				case FREI:
 					einzel = null;
 					modelChanged(RESULT_CHANGED);
+				case SHUTDOWN:
+					queue.add(Status.VISIONCTL.getCode());
 				default:
 			}
-			if (cmd != null) {
-				writeFile(".ctl", cmd + "\n");
-				writeFile(".nrt", cmd + "\n");
-			}
-
-			modelChanged(STATE_CHANGED);
+			queue.add(cmd);
+			execute();
 		}
+		modelChanged(STATE_CHANGED);
 	}
 
 	public boolean isBusy() {
@@ -149,9 +158,24 @@ public class DefaultLineModel implements LineModel, LineReader, ActionListener {
 		return isGestartet() && einzel.getTreffer(false, 1) == null;
 	}
 
+	private void execute() {
+		String cmd = queue.poll();
+		if (cmd != null) {
+			busy = true;
+			busyTimer.restart();
+		
+			writeFile(".ctl", cmd + "\n");
+			writeFile(".nrt", cmd + "\n");
+		}
+	}
+
 	public void reenable() {
-		busy = false;
 		busyTimer.stop();
+		if (!queue.isEmpty()) {
+			execute();
+			return;
+		}
+		busy = false;
 		error = false;
 		modelChanged(STATE_CHANGED);
 	}

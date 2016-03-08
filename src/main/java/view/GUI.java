@@ -21,11 +21,9 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
 import main.java.controller.Controller;
-import main.java.model.DefaultLineModel;
 import main.java.model.LineModel;
 import main.java.model.SettingsModel;
 import main.java.model.Single;
-import main.java.model.Status;
 import main.java.printPreview.PrintPreview;
 import main.java.view.hitadd.HitAdd;
 import main.java.view.member.Members;
@@ -289,17 +287,15 @@ public class GUI extends JFrame implements ActionListener, ComponentListener, Ch
 
 		int i = 0;
 		for (int l : config.getLines()) {
-			LineModel linie = new DefaultLineModel(l, controller);
-			linie.setStatus(Status.INIT);
-			controller.add(linie);
-
-			linien[i] = new Line(linie);
-			linienBox.add(linien[i]);
-
-			scheiben[i] = new Target(config.getStandardRule(), l);
-			scheibenBox.add(scheiben[i]);
-			linie.addLineListener(scheiben[i]);
-
+			LineModel linie = controller.newLine(l);
+			if (linie != null) {
+				linien[i] = new Line(linie);
+				linienBox.add(linien[i]);
+	
+				scheiben[i] = new Target(config.getStandardRule(), l);
+				scheibenBox.add(scheiben[i]);
+				linie.addLineListener(scheiben[i]);
+			}
 			i++;
 		}
 
