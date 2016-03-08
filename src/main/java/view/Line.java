@@ -103,6 +103,10 @@ public class Line extends JPanel implements LineListener, ActionListener {
 		return linie.isFrei();
 	}
 
+	public void shutdown() {
+		linie.setStatus(Status.SHUTDOWN);
+	}
+
 	@Override
 	public void lineChanged(LineModel lm, int type) {
 		if (type == DefaultLineModel.STATE_CHANGED) {

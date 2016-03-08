@@ -175,6 +175,14 @@ public class GUI extends JFrame implements ActionListener, ComponentListener, Ch
 			mntmDisziplinen.addActionListener(this);
 			mnStammdaten.add(mntmDisziplinen);
 
+		JMenu mnLinien = new JMenu("Linien");
+		menuBar.add(mnLinien);
+
+			JMenuItem mntmShutdown = new JMenuItem("Herunterfahren");
+			mntmShutdown.setActionCommand("SHUTDOWN");
+			mntmShutdown.addActionListener(this);
+			mnLinien.add(mntmShutdown);
+
 		JMenu mnHilfe = new JMenu("Hilfe");
 		menuBar.add(mnHilfe);
 
@@ -426,6 +434,18 @@ public class GUI extends JFrame implements ActionListener, ComponentListener, Ch
 			case "SCHUETZEN":
 				Members schuetze = new Members(this);
 				schuetze.setVisible(true);
+				break;
+			case "SHUTDOWN":
+				for (Line l : linien) if (!l.isError() && (!l.isFrei() || l.isBusy())) {
+					JOptionPane.showMessageDialog(
+						this,
+						"Die Linien können erst heruntergefahren werden, wenn alle Linien frei sind.",
+						"Fehler",
+						JOptionPane.WARNING_MESSAGE
+					);
+					return;
+				}
+				for (Line l : linien) l.shutdown();
 				break;
 			case "INFO":
 				Info info = new Info(this);
