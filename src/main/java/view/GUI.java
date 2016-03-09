@@ -232,10 +232,8 @@ public class GUI extends JFrame implements ActionListener, ComponentListener, Ch
 		lblColumns.setBounds(875, 6, 60, 14);
 		contentPane.add(lblColumns);
 
-		int lineCount = config.getLineCount() > 0 ? config.getLineCount() : 1;
-		int columncount = config.getValue("TargetColumns", 2);
-		if (columncount > lineCount) columncount = lineCount;
-		targetColumns = new JSpinner(new SpinnerNumberModel(new Integer(columncount), new Integer(1), new Integer(lineCount), new Integer(1)));
+		targetColumns = new JSpinner(new SpinnerNumberModel(new Integer(1), new Integer(1), new Integer(1), new Integer(1)));
+		updateTargetColumns();
 		targetColumns.setBounds(938, 4, 60, 18);
 		targetColumns.addChangeListener(this);
 		getContentPane().add(targetColumns);
@@ -419,6 +417,7 @@ public class GUI extends JFrame implements ActionListener, ComponentListener, Ch
 			case "PREFERENCES":
 				Settings einstellungen = new Settings(this, controller.getConfig());
 				einstellungen.setVisible(true);
+				updateTargetColumns();
 				break;
 			case "CLOSE":
 				close();
@@ -566,7 +565,7 @@ public class GUI extends JFrame implements ActionListener, ComponentListener, Ch
 		lblColumns.setLocation(contentPane.getWidth() - 139, 6);
 		targetColumns.setLocation(contentPane.getWidth() - 76, 4);
 		int columns = config.getValue("TargetColumns", 2);
-		int rows = ((int) ((config.getLineCount() / new Double(columns)) + 1));
+		int rows = (int) Math.ceil(linien.length / new Double(columns));
 		((GridLayout) scheibenBox.getLayout()).setColumns(columns);
 		scheibenBox.setPreferredSize(new Dimension((contentPane.getWidth() - 764), rows * (contentPane.getWidth() - 764) / columns));
 		scrollScheiben.setSize(contentPane.getWidth() - 746, contentPane.getHeight() - 22);
@@ -584,8 +583,22 @@ public class GUI extends JFrame implements ActionListener, ComponentListener, Ch
 
 		SettingsModel config = Controller.get().getConfig();
 		config.setValue("TargetColumns", columns);
+		config.save();
 
 		componentResized(null);
 		scheibenBox.revalidate();
+	}
+
+	private void updateTargetColumns() {
+		SettingsModel settings = controller.getConfig();
+		int max = settings.getLineCount() > 0 ? settings.getLineCount() : 1;
+		int value = settings.getValue("TargetColumns", 2);
+		if (value > max) {
+			value = max;
+			settings.setValue("TargetColumns", value);
+			settings.save();
+		}
+		targetColumns.setValue(value);
+		((SpinnerNumberModel) targetColumns.getModel()).setMaximum(max);
 	}
 }
