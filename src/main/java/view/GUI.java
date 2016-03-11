@@ -440,7 +440,16 @@ public class GUI extends JFrame implements ActionListener, ComponentListener, Ch
 					);
 					return;
 				}
-				for (Line l : linien) l.shutdown();
+				int v = JOptionPane.showConfirmDialog(
+					this,
+					"Sollen die Linien wirklich heruntergefahren werden?",
+					"Warnung",
+					JOptionPane.YES_NO_OPTION,
+					JOptionPane.WARNING_MESSAGE
+				);
+				if (v == JOptionPane.OK_OPTION) {
+					for (Line l : linien) l.shutdown();
+				}
 				break;
 			case "INFO":
 				Info info = new Info(this);

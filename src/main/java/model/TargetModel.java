@@ -21,7 +21,7 @@ public class TargetModel implements Serializable, Comparable<TargetModel> {
 	public TargetModel() {
 		bezeichnung = "Neue Scheibe";
 		kennnummer = "0.4.3.00";
-		image = "bock.png";
+		image = "bock.bmp";
 
 		values = new EnumMap<TargetValue, Integer>(TargetValue.class);
 		for (TargetValue tv : TargetValue.values()) values.put(tv, tv.getStandardValue());

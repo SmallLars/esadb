@@ -120,8 +120,10 @@ public class DefaultLineModel implements LineModel, LineReader, ActionListener {
 				case FREI:
 					einzel = null;
 					modelChanged(RESULT_CHANGED);
+					break;
 				case SHUTDOWN:
 					queue.add(Status.VISIONCTL.getCode());
+					break;
 				default:
 			}
 			queue.add(cmd);
