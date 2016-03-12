@@ -1,4 +1,4 @@
-package main.java.view;
+package view;
 
 
 import java.awt.Container;
@@ -15,10 +15,10 @@ import javax.swing.JLabel;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 
-import main.java.controller.Controller;
-import main.java.model.Discipline;
-import main.java.model.Result;
-import main.java.model.SettingsModel;
+import controller.Controller;
+import model.Discipline;
+import model.Result;
+import model.SettingsModel;
 
 
 @SuppressWarnings("serial")

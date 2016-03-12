@@ -1,4 +1,4 @@
-package main.java.model;
+package model;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;

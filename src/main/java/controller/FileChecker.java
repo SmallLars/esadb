@@ -1,4 +1,4 @@
-package main.java.controller;
+package controller;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -14,8 +14,8 @@ import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
 import java.util.Vector;
 
-import main.java.model.Hit;
-import main.java.model.LineReader;
+import model.Hit;
+import model.LineReader;
 
 import static java.nio.file.StandardWatchEventKinds.*;
 

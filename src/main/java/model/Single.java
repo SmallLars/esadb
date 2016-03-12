@@ -1,4 +1,4 @@
-package main.java.model;
+package model;
 
 
 import java.awt.Color;
@@ -22,8 +22,8 @@ import java.util.Vector;
 
 import javax.swing.BorderFactory;
 
-import main.java.controller.Controller;
-import main.java.view.Target;
+import controller.Controller;
+import view.Target;
 
 
 public class Single extends Result implements Printable {

@@ -1,4 +1,4 @@
-package main.java.view.settings;
+package view.settings;
 
 
 import java.awt.event.ActionEvent;
@@ -14,16 +14,16 @@ import javax.swing.border.LineBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import main.java.controller.Controller;
-import main.java.model.SettingsChangeListener;
-import main.java.model.SettingsModel;
-import main.java.model.TargetAngle;
-import main.java.model.TargetFill;
-import main.java.model.TargetModel;
-import main.java.model.TargetType;
-import main.java.model.TargetValue;
-import main.java.view.IconButton;
-import main.java.view.Target;
+import controller.Controller;
+import model.SettingsChangeListener;
+import model.SettingsModel;
+import model.TargetAngle;
+import model.TargetFill;
+import model.TargetModel;
+import model.TargetType;
+import model.TargetValue;
+import view.IconButton;
+import view.Target;
 
 import java.awt.Color;
 import java.awt.Dimension;

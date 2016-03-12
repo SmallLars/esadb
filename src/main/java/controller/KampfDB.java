@@ -1,4 +1,4 @@
-package main.java.controller;
+package controller;
 
 
 import java.io.File;
@@ -16,11 +16,11 @@ import com.healthmarketscience.jackcess.DatabaseBuilder;
 import com.healthmarketscience.jackcess.Row;
 import com.healthmarketscience.jackcess.Table;
 
-import main.java.model.Club;
-import main.java.model.Discipline;
-import main.java.model.Member;
-import main.java.model.Rule;
-import main.java.model.SettingsModel;
+import model.Club;
+import model.Discipline;
+import model.Member;
+import model.Rule;
+import model.SettingsModel;
 
 
 public class KampfDB {

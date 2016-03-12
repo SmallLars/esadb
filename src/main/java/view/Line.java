@@ -1,4 +1,4 @@
-package main.java.view;
+package view;
 
 
 import java.awt.Color;
@@ -18,13 +18,13 @@ import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
 
-import main.java.model.DefaultLineModel;
-import main.java.model.Discipline;
-import main.java.model.LineListener;
-import main.java.model.LineModel;
-import main.java.model.Member;
-import main.java.model.Single;
-import main.java.model.Status;
+import model.DefaultLineModel;
+import model.Discipline;
+import model.LineListener;
+import model.LineModel;
+import model.Member;
+import model.Single;
+import model.Status;
 
 
 @SuppressWarnings("serial")

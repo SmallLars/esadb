@@ -1,11 +1,11 @@
-package main.java.view.settings.general;
+package view.settings.general;
 
 
 import javax.swing.RowFilter;
 
-import main.java.model.Gender;
-import main.java.model.Group;
-import main.java.view.FilterBox;
+import model.Gender;
+import model.Group;
+import view.FilterBox;
 
 
 public class GroupRowFilter extends RowFilter<GroupTableModel, Integer> {

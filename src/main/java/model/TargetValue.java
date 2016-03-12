@@ -1,4 +1,4 @@
-package main.java.model;
+package model;
 
 public enum TargetValue {
 	SIZE_WIDTH(55000),

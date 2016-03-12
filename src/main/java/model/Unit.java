@@ -1,4 +1,4 @@
-package main.java.model;
+package model;
 
 public enum Unit {
 	MM("mm"),

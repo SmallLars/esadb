@@ -1,4 +1,4 @@
-package main.java.view;
+package view;
 
 
 import java.awt.Color;
@@ -15,17 +15,17 @@ import javax.swing.JPanel;
 
 import org.apache.commons.lang.Validate;
 
-import main.java.controller.Controller;
-import main.java.model.DefaultLineModel;
-import main.java.model.Hit;
-import main.java.model.LineListener;
-import main.java.model.LineModel;
-import main.java.model.Rule;
-import main.java.model.Single;
-import main.java.model.TargetModel;
-import main.java.model.TargetValue;
-import main.java.model.Unit;
-import main.java.model.Weapon;
+import controller.Controller;
+import model.DefaultLineModel;
+import model.Hit;
+import model.LineListener;
+import model.LineModel;
+import model.Rule;
+import model.Single;
+import model.TargetModel;
+import model.TargetValue;
+import model.Unit;
+import model.Weapon;
 
 
 @SuppressWarnings("serial")

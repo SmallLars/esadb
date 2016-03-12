@@ -1,4 +1,4 @@
-package main.java.view.teamedit;
+package view.teamedit;
 
 
 import java.util.List;
@@ -11,12 +11,12 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableRowSorter;
 
-import main.java.controller.Controller;
-import main.java.model.Discipline;
-import main.java.model.Group;
-import main.java.model.Result;
-import main.java.view.FilterBox;
-import main.java.view.TableEditor;
+import controller.Controller;
+import model.Discipline;
+import model.Group;
+import model.Result;
+import view.FilterBox;
+import view.TableEditor;
 
 
 @SuppressWarnings("serial")

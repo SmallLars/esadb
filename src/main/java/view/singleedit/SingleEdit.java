@@ -1,4 +1,4 @@
-package main.java.view.singleedit;
+package view.singleedit;
 
 import java.awt.Dimension;
 import java.awt.Frame;
@@ -23,14 +23,14 @@ import javax.swing.JRadioButton;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import main.java.controller.Controller;
-import main.java.model.Discipline;
-import main.java.model.Hit;
-import main.java.model.Result;
-import main.java.model.Single;
-import main.java.view.HitTableCellRenderer;
-import main.java.view.HitTableModel;
-import main.java.view.IconButton;
+import controller.Controller;
+import model.Discipline;
+import model.Hit;
+import model.Result;
+import model.Single;
+import view.HitTableCellRenderer;
+import view.HitTableModel;
+import view.IconButton;
 
 import javax.swing.JLabel;
 

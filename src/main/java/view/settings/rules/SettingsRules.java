@@ -1,4 +1,4 @@
-package main.java.view.settings.rules;
+package view.settings.rules;
 
 
 import java.awt.Color;
@@ -18,14 +18,14 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 
-import main.java.controller.Controller;
-import main.java.model.Rule;
-import main.java.model.SettingsChangeListener;
-import main.java.model.SettingsModel;
-import main.java.model.TargetModel;
-import main.java.model.Weapon;
-import main.java.view.IconButton;
-import main.java.view.TableEditor;
+import controller.Controller;
+import model.Rule;
+import model.SettingsChangeListener;
+import model.SettingsModel;
+import model.TargetModel;
+import model.Weapon;
+import view.IconButton;
+import view.TableEditor;
 
 
 @SuppressWarnings("serial")

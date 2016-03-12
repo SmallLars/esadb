@@ -1,4 +1,4 @@
-package main.java.printPreview;
+package printPreview;
 
 
 import java.awt.print.PageFormat;

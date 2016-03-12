@@ -1,14 +1,14 @@
-package main.java.view.teamedit;
+package view.teamedit;
 
 
 import java.util.List;
 
 import javax.swing.table.DefaultTableModel;
 
-import main.java.model.Discipline;
-import main.java.model.Group;
-import main.java.model.Result;
-import main.java.model.Team;
+import model.Discipline;
+import model.Group;
+import model.Result;
+import model.Team;
 
 
 @SuppressWarnings("serial")

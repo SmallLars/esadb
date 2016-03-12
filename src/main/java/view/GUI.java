@@ -1,4 +1,4 @@
-package main.java.view;
+package view;
 
 
 import java.awt.Color;
@@ -20,16 +20,16 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
-import main.java.controller.Controller;
-import main.java.model.LineModel;
-import main.java.model.SettingsModel;
-import main.java.model.Single;
-import main.java.printPreview.PrintPreview;
-import main.java.view.hitadd.HitAdd;
-import main.java.view.member.Members;
-import main.java.view.settings.Settings;
-import main.java.view.singleedit.SingleEdit;
-import main.java.view.teamedit.TeamEdit;
+import controller.Controller;
+import model.LineModel;
+import model.SettingsModel;
+import model.Single;
+import printPreview.PrintPreview;
+import view.hitadd.HitAdd;
+import view.member.Members;
+import view.settings.Settings;
+import view.singleedit.SingleEdit;
+import view.teamedit.TeamEdit;
 
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;

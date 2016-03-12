@@ -1,4 +1,4 @@
-package main.java.model;
+package model;
 
 
 import java.awt.print.Printable;
@@ -18,8 +18,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.Vector;
 
-import main.java.controller.Controller;
-import main.java.controller.KampfDB;
+import controller.Controller;
+import controller.KampfDB;
 
 
 public class Model implements Serializable {

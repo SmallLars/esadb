@@ -1,9 +1,9 @@
-package main.java.model.comboBoxModel;
+package model.comboBoxModel;
 
 import java.util.List;
 
-import main.java.controller.Controller;
-import main.java.model.Member;
+import controller.Controller;
+import model.Member;
 
 public class SchuetzenModel extends MyComboBoxModel<Member> {
 

@@ -1,4 +1,4 @@
-package main.java.view.settings;
+package view.settings;
 
 
 import java.awt.Frame;
@@ -12,11 +12,11 @@ import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
 
-import main.java.controller.Controller;
-import main.java.model.SettingsModel;
-import main.java.view.settings.general.SettingsGeneral;
-import main.java.view.settings.rules.SettingsRules;
-import main.java.view.settings.weapons.SettingsWeapons;
+import controller.Controller;
+import model.SettingsModel;
+import view.settings.general.SettingsGeneral;
+import view.settings.rules.SettingsRules;
+import view.settings.weapons.SettingsWeapons;
 
 
 @SuppressWarnings("serial")

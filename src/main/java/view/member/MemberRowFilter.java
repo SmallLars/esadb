@@ -1,12 +1,12 @@
-package main.java.view.member;
+package view.member;
 
 
 import javax.swing.RowFilter;
 
-import main.java.controller.Controller;
-import main.java.model.Club;
-import main.java.model.Member;
-import main.java.view.FilterBox;
+import controller.Controller;
+import model.Club;
+import model.Member;
+import view.FilterBox;
 
 
 public class MemberRowFilter extends RowFilter<MemberTableModel, Integer> {

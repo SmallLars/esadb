@@ -1,12 +1,12 @@
-package main.java.view.teamedit;
+package view.teamedit;
 
 
 import javax.swing.RowFilter;
 
-import main.java.model.Result;
-import main.java.model.Single;
-import main.java.model.Team;
-import main.java.view.FilterBox;
+import model.Result;
+import model.Single;
+import model.Team;
+import view.FilterBox;
 
 
 public class ResultRowFilter extends RowFilter<ResultTableModel, Integer> {

@@ -1,4 +1,4 @@
-package main.java.model;
+package model;
 
 
 import java.awt.Color;
@@ -6,7 +6,7 @@ import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.List;
 
-import main.java.controller.Controller;
+import controller.Controller;
 
 
 public class Team extends Result {

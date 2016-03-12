@@ -1,4 +1,4 @@
-package main.java.view;
+package view;
 
 
 import java.awt.Container;
@@ -13,10 +13,10 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
-import main.java.controller.Controller;
-import main.java.model.Discipline;
-import main.java.model.Result;
-import main.java.model.Single;
+import controller.Controller;
+import model.Discipline;
+import model.Result;
+import model.Single;
 
 import javax.swing.JComboBox;
 import javax.swing.JCheckBox;

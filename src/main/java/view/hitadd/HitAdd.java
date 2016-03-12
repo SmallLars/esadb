@@ -1,4 +1,4 @@
-package main.java.view.hitadd;
+package view.hitadd;
 
 
 import java.awt.Dimension;
@@ -19,13 +19,13 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import main.java.controller.Controller;
-import main.java.model.Hit;
-import main.java.model.Rule;
-import main.java.view.HitTableCellRenderer;
-import main.java.view.HitTableModel;
-import main.java.view.IconButton;
-import main.java.view.Target;
+import controller.Controller;
+import model.Hit;
+import model.Rule;
+import view.HitTableCellRenderer;
+import view.HitTableModel;
+import view.IconButton;
+import view.Target;
 
 import javax.swing.JLabel;
 

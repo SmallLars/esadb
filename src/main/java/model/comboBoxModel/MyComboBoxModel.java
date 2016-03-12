@@ -1,4 +1,4 @@
-package main.java.model.comboBoxModel;
+package model.comboBoxModel;
 
 import java.util.List;
 import java.util.Vector;
@@ -7,8 +7,8 @@ import javax.swing.ComboBoxModel;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
-import main.java.controller.Controller;
-import main.java.model.ModelChangeListener;
+import controller.Controller;
+import model.ModelChangeListener;
 
 public abstract class MyComboBoxModel<T> implements ComboBoxModel<T>,  ModelChangeListener {
 	private Object selected;

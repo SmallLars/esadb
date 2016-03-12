@@ -1,13 +1,13 @@
-package main.java.view.settings.rules;
+package view.settings.rules;
 
 
 import java.util.List;
 
 import javax.swing.table.DefaultTableModel;
 
-import main.java.model.Rule;
-import main.java.model.TargetModel;
-import main.java.model.Weapon;
+import model.Rule;
+import model.TargetModel;
+import model.Weapon;
 
 
 @SuppressWarnings("serial")

@@ -9,8 +9,8 @@
   <url>https://github.com/SmallLars/esadb</url>
 
   <properties>
-  	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  	<mainClass>main.java.controller.Controller</mainClass>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <mainClass>main.java.controller.Controller</mainClass>
   </properties>
 
   <dependencies>

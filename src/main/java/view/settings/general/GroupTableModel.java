@@ -1,4 +1,4 @@
-package main.java.view.settings.general;
+package view.settings.general;
 
 
 import java.util.Arrays;
@@ -6,9 +6,9 @@ import java.util.Vector;
 
 import javax.swing.table.DefaultTableModel;
 
-import main.java.controller.Controller;
-import main.java.model.Gender;
-import main.java.model.Group;
+import controller.Controller;
+import model.Gender;
+import model.Group;
 
 
 @SuppressWarnings("serial")

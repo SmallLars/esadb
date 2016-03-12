@@ -1,4 +1,4 @@
-package main.java.view;
+package view;
 
 
 import java.awt.BorderLayout;
@@ -13,8 +13,8 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import main.java.controller.Controller;
-import main.java.model.Discipline;
+import controller.Controller;
+import model.Discipline;
 
 import javax.swing.JComboBox;
 import javax.swing.JLabel;

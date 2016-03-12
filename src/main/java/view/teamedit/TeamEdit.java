@@ -1,4 +1,4 @@
-package main.java.view.teamedit;
+package view.teamedit;
 
 
 import java.awt.BorderLayout;
@@ -18,13 +18,13 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
-import main.java.controller.Controller;
-import main.java.model.Gender;
-import main.java.model.Group;
-import main.java.model.Single;
-import main.java.model.Team;
-import main.java.view.FilterBox;
-import main.java.view.IconButton;
+import controller.Controller;
+import model.Gender;
+import model.Group;
+import model.Single;
+import model.Team;
+import view.FilterBox;
+import view.IconButton;
 
 import javax.swing.JLabel;
 import javax.swing.JSeparator;

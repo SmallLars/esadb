@@ -1,4 +1,4 @@
-package main.java.model;
+package model;
 import java.io.PrintWriter;
 import java.io.Serializable;
 import java.text.NumberFormat;

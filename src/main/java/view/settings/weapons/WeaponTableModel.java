@@ -1,12 +1,12 @@
-package main.java.view.settings.weapons;
+package view.settings.weapons;
 
 
 import java.util.List;
 
 import javax.swing.table.DefaultTableModel;
 
-import main.java.model.Unit;
-import main.java.model.Weapon;
+import model.Unit;
+import model.Weapon;
 
 
 @SuppressWarnings("serial")

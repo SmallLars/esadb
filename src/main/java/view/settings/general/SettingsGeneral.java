@@ -1,4 +1,4 @@
-package main.java.view.settings.general;
+package view.settings.general;
 
 
 import java.awt.Rectangle;
@@ -29,13 +29,13 @@ import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableRowSorter;
 
-import main.java.controller.Controller;
-import main.java.model.Gender;
-import main.java.model.Group;
-import main.java.model.SettingsModel;
-import main.java.view.FilterBox;
-import main.java.view.IconButton;
-import main.java.view.TableEditor;
+import controller.Controller;
+import model.Gender;
+import model.Group;
+import model.SettingsModel;
+import view.FilterBox;
+import view.IconButton;
+import view.TableEditor;
 
 import javax.swing.JLabel;
 import javax.swing.JSeparator;

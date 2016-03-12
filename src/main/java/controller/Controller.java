@@ -1,4 +1,4 @@
-package main.java.controller;
+package controller;
 
 
 import java.awt.Color;
@@ -23,18 +23,18 @@ import javax.swing.UIManager;
 
 import org.apache.commons.io.FileUtils;
 
-import main.java.model.DefaultLineModel;
-import main.java.model.Discipline;
-import main.java.model.Hit;
-import main.java.model.LineModel;
-import main.java.model.Member;
-import main.java.model.Model;
-import main.java.model.ModelChangeListener;
-import main.java.model.Rule;
-import main.java.model.SettingsModel;
-import main.java.model.Single;
-import main.java.model.Status;
-import main.java.view.GUI;
+import model.DefaultLineModel;
+import model.Discipline;
+import model.Hit;
+import model.LineModel;
+import model.Member;
+import model.Model;
+import model.ModelChangeListener;
+import model.Rule;
+import model.SettingsModel;
+import model.Single;
+import model.Status;
+import view.GUI;
 
 
 public class Controller {

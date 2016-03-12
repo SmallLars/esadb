@@ -3,6 +3,10 @@
 /testdaten/
 /definitionen/
 
+.classpath
+.project
+/.settings/
+
 /*.esa
 /settings.esc
 /data.mdb

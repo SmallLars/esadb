@@ -1,11 +1,11 @@
-package main.java.model.comboBoxModel;
+package model.comboBoxModel;
 
 
 import java.util.Arrays;
 import java.util.List;
 
-import main.java.controller.Controller;
-import main.java.model.Discipline;
+import controller.Controller;
+import model.Discipline;
 
 
 public class DisziplinenModel extends MyComboBoxModel<Discipline> {

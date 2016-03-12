@@ -1,4 +1,4 @@
-package test.java.model;
+package model;
 
 
 import static org.junit.Assert.*;
@@ -11,7 +11,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import main.java.model.SettingsModel;
+import model.SettingsModel;
 
 
 public class SettingsModelTest {

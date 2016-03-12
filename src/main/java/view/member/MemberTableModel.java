@@ -1,11 +1,11 @@
-package main.java.view.member;
+package view.member;
 
 
 import java.util.Date;
 
 import javax.swing.table.DefaultTableModel;
 
-import main.java.model.Member;
+import model.Member;
 
 
 @SuppressWarnings("serial")

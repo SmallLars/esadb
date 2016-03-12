@@ -1,11 +1,11 @@
-package main.java.view;
+package view;
 
 
 import java.util.List;
 
 import javax.swing.table.DefaultTableModel;
 
-import main.java.model.Hit;
+import model.Hit;
 
 
 @SuppressWarnings("serial")

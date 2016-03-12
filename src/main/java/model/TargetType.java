@@ -1,4 +1,4 @@
-package main.java.model;
+package model;
 
 public enum TargetType {
 	RING(0, "Ringscheibe"),

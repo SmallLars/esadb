@@ -1,4 +1,4 @@
-package main.java.model;
+package model;
 
 public enum TargetAngle {
 	A0(0, "0"),

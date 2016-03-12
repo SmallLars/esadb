@@ -1,4 +1,4 @@
-package main.java.view;
+package view;
 
 
 import java.awt.Color;
@@ -9,7 +9,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 
-import main.java.model.Hit;
+import model.Hit;
 
 
 @SuppressWarnings("serial")

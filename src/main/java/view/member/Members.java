@@ -1,4 +1,4 @@
-package main.java.view.member;
+package view.member;
 
 
 import java.awt.Dimension;
@@ -18,11 +18,11 @@ import javax.swing.JLabel;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.TableRowSorter;
 
-import main.java.controller.Controller;
-import main.java.controller.KampfDB;
-import main.java.model.Member;
-import main.java.view.FilterBox;
-import main.java.view.IconButton;
+import controller.Controller;
+import controller.KampfDB;
+import model.Member;
+import view.FilterBox;
+import view.IconButton;
 
 
 @SuppressWarnings("serial")

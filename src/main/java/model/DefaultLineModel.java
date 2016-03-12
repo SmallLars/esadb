@@ -1,4 +1,4 @@
-package main.java.model;
+package model;
 
 
 import java.awt.Color;
@@ -13,9 +13,9 @@ import java.util.Vector;
 import javax.swing.ComboBoxModel;
 import javax.swing.Timer;
 
-import main.java.controller.Controller;
-import main.java.model.comboBoxModel.DisziplinenModel;
-import main.java.model.comboBoxModel.SchuetzenModel;
+import controller.Controller;
+import model.comboBoxModel.DisziplinenModel;
+import model.comboBoxModel.SchuetzenModel;
 
 
 public class DefaultLineModel implements LineModel, LineReader, ActionListener {

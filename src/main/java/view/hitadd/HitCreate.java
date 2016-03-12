@@ -1,4 +1,4 @@
-package main.java.view.hitadd;
+package view.hitadd;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -29,10 +29,10 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import main.java.model.Hit;
-import main.java.model.Rule;
-import main.java.model.TargetValue;
-import main.java.view.Target;
+import model.Hit;
+import model.Rule;
+import model.TargetValue;
+import view.Target;
 
 
 @SuppressWarnings("serial")
