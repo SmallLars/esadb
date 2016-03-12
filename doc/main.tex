@@ -1,0 +1,30 @@
+\documentclass[a4paper,10pt]{book}
+\usepackage[utf8]{inputenc}
+\usepackage[german]{babel}
+\usepackage{graphicx}
+\usepackage{imakeidx}\makeindex[intoc]
+\usepackage[colorlinks=true, linkcolor=black]{hyperref}
+
+\newcommand{\keyword}[1]{#1\index{#1}}
+
+\graphicspath{{./images/}}
+\DeclareGraphicsExtensions{.png}
+
+\title{Bedienungsanleitung\\esadb 2.0.7}
+\author{Lars Schmertmann}
+\date{\today}
+    
+\begin{document}
+
+\maketitle
+
+\tableofcontents 
+
+\input{installation.tex}
+\input{masterdata.tex}
+\input{settings.tex}
+\input{usage.tex}
+
+\printindex 
+
+\end{document}
