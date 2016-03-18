@@ -49,8 +49,8 @@ public class Settings extends JDialog {
 		SettingsWeapons weapons = new SettingsWeapons(config, rules);
 		tabbedPane.addTab("Allgemein", general);
 		tabbedPane.addTab("Regeln", rules);
-		tabbedPane.addTab("RingScheiben", ringtargets);
-		tabbedPane.addTab("WildScheiben", deertargets);
+		tabbedPane.addTab("Ringscheiben", ringtargets);
+		tabbedPane.addTab("Wildscheiben", deertargets);
 		tabbedPane.addTab("Waffen", weapons);
 		getContentPane().add(tabbedPane);
 

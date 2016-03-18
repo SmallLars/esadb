@@ -10,7 +10,7 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <mainClass>main.java.controller.Controller</mainClass>
+    <mainClass>controller.Controller</mainClass>
   </properties>
 
   <dependencies>
@@ -58,7 +58,7 @@
           <archive>
             <manifest>
               <addClasspath>true</addClasspath>
-              <mainClass>main.java.controller.Controller</mainClass>
+              <mainClass>controller.Controller</mainClass>
             </manifest>
           </archive>
         </configuration>

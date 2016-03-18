@@ -12,7 +12,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.io.OutputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.security.CodeSource;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -55,7 +58,18 @@ public class Controller {
 			controller = new Controller();
 			gui = new GUI();
 		}
+		System.out.println(Controller.getPath());
 		return controller;
+	}
+
+	public static String getPath() {
+		CodeSource codeSource = Controller.class.getProtectionDomain().getCodeSource();
+		try {
+			URI jarFile = codeSource.getLocation().toURI();
+			return (new File(jarFile)).getParentFile().getPath() + File.separator;
+		} catch (URISyntaxException e) {
+			return "";
+		}
 	}
 
 	public String getFileName() {
