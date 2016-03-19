@@ -264,7 +264,7 @@ public class SettingsDeerTargets extends JPanel implements ActionListener, Chang
 				}
 				break;
 			case "Bilddatei":
-				JFileChooser fc = new JFileChooser((new File("")).getAbsolutePath());
+				JFileChooser fc = new JFileChooser(Controller.getPath());
 				fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
 				disableNav(fc);
 				fc.setFileFilter(new FileFilter() {

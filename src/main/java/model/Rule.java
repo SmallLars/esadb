@@ -5,6 +5,8 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.Serializable;
 
+import controller.Controller;
+
 
 public class Rule  implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -106,7 +108,7 @@ public class Rule  implements Serializable {
 		String file_scheibe = target.toFile();
 		String file_waffe = weapon.toFile();
 
-		String fileName = String.format("0_hd_%s.def", number.replace('.', '-'));
+		String fileName = Controller.getPath() + String.format("0_hd_%s.def", number.replace('.', '-'));
 		try {
 			PrintWriter writer = new PrintWriter(fileName);
 			writer.println("\">Bezeichnung\"");

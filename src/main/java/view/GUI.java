@@ -190,7 +190,7 @@ public class GUI extends JFrame implements ActionListener, ComponentListener, Ch
 			mnHilfe.add(mntmInfo);
 
 		fc = new JFileChooser();
-	    fc.setCurrentDirectory(new File("."));
+	    fc.setCurrentDirectory(new File(Controller.getPath()));
 	    fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
 	    fc.setAcceptAllFileFilterUsed(false);
 	    fc.addChoosableFileFilter(new FileFilter() {

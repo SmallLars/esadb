@@ -11,6 +11,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import controller.Controller;
 import model.SettingsModel;
 
 
@@ -20,11 +21,12 @@ public class SettingsModelTest {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		(new File("settings.esc")).delete();
+		(new File(Controller.getPath() + "settings.esc")).delete();
 	}
 
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
+		(new File(Controller.getPath() + "settings.esc")).delete();
 	}
 
 	@Before

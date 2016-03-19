@@ -154,7 +154,7 @@ public class SettingsGeneral extends JPanel implements ActionListener, DocumentL
 		lblDateipfad.setBounds(110, 42, 100, 14);
 		add(lblDateipfad);
 
-		pathField = new JTextField(config.getValue("Filepath", (new File("")).getAbsolutePath()));
+		pathField = new JTextField(config.getValue("Filepath", Controller.getPath()));
 		pathField.setBounds(110, 60, 328, 20);
 		pathField.setColumns(10);
 		pathField.setEditable(false);
@@ -301,10 +301,10 @@ public class SettingsGeneral extends JPanel implements ActionListener, DocumentL
 				}
 				break;
 			case "PATH":
-				JFileChooser fc = new JFileChooser(Controller.get().getConfig().getValue("Filepath", (new File("")).getAbsolutePath()));
+				JFileChooser fc = new JFileChooser(Controller.get().getConfig().getValue("Filepath", Controller.getPath()));
 				fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 				if (fc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-					String path = fc.getSelectedFile().getPath();
+					String path = fc.getSelectedFile().getPath() + File.separator;
 					Controller.get().getConfig().setValue("Filepath", path);
 					pathField.setText(path);
 				}

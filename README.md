@@ -29,6 +29,8 @@ http://java.com/de/download/
 
 * ESA 2002 (1.3.1024)
 
+* Microsoft Jet 3.5 ([Jet35sp3.exe](http://download.microsoft.com/download/office97pro/sp/1/win98/EN-US/Jet35sp3.exe)) für den Datenbankzugriff.
+
 * Bei der Nutzung von Windows 7 ist es empfehlenswert einige Registry-Einträge zu setzen,  
 um die Steuerung mit esadb zu beschleunigen. Diese sind in [fast_smb.reg](https://github.com/SmallLars/esadb/raw/master/pub/fast_smb.reg) hinterlegt.
 

@@ -19,10 +19,12 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.Vector;
 
+import controller.Controller;
+
 
 public class SettingsModel implements Serializable {
 	private static final long serialVersionUID = 3L;
-	private static final File file = new File("settings.esc");
+	private static final File file = new File(Controller.getPath() + "settings.esc");
 
 	private Set<Integer> lines;
 	private Set<TargetModel> targets;

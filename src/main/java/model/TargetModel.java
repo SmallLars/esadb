@@ -9,6 +9,8 @@ import java.util.EnumMap;
 import java.util.Locale;
 import java.util.Map;
 
+import controller.Controller;
+
 
 public class TargetModel implements Serializable, Comparable<TargetModel> {
 	private static final long serialVersionUID = 1L;
@@ -264,7 +266,7 @@ public class TargetModel implements Serializable, Comparable<TargetModel> {
 		NumberFormat format = NumberFormat.getInstance(Locale.ENGLISH);
 		format.setGroupingUsed(false);
 
-		String fileName = String.format("0_hs_%s.def", kennnummer.replace('.', '-'));
+		String fileName = Controller.getPath() + String.format("0_hs_%s.def", kennnummer.replace('.', '-'));
 		try {
 			PrintWriter writer = new PrintWriter(fileName);
 

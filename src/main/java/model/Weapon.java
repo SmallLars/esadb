@@ -7,6 +7,8 @@ import java.io.Serializable;
 import java.text.NumberFormat;
 import java.util.Locale;
 
+import controller.Controller;
+
 
 public class Weapon implements Serializable, Comparable<Weapon> {
 	private static final long serialVersionUID = 1L;
@@ -91,7 +93,7 @@ public class Weapon implements Serializable, Comparable<Weapon> {
 	}
 
 	public String toFile() {
-		String fileName = String.format("0_hw_%s.def", number);
+		String fileName = Controller.getPath() + String.format("0_hw_%s.def", number);
 		try {
 			PrintWriter writer = new PrintWriter(fileName);
 

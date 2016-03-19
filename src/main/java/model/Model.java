@@ -40,12 +40,12 @@ public class Model implements Serializable {
 		disziplinen = KampfDB.getDisziplinen(config);
 		treffer = new Vector<Hit>();
 		try {
-			file = Files.readAllBytes(Paths.get("data.mdb"));
+			file = Files.readAllBytes(Paths.get(Controller.getPath() + "data.mdb"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		try {
-			Files.write(Paths.get("Kampf.mdb"), file);
+			Files.write(Paths.get(Controller.getPath() + "Kampf.mdb"), file);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -147,7 +147,7 @@ public class Model implements Serializable {
 			if (obj instanceof Model) {
 				model = (Model) obj;
 			}
-			if (model != null) Files.write(Paths.get("Kampf.mdb"), model.file);
+			if (model != null) Files.write(Paths.get(Controller.getPath() + "Kampf.mdb"), model.file);
 		}
 		catch (InvalidClassException e) {}
 		catch (IOException | ClassNotFoundException e) {

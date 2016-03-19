@@ -29,7 +29,7 @@ public class FileChecker extends Thread {
 		lineReader = new Vector<LineReader>(linienCount);
 		running = true;
 		
-		Path dir = Paths.get(".");
+		Path dir = Paths.get(Controller.getPath());
 		try {
 			watcher = FileSystems.getDefault().newWatchService();
 			dir.register(watcher, ENTRY_CREATE, ENTRY_DELETE); 
@@ -49,7 +49,7 @@ public class FileChecker extends Thread {
 			e.printStackTrace();
 		}
 
-		File folder = new File(".");
+		File folder = new File(Controller.getPath());
 		for (File file : folder.listFiles()) {
 			if (file.getName().matches(".*\\.((nrt)|(ctl)|(dat)|(def))")) {
 				if (!file.delete()) {
