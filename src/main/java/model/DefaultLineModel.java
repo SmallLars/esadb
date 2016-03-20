@@ -184,7 +184,7 @@ public class DefaultLineModel implements LineModel, LineReader, ActionListener {
 	
 	private void writeFile(String type, String cmd) {
 		try {
-			PrintWriter writer = new PrintWriter(Controller.getPath() + "HServ" + nummer + type);
+			PrintWriter writer = new PrintWriter(Controller.getPath("HServ" + nummer + type));
 			writer.println(cmd);
 			writer.close();
 		} catch (FileNotFoundException e) {

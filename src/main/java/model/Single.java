@@ -245,7 +245,7 @@ public class Single extends Result implements Printable {
 	}
 
 	public boolean toFile(String filename, boolean probe) {
-		File file = new File(Controller.getPath() + filename);
+		File file = new File(Controller.getPath(filename));
 		PrintWriter writer;
 		try {
 			writer = new PrintWriter(file);

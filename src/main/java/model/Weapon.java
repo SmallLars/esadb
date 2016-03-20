@@ -93,7 +93,7 @@ public class Weapon implements Serializable, Comparable<Weapon> {
 	}
 
 	public String toFile() {
-		String fileName = Controller.getPath() + String.format("0_hw_%s.def", number);
+		String fileName = Controller.getPath(String.format("0_hw_%s.def", number));
 		try {
 			PrintWriter writer = new PrintWriter(fileName);
 

@@ -2,7 +2,60 @@
 
 \section{Voraussetzungen}
 
-\section{Programmdateien}
+\subsection{Linien}
+\begin{itemize}
+  \item ESA 2002 (1.3.1024)
+  \item Microsoft Jet 3.5 für den Datenbankzugriff \newline http://download.microsoft.com/download/office97pro/sp/1/win98/EN-US/Jet35sp3.exe
+  \item Bei der Nutzung von Windows 7 ist es empfehlenswert einige Registry-Einträge zu setzen, um die Steuerung mit esadb zu beschleunigen. \newline \newline
+        HKEY\_LOCAL\_MACHINE\textbackslash SYSTEM\textbackslash CurrentControlSet\textbackslash services\textbackslash LanmanWorkstation\textbackslash Parameters
+        \begin{itemize}
+         \item DirectoryCacheLifetime = 0
+         \item FileNotFoundCacheLifetime = 0
+         \item FileInfoCacheLifetime = 0
+        \end{itemize}
+\end{itemize}
+        
+\subsection{Server}
+\begin{itemize}
+  \item Java 8 \newline http://java.com/de/download/
+  \item Microsoft Office Access 2007-Runtime \newline https://www.microsoft.com/de-de/download/details.aspx?id=4438
+  \item Office Microsoft Office Access Runtime und Data Connectivity 2007 Service Pack 3 (SP3) \newline https://www.microsoft.com/de-de/download/details.aspx?id=27835
+\end{itemize}
 
-Dateien werden bei erster Ausführung entpackt. \keyword{test}
-Erklärung der wichtigen Dateien: settings, data, Kampf, Stammdaten, *.bmp
+\section{Anleitung}
+Im Allgemeinen ist HAWEV unter "`C:\textbackslash esa\_dat\textbackslash HAWEV"' bereits installiert.
+"`C:\textbackslash esa\_dat"' ist dabei der freigegebene Ordner der auf den Linien unter
+"`Z:"' als \keyword{Netzlaufwerk} eingebunden ist.
+
+Um keine Änderung an den Linien vornehmen zu müssen, kann der Ordner "`HAWEV"' umbenannt werden, um für esadb einen
+neuen Ordner "`HAWEV"' zu erstellen, in den dann die esadb.jar kopiert wird. Danach sind folgende Schritte empfohlen:
+\begin{enumerate}
+  \item esadb.jar per Doppelklick starten
+  \item Unter "`Datei $ \Rightarrow $ Einstellungen... $ \Rightarrow $ Allgemein"' die gewünschten Linien einfügen
+  \item esadb beenden
+  \item Für die Nutzung der Wildscheiben müssen die Dateien HZ\_7775 und *.bmp auf die Linien in das Installationsverzeichnis von ESA 2002 kopiert werden.
+  \item Eine Verknüpfung zu esadb.jar auf dem Desktop anlegen
+  \item Eine Verknüpfung zu Stammdaten.mdb auf dem Desktop anlegen
+  \item Vereine, Schützen und Disziplinen in den Stammdaten hinterlegen
+\end{enumerate}
+
+\section{Programmdateien}
+\begin{description}
+  \item[HZ\_7775 und *.bmp] sind Bilddateien für \keyword{Wildscheibe}n (\keyword{Trefferzonenscheibe}n).
+                           Sie werden für die Anzeige und Auswertung der Schüsse benötigt und müssen auch
+                           in den Installationsverzeichnissen von ESA 2002 auf den Linien vorhanden sein.
+  \item[*.esa] ist eine Wettkampfdatei. Der Inhalt wird näher erläutert in Abschnitt \ref{sec:filehandling}.
+  \item[settings.esc] beinhaltet alle Einstellungen. Die Einstellungen gelten für alle Wettkämpfe.
+                      Eine mögliche Datensicherung sollte diese Datei enthalten.
+  \item[esadb.ico] kann als Symbol für eine Verknüpfung auf dem Desktop oder im Startmenü genutzt werden.
+  \item[logfile.txt] enthält ein Protokoll aller Programmausgaben und Fehlermeldungen.
+  \item[Stammdaten.mdb] ist ein Programm zur Verwaltung der Stammdaten. Diese Datei enthält selber keine
+                        Daten und wird regelmäßig aktualisiert.
+  \item[data.mdb] enthält alle Stammdaten, die mit Hilfe der Stammdaten.mdb eingegeben wurden. Eine mögliche
+                  Datensicherung sollte diese Datei enthalten.
+  \item[Kampf.mdb] ist eine Kopie von data.mdb und wird von den Linien ausgelesen um Disziplin- und Schützendaten abzurufen.
+  \item[esadb.lock] ist nur vorhanden, solange esadb läuft. Sie dient dazu einen mehrfachen Start von esadb zu verhindern.
+  \item[*.ctl und *.nrt] werden genutzt um den Linien Steuerbefehle zu senden.
+  \item[*.def] enthalten Regel-, Scheiben- und Waffen-Definitionen. Sie werden bei Bedarf automatisch erstellt und
+               bei beenden von esadb bereinigt.
+\end{description}

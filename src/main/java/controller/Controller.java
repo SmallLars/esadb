@@ -61,11 +61,12 @@ public class Controller {
 		return controller;
 	}
 
-	public static String getPath() {
+	public static String getPath(String file) {
 		CodeSource codeSource = Controller.class.getProtectionDomain().getCodeSource();
 		try {
 			URI jarFile = codeSource.getLocation().toURI();
-			return (new File(jarFile)).getParentFile().getPath() + File.separator;
+			String appendix = file.equals(".") ? "" : File.separator + file;
+			return (new File(jarFile)).getParentFile().getPath() + appendix;
 		} catch (URISyntaxException e) {
 			return "";
 		}
@@ -221,7 +222,7 @@ public class Controller {
 		fileChecker = new FileChecker(config.getLineCount());
 
 		SimpleDateFormat sdf = new SimpleDateFormat(config.getValue("Filename", "yyyy-MM-dd"));
-		file = new File(config.getValue("Filepath", getPath()) + sdf.format(new Date()) + ".esa");
+		file = new File(config.getValue("Filepath", getPath("")) + sdf.format(new Date()) + ".esa");
 		if (file.exists()) {
 			model = Model.load(file);
 		} else {
@@ -231,7 +232,7 @@ public class Controller {
 
 	private void initConsole() {
 		try {
-			errorLog = new FileOutputStream(getPath() + "error.log", true);
+			errorLog = new FileOutputStream(getPath("logfile.txt"), true);
 		} catch (FileNotFoundException e) {}
 		PrintStream ps = new PrintStream(new OutputStream() {
 			@Override
@@ -251,7 +252,7 @@ public class Controller {
 	private void initFiles() {
 		final String[] files = {"esadb.ico", "data.mdb", "Stammdaten.mdb", "HZ_7775", "Bock.bmp", "HZ_Bock.bmp", "Fuchs.bmp", "HZ_Fuchs.bmp", "Keiler.bmp", "HZ_Keiler.bmp"};
 		for (String s : files) {
-			File file = new File(getPath() + s);
+			File file = new File(getPath(s));
 			if (!file.exists() || s.equals("Stammdaten.mdb")) {
 				URL inputUrl = getClass().getResource("/" + s);
 				try {
@@ -326,7 +327,7 @@ public class Controller {
 	}
 
 	public static void main(String[] args) throws IOException {
-		File lockfile = new File(getPath() + "esadb.lock");
+		File lockfile = new File(getPath("esadb.lock"));
 		FileOutputStream out = new FileOutputStream(lockfile);
 		Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
 			public void run() {

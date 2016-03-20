@@ -21,12 +21,12 @@ public class SettingsModelTest {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		(new File(Controller.getPath() + "settings.esc")).delete();
+		(new File(Controller.getPath("settings.esc"))).delete();
 	}
 
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
-		(new File(Controller.getPath() + "settings.esc")).delete();
+		(new File(Controller.getPath("settings.esc"))).delete();
 	}
 
 	@Before

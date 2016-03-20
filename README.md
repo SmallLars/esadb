@@ -10,7 +10,8 @@ Eine Alternative zu HAWEV 2002.
 * [Version 1.0.2](https://github.com/SmallLars/esadb/raw/v1/pub/esadb.jar)
 
 * [Version 2.0.6](https://github.com/SmallLars/esadb/raw/v2/pub/esadb.jar)
-    * [Beispiel.esa](https://github.com/SmallLars/esadb/raw/v2/pub/Beispiel.esa) mit 2 Disziplinen, 4 Schützen und 8 Ergebnissen
+    * [Wettkampfdatei](https://github.com/SmallLars/esadb/raw/v2/pub/beispiel.esa) mit 2 Disziplinen, 4 Schützen und 8 Ergebnissen
+    * [Bedienungsanleitung](https://github.com/SmallLars/esadb/raw/v2/pub/anleitung.pdf) (in Arbeit - bisher nur das Grundgerüst)
 
 ## Installation
 

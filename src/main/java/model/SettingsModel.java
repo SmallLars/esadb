@@ -24,7 +24,7 @@ import controller.Controller;
 
 public class SettingsModel implements Serializable {
 	private static final long serialVersionUID = 3L;
-	private static final File file = new File(Controller.getPath() + "settings.esc");
+	private static final File file = new File(Controller.getPath("settings.esc"));
 
 	private Set<Integer> lines;
 	private Set<TargetModel> targets;

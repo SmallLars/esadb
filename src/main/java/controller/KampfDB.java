@@ -105,7 +105,7 @@ public class KampfDB {
 	private static Database getDB(String filename) throws IOException {
 		DatabaseBuilder dbb = new DatabaseBuilder();
 		dbb.setReadOnly(true);
-		dbb.setFile(new File(Controller.getPath() + filename));
+		dbb.setFile(new File(Controller.getPath(filename)));
 		dbb.setCharset(Charset.forName("ISO-8859-1"));
 		return dbb.open();
 	}
