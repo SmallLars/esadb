@@ -1,8 +1,8 @@
 package view.settings.general;
 
 
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Vector;
 
 import javax.swing.table.DefaultTableModel;
 
@@ -13,10 +13,10 @@ import model.Group;
 
 @SuppressWarnings("serial")
 public class GroupTableModel extends DefaultTableModel {
-	Vector<Group> groups;
+	ArrayList<Group> groups;
 
 	public GroupTableModel(Group[] groups) {
-		this.groups = new Vector<Group>(Arrays.asList(groups));
+		this.groups = new ArrayList<Group>(Arrays.asList(groups));
 		this.groups.sort(null);
 	}
 
