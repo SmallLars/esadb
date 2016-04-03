@@ -77,6 +77,11 @@ public class Group  implements Serializable, Comparable<Group> {
 	}
 
 	@Override
+	public int hashCode() {
+		return to + from + gender.hashCode();
+	}
+
+	@Override
 	public boolean equals(Object o) {
 		if (o instanceof Group) {
 			return compareTo((Group) o) == 0;

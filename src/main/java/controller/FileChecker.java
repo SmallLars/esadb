@@ -91,12 +91,20 @@ public class FileChecker extends Thread {
 							if (lr != null) {
 								File datei = new File(dateiname);
 								if (dateiname.endsWith(".ctl")) {
-									FileInputStream reader = new FileInputStream(dateiname);
-									List<String> lines = IOUtils.readLines(reader, Charset.forName("UTF-8"));
-									if (lines.size() > 0) lr.addTreffer(new Hit(lines.get(0)));
-									IOUtils.closeQuietly(reader);
+									FileInputStream reader = null;
+									try {
+										reader = new FileInputStream(dateiname);
+										List<String> lines = IOUtils.readLines(reader, Charset.forName("UTF-8"));
+										if (lines.size() > 0) lr.addTreffer(new Hit(lines.get(0)));
+									} catch (IOException e) {
+										e.printStackTrace();
+									} finally {
+										if (reader != null) IOUtils.closeQuietly(reader);
+									}
 								}
-								datei.delete();
+								if (!datei.delete()) {
+									System.out.println(dateiname  + " konnte nicht gelöscht werden.");
+								}
 							}
 							break;
 						case "ENTRY_DELETE":
@@ -112,7 +120,7 @@ public class FileChecker extends Thread {
 					} 
 				}
 				key.reset();
-			} catch (InterruptedException | IOException | ClosedWatchServiceException e) {
+			} catch (InterruptedException | ClosedWatchServiceException e) {
 				if (running) {
 					e.printStackTrace();
 				}

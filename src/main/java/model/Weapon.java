@@ -37,6 +37,11 @@ public class Weapon implements Serializable, Comparable<Weapon> {
 	}
 
 	@Override
+	public int hashCode() {
+		return number.hashCode();
+	}
+
+	@Override
 	public boolean equals(Object o) {
 		if (o instanceof Weapon) {
 			return number.equals(((Weapon) o).number);

@@ -257,7 +257,20 @@ public class Single extends Result implements Printable {
 		}
 		return true;
 	}
-	
+
+	@Override
+	public int hashCode() {
+		return linie + datum.hashCode() + disziplin.hashCode() + schuetze.hashCode() + treffer.hashCode();
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (o instanceof Single) {
+			return compareTo((Single) o) == 0;
+		}
+		return false;
+	}
+
 	@Override
 	public int compareTo(Result s) {
 		int c;

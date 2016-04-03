@@ -344,7 +344,10 @@ public class Controller {
 			public void run() {
 				try {
 					out.close();
-					lockfile.delete();
+					if (!lockfile.delete()) {
+						System.out.println("esadb.lock konnte nicht gelöscht werden. Diese Datei verhindert einen ");
+						System.out.println("weiteren Programmstart falls sie nicht manuell gelöscht wird.");
+					}
 				} catch (IOException e) {
 					e.printStackTrace();
 				}

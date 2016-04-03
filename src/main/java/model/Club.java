@@ -28,6 +28,11 @@ public class Club implements Comparable<Club> {
 	}
 
 	@Override
+	public int hashCode() {
+		return id;
+	}
+
+	@Override
 	public boolean equals(Object o) {
 		if (o instanceof Club) {
 			return compareTo((Club) o) == 0;

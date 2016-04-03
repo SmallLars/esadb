@@ -70,6 +70,11 @@ public class TargetModel implements Serializable, Comparable<TargetModel> {
 	}
 
 	@Override
+	public int hashCode() {
+		return kennnummer.hashCode();
+	}
+
+	@Override
 	public boolean equals(Object o) {
 		if (o instanceof TargetModel) {
 			return kennnummer.equals(((TargetModel) o).kennnummer);

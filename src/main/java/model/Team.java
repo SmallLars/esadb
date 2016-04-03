@@ -30,6 +30,19 @@ public class Team extends Result {
 	}
 
 	@Override
+	public int hashCode() {
+		return name.hashCode() + disziplin.hashCode() + group.hashCode() + member.hashCode();
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (o instanceof Team) {
+			return compareTo((Team) o) == 0;
+		}
+		return false;
+	}
+
+	@Override
 	public int compareTo(Result s) {
 		int c;
 
