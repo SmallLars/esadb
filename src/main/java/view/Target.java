@@ -30,8 +30,8 @@ import model.Weapon;
 
 @SuppressWarnings("serial")
 public class Target extends JPanel implements LineListener {
-	private final int PROBE = 1;
-	private final int MATCH = 2;
+	private static final int PROBE = 1;
+	private static final int MATCH = 2;
 
 	private TargetModel model;
 	private Weapon weapon;
@@ -135,7 +135,7 @@ public class Target extends JPanel implements LineListener {
 		super.paintComponent(g);
 		
 		Graphics2D g1 = (Graphics2D) g.create();
-		g1.scale(new Double(getWidth()) / 1000, new Double(getHeight()) / 1000);
+		g1.scale(((double) getWidth()) / 1000, ((double) getHeight()) / 1000);
 		g1.setColor(Color.BLACK);
 
 		Graphics2D g2 = (Graphics2D) g.create();
@@ -145,12 +145,12 @@ public class Target extends JPanel implements LineListener {
 			int width = model.getValue(TargetValue.SIZE_WIDTH);
 			int height = model.getValue(TargetValue.SIZE_HEIGHT);
 			mitte = Math.max(width, height) / 2;
-			g2.scale(new Double(getWidth()) / new Double(2 * mitte), new Double(getHeight()) / new Double(2 * mitte));
+			g2.scale(((double) getWidth()) / (2 * mitte), ((double) getHeight()) / (2 * mitte));
 
 			String image = model.getImage();
 			if (model.getValue(TargetValue.IMAGE) == 0) image = "HZ_" + image;
 			try {
-				BufferedImage bi = ImageIO.read(new File(image));
+				BufferedImage bi = ImageIO.read(new File(Controller.getPath(image)));
 				int dx = width > height ? 0 : (height - width) / 2;
 				int dy = height > width ? 0 : (width - height) / 2;
 				g2.drawImage(bi, dx, dy, model.getValue(TargetValue.SIZE_WIDTH), model.getValue(TargetValue.SIZE_HEIGHT), null);
@@ -163,7 +163,7 @@ public class Target extends JPanel implements LineListener {
 		} else {
 			int r;
 			mitte = model.getRingRadius(model.getValue(TargetValue.RING_MIN)) + model.getValue(TargetValue.RING_WIDTH);
-			g2.scale(new Double(getWidth()) / new Double(2 * mitte), new Double(getHeight()) / new Double(2 * mitte));
+			g2.scale(((double) getWidth()) / (2 * mitte), ((double) getHeight()) / (2 * mitte));
 
 			Color black = model.getValue(TargetValue.TYPE) == 5 ? Color.WHITE : Color.BLACK;
 			Color white = model.getValue(TargetValue.TYPE) == 5 ? Color.BLACK : Color.WHITE;

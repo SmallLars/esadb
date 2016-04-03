@@ -81,6 +81,11 @@ public class Discipline implements Serializable, Comparable<Discipline> {
 	}
 
 	@Override
+	public int hashCode() {
+		return id;
+	}
+
+	@Override
 	public boolean equals(Object o) {
 		if (o instanceof Discipline) {
 			return compareTo((Discipline) o) == 0;

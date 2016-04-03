@@ -1,9 +1,10 @@
 package controller;
 
-import java.io.BufferedReader;
+
 import java.io.File;
-import java.io.FileReader;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.nio.file.ClosedWatchServiceException;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
@@ -12,6 +13,7 @@ import java.nio.file.WatchEvent;
 import java.nio.file.WatchEvent.Kind;
 import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
+import java.util.List;
 import java.util.Vector;
 
 import org.apache.commons.io.IOUtils;
@@ -89,14 +91,10 @@ public class FileChecker extends Thread {
 							if (lr != null) {
 								File datei = new File(dateiname);
 								if (dateiname.endsWith(".ctl")) {
-									BufferedReader reader = null;
-									try {
-										reader = new BufferedReader(new FileReader(dateiname));
-										String resultLine = reader.readLine();
-										if (resultLine != null) lr.addTreffer(new Hit(resultLine));
-									} finally {
-										IOUtils.closeQuietly(reader);
-									}
+									FileInputStream reader = new FileInputStream(dateiname);
+									List<String> lines = IOUtils.readLines(reader, Charset.forName("UTF-8"));
+									if (lines.size() > 0) lr.addTreffer(new Hit(lines.get(0)));
+									IOUtils.closeQuietly(reader);
 								}
 								datei.delete();
 							}

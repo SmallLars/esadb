@@ -3,6 +3,15 @@
 /testdaten/
 /definitionen/
 
+/doc/main.aux
+/doc/main.idx
+/doc/main.ilg
+/doc/main.ind
+/doc/main.log
+/doc/main.out
+/doc/main.pdf
+/doc/main.toc
+
 .classpath
 .project
 /.settings/

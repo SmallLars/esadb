@@ -53,7 +53,7 @@ public class KampfDB {
 
 			// With known rules create disciplines
 			for (Row row : db.getTable("Disziplin")) {
-				Map<String, Integer> m = Collections.singletonMap("DisziplinID", (int) row.get("DisziplinID"));
+				Map<String, Integer> m = Collections.singletonMap("DisziplinID", (Integer) row.get("DisziplinID"));
 				Row r = CursorBuilder.findRow(db.getTable("DisziplinWaffe"), m);
 				if (r != null) {
 					String number = (String) r.get("WaffengattungNr");

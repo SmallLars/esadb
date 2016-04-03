@@ -2,7 +2,6 @@ package model;
 
 
 import java.io.FileNotFoundException;
-import java.io.PrintWriter;
 import java.io.Serializable;
 
 import controller.Controller;
@@ -110,7 +109,7 @@ public class Rule  implements Serializable {
 
 		String fileName = Controller.getPath(String.format("0_hd_%s.def", number.replace('.', '-')));
 		try {
-			PrintWriter writer = new PrintWriter(fileName);
+			FileWriter writer = new FileWriter(fileName);
 			writer.println("\">Bezeichnung\"");
 			writer.println(String.format("\"%s\"", name));
 

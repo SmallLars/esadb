@@ -169,7 +169,7 @@ public class ResultList implements Printable {
 		result.draw(g, number, 40, RESULT_SINGLE_HEIGHT, overline);
 	}
 
-	private class Entry {
+	private static class Entry {
 		public int type;
 		public int number;
 		public Object value;

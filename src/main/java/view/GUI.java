@@ -574,7 +574,7 @@ public class GUI extends JFrame implements ActionListener, ComponentListener, Ch
 		lblColumns.setLocation(contentPane.getWidth() - 139, 6);
 		targetColumns.setLocation(contentPane.getWidth() - 76, 4);
 		int columns = config.getValue("TargetColumns", 2);
-		int rows = (int) Math.ceil(linien.length / new Double(columns));
+		int rows = (int) Math.ceil(linien.length / (double) columns);
 		((GridLayout) scheibenBox.getLayout()).setColumns(columns);
 		scheibenBox.setPreferredSize(new Dimension((contentPane.getWidth() - 764), rows * (contentPane.getWidth() - 764) / columns));
 		scrollScheiben.setSize(contentPane.getWidth() - 746, contentPane.getHeight() - 22);

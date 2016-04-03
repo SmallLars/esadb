@@ -8,9 +8,7 @@ import java.awt.Graphics2D;
 import java.awt.print.PageFormat;
 import java.awt.print.Printable;
 import java.awt.print.PrinterException;
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Date;
@@ -245,20 +243,18 @@ public class Single extends Result implements Printable {
 	}
 
 	public boolean toFile(String filename, boolean probe) {
-		File file = new File(Controller.getPath(filename));
-		PrintWriter writer;
 		try {
-			writer = new PrintWriter(file);
+			FileWriter writer = new FileWriter(Controller.getPath(filename));
+			writer.println(probe ? "\"0\"" : "\"-1\"");
+			int anzahl = getNumberCount(probe, -1);
+			writer.println(anzahl);
+			for (int i = 1; i <= anzahl; i++) {
+				getTreffer(probe, i).print(writer);
+			}
+			writer.close();
 		} catch (FileNotFoundException e) {
 			return false;
 		}
-		writer.println(probe ? "\"0\"" : "\"-1\"");
-		int anzahl = getNumberCount(probe, -1);
-		writer.println(anzahl);
-		for (int i = 1; i <= anzahl; i++) {
-			getTreffer(probe, i).print(writer);
-		}
-		writer.close();
 		return true;
 	}
 	

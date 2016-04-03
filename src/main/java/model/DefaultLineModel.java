@@ -5,7 +5,6 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
-import java.io.PrintWriter;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Vector;
@@ -184,7 +183,7 @@ public class DefaultLineModel implements LineModel, LineReader, ActionListener {
 	
 	private void writeFile(String type, String cmd) {
 		try {
-			PrintWriter writer = new PrintWriter(Controller.getPath("HServ" + nummer + type));
+			FileWriter writer = new FileWriter(Controller.getPath("HServ" + nummer + type));
 			writer.println(cmd);
 			writer.close();
 		} catch (FileNotFoundException e) {

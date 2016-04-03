@@ -15,6 +15,7 @@ import java.io.OutputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.security.CodeSource;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -234,12 +235,14 @@ public class Controller {
 	private void initConsole() {
 		try {
 			errorLog = new FileOutputStream(getPath("logfile.txt"), true);
-		} catch (FileNotFoundException e) {}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
 		PrintStream ps = new PrintStream(new OutputStream() {
 			@Override
-			public void write(int b) throws IOException {
+			public void write(int b) throws IOException {				
 				if (gui != null) gui.print(String.valueOf((char) b), Color.decode("0xC80000"));
-				if (errorLog != null) errorLog.write(b);
+				if (errorLog != null) IOUtils.write(new char[] {(char) b}, errorLog, Charset.forName("UTF-8"));
 			}
 		}, false);
 		System.setOut(ps);
@@ -342,7 +345,9 @@ public class Controller {
 				try {
 					out.close();
 					lockfile.delete();
-				} catch (IOException e) {}
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 		}));
 

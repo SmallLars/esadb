@@ -42,7 +42,7 @@
  - Bei völliger Ergebnisgleicheit wird nun die selbe Platzierung in der Ergebnisliste genutzt.
  - Mannschaften können nun erstellt/bearbeitet werden und werden in der Ergebnisliste aufgeführt.
 
-2.0.7        XX.YY.2016
+2.0.7        03.04.2016
  - In der Ergebnisliste werden Serien mit Ergebnis 0,0 auch mit 0,0 angezeigt.
  - Es kann nun festgelegt werden, in wie vielen Spalten die Scheiben im Hauptfenster dargestellt werden.
  - Funktion zum Herunterfahren der Linien ergänzt.

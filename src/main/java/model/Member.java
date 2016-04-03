@@ -51,6 +51,11 @@ public class Member implements Serializable, Comparable<Member> {
 	}
 
 	@Override
+	public int hashCode() {
+		return passnummer.hashCode();
+	}
+
+	@Override
 	public boolean equals(Object o) {
 		if (o instanceof Member) {
 			return ((Member) o).passnummer.equals(passnummer);

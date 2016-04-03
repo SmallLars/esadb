@@ -2,7 +2,6 @@ package model;
 
 
 import java.io.FileNotFoundException;
-import java.io.PrintWriter;
 import java.io.Serializable;
 import java.text.NumberFormat;
 import java.util.EnumMap;
@@ -268,7 +267,7 @@ public class TargetModel implements Serializable, Comparable<TargetModel> {
 
 		String fileName = Controller.getPath(String.format("0_hs_%s.def", kennnummer.replace('.', '-')));
 		try {
-			PrintWriter writer = new PrintWriter(fileName);
+			FileWriter writer = new FileWriter(fileName);
 
 			// Name der Scheibe der bei der Programmauswahl angezeigt wird
 			writer.println("\">Bezeichnung\"");

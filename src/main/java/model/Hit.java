@@ -1,5 +1,6 @@
 package model;
-import java.io.PrintWriter;
+
+
 import java.io.Serializable;
 import java.text.NumberFormat;
 import java.util.Locale;
@@ -141,7 +142,7 @@ public class Hit implements Serializable, Comparable<Hit> {
 		return String.format("%4.1f", wert);
 	}
 
-	public void print(PrintWriter writer) {
+	public void print(FileWriter writer) {
 		NumberFormat format = NumberFormat.getInstance(Locale.ENGLISH);
 		format.setGroupingUsed(false);
 		format.setMinimumFractionDigits(0);

@@ -115,7 +115,7 @@ public class Model implements Serializable {
 	}
 
 	public boolean save(File file) {
-		file.getParentFile().mkdirs();
+		if (file.getParentFile().mkdirs() == false) return false;
 
 		boolean succeed = false;
 		ObjectOutputStream oos = null;
