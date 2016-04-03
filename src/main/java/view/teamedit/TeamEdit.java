@@ -301,21 +301,21 @@ public class TeamEdit extends JDialog implements ActionListener {
 				table_single.fireTableDataChanged(single);
 				break;
 			case "REMOVE_SINGLE":
-				if (member != null) {
+				if (team != null && member != null) {
 					team.removeMember(member);
 					table_single.fireTableDataChanged(member);
 					table_member.fireTableDataChanged(null);
 				}
 				break;
 			case "LIST":
-				if (team.getDisziplin() == null || team.getGroup(false) == null) {
+				if (team != null && (team.getDisziplin() == null || team.getGroup(false) == null)) {
 					controller.remove(team);
 					table_team.fireTableDataChanged(null);
 				}
 				cards.show(card_panel, "TEAM_LIST");
 				break;
 			case "ADD_SINGLE":
-				if (single != null) {
+				if (team != null && single != null) {
 					if (team.getDisziplin() == null) team.setDisziplin(single.getDisziplin());
 					if (team.getGroup(false) == null) team.setGroup(single.getGroup(false));
 					team.addMember(single);

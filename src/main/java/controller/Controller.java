@@ -25,6 +25,7 @@ import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 
 import model.DefaultLineModel;
 import model.Discipline;
@@ -255,6 +256,8 @@ public class Controller {
 			File file = new File(getPath(s));
 			if (!file.exists() || s.equals("Stammdaten.mdb")) {
 				URL inputUrl = getClass().getResource("/" + s);
+				if (inputUrl == null) continue;
+
 				try {
 					FileUtils.copyURLToFile(inputUrl, file);
 				} catch (IOException e) {
@@ -267,16 +270,20 @@ public class Controller {
 	private void initFont() {
 		// http://all-fonts.com/about-fonts/download-arial-font/
 		ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+		if (classloader == null) return;
+
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		String fontFiles[] = {"Vera.ttf", "Vera-Bold.ttf", "Vera-Bold-Italic.ttf", "Vera-Italic.ttf"};
 		for (String font : fontFiles) {
+			InputStream is = null;
 			try {
-				InputStream is = classloader.getResourceAsStream(font);
+				is = classloader.getResourceAsStream(font);
 				Font f = Font.createFont(Font.TRUETYPE_FONT, is);
 				ge.registerFont(f);
-				is.close();
 			} catch (FontFormatException | IOException e) {
 				e.printStackTrace();
+			} finally {
+				IOUtils.closeQuietly(is);
 			}
 		}
 

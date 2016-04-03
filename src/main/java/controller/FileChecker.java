@@ -14,6 +14,8 @@ import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
 import java.util.Vector;
 
+import org.apache.commons.io.IOUtils;
+
 import model.Hit;
 import model.LineReader;
 
@@ -87,10 +89,14 @@ public class FileChecker extends Thread {
 							if (lr != null) {
 								File datei = new File(dateiname);
 								if (dateiname.endsWith(".ctl")) {
-									BufferedReader reader = new BufferedReader(new FileReader(dateiname));
-									String resultLine = reader.readLine();
-									if (resultLine != null) lr.addTreffer(new Hit(resultLine));
-									reader.close();
+									BufferedReader reader = null;
+									try {
+										reader = new BufferedReader(new FileReader(dateiname));
+										String resultLine = reader.readLine();
+										if (resultLine != null) lr.addTreffer(new Hit(resultLine));
+									} finally {
+										IOUtils.closeQuietly(reader);
+									}
 								}
 								datei.delete();
 							}

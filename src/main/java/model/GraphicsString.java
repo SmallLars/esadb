@@ -81,6 +81,7 @@ public class GraphicsString {
 	    FontRenderContext fontRenderContext = g.getFontRenderContext();
 	    LineBreakMeasurer lbm = new LineBreakMeasurer(s, fontRenderContext);
 	    TextLayout textLayout = lbm.nextLayout(Integer.MAX_VALUE);
+	    if (textLayout == null) return 0;
 	    return (int) textLayout.getBounds().getWidth();
 	}
 }
