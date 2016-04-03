@@ -25,7 +25,10 @@ public class IconButton extends JButton {
 
 	public IconButton(String dir, String ac, ActionListener al) {
 		URL url = getClass().getResource("/" + dir + ".png");
-		setIcon(new ImageIcon(url));
+
+		if (url != null) setIcon(new ImageIcon(url));
+		else setText(dir);
+
 		setActionCommand(ac);
 		addActionListener(al);
 	}

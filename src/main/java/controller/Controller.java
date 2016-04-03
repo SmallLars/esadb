@@ -270,10 +270,11 @@ public class Controller {
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		String fontFiles[] = {"Vera.ttf", "Vera-Bold.ttf", "Vera-Bold-Italic.ttf", "Vera-Italic.ttf"};
 		for (String font : fontFiles) {
-			InputStream is = classloader.getResourceAsStream(font);
 			try {
+				InputStream is = classloader.getResourceAsStream(font);
 				Font f = Font.createFont(Font.TRUETYPE_FONT, is);
 				ge.registerFont(f);
+				is.close();
 			} catch (FontFormatException | IOException e) {
 				e.printStackTrace();
 			}

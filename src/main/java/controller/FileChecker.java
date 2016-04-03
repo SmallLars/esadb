@@ -50,7 +50,10 @@ public class FileChecker extends Thread {
 		}
 
 		File folder = new File(Controller.getPath("."));
-		for (File file : folder.listFiles()) {
+		File[] folderFiles = folder.listFiles();
+		if (folderFiles == null) return;
+
+		for (File file : folderFiles) {
 			if (file.getName().matches(".*\\.((nrt)|(ctl)|(dat)|(def))")) {
 				if (!file.delete()) {
 					System.err.println("Can't remove " + file.getAbsolutePath());
@@ -85,7 +88,8 @@ public class FileChecker extends Thread {
 								File datei = new File(dateiname);
 								if (dateiname.endsWith(".ctl")) {
 									BufferedReader reader = new BufferedReader(new FileReader(dateiname));
-									lr.addTreffer(new Hit(reader.readLine()));
+									String resultLine = reader.readLine();
+									if (resultLine != null) lr.addTreffer(new Hit(resultLine));
 									reader.close();
 								}
 								datei.delete();
