@@ -11,11 +11,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
+import java.io.UnsupportedEncodingException;
 import java.io.OutputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.nio.charset.Charset;
 import java.security.CodeSource;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -238,15 +238,19 @@ public class Controller {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-		PrintStream ps = new PrintStream(new OutputStream() {
-			@Override
-			public void write(int b) throws IOException {				
-				if (gui != null) gui.print(String.valueOf((char) b), Color.decode("0xC80000"));
-				if (errorLog != null) IOUtils.write(new char[] {(char) b}, errorLog, Charset.forName("UTF-8"));
-			}
-		}, false);
-		System.setOut(ps);
-		System.setErr(ps);
+		try {
+			PrintStream ps = new PrintStream(new OutputStream() {
+				@Override
+				public void write(int b) throws IOException {				
+					if (gui != null) gui.print(String.valueOf((char) b), Color.decode("0xC80000"));
+					if (errorLog != null) errorLog.write(b);
+				}
+			}, false, "UTF-8");
+			System.setOut(ps);
+			System.setErr(ps);
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
 		System.out.println();
 		System.out.print("   Start: ");
 		System.out.println((new SimpleDateFormat("dd.MM.yyyy - HH:mm")).format(new Date()));
