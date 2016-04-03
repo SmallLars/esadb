@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.org/SmallLars/esadb.png?branch=master)](https://travis-ci.org/SmallLars/esadb)
-
+[![Coverity Scan Build Status](https://scan.coverity.com/projects/8405/badge.svg)](https://scan.coverity.com/projects/smalllars-esadb)
 # esadb
 
 Programm zur Steuerung von Häring-Anlagen mit ESA 2002.  

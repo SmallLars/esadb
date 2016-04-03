@@ -1,3 +1,15 @@
 language: java
 jdk:
   - oraclejdk8
+env:
+  global:
+   - secure: "S5bl/tqlbV9yNBmnnti4XwzZwPhGjlRvtBy4BTwFdaeMcS9QWRcJqh3YXFZz7rucSmdjbzo57h3LCKzSNQgXbfcHv7muOE4e9M/vyX2pzgP34SeFNTrmxCzgdnz6G/lEYS33iRwwq8s5cVm7pxuW3JnXDLxeJ+HZO/MfpnMsUVOpVX0Ux+r2ZU0JX0aAvQn97Ojo7tqLB01g9GZ1G99syKmbe+h2rhx8JpCW8damyFTA1PZzSZxnKhIntLmE8Mauj0iycb5CvInROb2kLsOgkaUCS6ShcIR039+SAkG4vSOleuiKcGkDRLnJOiV3Od9HBjGuL8THskEzsrLNHZH7kk0iBvP8wW7UKU8f8xdOrxx+9kwphL+pTMOnB2Lyjp9cat246TGvlUJu2IKFt69TOUqzDkBWpCtRAXIz2u9t6xp3NGOXMkcSHomRrI0tmDA5xKcCd/SS/xDeyrjpVYR0yoFaQFuVu0/7Q9qV1zu1xXzoiK6vnWcNmBw+0HDxR+HsLmgrApf0D1yliUPRFnfd277SSt1nVrIBK1hdKK/a67uSG+BfScXjv1G3+pBOHgtvIXEeDcR/wizsfkzw7dOXJ7/16xkLpnH7/ApgA6DU/JoyvcMK0SJh7ZdonTCtYD2eXAoIh2TMH/PxylcfZ0aNIGSZdgRwWgKjTDnDvPOGND0="
+addons:
+  coverity_scan:
+    project:
+      name: "SmallLars/esadb"
+      description: "Build submitted via Travis CI"
+    notification_email: SmallLars@t-online.de
+    build_command_prepend: "mvn clean"
+    build_command:   "mvn -DskipTests=true compile"
+    branch_pattern: "*"
