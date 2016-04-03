@@ -41,7 +41,7 @@ public class ResultListOptions extends JDialog implements ActionListener {
 		setModal(true);
 		setModalityType(ModalityType.APPLICATION_MODAL);
 		setSize(536, 188);
-		setLocationRelativeTo(parent);
+		if (getGraphicsConfiguration() != null) setLocationRelativeTo(parent);
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 
 		SettingsModel settings = Controller.get().getConfig();

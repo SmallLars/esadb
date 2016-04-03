@@ -352,7 +352,9 @@ public class SettingsRingTargets extends JPanel implements ActionListener, Chang
 			@Override
 			public Dimension getSize() {
 				Dimension dim = super.getSize();
-				dim.width = Math.max(dim.width, getPreferredSize().width - 20);
+				if (getPreferredSize() != null) {
+					dim.width = Math.max(dim.width, getPreferredSize().width - 20);
+				}
 				return dim;
 			}
 		};

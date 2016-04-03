@@ -41,7 +41,7 @@ public class Disciplines extends JDialog implements ActionListener {
 		setModalityType(ModalityType.APPLICATION_MODAL);
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setSize(450, 300);
-		setLocationRelativeTo(parent);
+		if (getGraphicsConfiguration() != null) setLocationRelativeTo(parent);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setLayout(null);
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));

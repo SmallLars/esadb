@@ -47,7 +47,7 @@ public class SingleSelection extends JDialog implements ActionListener {
 		setModal(true);
 		setModalityType(ModalityType.APPLICATION_MODAL);
 		setSize(450, 300);
-		setLocationRelativeTo(parent);
+		if (getGraphicsConfiguration() != null) setLocationRelativeTo(parent);
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 
 		Container contentPanel = getContentPane();

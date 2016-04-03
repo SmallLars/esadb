@@ -29,7 +29,7 @@ public class Settings extends JDialog {
 		setModal(true);
 		setModalityType(ModalityType.APPLICATION_MODAL);
 		setSize(765, 525);
-		setLocationRelativeTo(parent);
+		if (getGraphicsConfiguration() != null) setLocationRelativeTo(parent);
 		setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
 		addWindowListener(new WindowAdapter() {
 			@Override

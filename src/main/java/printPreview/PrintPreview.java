@@ -47,7 +47,7 @@ public class PrintPreview extends JDialog implements ActionListener {
 		Dimension d = new Dimension(887, 500);
 		setMinimumSize(d);
 		setSize(d);
-		setLocationRelativeTo(parent);
+		if (getGraphicsConfiguration() != null) setLocationRelativeTo(parent);
 		getContentPane().setLayout(null);
 
 		this.p = p;

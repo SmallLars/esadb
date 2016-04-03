@@ -81,7 +81,7 @@ public class SingleEdit extends JDialog implements ComponentListener, ActionList
 		Dimension d = new Dimension(702, 500);
 		setMinimumSize(d);
 		setSize(d);
-		setLocationRelativeTo(parent);
+		if (getGraphicsConfiguration() != null) setLocationRelativeTo(parent);
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		getContentPane().setLayout(null);
 		
