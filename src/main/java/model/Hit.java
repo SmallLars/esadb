@@ -158,11 +158,14 @@ public class Hit implements Serializable, Comparable<Hit> {
 	}
 
 	@Override
-	public int compareTo(Hit t) {
-		if (probe != t.probe) {
+	public int compareTo(Hit h) {
+		if (h == this) return 0;
+		if (h == null) return 1;
+
+		if (probe != h.probe) {
 			return (probe ? -1 : 1);
 		}
-		return nummer - t.nummer;		
+		return nummer - h.nummer;		
 	}
 
 	@Override

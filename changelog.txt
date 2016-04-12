@@ -1,29 +1,37 @@
 1.0.0        18.09.2015
+ - b274effc4f3c5bf6210dfd02109bf0abd1cee3b7
  - Veröffentlichung
 
 1.0.1        31.10.2015
+ - 57cde72218bb9b4bf8e24c42c371422b675fe8b5
  - Problem behoben, bei dem Ergebnisse durch Toggel von "Sperren" verloren gehen.
 
 1.0.2        13.11.2015
+ - 55d11e860881241a6155820fb278202ae615149e
  - Problem behoben, bei dem Ergebnisse durch Mehrfachbelegung von Linien verloren gehen.
 
 2.0.0        30.12.2015
+ - 5e9b44fc0878b14e534a397caa13de161ec19f73
  - Waffe, Scheiben und Regeln können nun individuell angepasst werden.
  - Das .esa Dateiformat und die data.mdb sind nicht kompatibel mit Version 1.x.
 
 2.0.1        01.01.2016
+ - 6db96eacab130f527fdda1fee2ffbbcd8ccdaa70
  - In den Einstellungen können nun Standardpfad und Dateiname angepasst werden.
  - Einige Feinheiten bei der Scheibenanzeige wurden verbessert.
 
 2.0.2        04.01.2016
+ - 673dff28cb23f2120bc381a00e63d00bfbf5c93f
  - Unterstützung für Wildscheiben wurde ergänzt.
 
 2.0.3        06.01.2016
+ - 5bd64c17409bf2bd6d71f005a9303e8b2a300525
  - Druckvorschau überarbeitet.
  - Konfiguration für Altersgruppen erstellt.
    Wird in späteren Versionen in der Ergebnisliste berücksichtig.
 
 2.0.4        09.01.2016
+ - 16ccb84b6929e6b13054dce0aa72be546f23a5fd
  - Treffereingabe kann nun per Klick auf die Scheibe erfolgen.
  - Geschlecht "beliebig" für Mannschaften ergänzt.
  - Schriften für die Styles Plain, Italic und Italic-Bold ergänzt.
@@ -31,6 +39,7 @@
  - Ergebnisliste kann konfiguriert werden (Disziplin(en), Gruppen , Geschlecht).
 
 2.0.5        10.01.2016
+ - 6dba9f231227e2b1677e1a72c495eabec673f53d
  - Die Höhe der Linien/Konsole kann nun geändert werden.
  - Dateiformat der Einstellungen angepasst:
    Einfache Änderung ist nun ohne Verlust bereits vorhandener Einstellungen möglich.
@@ -38,12 +47,18 @@
  - Eingegebene Treffer können nun wieder gelöscht werden.
 
 2.0.6        08.02.2016
+ - 49fd33457adccaa1ee2aa80d6707eedf8bb4ba84
  - Update von Jackcess: Es erfolgt nun keine Warnung mehr beim Anzeigen der Stammdaten.
  - Bei völliger Ergebnisgleicheit wird nun die selbe Platzierung in der Ergebnisliste genutzt.
  - Mannschaften können nun erstellt/bearbeitet werden und werden in der Ergebnisliste aufgeführt.
 
 2.0.7        03.04.2016
+ - b67533c22be8e90987ed12da849bc50fcc3fb7c1
  - In der Ergebnisliste werden Serien mit Ergebnis 0,0 auch mit 0,0 angezeigt.
  - Es kann nun festgelegt werden, in wie vielen Spalten die Scheiben im Hauptfenster dargestellt werden.
  - Funktion zum Herunterfahren der Linien ergänzt.
  - Verwaltung der Altersgruppen verbessert.
+
+2.0.8        XX.YY.2016
+ - todo
+ - Problem behoben, bei dem das Verlassen der Mannschaftsbearbeitung zu einem Fehler führte (leere Mannschaft). 

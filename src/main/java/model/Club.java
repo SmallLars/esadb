@@ -41,8 +41,10 @@ public class Club implements Comparable<Club> {
 	}
 
 	@Override
-	public int compareTo(Club d) {
-		if (d == null) return 1;
-		return id - d.id;
+	public int compareTo(Club c) {
+		if (c == this) return 0;
+		if (c == null) return 1;
+
+		return id - c.id;
 	}
 }

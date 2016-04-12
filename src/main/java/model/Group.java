@@ -90,16 +90,17 @@ public class Group  implements Serializable, Comparable<Group> {
 	}
 
 	@Override
-	public int compareTo(Group o) {
-		if (o == null) return 1;
+	public int compareTo(Group g) {
+		if (g == this) return 0;
+		if (g == null) return 1;
 
-		if (to < o.to) return 1;
-		if (to > o.to) return -1;
+		if (to < g.to) return 1;
+		if (to > g.to) return -1;
 
-		if (from < o.from) return 1;
-		if (from > o.from) return -1;
+		if (from < g.from) return 1;
+		if (from > g.from) return -1;
 
-		return gender.compareTo(o.gender);
+		return gender.compareTo(g.gender);
 	}
 
 	public static Group getStandardGroup(Gender gender, int year, String name) {

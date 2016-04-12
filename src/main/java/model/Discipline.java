@@ -95,7 +95,9 @@ public class Discipline implements Serializable, Comparable<Discipline> {
 
 	@Override
 	public int compareTo(Discipline d) {
+		if (d == this) return 0;
 		if (d == null) return 1;
+
 		return id - d.id;
 	}
 }

@@ -44,6 +44,9 @@ public class Team extends Result {
 
 	@Override
 	public int compareTo(Result s) {
+		if (s == this) return 0;
+		if (s == null) return 1;
+
 		int c;
 
 		// Zuerst nach Disziplin sortieren

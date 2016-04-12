@@ -64,16 +64,17 @@ public class Member implements Serializable, Comparable<Member> {
 	}
 
 	@Override
-	public int compareTo(Member s) {
-		if (s == null) return 1;
+	public int compareTo(Member m) {
+		if (m == this) return 0;
+		if (m == null) return 1;
 
-		int c = nachname.compareTo(s.nachname);
+		int c = nachname.compareTo(m.nachname);
 		if (c != 0) return c;
 
-		c = vorname.compareTo(s.vorname);
+		c = vorname.compareTo(m.vorname);
 		if (c != 0) return c;
 
-		return passnummer.compareTo(s.passnummer);
+		return passnummer.compareTo(m.passnummer);
 	}
 
 	public boolean isMale() {

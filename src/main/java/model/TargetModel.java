@@ -66,6 +66,9 @@ public class TargetModel implements Serializable, Comparable<TargetModel> {
 
 	@Override
 	public int compareTo(TargetModel t) {
+		if (t == this) return 0;
+		if (t == null) return 1;
+
 		return t.kennnummer.compareTo(kennnummer) * -1;
 	}
 

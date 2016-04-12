@@ -33,6 +33,9 @@ public class Weapon implements Serializable, Comparable<Weapon> {
 
 	@Override
 	public int compareTo(Weapon w) {
+		if (w == this) return 0;
+		if (w == null) return 1;
+
 		return w.number.compareTo(number) * -1;
 	}
 
