@@ -18,6 +18,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.Vector;
 
+import org.apache.commons.io.IOUtils;
+
 import controller.Controller;
 import controller.KampfDB;
 
@@ -115,7 +117,8 @@ public class Model implements Serializable {
 	}
 
 	public boolean save(File file) {
-		if (file.getParentFile().mkdirs() == false) return false;
+		File parent = file.getParentFile();
+		if (!parent.exists() && !parent.mkdirs()) return false;
 
 		boolean succeed = false;
 		ObjectOutputStream oos = null;
@@ -130,8 +133,8 @@ public class Model implements Serializable {
 			e.printStackTrace();
 		}
 		finally {
-			if (oos != null) try { oos.close(); } catch (IOException e) {}
-			if (fos != null) try { fos.close(); } catch (IOException e) {}
+			IOUtils.closeQuietly(oos);
+			IOUtils.closeQuietly(fos);
 		}
 		return succeed;
 	}

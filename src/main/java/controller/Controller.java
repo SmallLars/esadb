@@ -128,7 +128,8 @@ public class Controller {
 	}
 
 	public void save() {
-		model.save(file);
+		if (model.save(file)) return;
+		System.out.println("Datei konnte nicht gespeichert werden. Änderungen gehen bei Verlassen des Programms verloren.");
 	}
 
 	public void save(File file) {

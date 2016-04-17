@@ -12,6 +12,7 @@ public enum Status {
 	WERTUNG("8"),
 	PROBE("9"),
 	VISIONCTL("\"H014\""),
+	WINDOWS("\"50\""),
 	SHUTDOWN("\"99  \""),
 	ESADBCTL("\"060\"");
 

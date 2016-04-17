@@ -59,6 +59,6 @@
  - Funktion zum Herunterfahren der Linien ergänzt.
  - Verwaltung der Altersgruppen verbessert.
 
-2.0.8        XX.YY.2016
- - todo
- - Problem behoben, bei dem das Verlassen der Mannschaftsbearbeitung zu einem Fehler führte (leere Mannschaft). 
+2.0.8        17.04.2016
+ - Problem behoben, bei dem das Verlassen der Mannschaftsbearbeitung zu einem Fehler führte (leere Mannschaft).
+ - Fehler korrigiert, der ein Speichern der Wettkampfdateien verhindert hat.
