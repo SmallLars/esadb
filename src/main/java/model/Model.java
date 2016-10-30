@@ -41,6 +41,10 @@ public class Model implements Serializable {
 		schuetzen = KampfDB.getActiveMembers();
 		disziplinen = KampfDB.getDisciplines(config);
 		treffer = new Vector<Hit>();
+		updateDB();
+	}
+
+	public void updateDB() {
 		try {
 			file = Files.readAllBytes(Paths.get(Controller.getPath("data.mdb")));
 		} catch (IOException e) {

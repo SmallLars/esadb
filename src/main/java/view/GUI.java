@@ -172,6 +172,13 @@ public class GUI extends JFrame implements ActionListener, ComponentListener, Ch
 			mntmDisziplinen.setActionCommand("DISZIPLINEN");
 			mntmDisziplinen.addActionListener(this);
 			mnStammdaten.add(mntmDisziplinen);
+			
+			mnStammdaten.addSeparator();
+
+			JMenuItem mntmUpdate = new JMenuItem("Aktualisieren...");
+			mntmUpdate.setActionCommand("UPDATE");
+			mntmUpdate.addActionListener(this);
+			mnStammdaten.add(mntmUpdate);
 
 		JMenu mnLinien = new JMenu("Linien");
 		menuBar.add(mnLinien);
@@ -423,6 +430,14 @@ public class GUI extends JFrame implements ActionListener, ComponentListener, Ch
 			case "SCHUETZEN":
 				Members schuetze = new Members(this);
 				schuetze.setVisible(true);
+				break;
+			case "UPDATE":
+				if (!checkForFree(false, "Die Stammdaten können erst aktualisiert werden, wenn alle Linien frei sind.")) {
+					return;
+				}
+
+				Update update = new Update(this);
+				update.setVisible(true);
 				break;
 			case "SHUTDOWN":
 				if (!checkForFree(true, "Die Linien können erst heruntergefahren werden, wenn alle Linien frei sind.")) {

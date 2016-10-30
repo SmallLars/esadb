@@ -45,6 +45,18 @@ public class Member implements Serializable, Comparable<Member> {
 		vereinsnummer = (int) row.get("VereinsNr");
 	}
 
+	public void update(Member m) {
+		if (passnummer.equals(m.passnummer)) {
+			nachname = m.nachname;
+			vorname = m.vorname;
+			titelname = m.titelname;
+			geburtsdatum = m.geburtsdatum;
+			geschlecht = m.geschlecht;
+			startnummer = m.startnummer;
+			vereinsnummer = m.vereinsnummer;
+		}
+	}
+
 	@Override
 	public String toString() {
 		return nachname + ", " + vorname;
@@ -57,9 +69,13 @@ public class Member implements Serializable, Comparable<Member> {
 
 	@Override
 	public boolean equals(Object o) {
+		if (o == this) return true;
+		if (o == null) return false;
+
 		if (o instanceof Member) {
 			return ((Member) o).passnummer.equals(passnummer);
 		}
+
 		return false;
 	}
 
