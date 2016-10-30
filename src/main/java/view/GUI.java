@@ -310,15 +310,10 @@ public class GUI extends JFrame implements ActionListener, ComponentListener, Ch
 		PrintPreview dv;
 		switch (e.getActionCommand()) {
 			case "NEW":
-				for (Line l : linien) if (!l.isFrei() || (l.isBusy() && !l.isError())) {
-					JOptionPane.showMessageDialog(
-						this,
-						"Ein neuer Wettkampf kann erst angelegt werden, wenn alle Linien frei sind.",
-						"Fehler",
-						JOptionPane.WARNING_MESSAGE
-					);
+				if (!checkForFree(false, "Ein neuer Wettkampf kann erst angelegt werden, wenn alle Linien frei sind.")) {
 					return;
 				}
+
 				returnVal = fc.showDialog(this, "Neu");
 				if (returnVal == JFileChooser.APPROVE_OPTION) {
 					File file = checkPath(fc.getSelectedFile());
@@ -329,15 +324,10 @@ public class GUI extends JFrame implements ActionListener, ComponentListener, Ch
 				}
 				break;
 			case "OPEN":
-				for (Line l : linien) if (!l.isFrei() || (l.isBusy() && !l.isError())) {
-					JOptionPane.showMessageDialog(
-						this,
-						"Ein Wettkampf kann erst geladen werden, wenn alle Linien frei sind.",
-						"Fehler",
-						JOptionPane.WARNING_MESSAGE
-					);
+				if (!checkForFree(false, "Ein Wettkampf kann erst geladen werden, wenn alle Linien frei sind.")) {
 					return;
 				}
+
 				returnVal = fc.showOpenDialog(this);
 				if (returnVal == JFileChooser.APPROVE_OPTION) {
 					File file = fc.getSelectedFile();
@@ -393,10 +383,12 @@ public class GUI extends JFrame implements ActionListener, ComponentListener, Ch
 						);
 					}
 				}
+
 				if (action.equals("SHOW")) {
 					dv = new PrintPreview(this, controller.getModel().getPrintable(), getPageFormat());
 					setPageFormat(dv.showDialog());
 				}
+
 				break;
 			case "SINGLEPREVIEW":
 				SingleSelection einzel = new SingleSelection(this);
@@ -433,15 +425,10 @@ public class GUI extends JFrame implements ActionListener, ComponentListener, Ch
 				schuetze.setVisible(true);
 				break;
 			case "SHUTDOWN":
-				for (Line l : linien) if (!l.isError() && (!l.isFrei() || l.isBusy())) {
-					JOptionPane.showMessageDialog(
-						this,
-						"Die Linien können erst heruntergefahren werden, wenn alle Linien frei sind.",
-						"Fehler",
-						JOptionPane.WARNING_MESSAGE
-					);
+				if (!checkForFree(true, "Die Linien können erst heruntergefahren werden, wenn alle Linien frei sind.")) {
 					return;
 				}
+
 				int v = JOptionPane.showConfirmDialog(
 					this,
 					"Sollen die Linien wirklich heruntergefahren werden?",
@@ -512,13 +499,7 @@ public class GUI extends JFrame implements ActionListener, ComponentListener, Ch
 	}
 
 	private void close() {
-		for (Line l : linien) if (!l.isError() && (!l.isFrei() || l.isBusy())) {
-			JOptionPane.showMessageDialog(
-				this,
-				"Das Programm kann erst beendet werden, wenn alle Linien frei sind.",
-				"Fehler",
-				JOptionPane.WARNING_MESSAGE
-			);
+		if (!checkForFree(true, "Das Programm kann erst beendet werden, wenn alle Linien frei sind.")) {
 			return;
 		}
 
@@ -611,5 +592,16 @@ public class GUI extends JFrame implements ActionListener, ComponentListener, Ch
 		}
 		targetColumns.setValue(value);
 		((SpinnerNumberModel) targetColumns.getModel()).setMaximum(max);
+	}
+
+	private boolean checkForFree(boolean acceptError, String msg) {
+		for (Line l : linien) {
+			if ((!acceptError && !l.isFrei()) || (!l.isError() && (!l.isFrei() || l.isBusy()))) {
+				JOptionPane.showMessageDialog(this, msg, "Fehler", JOptionPane.WARNING_MESSAGE);
+				return false;
+			}
+		}
+
+		return true;
 	}
 }
