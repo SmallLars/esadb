@@ -38,8 +38,8 @@ public class Model implements Serializable {
 
 	public Model(SettingsModel config) {
 		ergebnisse = new Vector<Result>();
-		schuetzen = KampfDB.getSchuetzen();
-		disziplinen = KampfDB.getDisziplinen(config);
+		schuetzen = KampfDB.getActiveMembers();
+		disziplinen = KampfDB.getDisciplines(config);
 		treffer = new Vector<Hit>();
 		try {
 			file = Files.readAllBytes(Paths.get(Controller.getPath("data.mdb")));

@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.util.Arrays;
+import java.util.Set;
 import java.util.Vector;
 
 import javax.swing.JButton;
@@ -20,6 +21,7 @@ import javax.swing.table.TableRowSorter;
 
 import controller.Controller;
 import controller.KampfDB;
+import model.Club;
 import model.Member;
 import view.FilterBox;
 import view.IconButton;
@@ -29,7 +31,7 @@ import view.IconButton;
 public class Members extends JDialog implements ComponentListener, ActionListener {
 
 	private Controller controller;
-	private Member[] schuetzen;
+	private Set<Member> schuetzen;
 
 	private JScrollPane scrollPane;
 	private MemberTableModel tmodel;
@@ -52,7 +54,7 @@ public class Members extends JDialog implements ComponentListener, ActionListene
 		super(parent, "Schützen");
 
 		this.controller = Controller.get();
-		schuetzen = KampfDB.getAllSchuetzen();
+		schuetzen = KampfDB.getMembers();
 
 		setModal(true);
 		setModalityType(ModalityType.APPLICATION_MODAL);
@@ -95,7 +97,7 @@ public class Members extends JDialog implements ComponentListener, ActionListene
 		lblVerein.setBounds(20, 443, 46, 14);
 		getContentPane().add(lblVerein);
 
-		comboBox = new FilterBox("Alle Vereine", KampfDB.getVereine());
+		comboBox = new FilterBox("Alle Vereine", KampfDB.getClubs().toArray(new Club[0]));
 		comboBox.setBounds(69, 439, 251, 22);
 		comboBox.setActionCommand("FILTER");
 		comboBox.addActionListener(this);

@@ -2,6 +2,7 @@ package view.member;
 
 
 import java.util.Date;
+import java.util.Set;
 
 import javax.swing.table.DefaultTableModel;
 
@@ -12,8 +13,8 @@ import model.Member;
 public class MemberTableModel extends DefaultTableModel {
 	Member[] schuetzen;
 
-	public MemberTableModel(Member[] schuetzen) {
-		this.schuetzen = schuetzen;
+	public MemberTableModel(Set<Member> schuetzen) {
+		this.schuetzen = schuetzen.toArray(new Member[0]);
 	}
 
 	@Override
