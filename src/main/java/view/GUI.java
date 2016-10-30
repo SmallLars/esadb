@@ -376,6 +376,8 @@ public class GUI extends JFrame implements ActionListener, ComponentListener, Ch
 			case "RESULTLIST":
 				ResultListOptions rlo = new ResultListOptions(this);
 				String action = rlo.showDialog();
+				if (action == null) break;
+
 				if (action.equals("PRINT")) {
 					PrinterJob pjob = PrinterJob.getPrinterJob();
 				    if (pjob.printDialog() == false) return;
