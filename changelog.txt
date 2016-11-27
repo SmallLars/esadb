@@ -60,5 +60,10 @@
  - Verwaltung der Altersgruppen verbessert.
 
 2.0.8        17.04.2016
+ - 28a5efd1357df8deac1b11959222035cd41df7dd
  - Problem behoben, bei dem das Verlassen der Mannschaftsbearbeitung zu einem Fehler führte (leere Mannschaft).
  - Fehler korrigiert, der ein Speichern der Wettkampfdateien verhindert hat.
+
+2.0.9        27.11.2016
+ - Programmfehler beim Schließen des Dialogs für die Ergebnisliste behoben.
+ - Eigene Scheiben werden nun zuverlässig auf den Linien angezeigt.
