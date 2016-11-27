@@ -107,9 +107,10 @@ public class Rule  implements Serializable {
 		String file_scheibe = target.toFile();
 		String file_waffe = weapon.toFile();
 
-		String fileName = Controller.getPath(String.format("0_hd_%s.def", number.replace('.', '-')));
+		String fileName = String.format("0_hd_%s.def", number.replace('.', '-'));
+		String fullPath = Controller.getPath(fileName);
 		try {
-			FileWriter writer = new FileWriter(fileName);
+			FileWriter writer = new FileWriter(fullPath);
 			writer.println("\">Bezeichnung\"");
 			writer.println(String.format("\"%s\"", name));
 

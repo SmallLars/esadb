@@ -273,9 +273,10 @@ public class TargetModel implements Serializable, Comparable<TargetModel> {
 		NumberFormat format = NumberFormat.getInstance(Locale.ENGLISH);
 		format.setGroupingUsed(false);
 
-		String fileName = Controller.getPath(String.format("0_hs_%s.def", kennnummer.replace('.', '-')));
+		String fileName = String.format("0_hs_%s.def", kennnummer.replace('.', '-'));
+		String fullPath = Controller.getPath(fileName);
 		try {
-			FileWriter writer = new FileWriter(fileName);
+			FileWriter writer = new FileWriter(fullPath);
 
 			// Name der Scheibe der bei der Programmauswahl angezeigt wird
 			writer.println("\">Bezeichnung\"");
