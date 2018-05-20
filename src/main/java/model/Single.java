@@ -10,6 +10,7 @@ import java.awt.print.Printable;
 import java.awt.print.PrinterException;
 import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -32,6 +33,7 @@ public class Single extends Result implements Printable {
 	public static final int BOTH = 2;
 
 	public static int print = MATCH;
+	public static boolean factor = false;
 
 	private int linie;
 	private Date datum;
@@ -360,6 +362,7 @@ public class Single extends Result implements Printable {
 		if (print != MATCH) {
 			drawValues(g2, lineHeight, true);
 			drawNumberCountTable(g2, lineHeight, true);
+			drawBestFactors(g2, lineHeight, true);
 		}
 
 		// Überschrift falls Probe und Match
@@ -371,6 +374,7 @@ public class Single extends Result implements Printable {
 		if (print != PROBE) {
 			drawValues(g2, lineHeight,false);
 			drawNumberCountTable(g2, lineHeight, false);
+			drawBestFactors(g2, lineHeight, false);
 		}
 
 		return Printable.PAGE_EXISTS;
@@ -444,6 +448,28 @@ public class Single extends Result implements Printable {
 			g.drawRect(2000 - width*(i+1), lineHeight + rectDiff, width, lineHeight);
 		}
 		g.translate(0, 3 * lineHeight);
+	}
+
+	private void drawBestFactors(Graphics2D g, int lineHeight, boolean probe) {
+		if (!factor) return;
+
+		ArrayList<Integer> factors = new ArrayList<Integer>();
+		for (int i = 0; i < disziplin.getSchusszahl(); i++) {
+			Hit t = getTreffer(probe, i + 1);
+			if (t == null) return;
+			double wert = t.getR();
+			factors.add((int) wert);
+		}
+		Collections.sort(factors);
+
+		g.drawString("Beste Teiler", 0, 0);
+		for (int i = 0; i < 5; i++) {
+			final int width = 324;
+			final int rectDiff = - g.getFontMetrics().getHeight() + g.getFontMetrics().getLeading();
+			if (i < factors.size()) drawStringRight(g, "" + factors.get(i), 380 + (i+1) * width, 0);
+			g.drawRect(380 + i * width, rectDiff, width, lineHeight);
+		}
+		g.translate(0, 2 * lineHeight);
 	}
 
 	private float getValue(boolean probe, int nummer) {

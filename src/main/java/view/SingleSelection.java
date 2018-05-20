@@ -34,6 +34,7 @@ public class SingleSelection extends JDialog implements ActionListener {
 	private JComboBox<Single> start;
 	private JCheckBox chckbxProbe;
 	private JCheckBox chckbxMatch;
+	private JCheckBox chckbxFactor;
 
 	public SingleSelection(Frame parent) {
 		super(parent, "Ergebnisauswahl");
@@ -71,13 +72,18 @@ public class SingleSelection extends JDialog implements ActionListener {
 
 		chckbxProbe = new JCheckBox("Probe");
 		chckbxProbe.setSelected(Single.print == Single.PROBE || Single.print == Single.BOTH);
-		chckbxProbe.setBounds(10, 106, 97, 23);
+		chckbxProbe.setBounds(10, 106, 200, 23);
 		contentPanel.add(chckbxProbe);
 		
 		chckbxMatch = new JCheckBox("Match");
 		chckbxMatch.setSelected(Single.print == Single.MATCH || Single.print == Single.BOTH);
-		chckbxMatch.setBounds(10, 132, 97, 23);
+		chckbxMatch.setBounds(10, 132, 200, 23);
 		contentPanel.add(chckbxMatch);
+
+		chckbxFactor = new JCheckBox("Beste Teiler anzeigen");
+		chckbxFactor.setSelected(Single.factor);
+		chckbxFactor.setBounds(10, 158, 200, 23);
+		contentPanel.add(chckbxFactor);
 
 		JButton cancelButton = new JButton("Abbrechen");
 		cancelButton.setBounds(10, 241, 120, 23);
@@ -138,6 +144,7 @@ public class SingleSelection extends JDialog implements ActionListener {
 				if (chckbxProbe.isSelected()) Single.print = Single.PROBE;
 				else Single.print = Single.MATCH;
 			}
+			Single.factor = chckbxFactor.isSelected();
 			okKlick = true;
 		}
 		setVisible(false);
