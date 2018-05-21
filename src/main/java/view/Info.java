@@ -41,7 +41,7 @@ public class Info extends JDialog implements ActionListener {
 			panel.setBorder(new EmptyBorder(5, 5, 5, 5));
 			panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 			{
-				JLabel label = new JLabel("ESADB 2.0.9 vom 27.11.2016");
+				JLabel label = new JLabel("ESADB 2.0.10 vom 21.05.2018");
 				panel.add(label);
 				panel.add(Box.createVerticalStrut(8));
 			}
@@ -67,7 +67,7 @@ public class Info extends JDialog implements ActionListener {
 				panel.add(Box.createVerticalStrut(8));
 			}
 			{
-				JLabel label = new JLabel("Copyright © 2015-2016 Lars Schmertmann.");
+				JLabel label = new JLabel("Copyright © 2015-2018 Lars Schmertmann.");
 				panel.add(label);
 				panel.add(Box.createVerticalStrut(8));
 			}

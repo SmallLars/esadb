@@ -65,5 +65,9 @@
  - Fehler korrigiert, der ein Speichern der Wettkampfdateien verhindert hat.
 
 2.0.9        27.11.2016
+ - da8426933885d1577df70aad22c8d48f63924339
  - Programmfehler beim Schließen des Dialogs für die Ergebnisliste behoben.
  - Eigene Scheiben werden nun zuverlässig auf den Linien angezeigt.
+
+2.0.10       21.05.2018
+ - Ausgabe der besten 5 Teiler im Einzelausdruck ermöglicht.
